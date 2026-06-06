@@ -54,7 +54,13 @@
     <form class="composer" id="composer">
       <textarea id="prompt" rows="2" placeholder="Type anything — e.g. 'a book for ages 7-9 about a robot who plants a moon garden'…"></textarea>
       <div class="composer-row">
-        <label class="newsess"><input type="checkbox" id="newsess"> new session</label>
+        <div class="composer-left">
+          <label class="modelpick" title="MiniMax is fast & reliable; DeepSeek is more creative — great for stories">
+            <span>Model</span>
+            <select id="model-select"></select>
+          </label>
+          <label class="newsess"><input type="checkbox" id="newsess"> new session</label>
+        </div>
         <button class="btn" id="send" type="submit">Send ▸</button>
       </div>
     </form>

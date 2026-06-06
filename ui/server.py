@@ -43,14 +43,26 @@ OPENCODE_BIN = os.environ.get("OPENCODE_BIN", "opencode")
 OPENCODE_MODEL = os.environ.get("OPENCODE_MODEL", "ollama/minimax-m3:cloud")
 PROVIDER_ID, MODEL_ID = OPENCODE_MODEL.split("/", 1)
 
+# Models the studio offers in its model picker. Each must also be registered under the matching
+# provider in opencode.json. MiniMax is the default (fast + reliable tool use); DeepSeek is slower
+# but more creative, so the UI auto-selects it for the story-writing stage.
+MODELS = [
+    {"id": "ollama/minimax-m3:cloud",
+     "label": "MiniMax-M3 — fast & reliable (default)"},
+    {"id": "ollama/deepseek-v4-pro:cloud",
+     "label": "DeepSeek-V4-Pro — more creative (best for stories)"},
+]
+ALLOWED_MODELS = {m["id"] for m in MODELS}
+
 STUDIO_BRIEF = """You are the studio director inside the "Garbanzo Books" AI storybook workspace.
 Read CLAUDE.md and methodology/ as needed. Tools live in scripts/ — run them via
 "uv run python scripts/<tool>.py" (new_world.py, new_character.py, new_story.py,
 generate_images.py, validate.py, build_site.py).
 
 Work INTERACTIVELY and CONFIRM as you go — never build everything in one giant turn:
-1. When the user wants a new world or book, FIRST ask 3-5 concise questions (theme/setting,
-   target age band, tone, art-style vibe, main character ideas). Then STOP and wait.
+1. When the user wants a new world or book, FIRST gather the missing details with a FORM (see the
+   FORM PROTOCOL below) — setting, target age band, tone, art-style vibe, main character ideas,
+   and anything else specific to their idea. Then STOP and wait for their answers.
 2. Propose a short world bible + locked art style as a brief summary, scaffold ONLY the world
    (new_world.py) and edit world.yaml/style-guide.md. Then STOP and ask: "Does this world look
    right before I design characters?"
@@ -60,10 +72,35 @@ Work INTERACTIVELY and CONFIRM as you go — never build everything in one giant
 4. After approval, write the story (new_story.py + story-craft), adapt the reading level,
    add interactions, generate page images, validate, and build. Confirm before publishing.
 
-Keep each turn focused and short. Ask one batch of questions at a time and wait for the answer
-rather than guessing. Always end a turn by stating what you did and the next decision you need.
-IMPORTANT: Ask questions and request confirmation as PLAIN TEXT, then end your turn — do NOT
-call any interactive "question"/"ask" tool (it is disabled). The user replies in the next message."""
+FORM PROTOCOL — this is how you ask the user for information or choices. DO NOT write questions as
+prose or numbered lists. Instead emit exactly ONE fenced code block tagged `form` whose body is a
+JSON object, then END YOUR TURN with nothing after it. The console renders it as a fillable form;
+the user's answers arrive as the next message. Schema:
+```form
+{"title": "A few quick choices",
+ "intro": "Pick an option or type your own.",
+ "fields": [
+   {"name": "setting", "label": "Setting", "type": "select",
+    "options": ["glowing flower meadow", "mossy forest", "coral beach", "starry mountainside"]},
+   {"name": "art", "label": "Art style", "type": "select",
+    "options": ["soft watercolor storybook", "bold gouache", "Ghibli pastel", "flat cute big-eyes"]},
+   {"name": "sidekick", "label": "Sidekick companion", "type": "text",
+    "placeholder": "e.g. a fluffy grass-type bunny, or none"}
+ ]}
+```
+Rules: 3-5 fields max; "select" fields give 3-6 options (the user can also type their own); other
+types are "text" and "textarea". A one-sentence lead-in before the block is fine; write NOTHING
+after the block. For plain yes/no confirmations ("Does this look right?") it is fine to just ask in
+one short sentence and stop. NEVER call any interactive "question"/"ask" tool (it is disabled).
+
+MODEL STAGES — story writing uses a more creative model, everything else a faster one, and the
+console switches models for you based on a tag you emit. On its OWN line in your message, include:
+  [[stage:story]]  whenever the NEXT thing you'll do is write or revise the STORY text/pages
+                   (including the confirmation right before you start writing the story), and keep
+                   emitting it while you are writing the story.
+  [[stage:craft]]  for world-building, character design, reading-level work, validation, or building
+                   the site.
+Put the tag at the very end of the message. It is hidden from the user — do not mention it."""
 
 
 # --------------------------------------------------------------------------- OpenCode lifecycle
@@ -214,11 +251,15 @@ def _tool_detail(tool: str, state: dict) -> str:
     return state.get("title") or tool
 
 
-async def chat_stream(prompt: str, session_id: str | None, request: Request):
+async def chat_stream(prompt: str, session_id: str | None, model: str | None, request: Request):
     if not oc.base:
         yield sse({"type": "error", "text": "OpenCode unavailable — is 'opencode' installed and is Ollama running?"})
         yield sse({"type": "done"})
         return
+
+    # Resolve the requested model (fall back to the default if missing/unknown).
+    chosen = model if model in ALLOWED_MODELS else OPENCODE_MODEL
+    provider_id, model_id = chosen.split("/", 1)
 
     async with httpx.AsyncClient(base_url=oc.base, timeout=None) as client:
         sid = session_id
@@ -237,7 +278,7 @@ async def chat_stream(prompt: str, session_id: str | None, request: Request):
                 await client.post(
                     f"/session/{sid}/prompt_async",
                     json={
-                        "model": {"providerID": PROVIDER_ID, "modelID": MODEL_ID},
+                        "model": {"providerID": provider_id, "modelID": model_id},
                         "system": STUDIO_BRIEF,
                         "tools": {"question": False, "ask": False},
                         "parts": [{"type": "text", "text": prompt}],
@@ -293,14 +334,20 @@ async def chat_stream(prompt: str, session_id: str | None, request: Request):
     yield sse({"type": "done"})
 
 
+@app.get("/api/models")
+async def api_models():
+    return JSONResponse({"models": MODELS, "default": OPENCODE_MODEL})
+
+
 @app.post("/api/chat")
 async def api_chat(request: Request):
     body = await request.json()
     prompt = (body.get("prompt") or "").strip()
     session_id = body.get("sessionId")
+    model = body.get("model")
     if not prompt:
         return JSONResponse({"error": "empty prompt"}, status_code=400)
-    return StreamingResponse(chat_stream(prompt, session_id, request), media_type="text/event-stream")
+    return StreamingResponse(chat_stream(prompt, session_id, model, request), media_type="text/event-stream")
 
 
 # ----------------------------------------------------------------------------- static + preview

@@ -1,0 +1,117 @@
+slug: clara-cloud-islands
+title: Clara's Cloud Islands
+tagline: A bossy, giggly, super-smart girl chases the most beautiful Pokemon across floating sky islands.
+premise: >
+  High above the world, a chain of fluffy cloud islands floats in the sunrise.
+  Clara is a funny, bossy, super-smart little Pokemon trainer who never gives up
+  and loves to make friends. She is on a mission to find and catch the most
+  beautiful Pokemon on every island. Each island hides a different gorgeous
+  Pokemon, silly obstacles, and a tiny logic game. With her clumsy, never-quit
+  sidekick at her side, Clara stumbles, laughs, plots clever plans, and always
+  comes back for more.
+tone:
+- funny
+- warm
+- adventurous
+- sparkly
+genres:
+- adventure
+- comedy
+- fantasy
+target_age_bands:
+- 5-7
+languages:
+- en
+geography:
+  overview: >
+    A chain of floating cloud islands held up by giant puffy clouds and slow
+    breezes. Each island has its own weather, plants, and a "special" kind of
+    beautiful Pokemon. Islands are connected by rainbow rope-bridges, drifting
+    lily-pad gondolas, and friendly bird-Pokemon.
+  locations:
+  - name: Sunny Meadow Island
+    description: A bright top-island with candy-pink grass and berry bushes.
+    mood: cheerful
+    recurring: true
+  - name: Misty Pond Island
+    description: A quiet island wrapped in mist, hiding a hidden rainbow pond.
+    mood: mysterious
+    recurring: true
+  - name: Glow-Mushroom Island
+    description: A dusk island glowing with soft purple mushrooms.
+    mood: magical
+    recurring: true
+  - name: Sparkle Volcano Island
+    description: A tiny puffy volcano that puffs out glittery clouds.
+    mood: playful
+    recurring: true
+rules:
+- Clara catches Pokemon — but a real catch only counts when the Pokemon chooses to come along as her friend.
+- Beauty in this world is about personality, not just looks.
+- Clara never gives up, but she is also kind. She listens when a Pokemon says "no."
+- Clara is super-smart: she plans, she notices, she solves the puzzle. (Being smart is funny in her case — she talks to herself out loud.)
+- The islands float because of friendly wind-Pokemon who sing them in place.
+factions:
+- name: The Cloud Gardeners
+  description: Tiny cloud creatures who tend the islands and the rainbow bridges.
+- name: The Rainbow Bridge Crew
+  description: Bird-Pokemon who carry trainers between islands.
+timeline:
+- label: Before Clara
+  description: The cloud islands drifted quietly, tended only by the Cloud Gardeners.
+- label: Clara's Arrival
+  description: Clara, on a runaway balloon, lands on Sunny Meadow Island and decides to explore every island.
+motifs:
+- a glittery pink hair bow
+- a sticky-berry satchel
+- the phrase "BEAUTIFUL AND MINE!"
+- sparkly clouds
+- clumsy pratfalls
+themes:
+- kindness over capture
+- never giving up
+- being a good friend
+- beauty on the inside
+art_style:
+  medium: bright, clean Pokemon anime-style digital illustration
+  line_quality: bold clean ink lines, rounded, expressive
+  shading: cel-shaded with soft gradients
+  lighting: bright sunny with crisp rim light and pink sunset highlights
+  perspective: dynamic three-quarter, character-centered
+  palette:
+  - name: sky-blue
+    hex: '#7cc7ff'
+    role: background
+  - name: cloud-cream
+    hex: '#fff5d6'
+    role: background
+  - name: sparkle-pink
+    hex: '#ff7fb6'
+    role: accent
+  - name: leaf-green
+    hex: '#7ad06d'
+    role: primary
+  - name: sun-yellow
+    hex: '#ffd24a'
+    role: accent
+  - name: dusk-violet
+    hex: '#7a4dc4'
+    role: shadow
+  influences:
+  - Pokemon official anime
+  - bright shoujo manga
+  - Studio Ghibli skies
+  prompt_style_block: "bright Pokemon anime-style children's book illustration, clean bold ink lines, cel-shaded with soft gradients, big expressive eyes, sunny sky lighting with pink sunset rim light, fluffy clouds, sparkling magic effects, vibrant pastel palette, full-bleed, no text, no watermark"
+  negative_prompt: "photorealism, 3D render, dark moody, scary faces, horror, extra fingers, deformed hands, text artifacts, watermark, blurry, low quality, chibi with no eyes, ugly"
+  aspect_ratio: '4:3'
+  text_treatment:
+    placement: lower third
+    scrim: soft cloud-cream rounded panel at 85% opacity
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+- pokemon
+- sky-islands
+- friendship
+- never-give-up
+- sparkle

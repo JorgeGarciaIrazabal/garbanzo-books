@@ -10,6 +10,9 @@
       "models": {
         "minimax-m3:cloud": {
           "name": "MiniMax-M3 (via local Ollama, no API key)"
+        },
+        "deepseek-v4-pro:cloud": {
+          "name": "DeepSeek-V4-Pro (via local Ollama, no API key) — more creative"
         }
       }
     }

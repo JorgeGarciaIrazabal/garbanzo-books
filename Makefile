@@ -5,6 +5,9 @@
 OLLAMA_HOST ?= http://localhost:11434
 OPENCODE_MODEL ?= ollama/minimax-m3:cloud
 
+# Port for the studio UI (ui/server.py also reads $PORT)
+UI_PORT ?= 4317
+
 # Environment is managed by uv (https://docs.astral.sh/uv). `uv run` ensures the .venv exists
 # and is in sync with pyproject.toml/uv.lock before running. Override RUN to use a plain
 # interpreter instead, e.g.  make validate RUN=python3
@@ -46,7 +49,19 @@ ui:
 	# PORT to change the port (default 4317). Open http://localhost:$${PORT:-4317} when ready.
 	# We invoke `uv run --group ui` directly so the FastAPI/uvicorn/httpx deps are pulled
 	# in (the default `RUN` doesn't pass `--group ui`).
-	uv run --group ui python ui/server.py
+	@pids="$$(lsof -ti tcp:$(UI_PORT) 2>/dev/null)"; \
+	if [ -n "$$pids" ]; then \
+		echo "Port $(UI_PORT) is in use by PID(s): $$pids — killing"; \
+		kill $$pids 2>/dev/null || true; \
+		sleep 1; \
+		pids="$$(lsof -ti tcp:$(UI_PORT) 2>/dev/null)"; \
+		if [ -n "$$pids" ]; then \
+			echo "Still alive — sending SIGKILL"; \
+			kill -9 $$pids 2>/dev/null || true; \
+			sleep 1; \
+		fi; \
+	fi
+	PORT=$(UI_PORT) uv run --group ui python ui/server.py
 
 # Launch OpenCode against the local Ollama server. opencode.json already pins the
 # provider + model ($(OPENCODE_MODEL)); we just sanity-check Ollama is up first.
