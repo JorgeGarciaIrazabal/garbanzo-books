@@ -99,19 +99,28 @@ async def start_opencode() -> None:
         preexec_fn=_child_preexec,
     )
     base = f"http://127.0.0.1:{port}"
+    # 240 retries × 0.25s = ~60s. The default opencode cold start is <2s, but on the first
+    # ever launch the local model may need to be loaded by Ollama, which can take much longer
+    # — the longer window makes a one-time cold start finish cleanly instead of erroring out.
+    max_retries = 240
     async with httpx.AsyncClient() as client:
-        for _ in range(120):  # up to ~30s
+        for i in range(max_retries):
             if proc.poll() is not None:
                 raise RuntimeError(f"opencode serve exited early (code {proc.returncode})")
             try:
                 await client.get(base + "/config", timeout=2.0)
                 oc.proc, oc.base, oc.port = proc, base, port
-                print(f"  opencode server: {base} (pid {proc.pid})")
+                print(f"  opencode server: {base} (pid {proc.pid})", flush=True)
                 return
             except Exception:
+                if i > 0 and i % 40 == 0:  # progress ping every ~10s
+                    print(f"  …waiting for opencode serve ({i*0.25:.0f}s)", flush=True)
                 await asyncio.sleep(0.25)
     proc.kill()
-    raise RuntimeError("opencode serve did not become ready in time")
+    raise RuntimeError(
+        f"opencode serve did not become ready in {max_retries*0.25:.0f}s "
+        f"(is 'opencode' installed and reachable on PATH?)"
+    )
 
 
 def stop_opencode() -> None:
@@ -185,6 +194,26 @@ def sse(obj: dict) -> str:
     return f"data: {json.dumps(obj, ensure_ascii=False)}\n\n"
 
 
+def _tool_detail(tool: str, state: dict) -> str:
+    """Turn an OpenCode tool part into a short, human-readable 'what is happening' line.
+    The interesting bits live in state.input (e.g. bash → {command, description}; edit/write/read
+    → {filePath}; glob/grep → {pattern}; webfetch → {url}). We prefer the most specific field so
+    the studio shows 'running scripts/new_world.py' instead of a bare 'ran command'."""
+    inp = state.get("input") or {}
+    if tool == "bash":
+        cmd = inp.get("command") or ""
+        # The model usually writes a human description; fall back to the command itself.
+        return (inp.get("description") or cmd or "").strip()
+    if tool in ("edit", "write", "read", "patch"):
+        fp = inp.get("filePath") or inp.get("path") or ""
+        return fp.split("/")[-1] if fp else (state.get("title") or "")
+    if tool in ("glob", "grep", "list"):
+        return inp.get("pattern") or inp.get("path") or (state.get("title") or "")
+    if tool in ("webfetch", "fetch"):
+        return inp.get("url") or (state.get("title") or "")
+    return state.get("title") or tool
+
+
 async def chat_stream(prompt: str, session_id: str | None, request: Request):
     if not oc.base:
         yield sse({"type": "error", "text": "OpenCode unavailable — is 'opencode' installed and is Ollama running?"})
@@ -241,10 +270,18 @@ async def chat_stream(prompt: str, session_id: str | None, request: Request):
                                 text_len[part["id"]] = len(full)
                         elif part.get("type") == "tool":
                             state = part.get("state", {}) or {}
-                            title = state.get("title") or part.get("tool") or "tool"
+                            tool = part.get("tool") or "tool"
+                            detail = _tool_detail(tool, state)
                             yield sse({"type": "tool", "id": part.get("id"),
-                                       "tool": part.get("tool") or "tool",
-                                       "status": state.get("status", ""), "title": str(title)[:100]})
+                                       "tool": tool,
+                                       "status": state.get("status", ""),
+                                       "title": str(detail)[:140]})
+                    elif t == "session.status":
+                        # busy/idle heartbeat — lets the UI show "working…" with confidence even
+                        # during long silent steps (e.g. image generation).
+                        st = (p.get("status") or {}).get("type")
+                        if st in ("busy", "idle"):
+                            yield sse({"type": "status", "state": st})
                     elif t == "session.error":
                         yield sse({"type": "error", "text": str(p.get("error"))[:300]})
                         break
@@ -269,13 +306,34 @@ async def api_chat(request: Request):
 # ----------------------------------------------------------------------------- static + preview
 # Mounted AFTER the API routes so /api/* and /preview/* win. check_dir=False lets /preview exist
 # before the first build.
+class NoCacheStatic(StaticFiles):
+    """Local dev UI — never let the browser cache the console assets, so an edit to
+    app.js/styles.css always shows up on a normal reload (no Ctrl+Shift+R needed)."""
+    def is_not_modified(self, *args, **kwargs) -> bool:  # disable 304 revalidation
+        return False
+
+    async def get_response(self, path, scope):
+        resp = await super().get_response(path, scope)
+        resp.headers["Cache-Control"] = "no-store, max-age=0"
+        return resp
+
+
+# /preview keeps normal caching (it's the built site the reader sees); only the console is no-cache.
 app.mount("/preview", StaticFiles(directory=str(SITE), html=True, check_dir=False), name="preview")
-app.mount("/", StaticFiles(directory=str(PUBLIC), html=True), name="public")
+app.mount("/", NoCacheStatic(directory=str(PUBLIC), html=True), name="public")
 
 
 if __name__ == "__main__":
+    import sys
     import uvicorn
+    # Force unbuffered stdout so the startup banner and the opencode-ready line show up
+    # immediately in the terminal (and in the studio's job output) — uvicorn otherwise
+    # keeps app prints buffered until the process exits, which masks startup failures.
+    try:
+        sys.stdout.reconfigure(line_buffering=True)
+    except Exception:
+        pass
     print(f"\n  Garbanzo Books Studio  →  http://localhost:{PORT}")
     print(f"  workspace: {ROOT}")
-    print(f"  agent: OpenCode + {OPENCODE_MODEL} (no API key needed)\n")
+    print(f"  agent: OpenCode + {OPENCODE_MODEL} (no API key needed)\n", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="warning")

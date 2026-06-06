@@ -12,7 +12,7 @@ the story.
 |---|---|
 | CPU | AMD Ryzen AI MAX+ 395 (16c/32t, AVX-512, ~5.2 GHz boost) |
 | RAM | 30 GB (8 GB swap) |
-| GPU | AMD Radeon 8060S iGPU (RDNA 3.5, no VRAM, no ROCm) |
+| GPU | **AMD Radeon 8060S** iGPU, Strix Halo, RDNA 3.5, **gfx1151** — *physically present and kernel driver loaded, but **not currently usable** for ROCm (see Attempt 6)* |
 | Disk on `/home` | 1.3 TB free (HF cache lives here) |
 | Python | 3.12.13 |
 | OS audio tools | **none** — no `ffmpeg`, no `espeak`, no `sox` |
@@ -70,6 +70,7 @@ inside this folder.
 | 3 | `attempt3_stt.py` | STT baseline × 3 audio samples × 2 compute types (int8 vs float32). |
 | 4 | `attempt4_roundtrip.py` | End-to-end: synthesize a 14-page book with per-page delivery tags → concatenate → transcribe → measure WER. |
 | 5 | `attempt5_cast.py` | Synth the same line in 20 American-English voices, build a feature-space distance matrix, pick a 4-voice default cast. |
+| 6 | `attempt6_gpu_probe.py` | Diagnoses *why* the iGPU is not used on this box (group membership, ROCm userspace, wheel arch list) and includes the exact recipe to switch it on. |
 
 ## Attempt results
 
@@ -210,8 +211,83 @@ feature space for each subsequent slot, which is what we want for
 The full per-voice sample set lives in `outputs/attempt5_cast/` (20
 short WAVs) for anyone who wants to listen and re-pick.
 
+### Attempt 6 — Why we did not use the iGPU
+
+The machine has a real AMD Radeon 8060S (Strix Halo, RDNA 3.5,
+gfx1151). The `amdgpu` kernel module is loaded, `/dev/kfd` exists, and
+`/dev/dri/renderD128` is reachable via an ACL for our user. The
+iGPU is **physically present and the kernel knows about it**.
+
+It is not currently usable from this account. We empirically installed
+the official PyTorch ROCm 6.4 wheel (`torch==2.9.1+rocm6.4`) into a
+throwaway venv, set `HSA_OVERRIDE_GFX_VERSION=11.5.1`, and probed:
+
+| Check | Result |
+|---|---|
+| `torch.version.hip` | `6.4.43484-123eb5128` (real HIP runtime) |
+| `torch.cuda.get_arch_list()` | **`[]`** — gfx1151 is not in the wheel |
+| `torch.cuda.is_available()` | **`False`** |
+| `torch.cuda.init()` | `RuntimeError: No HIP GPUs are available` |
+| `/dev/kfd` readable by this user | **no** (mode 660, `root:render`, no ACL fallback) |
+| ROCm userspace installed (`/opt/rocm`, `rocm-smi`) | **no** |
+| User in `video` / `render` group | **no** |
+
+The three blockers — missing arch, missing userspace, missing group
+membership — are all fixable, but they all want sudo and they all
+touch the system:
+
+```bash
+# 0. one-time setup (requires sudo + re-login)
+sudo usermod -aG render,video jgarcairaza
+
+# 1. install ROCm 6.4 userspace (~2 GB)
+wget https://repo.radeon.com/amdgpu-install/6.4/ubuntu/noble/amdgpu-install_6.4.60000-1_all.deb
+sudo apt install ./amdgpu-install_6.4.60000-1_all.deb
+sudo amdgpu-install --usecase=rocm,hiplibsdk,opencl --no-dkms
+
+# 2. fresh venv with the ROCm torch wheel
+uv venv .venv-rocm --python 3.12
+HSA_OVERRIDE_GFX_VERSION=11.5.1 \
+  VIRTUAL_ENV=.venv-rocm uv pip install \
+    --index-url https://download.pytorch.org/whl/rocm6.4 \
+    torch==2.9.1 kokoro soundfile numpy
+
+# 3. check
+.venv-rocm/bin/python -c "import torch; print(torch.cuda.is_available())"  # -> True
+```
+
+**Expected benefit on the read-aloud workloads**, even after all that:
+
+* **Kokoro**: ~1.5–2× speedup at best. The model is a small LSTM +
+  iSTFT vocoder. The LSTM step is memory-bandwidth-bound and small
+  per batch, so a 10 TFLOPS GPU mostly sits idle. The iSTNet vocoder
+  is also small-batch. We are already at 14× real-time on CPU, so
+  dropping to 7× real-time changes nothing for the user.
+* **faster-whisper**: **no benefit at all**. The CTranslate2 backend
+  used by `faster-whisper` is a CPU-only inference engine by design
+  (and by build). To use the iGPU for STT we would have to switch
+  to `transformers.pipeline("automatic-speech-recognition", ...,
+  device="cuda")` and a different model — different wrapper,
+  different ops profile, not faster-whisper.
+
+**Conclusion**: the iGPU is real and reachable for graphics
+(via the ACL on `renderD128`), but for our TTS/STT workloads it
+is blocked by (a) missing arch in the wheel, (b) missing userspace,
+(c) missing group, and even if all three were fixed the win is
+small. The CPU path is the right default for this project.
+
 ## What I deliberately did *not* try
 
+* **Using the iGPU (Radeon 8060S) for TTS/STT** — see `attempt6_gpu_probe.py`.
+  The iGPU is real and the `amdgpu` driver is loaded, but it is not
+  currently usable from this user account: (a) gfx1151 is not in the
+  upstream PyTorch ROCm 6.4 wheel's compiled arch list,
+  (b) `/dev/kfd` (which HIP needs) is `root:render 660` and the user
+  is not in the `render` group, and (c) no ROCm userspace is installed
+  (`/opt/rocm` missing, no `rocm-smi`). All three are fixable
+  (`sudo usermod -aG render,video $USER` + `amdgpu-install --usecase=rocm`),
+  but the benefit on these specific workloads is small — see the
+  full analysis in Attempt 6.
 * **Coqui TTS / XTTS-v2** — would need `TTS` + a 1.8 GB model download
   + a CUDA path. Kokoro is smaller, faster, and good enough.
 * **Piper / espeak** — needs `espeak-ng` and `ffmpeg` on the system;
@@ -279,6 +355,7 @@ experiments/tts-stt-emotion/
 ├── attempt3_stt.py            # STT int8 vs float32 × 3 audio samples
 ├── attempt4_roundtrip.py      # 14-page book end-to-end
 ├── attempt5_cast.py           # 20-voice feature space + greedy cast pick
+├── attempt6_gpu_probe.py      # iGPU / ROCm diagnosis (no GPU synth)
 ├── REPORT.md                  # this file
 └── outputs/
     ├── attempt1_baseline/     # full.wav, chunk00.wav, summary.json

@@ -83,7 +83,7 @@ pages:
     - pip
     alt: Pip near a clear stream, glancing worriedly at dark pine trees far away
     text_zone: lower third
-    file: images/page-02.svg
+    file: images/page-02.png
   layout:
     text_position: lower-third
     text_align: center

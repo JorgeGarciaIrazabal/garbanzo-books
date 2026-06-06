@@ -1,0 +1,106 @@
+slug: clara
+world: pokemon-beauty-quest
+name: Clara
+role: protagonist
+species: human
+pronouns: she/her
+one_liner: A bright-eyed, kind young Pokémon trainer who is searching the world for the most beautiful Pokémon — and learns to see beauty in small things along the way.
+personality:
+  traits:
+    - kind
+    - curious
+    - patient
+    - observant
+    - hopeful
+  motivation: To find the most beautiful Pokémon in the world — but also, simply, to see beauty in every Pokémon she meets.
+  fears:
+    - missing a beautiful Pokémon that is right in front of her
+    - hurting a Pokémon's feelings
+  flaws:
+    - sometimes looks for the "biggest" beauty and forgets to look at the small ones
+    - gets impatient when a clue is hard
+  strengths:
+    - notices small things others walk past
+    - never gives up on a kind question
+    - makes every Pokémon feel welcome
+  quirks:
+    - hums softly when she is looking carefully
+    - tilts her head when she hears a bell-like sound
+    - keeps a tiny notebook where she draws the Pokémon she meets
+  values:
+    - kindness
+    - curiosity
+    - wonder
+    - patience
+voice:
+  speech_style: short, warm, lots of small questions ("Is it here? Did you see it?")
+  catchphrases:
+    - "I think I see something!"
+    - "It is so beautiful."
+  vocabulary_level: early-reader simple, concrete, lots of sight words
+appearance:
+  age_appearance: about seven
+  build: small, slim, lightly tanned
+  height: child-sized, knee-high to most adult Pokémon trainers
+  skin: warm light-tan, sun-kissed
+  hair: short chestnut-brown bob, soft bangs across the forehead, slightly wind-tousled
+  eyes: big, round, friendly — warm amber-brown
+  outfit: >-
+    a sunny yellow short-sleeved t-shirt under denim short-overalls with two
+    chest pockets, white ankle socks, soft red sneakers, and a small red
+    ribbon-pink bow clipped into her hair above her left ear
+  distinguishing_features:
+    - red ribbon-pink hair bow above her left ear (#F2A6C2)
+    - chestnut-brown bob with soft bangs
+    - denim short-overalls with two chest pockets
+    - a tiny cloth backpack (cream) with a star pin
+  color_palette:
+    - part: hair
+      hex: '#8C5A2E'
+    - part: skin
+      hex: '#F4C8A1'
+    - part: t-shirt
+      hex: '#F5C36E'
+    - part: overalls
+      hex: '#7CA8D6'
+    - part: sneakers
+      hex: '#E0524A'
+    - part: socks
+      hex: '#FBF8F3'
+    - part: hair-bow
+      hex: '#F2A6C2'
+    - part: eyes
+      hex: '#B0762E'
+  silhouette_notes: >-
+    Recognisable as a small girl with a short chestnut bob, a ribbon-pink hair
+    bow, a yellow tee under denim short-overalls, and red sneakers — a
+    bright, sunny, kind silhouette against the soft pastel sky.
+appearance_token: >-
+  CLARA: a small bright-eyed human girl about seven, short chestnut-brown bob
+  with soft bangs, big warm amber-brown eyes, a red ribbon-pink hair bow
+  above her left ear, a sunny yellow short-sleeved t-shirt, denim short-overalls
+  with two chest pockets, white ankle socks, soft red sneakers, a small cream
+  cloth backpack with a star pin, friendly curious smile, Pokémon anime style
+reference_images:
+  - characters/clara.refs/model-sheet.png
+seed: 44107
+relationships:
+  - character: lumi
+    relation: best friend and travelling companion, always by her side
+evolution:
+  - stage: base
+    order: 0
+    summary: Clara is just starting her search. She is hopeful, kind, and still learning to look closely.
+    personality_delta: ''
+    appearance_delta: ''
+    unlocked_by: ''
+  - stage: keen-eyed
+    order: 1
+    summary: After Book 1, Clara trusts her own eyes more. She starts noticing the small beautiful things first.
+    personality_delta: 'a touch more patient and observant, slightly less impatient when a clue is hard'
+    appearance_delta: 'wears a small pressed-flower pin on her backpack strap from the meadow'
+    unlocked_by: 'The Cloud Skyscape'
+tags:
+  - trainer
+  - protagonist
+  - human

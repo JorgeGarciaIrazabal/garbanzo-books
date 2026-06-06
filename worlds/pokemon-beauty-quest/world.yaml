@@ -1,0 +1,161 @@
+slug: pokemon-beauty-quest
+title: The World of Beautiful Pokémon
+tagline: A bright sky-world where a kind-eyed trainer and her little fawn search the clouds for the most beautiful Pokémon of all.
+premise: >-
+  A vast, sunlit world floating between sky and sea. Flower-meadows, glass-lake coves,
+  pine-forest ridges and warm golden fields all spread out far below a great lavender
+  sky. Beautiful Pokémon live everywhere — in the flowers, in the lakes, in the trees,
+  and high in the clouds. The young trainer Clara and her tiny fawn-companion Lumi
+  travel together looking for the most beautiful Pokémon in the world. They never
+  battle, they only look — and the journey is the point, because the answer is always
+  one step further. Each book is a self-contained mini-quest in a new biome, and the
+  "most beautiful" is open-ended on purpose, so the series can go on forever.
+tone:
+  - bright
+  - warm
+  - gently-adventurous
+  - wonder-filled
+  - kind
+genres:
+  - quest
+  - friendship
+  - nature
+  - gentle-adventure
+target_age_bands:
+  - "5-7"
+  - "3-5"
+languages:
+  - en
+geography:
+  overview: >-
+    A wide, friendly world seen mostly from above. A lavender-peach sky stretches in
+    every direction, and underneath it a patchwork of biomes. Cloud-islands float high
+    above the world and are connected by shimmering rainbow rope-bridges. The land
+    below is always warm, lit by golden-hour light, and dotted with flower-meadows,
+    silver lakes and pine-forest ridges. No biome is ever far from the next.
+  locations:
+    - name: The Cloud Skyscape
+      description: A field of soft, billowing cloud-islands floating above the world, linked by rainbow rope-bridges. This is where Book 1 takes place.
+      mood: floaty, gentle, bright
+      recurring: true
+    - name: The Flower Meadow
+      description: A wide warm meadow of wildflowers far below the clouds, where Pokémon of every colour peek up from the grass.
+      mood: sunny, busy, kind
+      recurring: true
+    - name: The Glass-Lake Cove
+      description: A still, clear lake with a tiny wooden pier and a stepping-stone path to a small island.
+      mood: cool, sparkling, hushed
+      recurring: true
+    - name: The Pine-Forest Edge
+      description: The friendly edge of a soft pine forest, where the light comes in at a slant and creatures peek from behind trees.
+      mood: dappled, calm, a little shy
+      recurring: true
+    - name: The Golden Fields
+      description: Tall warm-grass fields that ripple in the breeze, full of grass-type Pokémon and slow butterflies.
+      mood: breezy, warm, lazy
+      recurring: true
+    - name: The Rainbow Bridge
+      description: A long shimmering bridge of soft light that connects the cloud-islands to the meadow below.
+      mood: magical, sparkly, inviting
+      recurring: true
+rules:
+  - Pokémon are friends here, never opponents. No battles, no Pokéballs, no combat of any kind.
+  - 'Conflicts are small and kind: lost friends, hidden paths, shy Pokémon, missing colours. Everything resolves safely.'
+  - There is no "most beautiful" Pokémon. Beauty is in the eyes of the kind beholder — different beauties for different eyes.
+  - Clara and Lumi always travel together. They never split up for long and they always come home before sunset.
+  - The sky, the clouds, and the warm golden light are present in every illustration, even indoors or at night, to keep the world feeling like one place.
+  - Every new beautiful Pokémon Clara meets is a *candidate*, not the answer. The search continues.
+factions:
+  - name: The Sky Friends
+    description: Flying and cloud-dwelling Pokémon who live among the cloud-islands — gentle, musical, and welcoming.
+    values: music, hospitality, soft voices
+  - name: The Meadow Friends
+    description: Flower and grass-type Pokémon of the meadow — colourful, curious, sometimes shy.
+    values: play, colours, sharing
+  - name: The Lake Friends
+    description: Calm water-type Pokémon of the glass-lake cove — graceful, slow-speaking, and wise.
+    values: patience, listening, stillness
+timeline:
+  - label: The First Sky-Step
+    description: Long ago, the first trainer floated up to the clouds on a soft breeze and was welcomed by the Sky Friends. The bridges have been here ever since.
+  - label: The Season of Beautiful Hunts
+    description: The present — Clara and Lumi travel biome to biome, looking for the next beautiful Pokémon, and learning to see beauty in new ways.
+motifs:
+  - a single floating sparkle mote in the air
+  - a soft chime-bell ring, heard but not seen
+  - the lavender-peach sky in every illustration
+  - a ribbon-pink scarf (Lumi's) that catches the breeze
+  - Lumi's mismatched eyes (one lavender, one peach)
+themes:
+  - kindness
+  - curiosity
+  - seeing beauty in small things
+  - friendship
+  - patience
+  - wonder
+art_style:
+  medium: clean anime cel-shaded illustration in the Pokémon anime style (Satoshi Tajiri / Ken Sugimori / OLM studio look)
+  line_quality: medium-weight indigo ink outlines, slightly varied hand-drawn feel, never perfectly mechanical
+  shading: soft cel-shaded cell shading with two tones per surface, rounded shadows, no harsh edges
+  lighting: warm golden-hour and pink-sky light, soft rim light on every character, sparkle motes drifting in the air
+  perspective: slightly low child-eye level, character-centered, full-bleed with layered near / mid / far background
+  palette:
+    - name: sky-lavender
+      hex: "#C7BEE8"
+      role: sky / background primary
+    - name: cloud-white
+      hex: "#FBF8F3"
+      role: cloud / highlight
+    - name: peach-light
+      hex: "#FFD9B5"
+      role: warm accent / light fill
+    - name: meadow-green
+      hex: "#A7D49B"
+      role: ground / vegetation
+    - name: golden-hour
+      hex: "#F5C36E"
+      role: warm highlight / sparkle
+    - name: ribbon-pink
+      hex: "#F2A6C2"
+      role: Clara + Lumi accent
+    - name: deep-indigo
+      hex: "#3A4A7A"
+      role: outline / night shadow
+    - name: cream-fur
+      hex: "#FBE7C6"
+      role: Lumi + creature fur
+    - name: sky-cyan
+      hex: "#A9E0E8"
+      role: distant sky / cool accent
+  influences:
+    - Pokémon anime (OLM studio, Ken Sugimori style guides)
+    - Eievui / Eevee evolutions fan illustration (soft, kind, character-driven)
+    - Studio Ghibli sky paintings (warm, layered, dream-like)
+  prompt_style_block: >-
+    official Pokémon anime style illustration, clean medium-weight indigo lineart with
+    slightly varied hand-drawn feel, soft cel-shaded cell shading with two tones,
+    warm golden-hour and pink-sky light, soft rim light on every character, sparkle
+    motes drifting in the air, layered near / mid / far background, slightly low
+    child-eye-level camera, full-bleed composition with the lower third kept clear
+    for text overlay, palette restricted to sky lavender #C7BEE8, cloud white
+    #FBF8F3, peach light #FFD9B5, meadow green #A7D49B, golden hour #F5C36E,
+    ribbon pink #F2A6C2, deep indigo #3A4A7A, cream fur #FBE7C6, sky cyan
+    #A9E0E8, friendly and kind expression on every creature, no text, no
+    watermark, no signature
+  negative_prompt: >-
+    photorealism, 3D render, harsh shadows, scary faces, sharp teeth, claws, weapons,
+    combat, battle, blood, dark gory tones, grim colours, extra fingers, extra limbs,
+    deformed eyes, deformed hands, chibi, super-deformed, watermark, signature, text,
+    letters, words, logo, busy cluttered composition, modern buildings, cars, city
+  aspect_ratio: "4:3"
+  text_treatment:
+    placement: lower third
+    scrim: soft cream rounded panel at 90% opacity with gentle pink-tinted shadow
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+  - pokemon
+  - sky
+  - friendship
+  - quest
+  - early-reader

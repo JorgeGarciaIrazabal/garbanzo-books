@@ -41,7 +41,12 @@ lint:
 	uv run ruff check scripts
 
 ui:
-	cd ui && npm install && npm start
+	# The studio UI is a Python FastAPI server (ui/server.py). It shells out to the Python
+	# tools for library/validate/build and embeds `opencode serve` for the chat box. Override
+	# PORT to change the port (default 4317). Open http://localhost:$${PORT:-4317} when ready.
+	# We invoke `uv run --group ui` directly so the FastAPI/uvicorn/httpx deps are pulled
+	# in (the default `RUN` doesn't pass `--group ui`).
+	uv run --group ui python ui/server.py
 
 # Launch OpenCode against the local Ollama server. opencode.json already pins the
 # provider + model ($(OPENCODE_MODEL)); we just sanity-check Ollama is up first.
