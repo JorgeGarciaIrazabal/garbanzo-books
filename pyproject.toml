@@ -44,6 +44,17 @@ flux = [
     "safetensors>=0.4",
     "torch>=2.5",
 ]
+# Local TTS/STT stack used by the read-aloud experiments. CPU-only.
+# Install with `uv sync --group tts`.
+tts = [
+    "torch>=2.5",         # CPU wheels are fine; we have no NVIDIA GPU.
+    "kokoro>=0.9.4",      # TTS — 82M params, multiple voices incl. emotion-tagged
+    "soundfile>=0.12",    # write .wav
+    "numpy>=1.26",
+    "faster-whisper>=1.0",# STT — CTranslate2 build of distil-whisper-large-v3
+    "scipy>=1.11",        # used for reading/inspecting audio
+    "huggingface-hub>=0.30",
+]
 
 [tool.uv]
 # This is a tool workspace, not a distributable library — don't try to build/install it,

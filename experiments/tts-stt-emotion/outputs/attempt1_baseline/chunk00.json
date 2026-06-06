@@ -1,0 +1,12 @@
+{
+  "graphemes": "Once upon a time, in a tiny cottage at the edge of a mossy forest, there lived a small red panda named Pip. Every morning, Pip put on a yellow raincoat and set out to find a new friend.",
+  "phonemes": "w\u02c8\u028cns \u0259p\u02c8\u0251n \u0250 t\u02c8Im, \u026an \u0250 t\u02c8Ini k\u02c8\u0251T\u026a\u02a4 \u00e6t \u00f0i \u02c8\u025b\u02a4 \u028cv \u0250 m\u02c8\u0254si f\u02c8\u0254\u0279\u0259st, \u00f0\u025b\u0279 l\u02c8\u026avd \u0250 sm\u02c8\u0254l \u0279\u02c8\u025bd p\u02c8\u00e6nd\u0259 n\u02c8Amd p\u02c8\u026ap. \u02c8\u025bv\u0259\u0279i m\u02c8\u0254\u0279n\u026a\u014b, p\u02c8\u026ap p\u02cc\u028at \u02cc\u0254n \u0250 j\u02c8\u025blO \u0279\u02c8Ank\u02ccOt \u00e6nd s\u02c8\u025bt \u02c8Wt t\u0259 f\u02c8Ind \u0250 n\u02c8u f\u0279\u02c8\u025bnd.",
+  "audio": {
+    "duration_s": 12.025,
+    "samples": 288600,
+    "sr": 24000,
+    "rms": 0.05238,
+    "peak": 0.49575,
+    "zcr": 0.1553
+  }
+}

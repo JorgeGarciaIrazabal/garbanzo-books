@@ -128,7 +128,7 @@ pages:
     characters_present: []
     alt: A glowing golden star shaped like an acorn falling into a dark blue forest at night
     text_zone: lower third
-    file: images/page-04.svg
+    file: images/page-04.png
   layout:
     text_position: lower-third
     text_align: center
