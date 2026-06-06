@@ -1,0 +1,85 @@
+slug: pip
+world: whispering-woods
+name: Pip
+role: protagonist
+species: hedgehog
+pronouns: she/her
+one_liner: A small, curious hedgehog who is braver than she thinks.
+personality:
+  traits:
+  - curious
+  - kind
+  - a little timid
+  - determined
+  motivation: To help her friends and discover what's just beyond the next bush.
+  fears:
+  - the dark
+  - being too small to help
+  flaws:
+  - hesitates when she's scared and almost gives up
+  strengths:
+  - notices tiny details others miss
+  - never leaves a friend behind
+  quirks:
+  - counts to three out loud before doing something brave
+  - collects interesting leaves
+  values:
+  - friendship
+  - courage
+voice:
+  speech_style: warm, simple, asks lots of little questions
+  catchphrases:
+  - One... two... three!
+  vocabulary_level: age-appropriate, concrete, gentle
+appearance:
+  age_appearance: about six (in hedgehog years)
+  build: small, round, soft
+  height: knee-high to a deer; smaller than an owl
+  skin: warm chestnut-brown quills with cream tummy
+  hair: a single tuft of quills that curls at the front
+  eyes: big, round, copper-brown
+  outfit: a red polka-dot raincoat and yellow rubber boots
+  distinguishing_features:
+  - red polka-dot raincoat (#c0392b)
+  - yellow rubber boots (#e8b84b)
+  - a tiny acorn pendant on a string
+  - one curl of quills at her forehead
+  color_palette:
+  - part: quills
+    hex: '#7a4a2b'
+  - part: tummy
+    hex: '#f4e1c1'
+  - part: raincoat
+    hex: '#c0392b'
+  - part: boots
+    hex: '#e8b84b'
+  - part: eyes
+    hex: '#a9682f'
+  silhouette_notes: Recognisable as a small round hedgehog with a forehead curl, a buttoned raincoat,
+    and chunky boots — unmistakable against the taller, smoother castmates.
+appearance_token: 'PIP: a small round hedgehog girl about six, soft chestnut-brown quills (#7a4a2b) with
+  a cream tummy (#f4e1c1) and one curl of quills at her forehead, big copper-brown eyes (#a9682f), wearing
+  a red polka-dot raincoat (#c0392b) and chunky yellow rubber boots (#e8b84b), a tiny acorn pendant on
+  a string, cheerful and curious expression'
+reference_images:
+- characters/pip.refs/model-sheet.png
+seed: 70125
+relationships:
+- character: olo
+  relation: looks up to Olo the owl as a wise, gentle friend
+evolution:
+- stage: timid
+  order: 0
+  summary: Pip is curious but easily frightened, especially of the dark.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+- stage: brave
+  order: 1
+  summary: After facing the dark pines to help a friend, Pip trusts her own courage.
+  personality_delta: still gentle, but no longer freezes when scared — she counts to three and acts
+  appearance_delta: stands a little taller, wears the glowing acorn pendant proudly lit
+  unlocked_by: Pip and the Lost Star
+tags:
+- hedgehog
+- protagonist

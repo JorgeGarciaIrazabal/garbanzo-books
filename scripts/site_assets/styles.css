@@ -1,0 +1,145 @@
+/* Garbanzo Books — site + reader styles.
+   Kid-friendly, accessible (WCAG AA), dyslexia-friendly toggle, full-page-image reader. */
+:root {
+  --bg: #fbf6ec;
+  --ink: #2d2a26;
+  --muted: #6b645a;
+  --card: #fffdf7;
+  --accent: #6b8f71;
+  --accent-2: #d98a5b;
+  --shadow: 0 6px 24px rgba(45, 42, 38, 0.12);
+  --radius: 18px;
+  --reader-base: 20px; /* overridden per age band */
+  --font: "Andika", "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.6;
+}
+body.dyslexia { letter-spacing: 0.06em; word-spacing: 0.12em; line-height: 1.8; }
+a { color: var(--accent); text-decoration: none; }
+a:hover, a:focus { text-decoration: underline; }
+img, svg { max-width: 100%; display: block; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 24px; }
+
+/* ---- Top bar ---- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px 24px; background: var(--card); box-shadow: var(--shadow);
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar .brand { font-weight: 800; font-size: 1.3rem; color: var(--ink); }
+.topbar .brand span { color: var(--accent-2); }
+.topbar nav a { margin-left: 16px; font-weight: 600; }
+.btn {
+  border: 0; border-radius: 999px; padding: 8px 16px; font: inherit; font-weight: 700;
+  background: var(--accent); color: #fff; cursor: pointer; box-shadow: var(--shadow);
+}
+.btn.secondary { background: var(--card); color: var(--ink); }
+.btn:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+
+/* ---- Headings / hero ---- */
+h1, h2, h3 { line-height: 1.2; }
+.hero { text-align: center; padding: 40px 16px 8px; }
+.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin: 0 0 8px; }
+.hero p { color: var(--muted); font-size: 1.15rem; max-width: 640px; margin: 0 auto; }
+
+/* ---- Card grids ---- */
+.grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.card {
+  background: var(--card); border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow); transition: transform .15s ease; display: flex; flex-direction: column;
+}
+.card:hover { transform: translateY(-4px); }
+.card .thumb { aspect-ratio: 4/3; background: #efe7d6; overflow: hidden; }
+.card .thumb img, .card .thumb svg { width: 100%; height: 100%; object-fit: cover; }
+.card .body { padding: 16px; flex: 1; }
+.card h3 { margin: 0 0 6px; }
+.card p { margin: 0; color: var(--muted); font-size: 0.98rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chip {
+  background: #efe7d6; color: var(--ink); border-radius: 999px; padding: 4px 12px;
+  font-size: 0.82rem; font-weight: 600;
+}
+.chip.age { background: var(--accent); color: #fff; }
+.section-title { margin: 36px 0 14px; font-size: 1.5rem; }
+.swatches { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 16px; }
+.swatch { width: 40px; height: 40px; border-radius: 10px; box-shadow: var(--shadow); }
+.breadcrumb { color: var(--muted); margin: 8px 0 4px; font-size: 0.95rem; }
+.breadcrumb a { font-weight: 600; }
+
+/* ================= READER ================= */
+.reader { max-width: 980px; margin: 0 auto; padding: 16px; }
+.page-stage {
+  position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+  background: #000; aspect-ratio: 4/3;
+}
+.page-stage img, .page-stage svg { width: 100%; height: 100%; object-fit: cover; }
+.page-text {
+  position: absolute; left: 0; right: 0; padding: 22px clamp(18px, 5vw, 60px);
+  font-size: var(--reader-base); color: var(--ink); text-align: left;
+}
+.page-text .scrim {
+  background: rgba(255, 253, 247, 0.9); border-radius: 16px; padding: 16px 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18); max-width: 70ch;
+}
+.pos-lower-third, .pos-bottom { bottom: 4%; }
+.pos-upper-third, .pos-top { top: 4%; }
+.pos-center { top: 50%; transform: translateY(-50%); text-align: center; }
+.pos-center .scrim { margin: 0 auto; }
+.align-center { text-align: center; }
+.align-right { text-align: right; }
+
+.reader-controls {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: 16px; flex-wrap: wrap;
+}
+.reader-controls .progress { color: var(--muted); font-weight: 600; }
+.reader-controls .pageno { min-width: 90px; text-align: center; }
+
+/* ---- Interactions ---- */
+.interaction {
+  margin-top: 18px; background: var(--card); border-radius: var(--radius);
+  padding: 20px; box-shadow: var(--shadow); border: 3px dashed var(--accent);
+}
+.interaction h4 { margin: 0 0 4px; }
+.interaction .skill-tag {
+  display: inline-block; background: var(--accent-2); color: #fff; border-radius: 999px;
+  padding: 2px 10px; font-size: 0.78rem; font-weight: 700; margin-bottom: 10px;
+}
+.interaction .options { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.opt {
+  border: 2px solid var(--accent); background: #fff; color: var(--ink); border-radius: 12px;
+  padding: 10px 16px; font: inherit; font-weight: 700; cursor: pointer;
+}
+.opt.correct { background: var(--accent); color: #fff; }
+.opt.wrong { background: #f3c0a8; border-color: var(--accent-2); }
+.opt:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+.find-item, .hunt-word {
+  display: inline-flex; align-items: center; gap: 6px; border: 2px solid var(--accent);
+  border-radius: 999px; padding: 6px 14px; margin: 4px; cursor: pointer; font-weight: 700;
+  background: #fff;
+}
+.find-item.found { background: var(--accent); color: #fff; text-decoration: line-through; }
+.feedback { margin-top: 12px; font-weight: 700; min-height: 1.4em; }
+.feedback.good { color: var(--accent); }
+.feedback.try { color: var(--accent-2); }
+.num-input { font: inherit; font-size: 1.2rem; width: 90px; padding: 8px; border-radius: 10px;
+  border: 2px solid var(--accent); }
+.reveal-box { margin-top: 10px; padding: 12px 16px; background: #efe7d6; border-radius: 12px; }
+.reading-note {
+  margin-top: 14px; font-size: 0.95rem; color: var(--muted); font-style: italic;
+  border-left: 4px solid var(--accent-2); padding-left: 12px;
+}
+.glossary { margin-top: 12px; }
+.glossary .chip { background: var(--accent); color: #fff; }
+
+footer.site { text-align: center; color: var(--muted); padding: 40px 16px; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (max-width: 640px) { .page-text { font-size: calc(var(--reader-base) * 0.85); } }

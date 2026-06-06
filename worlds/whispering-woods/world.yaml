@@ -1,0 +1,119 @@
+slug: whispering-woods
+title: The Whispering Woods
+tagline: A cozy forest where every small creature has a big, brave heart.
+premise: >-
+  The Whispering Woods is a gentle, sun-dappled forest where animals talk in soft voices and
+  the trees hum old songs. It is a place for small heroes and everyday courage — losing a
+  tooth, making a friend, facing the dark. Stories here are warm and reassuring, always
+  ending safe at home, and they quietly teach young readers that being little is no obstacle
+  to being brave.
+tone:
+  - cozy
+  - whimsical
+  - gently-adventurous
+  - reassuring
+genres:
+  - adventure
+  - friendship
+  - bedtime
+target_age_bands:
+  - "3-5"
+  - "5-7"
+languages:
+  - en
+geography:
+  overview: >-
+    A small, walkable forest ringed by hills. Everything is within a day's wander of the
+    Great Oak at its heart, so no character is ever truly lost — only far from home.
+  locations:
+    - name: The Great Oak
+      description: An enormous ancient oak with a hollow root where friends gather. Home base.
+      mood: safe, warm, golden
+      recurring: true
+    - name: Bramble Hollow
+      description: A tangle of blackberry bushes where the little folk live in burrows.
+      mood: snug, busy
+      recurring: true
+    - name: The Mossy Stream
+      description: A clear, slow stream with stepping stones and silver fish.
+      mood: cool, sparkling
+      recurring: true
+    - name: The Tall Dark Pines
+      description: The shadowy edge of the woods where brave-but-careful animals venture.
+      mood: hushed, a little scary, never truly dangerous
+      recurring: true
+rules:
+  - The woods are always safe in the end — no creature is ever truly harmed, only scared or lost.
+  - Animals speak kindly and in soft voices; shouting is for emergencies and is rare.
+  - Magic is gentle and small — glowing seeds, humming trees, helpful breezes — never flashy.
+  - Night always gives way to morning, and every story ends safe at home.
+factions:
+  - name: The Little Folk of Bramble Hollow
+    description: The small ground-dwellers — hedgehogs, mice, voles — who help one another.
+    values: kindness, sharing, curiosity
+  - name: The Tall Ones
+    description: Deer, owls, and old trees who watch over the little folk like gentle elders.
+    values: patience, wisdom, protection
+timeline:
+  - label: The First Acorn
+    description: Long ago the Great Oak grew from a single glowing acorn; its light still warms the hollow.
+  - label: The Season of Stories
+    description: The present — when the little folk are old enough for small adventures.
+motifs:
+  - a glowing golden acorn
+  - the hum of the trees
+  - stepping stones across the stream
+  - lanterns made from fireflies
+themes:
+  - courage
+  - friendship
+  - curiosity
+  - kindness
+  - facing fears
+art_style:
+  medium: soft watercolor with colored-pencil texture
+  line_quality: gentle, rounded, hand-drawn ink lines
+  shading: soft, low-contrast, dappled light
+  lighting: warm golden-hour glow with gentle rim light
+  perspective: low, child's-eye-level, character-centered
+  palette:
+    - name: cream
+      hex: "#f4e1c1"
+      role: background
+    - name: forest-sage
+      hex: "#6b8f71"
+      role: primary
+    - name: warm-terracotta
+      hex: "#d98a5b"
+      role: accent
+    - name: acorn-gold
+      hex: "#e8b84b"
+      role: highlight
+    - name: dusk-blue
+      hex: "#3d5a73"
+      role: shadow
+    - name: berry-red
+      hex: "#c0392b"
+      role: accent
+  influences:
+    - classic watercolor picture books
+    - gentle hand-painted forest illustration
+  prompt_style_block: >-
+    soft watercolor children's book illustration, warm muted forest palette (cream #f4e1c1,
+    sage #6b8f71, terracotta #d98a5b, acorn gold #e8b84b), rounded friendly shapes, gentle
+    golden-hour rim lighting, dappled light, hand-painted paper texture, cozy reassuring
+    storybook mood, child's-eye view, no text in the image
+  negative_prompt: >-
+    photorealism, harsh shadows, scary or distorted faces, sharp teeth, dark gory tones,
+    extra limbs, extra fingers, text, words, letters, watermark, signature, cluttered busy
+    composition, neon colors
+  aspect_ratio: "4:3"
+  text_treatment:
+    placement: lower third
+    scrim: soft cream rounded panel at 90% opacity
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+  - forest
+  - cozy
+  - bedtime

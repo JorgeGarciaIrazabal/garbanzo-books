@@ -1,0 +1,34 @@
+[project]
+name = "garbanzo-books"
+version = "1.0.0"
+description = "An AI studio for interactive children's storybooks — worlds, characters, age-leveled stories, consistent illustrations, and a GitHub Pages reader."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "PyYAML>=6.0",
+    "jsonschema>=4.0",
+    "pillow>=12.2.0",
+]
+
+[dependency-groups]
+# Dev tooling (installed by `uv sync`, excluded with `uv sync --no-dev`).
+dev = [
+    "ruff>=0.6",
+]
+# The dynamic studio UI (FastAPI backend). Install with `uv sync --group ui`.
+ui = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+    "httpx-sse>=0.4",
+]
+
+[tool.uv]
+# This is a tool workspace, not a distributable library — don't try to build/install it,
+# just resolve its dependencies into .venv. Run everything with `uv run python scripts/...`.
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

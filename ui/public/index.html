@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garbanzo Books — Studio</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Garbanzo<span>Books</span> <em>Studio</em></div>
+  <div class="actions">
+    <button class="btn ghost" id="btn-validate" title="Run QA on all books">✓ Validate</button>
+    <button class="btn ghost" id="btn-build" title="Rebuild the published site">⚙ Build site</button>
+    <span class="status" id="conn"></span>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- Left: the studio chat console -->
+  <section class="console">
+    <div class="console-head">
+      <h2>Studio console</h2>
+      <p>Tell the studio what to make. It drives the skills, agents, and scripts in this workspace.</p>
+      <div class="quick">
+        <button class="chip-btn" data-q="Make a new interactive storybook for ages 5-7 about a shy dragon who learns to share. Create the world, characters, story, interactions, illustrations (placeholders), validate it, and build the site.">✨ New book (5–7)</button>
+        <button class="chip-btn" data-q="Create a new world bible and locked art style for an underwater city of curious octopus children, for ages 3-5.">🌊 New world</button>
+        <button class="chip-btn" data-q="Add a new character to the whispering-woods world: a brave little mouse named Tilly. Give her a full appearance token and an evolution track.">🐭 New character</button>
+        <button class="chip-btn" data-q="Write another story in the whispering-woods world starring Pip and Olo, for ages 5-7, about losing a first tooth. Keep characters consistent.">📖 New story</button>
+      </div>
+    </div>
+    <div class="messages" id="messages"></div>
+    <form class="composer" id="composer">
+      <textarea id="prompt" rows="2" placeholder="e.g. Make a book for ages 7-9 about a robot who plants a garden on the moon…"></textarea>
+      <div class="composer-row">
+        <label class="newsess"><input type="checkbox" id="newsess"> new session</label>
+        <button class="btn" id="send" type="submit">Send ▸</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Right: library + live preview -->
+  <section class="panel">
+    <div class="tabs">
+      <button class="tab active" data-tab="library">Library</button>
+      <button class="tab" data-tab="preview">Preview</button>
+    </div>
+    <div class="tabview" id="view-library">
+      <button class="btn ghost small" id="btn-refresh">↻ Refresh</button>
+      <div id="library"></div>
+    </div>
+    <div class="tabview hidden" id="view-preview">
+      <div class="preview-bar">
+        <span>Live site preview</span>
+        <a class="btn ghost small" id="open-preview" href="/preview/index.html" target="_blank">Open ↗</a>
+      </div>
+      <iframe id="preview" src="/preview/index.html" title="site preview"></iframe>
+    </div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

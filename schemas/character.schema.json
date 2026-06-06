@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://garbanzo.books/schemas/character.schema.json",
+  "title": "Character",
+  "description": "A character belonging to a world. Captures personality (for consistent behaviour/voice), a locked visual 'appearance_token' (for consistent illustration), and an evolution track (so the character can grow across a series without losing identity).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slug", "world", "name", "role", "personality", "appearance", "appearance_token"],
+  "properties": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "world": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "slug of the owning world." },
+    "name": { "type": "string", "minLength": 1 },
+    "role": { "type": "string", "description": "e.g. 'protagonist','mentor','sidekick','antagonist','recurring'." },
+    "species": { "type": "string" },
+    "pronouns": { "type": "string" },
+    "one_liner": { "type": "string", "description": "Who they are in a sentence." },
+
+    "personality": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The behavioural fingerprint. Stories must keep the character acting from these — this is personality consistency.",
+      "required": ["traits", "motivation"],
+      "properties": {
+        "traits": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "motivation": { "type": "string", "description": "What they want most." },
+        "fears": { "type": "array", "items": { "type": "string" } },
+        "flaws": { "type": "array", "items": { "type": "string" }, "description": "The growth edges that drive arcs." },
+        "strengths": { "type": "array", "items": { "type": "string" } },
+        "quirks": { "type": "array", "items": { "type": "string" } },
+        "values": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "voice": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How the character talks — for consistent dialogue.",
+      "properties": {
+        "speech_style": { "type": "string" },
+        "catchphrases": { "type": "array", "items": { "type": "string" } },
+        "vocabulary_level": { "type": "string" }
+      }
+    },
+
+    "appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Structured physical description — the source of the model sheet and the appearance_token.",
+      "properties": {
+        "age_appearance": { "type": "string" },
+        "build": { "type": "string" },
+        "height": { "type": "string", "description": "Relative scale matters for consistency, e.g. 'knee-high to an adult'." },
+        "skin": { "type": "string" },
+        "hair": { "type": "string" },
+        "eyes": { "type": "string" },
+        "outfit": { "type": "string", "description": "The default/signature outfit. Changes should be deliberate and logged in evolution." },
+        "distinguishing_features": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "The 2-4 unmistakable features that survive the 'silhouette test' (e.g. 'star-shaped patch over left eye','always carries a brass lantern')."
+        },
+        "color_palette": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["part", "hex"],
+            "properties": {
+              "part": { "type": "string", "description": "e.g. 'coat','hair','boots'." },
+              "hex": { "type": "string", "pattern": "^#?[0-9a-fA-F]{6}$" }
+            }
+          },
+          "description": "Locked per-part colors. Re-stated in every image prompt featuring this character."
+        },
+        "silhouette_notes": { "type": "string", "description": "What makes the character recognisable in pure silhouette." }
+      }
+    },
+
+    "appearance_token": {
+      "type": "string",
+      "description": "THE consistency lever. A single dense descriptor string inserted verbatim into every image prompt featuring this character, e.g. 'PIP: a small round hedgehog girl, age 6, warm chestnut quills (#7a4a2b), big copper eyes (#c97b3a), red polka-dot raincoat (#c0392b), yellow rubber boots (#f1c40f), tiny acorn pendant, cheerful'. Keep it stable forever; only evolution stages may extend it."
+    },
+
+    "reference_images": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Relative paths to canonical reference renders (model sheet / turnaround / hero shot) reused as image-to-image anchors."
+    },
+
+    "seed": {
+      "type": "integer",
+      "description": "Preferred image-generation seed for this character, reused to stabilise renders."
+    },
+
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["character", "relation"],
+        "properties": {
+          "character": { "type": "string", "description": "slug of the related character." },
+          "relation": { "type": "string" }
+        }
+      }
+    },
+
+    "evolution": {
+      "type": "array",
+      "description": "Ordered growth stages across the series. Each stage may adjust personality and appearance WITHOUT breaking core identity. Stories reference a stage id.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stage", "summary"],
+        "properties": {
+          "stage": { "type": "string", "description": "Stable id, e.g. 'baby','timid','brave'." },
+          "order": { "type": "integer" },
+          "summary": { "type": "string", "description": "Where the character is emotionally/in their arc at this stage." },
+          "personality_delta": { "type": "string", "description": "What changed inside since the previous stage." },
+          "appearance_delta": { "type": "string", "description": "Visible changes (taller, new scarf, older eyes). Appended to appearance_token when this stage is active." },
+          "unlocked_by": { "type": "string", "description": "Story/event that triggers this stage." }
+        }
+      }
+    },
+
+    "tags": { "type": "array", "items": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" } }
+  }
+}

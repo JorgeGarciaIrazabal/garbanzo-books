@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://garbanzo.books/schemas/story.schema.json",
+  "title": "Story",
+  "description": "A single interactive storybook set in a world. Holds the narrative spine, the page-by-page spreads (full-page image + embedded text), the interactive elements, and the reading-level targets used to age-adapt the language.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slug", "world", "title", "logline", "age_band", "reading_level", "characters", "pages"],
+  "properties": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "world": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "title": { "type": "string", "minLength": 1 },
+    "logline": { "type": "string", "description": "One sentence: protagonist + goal + obstacle." },
+    "summary": { "type": "string" },
+    "dedication": { "type": "string" },
+
+    "age_band": { "type": "string", "enum": ["0-3", "3-5", "5-7", "7-9", "9-12"] },
+
+    "reading_level": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Targets that drive language adaptation and are verified by the validator.",
+      "required": ["target_fk_grade"],
+      "properties": {
+        "target_fk_grade": { "type": "number", "description": "Target Flesch-Kincaid grade level for the whole book." },
+        "fk_grade_tolerance": { "type": "number", "default": 1.0 },
+        "lexile_range": { "type": "string", "description": "e.g. 'BR40L-200L'." },
+        "fountas_pinnell": { "type": "string", "description": "Guided Reading level A-Z." },
+        "max_words_per_page": { "type": "integer" },
+        "max_sentence_words": { "type": "integer" },
+        "decoding_focus": { "type": "string", "description": "Phonics/sight-word focus, e.g. 'CVC words, short a; sight words: the,is,a'." },
+        "decodable": { "type": "boolean", "default": false, "description": "If true, restrict text to taught phonics patterns + listed sight words." }
+      }
+    },
+
+    "themes": { "type": "array", "items": { "type": "string" } },
+    "moral": { "type": "string", "description": "The takeaway, shown not told." },
+
+    "characters": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Characters appearing in this story and the evolution stage each is at HERE (locks both personality and appearance for this book).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slug"],
+        "properties": {
+          "slug": { "type": "string" },
+          "stage": { "type": "string", "description": "evolution.stage id from the character; defaults to the character's base appearance." },
+          "role_in_story": { "type": "string" }
+        }
+      }
+    },
+
+    "spine": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The story spine (Pixar/Kenn Adams). Drives structure before any page is written.",
+      "properties": {
+        "once_upon_a_time": { "type": "string" },
+        "every_day": { "type": "string" },
+        "until_one_day": { "type": "string" },
+        "because_of_that": { "type": "array", "items": { "type": "string" } },
+        "until_finally": { "type": "string" },
+        "ever_since_then": { "type": "string" }
+      }
+    },
+
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/page" }
+    },
+
+    "interactions_summary": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Quick list of the interactive beats so the editor can balance pacing."
+    },
+
+    "status": {
+      "type": "string",
+      "enum": ["draft", "illustrated", "reviewed", "published"],
+      "default": "draft"
+    },
+
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+      "description": "Browse/filter tags (the 'tags' level of world -> story -> tags)."
+    },
+
+    "cover": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "image": { "type": "string" },
+        "image_prompt": { "type": "string" },
+        "alt": { "type": "string" }
+      }
+    }
+  },
+
+  "$defs": {
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["number", "text", "image"],
+      "properties": {
+        "number": { "type": "integer", "minimum": 0 },
+        "kind": {
+          "type": "string",
+          "enum": ["title", "story", "interaction", "comprehension", "end"],
+          "default": "story"
+        },
+        "text": { "type": "string", "description": "The words ON the page (embedded into the full-page image)." },
+        "image": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["prompt"],
+          "properties": {
+            "prompt": { "type": "string", "description": "Scene description ONLY (no style/character tokens — the generator injects world art_style + character appearance_tokens automatically)." },
+            "characters_present": { "type": "array", "items": { "type": "string" }, "description": "slugs of characters in frame; their appearance_tokens get injected." },
+            "seed": { "type": "integer" },
+            "file": { "type": "string", "description": "Relative path to the generated image." },
+            "alt": { "type": "string", "description": "Accessibility alt text." },
+            "text_zone": { "type": "string", "description": "Where to keep the composition clear for embedded text (overrides world default)." }
+          }
+        },
+        "layout": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "text_position": { "type": "string", "enum": ["top", "bottom", "left", "right", "center", "lower-third", "upper-third"], "default": "lower-third" },
+            "text_align": { "type": "string", "enum": ["left", "center", "right"], "default": "center" },
+            "scrim": { "type": "boolean", "default": true }
+          }
+        },
+        "interaction": { "$ref": "#/$defs/interaction" },
+        "vocabulary": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Target/new words introduced on this page (for the glossary & pedagogy checks)."
+        },
+        "reading_notes": { "type": "string", "description": "Tips for the adult co-reader (question to ask, sound to emphasise)." }
+      }
+    },
+
+    "interaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "An interactive element embedded in the page to keep readers engaged and reinforce reading skills.",
+      "required": ["type", "prompt"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "seek-and-find", "spot-the-difference", "maze", "counting",
+            "rhyme-complete", "word-match", "tap-to-reveal", "choice",
+            "riddle", "comprehension-question", "sound-hunt", "drag-order",
+            "coloring", "memory", "trace-letter"
+          ],
+          "description": "Interaction type. Some are decode-skill builders (word-match, sound-hunt, rhyme-complete, trace-letter), some are engagement/comprehension."
+        },
+        "prompt": { "type": "string", "description": "The instruction shown to the reader." },
+        "skill": { "type": "string", "description": "Reading skill reinforced (phonemic-awareness, phonics, fluency, vocabulary, comprehension) or 'engagement'." },
+        "data": {
+          "type": "object",
+          "description": "Type-specific payload. Shape depends on 'type' (e.g. seek-and-find: {items:[...]}, choice: {options:[{label,goto}]}, rhyme-complete: {sentence, answer, distractors})."
+        },
+        "feedback": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "correct": { "type": "string" },
+            "try_again": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

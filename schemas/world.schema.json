@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://garbanzo.books/schemas/world.schema.json",
+  "title": "World",
+  "description": "A persistent fictional universe (a 'world bible') in which many stories take place. Captures everything professional studios put in a series bible plus the locked art-style guide that guarantees visual consistency across every illustration.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slug", "title", "premise", "tone", "art_style", "target_age_bands"],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "URL-safe identifier, unique across the workspace. Becomes the first path segment on GitHub Pages (/world/...)."
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "tagline": { "type": "string", "description": "One memorable sentence that sells the world." },
+    "premise": { "type": "string", "description": "2-4 sentences: the central idea, what makes this world special, and the kind of stories it produces." },
+    "tone": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Emotional register, e.g. ['cozy','whimsical','gently-adventurous']."
+    },
+    "genres": { "type": "array", "items": { "type": "string" } },
+    "target_age_bands": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/ageBand" },
+      "description": "Age bands this world is designed to serve. Individual stories pick one."
+    },
+    "languages": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["en"],
+      "description": "BCP-47 language codes the world supports."
+    },
+    "geography": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The shape of the world.",
+      "properties": {
+        "overview": { "type": "string" },
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description"],
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "mood": { "type": "string" },
+              "recurring": { "type": "boolean", "default": false }
+            }
+          }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "The laws of the world (how magic/technology/society works). Stories must never contradict these — they are the consistency contract."
+    },
+    "factions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "values": { "type": "string" }
+        }
+      }
+    },
+    "timeline": {
+      "type": "array",
+      "description": "Ordered eras or key events that ground continuity across stories.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label"],
+        "properties": {
+          "label": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "motifs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Recurring visual/thematic motifs (objects, symbols, refrains) that make the world feel cohesive."
+    },
+    "themes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "The values and life-lessons stories in this world tend to explore (e.g. courage, friendship, curiosity)."
+    },
+    "art_style": { "$ref": "#/$defs/artStyle" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+      "description": "Library tags used for browsing/filtering on the published site."
+    }
+  },
+  "$defs": {
+    "ageBand": {
+      "type": "string",
+      "enum": ["0-3", "3-5", "5-7", "7-9", "9-12"],
+      "description": "0-3 board book, 3-5 pre-reader, 5-7 early reader (K-1), 7-9 (grade 2-3), 9-12 middle grade."
+    },
+    "artStyle": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The locked visual identity. Every illustration prompt is assembled from these fields so the whole world looks like one artist drew it.",
+      "required": ["medium", "palette", "prompt_style_block"],
+      "properties": {
+        "medium": { "type": "string", "description": "e.g. 'soft watercolor with colored-pencil texture'." },
+        "line_quality": { "type": "string" },
+        "shading": { "type": "string" },
+        "lighting": { "type": "string" },
+        "perspective": { "type": "string", "description": "Default camera/composition tendencies." },
+        "palette": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "hex"],
+            "properties": {
+              "name": { "type": "string" },
+              "hex": { "type": "string", "pattern": "^#?[0-9a-fA-F]{6}$" },
+              "role": { "type": "string", "description": "e.g. 'primary','accent','shadow','sky'." }
+            }
+          },
+          "description": "The world's master palette. Re-stated in every prompt to lock color."
+        },
+        "influences": { "type": "array", "items": { "type": "string" }, "description": "Stated artistic influences (illustrators/films) — used as style anchors, not for copying." },
+        "prompt_style_block": {
+          "type": "string",
+          "description": "The exact phrase appended to EVERY image prompt in this world. This is the single most important consistency lever. e.g. 'soft watercolor children's book illustration, warm muted palette (#f4e1c1 cream, #6b8f71 sage, #d98a5b terracotta), gentle rim lighting, rounded shapes, hand-painted paper texture, cozy storybook mood'."
+        },
+        "negative_prompt": {
+          "type": "string",
+          "description": "What to avoid in every image (e.g. 'photorealism, harsh shadows, scary expressions, text artifacts, extra fingers')."
+        },
+        "aspect_ratio": { "type": "string", "default": "4:3", "description": "Default page aspect ratio (full-bleed image pages)." },
+        "text_treatment": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "How embedded page text sits on the full-page image so it stays legible.",
+          "properties": {
+            "placement": { "type": "string", "description": "Default zone reserved for text, e.g. 'lower third'." },
+            "scrim": { "type": "string", "description": "Legibility device, e.g. 'soft cream rounded panel at 85% opacity'." },
+            "font_family": { "type": "string" },
+            "dyslexia_friendly": { "type": "boolean", "default": true }
+          }
+        }
+      }
+    }
+  }
+}
