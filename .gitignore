@@ -8,7 +8,13 @@ __pycache__/
 
 # Node / UI
 ui/node_modules/
+tests/frontend/node_modules/
 npm-debug.log*
+
+# pytest / vitest caches
+.pytest_cache/
+.ruff_cache/
+tests/frontend/coverage/
 
 # Env / secrets
 .env

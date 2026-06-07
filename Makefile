@@ -1,4 +1,4 @@
-.PHONY: setup validate build serve clean test lint ui opencode help
+.PHONY: setup validate build serve clean test test-backend test-frontend test-all lint ui opencode help
 
 # OpenCode + local Ollama settings. The model/provider are defined in opencode.json;
 # override here if you point Ollama elsewhere.
@@ -15,15 +15,18 @@ RUN ?= uv run python
 
 help:
 	@echo "Garbanzo Books — storybook studio"
-	@echo "  make setup      create .venv from pyproject.toml via uv (uv sync)"
-	@echo "  make validate   QA all worlds/stories"
-	@echo "  make build      build the static site into site/"
-	@echo "  make serve      build + preview at http://localhost:8008"
-	@echo "  make test       run the toolchain self-test"
-	@echo "  make lint       ruff check the Python tooling"
-	@echo "  make ui         run the dynamic UI (FastAPI + OpenCode + local Ollama, no API key)"
-	@echo "  make opencode   start OpenCode with local Ollama ($(OPENCODE_MODEL))"
-	@echo "  make clean      remove site/ build output"
+	@echo "  make setup         create .venv from pyproject.toml via uv (uv sync)"
+	@echo "  make validate      QA all worlds/stories"
+	@echo "  make build         build the static site into site/"
+	@echo "  make serve         build + preview at http://localhost:8008"
+	@echo "  make test          run the toolchain self-test"
+	@echo "  make test-backend  run the full pytest suite (lib + scripts + server)"
+	@echo "  make test-frontend run the vitest suite (app.js + reader.js)"
+	@echo "  make test-all      run backend + frontend (one command)"
+	@echo "  make lint          ruff check the Python tooling"
+	@echo "  make ui            run the dynamic UI (FastAPI + OpenCode + local Ollama, no API key)"
+	@echo "  make opencode      start OpenCode with local Ollama ($(OPENCODE_MODEL))"
+	@echo "  make clean         remove site/ build output"
 
 setup:
 	uv sync
@@ -39,6 +42,16 @@ serve: build
 
 test:
 	$(RUN) scripts/selftest.py
+
+test-backend:
+	$(RUN) -m pytest tests/backend/ -q
+
+test-frontend:
+	cd tests/frontend && npm install --no-fund --no-audit --silent && npx vitest run
+
+test-all:
+	$(MAKE) test-backend
+	$(MAKE) test-frontend
 
 lint:
 	uv run ruff check scripts
