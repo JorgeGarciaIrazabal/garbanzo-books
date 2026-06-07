@@ -1,0 +1,106 @@
+slug: moxie
+world: clara-cloud-islands
+name: Moxie
+role: companion-pokemon
+species: pokemon (crystal-moth, butterfly-moth type)
+pronouns: she/her
+one_liner: A glittery crystal moth Pokemon with rainbow wings who leaves trails of sparkly dust and trusts
+  slowly but totally.
+personality:
+  traits:
+  - gentle
+  - quiet
+  - patient
+  - shy-at-first
+  - loyal
+  - magical
+  motivation: To find a kind trainer who listens, and to share her sparkle with one true friend.
+  fears:
+  - loud noises
+  - being grabbed
+  - being caged
+  flaws:
+  - freezes up when scared
+  - too quiet to ask for help
+  strengths:
+  - sparkly dust calms friends
+  - can see in the dark
+  - never forgets a kind word
+  quirks:
+  - leaves a tiny trail of glitter when she flies
+  - wings go RIBBIT-rainbow when she is happy
+  - hides inside her own wing cloak when nervous
+  values:
+  - kindness
+  - patience
+  - quiet voices
+  - true beauty
+voice:
+  speech_style: soft bell-chime squeaks, slow and dreamy
+  catchphrases:
+  - Mox-mox...
+  - Moxie!
+  - '...mox.'
+  vocabulary_level: soft 1-2 syllable squeaks and chimes
+appearance:
+  age_appearance: young adult pokemon
+  build: small and round, fluffy body, big wings
+  height: about the size of Clara's head
+  skin: soft pale-lavender fluffy body, like a tiny moth-fluffball
+  hair: none; two long feathery antennae that curve like a heart, each tipped with a tiny glowing crystal
+  eyes: huge round violet eyes with two white sparkle dots
+  outfit: four huge butterfly-moth wings — two top wings and two smaller bottom wings — that look like
+    cut crystal and shift through every rainbow colour
+  distinguishing_features:
+  - four rainbow crystal wings (top two bigger, bottom two smaller)
+  - glowing crystal tips on curving antennae
+  - always leaves a soft trail of glitter-dust in the air
+  - wings fold around her like a cloak when she is shy
+  color_palette:
+  - part: body-lavender
+    hex: '#d6c2ff'
+  - part: wings-crystal
+    hex: '#ffffff'
+  - part: wing-rainbow-1
+    hex: '#ff7fb6'
+  - part: wing-rainbow-2
+    hex: '#7cc7ff'
+  - part: wing-rainbow-3
+    hex: '#ffd24a'
+  - part: wing-rainbow-4
+    hex: '#7ad06d'
+  - part: eyes
+    hex: '#7a4dc4'
+  - part: crystal-tip
+    hex: '#fff5d6'
+  silhouette_notes: A small fluffy round moth-body with four BIG triangular crystal wings spread wide
+    and two long curved antennae tipped with glowing dots. Even in black silhouette, the giant crystal
+    wings and the heart-shaped antennae are unmistakable.
+appearance_token: 'MOXIE: small round crystal-moth pokemon, fluffy pale-lavender body, huge round violet
+  sparkle eyes, two long feathery antennae that curve into a heart shape with tiny glowing cream crystal
+  tips, four big crystal butterfly-moth wings (top two large, bottom two smaller) that shift through pink,
+  blue, yellow, and green rainbow, always trailing a soft cloud of glitter-dust, big-eyed Pokemon-anime
+  cel-shaded style, default expression is gentle smile with wings half-open shyly'
+reference_images:
+- characters/moxie.refs/model-sheet.png
+- characters/moxie.refs/model-sheet.svg
+seed: 9090
+relationships:
+- character: clara
+  relation: friend-and-first-beautiful-pokemon
+- character: pip
+  relation: shy-friend
+evolution:
+- stage: base
+  order: 0
+  summary: Shy crystal moth, just met Clara, wings still mostly folded.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- pokemon
+- crystal
+- moth
+- beautiful
+- shy
+- magical

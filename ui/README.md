@@ -40,6 +40,20 @@ Open **http://localhost:4317** (override with `PORT=…`).
 - **Library (right):** every world → its stories and characters, read live from `worlds/`.
 - **Preview (right):** an iframe of the built static site, refreshed after each build.
 - **Validate / Build site** buttons run `scripts/validate.py` and `scripts/build_site.py`.
+- **Talk & listen (local models, no API key):** a 🎤 mic in the composer records your message and
+  transcribes it with **faster-whisper** (`distil-large-v3`, int8) on the server; **🔊 Read aloud**
+  speaks the studio's replies with **Kokoro-82M**. Every assistant bubble also gets its own *Read
+  aloud* button. Both models run on CPU, nothing leaves the box, and they're warmed in the
+  background at startup so the first tap is instant. They come from the `tts` dependency group
+  (`uv sync --group tts`) — the `make ui` target installs it for you. If the group isn't installed,
+  the speech controls disable themselves and typing still works. The models + endpoints live in
+  [`voice.py`](voice.py) (`/api/voice`, `/api/tts`, `/api/stt`); see
+  `experiments/tts-stt-emotion/REPORT.md` for why these two were chosen.
+- **🧒 Kids mode:** turns the studio into a child-friendly flow — the agent asks **one question
+  at a time**, rendered full-screen with big picture buttons. Each question is read aloud
+  automatically (Kokoro), and every step has a **Tap & talk** button so a child can answer by
+  voice (whisper). The toggle also tells the agent to keep its language short, simple, and warm.
+  Both toggles persist across reloads.
 
 ## How it works
 `server.py` (FastAPI) serves the console (this dir's `public/`) and the built site at `/preview`,

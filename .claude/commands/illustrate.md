@@ -21,5 +21,8 @@ Steps:
 4. Fix drift by strengthening the appearance_token, leaning on the reference image,
    re-pinning the seed, or regenerating the bad page.
 
-(No image API key → labeled placeholders are produced so the pipeline still runs.)
+(Real Gemini PNGs are REQUIRED. If `GEMINI_API_KEY` / `GOOGLE_API_KEY` is unset the script
+falls back to SVG placeholders — treat that as a hard failure: set the key, re-run, and
+verify every page has a real `.png` before continuing. Never accept `.svg` output for a page
+or character sheet.)
 You may delegate to the **illustration-director** agent.

@@ -41,20 +41,27 @@ ASPECT   = world art_style.aspect_ratio
    If a character looks different at an evolution stage, that's intended only if the story
    pins that `stage` (which appends `appearance_delta`).
 
-## Image provider — Google "Nano Banana" (default)
-`generate_images.py` defaults to `--provider nano-banana` (Google Gemini's image model,
-`gemini-2.5-flash-image`). Get a **free** key at https://aistudio.google.com/apikey and set
-`GEMINI_API_KEY` (or `GOOGLE_API_KEY`). Nano Banana's superpower for us: it accepts each
-character's **reference image as input**, so once you've approved a character sheet, every
-page can be anchored to it — the single best lever for character consistency. Override the
-model with `GEMINI_IMAGE_MODEL` (e.g. `gemini-3-pro-image` = "Nano Banana Pro"). Note:
-Gemini images carry an invisible SynthID watermark.
+## Image provider — Google "Nano Banana" (REQUIRED)
+`generate_images.py` MUST run with `--provider nano-banana` (the default — Google Gemini's
+image model, `gemini-2.5-flash-image`). Get a **free** key at https://aistudio.google.com/apikey
+and set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) **before** illustrating. Nano Banana's
+superpower for us: it accepts each character's **reference image as input**, so once you've
+approved a character sheet, every page can be anchored to it — the single best lever for
+character consistency. Override the model with `GEMINI_IMAGE_MODEL` (e.g. `gemini-3-pro-image`
+= "Nano Banana Pro"). Note: Gemini images carry an invisible SynthID watermark.
 
-## No API key?
-With no key set, `generate_images.py` automatically falls back to labeled **placeholder** SVGs
-(scene + character + seed on a palette-coloured card) so the whole pipeline still runs,
-validates, and builds. Add a key and re-run to get real art; everything else stays the same.
-(`--provider openai` is also available with `OPENAI_API_KEY`.)
+## Never accept placeholders
+SVG placeholders are a **development-only** fallback baked into the script for offline
+debugging. They are **NOT acceptable output**. If `generate_images.py` writes a `.svg` for any
+page or character sheet, treat it as a hard failure:
+1. Stop. Do not commit. Do not mark the story `published`.
+2. Fix the root cause — set `GEMINI_API_KEY`, enable billing if the free quota was exhausted,
+   or pick a different model via `GEMINI_IMAGE_MODEL` — then re-run until every page has a
+   real `.png` from Gemini.
+3. Delete any leftover `.svg` placeholders the script may have written and re-point the page
+   `image.file` to the `.png` (the script does this for you when the real provider succeeds).
+Do **not** pass `--provider placeholder`. (`--provider openai` with `OPENAI_API_KEY` is the
+only acceptable alternative if Gemini is unavailable.)
 
 ## Output
 `worlds/<world>/stories/<slug>/images/page-*.png`, character `reference_images`, alt text on

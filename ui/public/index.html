@@ -10,6 +10,8 @@
 <header class="topbar">
   <div class="brand">Garbanzo<span>Books</span> <em>Studio</em></div>
   <div class="actions">
+    <button class="btn ghost toggle" id="btn-kids" title="Kids mode — one question at a time, big buttons, talk &amp; listen" aria-pressed="false">🧒 Kids mode</button>
+    <button class="btn ghost toggle" id="btn-tts" title="Read the studio's replies aloud" aria-pressed="false">🔊 Read aloud</button>
     <button class="btn ghost" id="btn-validate" title="Run QA on all books">✓ Validate</button>
     <button class="btn ghost" id="btn-build" title="Rebuild the published site">⚙ Build site</button>
     <span class="status" id="conn"></span>
@@ -52,7 +54,10 @@
     <div class="quickreplies hidden" id="quickreplies"></div>
 
     <form class="composer" id="composer">
-      <textarea id="prompt" rows="2" placeholder="Type anything — e.g. 'a book for ages 7-9 about a robot who plants a moon garden'…"></textarea>
+      <div class="composer-input">
+        <textarea id="prompt" rows="2" placeholder="Type anything — e.g. 'a book for ages 7-9 about a robot who plants a moon garden'…"></textarea>
+        <button class="micbtn" id="mic" type="button" title="Speak your message" aria-label="Speak your message">🎤</button>
+      </div>
       <div class="composer-row">
         <div class="composer-left">
           <label class="modelpick" title="MiniMax is fast & reliable; DeepSeek is more creative — great for stories">

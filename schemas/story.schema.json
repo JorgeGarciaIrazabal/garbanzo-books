@@ -158,9 +158,10 @@
             "seek-and-find", "spot-the-difference", "maze", "counting",
             "rhyme-complete", "word-match", "tap-to-reveal", "choice",
             "riddle", "comprehension-question", "sound-hunt", "drag-order",
-            "coloring", "memory", "trace-letter"
+            "coloring", "memory", "trace-letter",
+            "sorting", "pattern", "odd-one-out", "melody"
           ],
-          "description": "Interaction type. Some are decode-skill builders (word-match, sound-hunt, rhyme-complete, trace-letter), some are engagement/comprehension."
+          "description": "Interaction type — a short, playable break that also reinforces a skill. Decode-skill builders: word-match, sound-hunt, rhyme-complete, trace-letter. Logic puzzles: maze, sorting, pattern, odd-one-out. Music: melody. The rest are engagement/comprehension. Be creative with the framing (sneaky math, music, mystery) — the renderer plays each type fully."
         },
         "prompt": { "type": "string", "description": "The instruction shown to the reader." },
         "skill": { "type": "string", "description": "Reading skill reinforced (phonemic-awareness, phonics, fluency, vocabulary, comprehension) or 'engagement'." },

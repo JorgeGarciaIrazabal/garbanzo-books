@@ -40,9 +40,13 @@ INTERACTION_DATA_KEYS = {
     "maze": [],
     "trace-letter": ["letter"],
     "memory": [],
-    "drag-order": [],
+    "drag-order": ["sequence"],
     "tap-to-reveal": [],
     "coloring": [],
+    "sorting": ["bins", "items"],
+    "pattern": ["answer"],
+    "odd-one-out": ["answer", "items"],
+    "melody": ["notes"],
 }
 PILLARS = {"phonemic-awareness", "phonics", "fluency", "vocabulary", "comprehension"}
 

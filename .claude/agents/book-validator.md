@@ -21,8 +21,9 @@ Check, and report each as PASS/FAIL with the exact remedy:
    dead ends; ≥3 reading pillars covered; pacing reasonable.
 5. **Layout/accessibility** — each page has `layout` + `image.text_zone` + alt text; text
    treatment present.
-6. **Illustration** — every page has an image file (placeholder counts for offline);
-   characters present have appearance tokens injected.
+6. **Illustration** — every page has a **real** image file from Gemini (`.png`); SVG
+   placeholders are a hard FAIL (never publish-acceptable). Characters present have their
+   appearance tokens injected.
 7. **Publish-readiness** — status, tags, cover present; reachable as world→story→tags.
 
 Return an overall verdict and an ordered fix list. Do not modify files — you only assess.

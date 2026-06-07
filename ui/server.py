@@ -33,6 +33,8 @@ from fastapi.responses import JSONResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from httpx_sse import aconnect_sse
 
+import voice  # local Kokoro TTS + faster-whisper STT (read-aloud & voice input); see ui/voice.py
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                      # repo root = the workspace OpenCode operates in
 PUBLIC = HERE / "public"
@@ -146,7 +148,29 @@ FILE SAFETY — the workspace must never be left with a broken file:
 - Immediately after creating or editing any world/character/story file, run
   "uv run python scripts/validate.py worlds/<world>" (or the specific story path) and FIX any
   failures before moving on or telling the user a step is done. Do not mark a book published while
-  validation fails."""
+  validation fails.
+
+IMAGE GENERATION — the GEMINI_API_KEY is ALREADY configured in this workspace's .env and loaded
+into your environment. ALWAYS assume it is present and just run "uv run python
+scripts/generate_images.py ..." — do not ask the user whether to generate images, do not skip the
+step "in case the key is missing", do not propose placeholders as an alternative, and do not
+suggest the user set up a key. Just run the tool. If (and only if) the script itself exits with an
+error about a missing/invalid key, STOP IMMEDIATELY, surface that one short error to the user, and
+do not retry — never silently fall back to placeholder art."""
+
+# Appended to the brief when the console is in KIDS MODE — the person answering is a young child
+# using big icon buttons, voice in, and voice out (the console reads your replies aloud and renders
+# each form as ONE big question at a time). Tailor your language and forms to that.
+KIDS_BRIEF = """
+
+KIDS MODE IS ON. A young child is answering — using big picture buttons and talking out loud, and
+the console READS YOUR REPLIES ALOUD. Adapt everything for them:
+- Keep every reply VERY short (1-2 simple, warm sentences). Use easy, concrete words. No jargon,
+  no file paths, no tool names, no markdown headings/code in messages to the child.
+- When you need input, ALWAYS use the form protocol, and ask only ONE question per form (a single
+  field; never more than two). Give 3-4 concrete, picture-able "select" options in plain kid words,
+  each something a child can imagine (e.g. "a sleepy dragon", "a brave little mouse").
+- Cheer them on for their choices. Do the technical work quietly between questions."""
 
 
 # --------------------------------------------------------------------------- OpenCode lifecycle
@@ -235,6 +259,9 @@ async def lifespan(app: FastAPI):
         await start_opencode()
     except Exception as e:  # the rest of the UI still works without the agent
         print(f"  ! opencode failed to start: {e}")
+    # Warm the speech models in the background so the first read-aloud / mic tap is instant.
+    if any(voice.available().get(k) for k in ("tts", "stt")):
+        asyncio.create_task(asyncio.to_thread(voice.warm))
     try:
         yield
     finally:
@@ -272,6 +299,56 @@ async def api_validate():
     return JSONResponse(await run_tool(["scripts/validate.py"]))
 
 
+# ----------------------------------------------------------------------------- speech (TTS / STT)
+@app.get("/api/voice")
+async def api_voice():
+    """Report which local speech backends are installed so the UI can enable/disable its controls."""
+    try:
+        return JSONResponse(voice.available())
+    except Exception as e:
+        return JSONResponse({"tts": False, "stt": False, "error": str(e)[:200]})
+
+
+@app.post("/api/voice/warm")
+async def api_voice_warm():
+    """Fire-and-forget background model load so the first read-aloud / mic click is instant."""
+    asyncio.create_task(asyncio.to_thread(voice.warm))
+    return JSONResponse({"ok": True})
+
+
+@app.post("/api/tts")
+async def api_tts(request: Request):
+    """JSON {text, voice?, speed?} → a WAV the browser plays. Kokoro-82M, on CPU, no API key."""
+    body = await request.json()
+    text = (body.get("text") or "").strip()
+    if not text:
+        return JSONResponse({"error": "empty text"}, status_code=400)
+    voice_id = body.get("voice") or voice.DEFAULT_VOICE
+    try:
+        speed = float(body.get("speed") or 1.0)
+    except (TypeError, ValueError):
+        speed = 1.0
+    try:
+        wav = await asyncio.to_thread(voice.synthesize, text, voice_id, speed)
+    except Exception as e:
+        return JSONResponse({"error": str(e)[:300]}, status_code=500)
+    return Response(content=wav, media_type="audio/wav")
+
+
+@app.post("/api/stt")
+async def api_stt(request: Request):
+    """Raw audio bytes in the request body (any browser blob: webm/opus, ogg, wav) → {text}.
+    faster-whisper decodes it in-process via PyAV, so no system ffmpeg is required."""
+    data = await request.body()
+    if not data:
+        return JSONResponse({"error": "no audio"}, status_code=400)
+    try:
+        text = await asyncio.to_thread(voice.transcribe, data)
+    except Exception as e:
+        return JSONResponse({"error": str(e)[:300]}, status_code=500)
+    return JSONResponse({"text": text})
+
+
 # ------------------------------------------------------------------------------------ chat (SSE)
 def sse(obj: dict) -> str:
     return f"data: {json.dumps(obj, ensure_ascii=False)}\n\n"
@@ -297,7 +374,8 @@ def _tool_detail(tool: str, state: dict) -> str:
     return state.get("title") or tool
 
 
-async def chat_stream(prompt: str, session_id: str | None, model: str | None, request: Request):
+async def chat_stream(prompt: str, session_id: str | None, model: str | None, request: Request,
+                      kids: bool = False):
     if not oc.base:
         yield sse({"type": "error", "text": "OpenCode unavailable — is 'opencode' installed and is Ollama running?"})
         yield sse({"type": "done"})
@@ -306,6 +384,7 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
     # Resolve the requested model (fall back to the default if missing/unknown).
     chosen = model if model in ALLOWED_MODELS else OPENCODE_MODEL
     provider_id, model_id = chosen.split("/", 1)
+    system_brief = STUDIO_BRIEF + (KIDS_BRIEF if kids else "")
 
     async with httpx.AsyncClient(base_url=oc.base, timeout=None) as client:
         sid = session_id
@@ -325,7 +404,7 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
                     f"/session/{sid}/prompt_async",
                     json={
                         "model": {"providerID": provider_id, "modelID": model_id},
-                        "system": STUDIO_BRIEF,
+                        "system": system_brief,
                         "tools": {"question": False, "ask": False},
                         "parts": [{"type": "text", "text": prompt}],
                     },
@@ -413,9 +492,11 @@ async def api_chat(request: Request):
     prompt = (body.get("prompt") or "").strip()
     session_id = body.get("sessionId")
     model = body.get("model")
+    kids = bool(body.get("kids"))
     if not prompt:
         return JSONResponse({"error": "empty prompt"}, status_code=400)
-    return StreamingResponse(chat_stream(prompt, session_id, model, request), media_type="text/event-stream")
+    return StreamingResponse(chat_stream(prompt, session_id, model, request, kids),
+                             media_type="text/event-stream")
 
 
 # ----------------------------------------------------------------------------- static + preview
@@ -451,6 +532,12 @@ if __name__ == "__main__":
     print(f"\n  Garbanzo Books Studio  →  http://localhost:{PORT}")
     print(f"  workspace: {ROOT}")
     print(f"  agent: OpenCode + {OPENCODE_MODEL} (no API key needed)")
+    _vc = voice.available()
+    if _vc.get("tts") or _vc.get("stt"):
+        print(f"  speech: Kokoro TTS {'✓' if _vc.get('tts') else '✗'}  ·  "
+              f"faster-whisper STT {'✓' if _vc.get('stt') else '✗'}  (local, warming in background)")
+    else:
+        print("  speech: read-aloud/voice disabled — install with `uv sync --group tts`.")
     print_env_check()
     print("", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="warning")
