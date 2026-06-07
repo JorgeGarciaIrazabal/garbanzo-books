@@ -15,7 +15,8 @@ from lib.model import load_all_worlds  # noqa: E402
 
 def main() -> int:
     out = []
-    for w in load_all_worlds(with_stories=True):
+    errors: list[str] = []
+    for w in load_all_worlds(with_stories=True, errors=errors):
         art = w.data.get("art_style", {}) or {}
         out.append({
             "slug": w.slug,
@@ -53,7 +54,7 @@ def main() -> int:
                 for s in w.stories
             ],
         })
-    print(json.dumps({"worlds": out}, ensure_ascii=False, indent=2))
+    print(json.dumps({"worlds": out, "errors": errors}, ensure_ascii=False, indent=2))
     return 0
 
 

@@ -115,6 +115,9 @@ body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink)}
 .modelpick{color:var(--muted);font-size:.85rem;display:flex;gap:6px;align-items:center;min-width:0}
 .modelpick select{background:var(--card);color:var(--ink);border:1px solid var(--line);
   border-radius:8px;padding:5px 8px;font:inherit;font-size:.82rem;max-width:260px}
+.composer-send{display:flex;align-items:center;gap:8px}
+.btn.stopbtn{background:var(--accent2)}
+.btn.stopbtn.hidden{display:none}
 
 /* Panel */
 .panel{display:flex;flex-direction:column;min-height:0}
@@ -146,6 +149,10 @@ iframe#preview{flex:1;border:0;width:100%;background:#fbf6ec}
 .story a.read{display:inline-block;margin-top:6px;font-weight:700;color:var(--gold);text-decoration:none}
 .subhead{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;margin:10px 0 2px}
 .empty{color:var(--muted);text-align:center;padding:40px 10px}
+.libwarn{background:rgba(217,138,91,.12);border:1px solid var(--accent2);border-radius:10px;
+  padding:10px 12px;margin-bottom:12px;color:var(--ink);font-size:.82rem}
+.libwarn ul{margin:6px 0 0;padding-left:18px}
+.libwarn li{margin:2px 0;font-family:ui-monospace,monospace;font-size:.78rem;word-break:break-all}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--muted);border-top-color:var(--accent2);
   border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}

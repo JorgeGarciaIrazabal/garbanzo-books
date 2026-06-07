@@ -10,7 +10,7 @@ premise: >
   sidekick at her side, Clara stumbles, laughs, plots clever plans, and always
   comes back for more.
 tone:
-- funny
+- very funny
 - warm
 - adventurous
 - sparkly
@@ -49,7 +49,7 @@ rules:
 - Clara catches Pokemon — but a real catch only counts when the Pokemon chooses to come along as her friend.
 - Beauty in this world is about personality, not just looks.
 - Clara never gives up, but she is also kind. She listens when a Pokemon says "no."
-- Clara is super-smart: she plans, she notices, she solves the puzzle. (Being smart is funny in her case — she talks to herself out loud.)
+- Clara is super-smart. She plans, she notices, and she solves the puzzle. It is even funnier because she talks to herself out loud.
 - The islands float because of friendly wind-Pokemon who sing them in place.
 factions:
 - name: The Cloud Gardeners
@@ -68,10 +68,11 @@ motifs:
 - sparkly clouds
 - clumsy pratfalls
 themes:
-- kindness over capture
+- kindness and friendship
 - never giving up
-- being a good friend
+- being clever
 - beauty on the inside
+- the joy of being silly
 art_style:
   medium: bright, clean Pokemon anime-style digital illustration
   line_quality: bold clean ink lines, rounded, expressive

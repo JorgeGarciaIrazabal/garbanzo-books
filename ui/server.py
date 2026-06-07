@@ -54,6 +54,42 @@ MODELS = [
 ]
 ALLOWED_MODELS = {m["id"] for m in MODELS}
 
+
+def load_env_file() -> dict:
+    """Load ROOT/.env into THIS process's environment once at startup, filling any key that is
+    unset OR present-but-blank. OpenCode and every tool subprocess we spawn inherit this
+    environment, so doing it here guarantees a real GEMINI_API_KEY reaches the image scripts even
+    when the shell that ran `make ui` exported a blank one. A non-empty exported value still wins."""
+    envp = ROOT / ".env"
+    if envp.exists():
+        for line in envp.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, _, v = line.partition("=")
+            k, v = k.strip(), v.strip().strip('"').strip("'")
+            if k and not os.environ.get(k):  # unset or empty → take it from .env
+                os.environ[k] = v
+    return {
+        "env_exists": envp.exists(),
+        "gemini": bool(os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")),
+    }
+
+
+# Run at import, before the OpenCode child or any tool subprocess is spawned, so they all inherit it.
+ENV_STATUS = load_env_file()
+
+
+def print_env_check() -> None:
+    """Startup self-check so the user knows up front whether real illustrations will render."""
+    if not ENV_STATUS["env_exists"]:
+        print("  ⚠ no .env file found — image generation will use labeled placeholders.")
+    elif ENV_STATUS["gemini"]:
+        print("  image key: GEMINI_API_KEY loaded from .env ✓ (illustrations will render)")
+    else:
+        print("  ⚠ .env has no GEMINI_API_KEY/GOOGLE_API_KEY — illustrations will be placeholders.")
+        print("    get a free key at https://aistudio.google.com/apikey, add it to .env, restart.")
+
 STUDIO_BRIEF = """You are the studio director inside the "Garbanzo Books" AI storybook workspace.
 Read CLAUDE.md and methodology/ as needed. Tools live in scripts/ — run them via
 "uv run python scripts/<tool>.py" (new_world.py, new_character.py, new_story.py,
@@ -100,7 +136,17 @@ console switches models for you based on a tag you emit. On its OWN line in your
                    emitting it while you are writing the story.
   [[stage:craft]]  for world-building, character design, reading-level work, validation, or building
                    the site.
-Put the tag at the very end of the message. It is hidden from the user — do not mention it."""
+Put the tag at the very end of the message. It is hidden from the user — do not mention it.
+
+FILE SAFETY — the workspace must never be left with a broken file:
+- Prefer the scaffolding scripts (new_world.py, new_character.py, new_story.py) to CREATE files;
+  they write valid, atomic YAML. Edit the generated YAML afterward.
+- When you do edit a YAML file, write the COMPLETE, valid document in one go — never save a
+  half-written or truncated file, and never leave trailing/partial content.
+- Immediately after creating or editing any world/character/story file, run
+  "uv run python scripts/validate.py worlds/<world>" (or the specific story path) and FIX any
+  failures before moving on or telling the user a step is done. Do not mark a book published while
+  validation fails."""
 
 
 # --------------------------------------------------------------------------- OpenCode lifecycle
@@ -286,6 +332,12 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
                 )
                 async for msg in es.aiter_sse():
                     if await request.is_disconnected():
+                        # The user navigated away or hit Stop — tell OpenCode to abort the agent
+                        # loop so it doesn't keep running tools in the background.
+                        try:
+                            await client.post(f"/session/{sid}/abort")
+                        except Exception:
+                            pass
                         break
                     try:
                         ev = json.loads(msg.data)
@@ -339,6 +391,22 @@ async def api_models():
     return JSONResponse({"models": MODELS, "default": OPENCODE_MODEL})
 
 
+@app.post("/api/stop")
+async def api_stop(request: Request):
+    """Abort the running turn so the user can redirect. Stops the agent loop (an already-running
+    tool finishes, but no further steps run); the session then goes idle and accepts a new prompt."""
+    body = await request.json()
+    sid = body.get("sessionId")
+    if not sid or not oc.base:
+        return JSONResponse({"ok": False, "error": "no active session"}, status_code=400)
+    try:
+        async with httpx.AsyncClient(base_url=oc.base, timeout=10) as client:
+            r = await client.post(f"/session/{sid}/abort")
+        return JSONResponse({"ok": r.status_code == 200})
+    except Exception as e:
+        return JSONResponse({"ok": False, "error": str(e)[:200]}, status_code=500)
+
+
 @app.post("/api/chat")
 async def api_chat(request: Request):
     body = await request.json()
@@ -382,5 +450,7 @@ if __name__ == "__main__":
         pass
     print(f"\n  Garbanzo Books Studio  →  http://localhost:{PORT}")
     print(f"  workspace: {ROOT}")
-    print(f"  agent: OpenCode + {OPENCODE_MODEL} (no API key needed)\n", flush=True)
+    print(f"  agent: OpenCode + {OPENCODE_MODEL} (no API key needed)")
+    print_env_check()
+    print("", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=PORT, log_level="warning")

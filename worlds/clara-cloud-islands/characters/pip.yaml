@@ -1,0 +1,96 @@
+slug: pip
+world: clara-cloud-islands
+name: Pip
+role: sidekick
+species: pokemon (fire-mouse, chinchilla-mouse type)
+pronouns: he/him
+one_liner: Clara's tiny fluffy fire-mouse sidekick. Cute, clumsy, and he NEVER gives up.
+personality:
+  traits:
+  - cute
+  - clumsy
+  - brave
+  - never-gives-up
+  - loyal
+  - hungry
+  - giggly
+  motivation: To follow Clara anywhere and to make her proud by catching her first beautiful Pokemon.
+  fears:
+  - Clara leaving him behind
+  - being too small
+  flaws:
+  - trips over his own tail
+  - tries to be tough but is soft
+  strengths:
+  - never gives up, ever
+  - makes everyone smile
+  - smells when a Pokemon is near
+  quirks:
+  - sneezes tiny puffs of flame when excited
+  - tries to carry things 10x his size and falls over
+  - always wags his stump of a tail
+  values:
+  - friendship
+  - trying again
+  - snacks
+voice:
+  speech_style: tiny chirpy squeaks translated to "pip!" "pippip!" "PIP!"
+  catchphrases:
+  - Pip!
+  - Pip pip!
+  - PIIIIP!
+  vocabulary_level: squeaks and one-syllable chirps
+appearance:
+  age_appearance: baby pokemon
+  build: tiny round fluffball
+  height: fits in Clara's hoodie pocket
+  skin: short soft cream-orange fur, cream belly
+  hair: none; tuft of bright orange flame-fluff on top of head
+  eyes: huge round black eyes with two white sparkle dots
+  outfit: a tiny red bandana tied around his neck with a white pokeball-print
+  distinguishing_features:
+  - the bright orange flame-tuft on his head that wiggles when he runs
+  - the red bandana with the pokeball print
+  - a cream-colored heart-shape patch on his chest
+  - giant feet for his body (so he trips)
+  color_palette:
+  - part: fur-cream
+    hex: '#fff1c2'
+  - part: fur-orange
+    hex: '#ff9a3c'
+  - part: flame-tuft
+    hex: '#ffb648'
+  - part: eyes
+    hex: '#1a1a1a'
+  - part: bandana-red
+    hex: '#e6443a'
+  - part: bandana-white
+    hex: '#fff7e6'
+  silhouette_notes: A tiny round fluffball with a tall flame-tuft on top and a stubby tail, almost always
+    with his red bandana. Recognizable at 50 meters by the flame-tuft alone.
+appearance_token: 'PIP: tiny round fire-mouse pokemon, fluffball the size of Clara''s hand, soft cream-orange
+  fur with cream belly, huge round black sparkle eyes, bright orange flame-tuft on top of head that wiggles,
+  cream heart-patch on chest, stubby tail, red bandana with white pokeball-print around neck, oversized
+  paws, big-eyed Pokemon-anime cel-shaded style, default expression is a giant happy open-mouth smile
+  mid-trip'
+reference_images:
+- characters/pip.refs/model-sheet.png
+- characters/pip.refs/model-sheet.svg
+seed: 7777
+relationships:
+- character: clara
+  relation: trainer-and-best-friend
+evolution:
+- stage: base
+  order: 0
+  summary: Brand-new sidekick, just hatched, still figuring out his flame.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- pokemon
+- fire
+- sidekick
+- cute
+- clumsy
+- never-give-up

@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.model import (SCHEMAS, WORLDS, load_world)  # noqa: E402
+from lib.model import (SCHEMAS, WORLDS, ContentError, load_all_worlds, load_world)  # noqa: E402
 from lib.readability import BANDS, analyze, words  # noqa: E402
 
 try:
@@ -203,30 +203,36 @@ def check_story(rep: Report, world, story) -> None:
         rep.fail(f"[publish] {where}: marked published but has failures above")
 
 
-def discover(target: str | None):
-    """Yield (world, story_or_None) to validate."""
+def discover(target: str | None, errors: list[str]):
+    """Yield (world, story_or_None) to validate. Malformed files are recorded in `errors` (and
+    reported as failures by main) rather than aborting the whole run."""
     if not target:
-        for w in (load_world(p.name) for p in WORLDS.iterdir() if (p / "world.yaml").exists()):
+        for w in load_all_worlds(with_stories=True, errors=errors):
             yield w, None
             for st in w.stories:
                 yield w, st
         return
     p = Path(target)
     parts = p.parts
-    if "stories" in parts:
-        world_slug = parts[parts.index("worlds") + 1] if "worlds" in parts else parts[0]
-        story_slug = parts[parts.index("stories") + 1]
-        w = load_world(world_slug)
-        st = next((s for s in w.stories if s.slug == story_slug), None)
-        yield w, None
-        if st:
-            yield w, st
-    else:
-        world_slug = parts[parts.index("worlds") + 1] if "worlds" in parts else p.name
-        w = load_world(world_slug)
-        yield w, None
-        for st in w.stories:
-            yield w, st
+    try:
+        if "stories" in parts:
+            world_slug = parts[parts.index("worlds") + 1] if "worlds" in parts else parts[0]
+            story_slug = parts[parts.index("stories") + 1]
+            w = load_world(world_slug)
+            errors.extend(w.errors)
+            st = next((s for s in w.stories if s.slug == story_slug), None)
+            yield w, None
+            if st:
+                yield w, st
+        else:
+            world_slug = parts[parts.index("worlds") + 1] if "worlds" in parts else p.name
+            w = load_world(world_slug)
+            errors.extend(w.errors)
+            yield w, None
+            for st in w.stories:
+                yield w, st
+    except ContentError as e:
+        errors.append(str(e))
 
 
 def main() -> int:
@@ -240,16 +246,20 @@ def main() -> int:
 
     rep = Report()
     seen_worlds = set()
+    content_errors: list[str] = []
     try:
-        for world, story in discover(args.target):
-            if world.slug not in seen_worlds:
-                check_world(rep, world)
-                seen_worlds.add(world.slug)
-            if story is not None:
-                check_story(rep, world, story)
+        targets = list(discover(args.target, content_errors))
     except FileNotFoundError as e:
         print(f"! {e}", file=sys.stderr)
         return 2
+    for em in content_errors:
+        rep.fail(f"[content] malformed file skipped — {em}")
+    for world, story in targets:
+        if world.slug not in seen_worlds:
+            check_world(rep, world)
+            seen_worlds.add(world.slug)
+        if story is not None:
+            check_story(rep, world, story)
 
     print(f"\n{'='*60}\nVALIDATION REPORT\n{'='*60}")
     print(f"  checks passed: {rep.passes}")

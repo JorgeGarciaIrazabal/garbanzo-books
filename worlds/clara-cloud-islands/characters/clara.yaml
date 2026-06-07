@@ -1,0 +1,100 @@
+slug: clara
+world: clara-cloud-islands
+name: Clara
+role: protagonist
+species: human
+pronouns: she/her
+one_liner: A bossy, super-smart, very funny 5-year-old Pokemon trainer who never gives up and always makes
+  a friend.
+personality:
+  traits:
+  - very funny
+  - super-smart
+  - bossy
+  - never-gives-up
+  - friendly
+  - brave
+  - talks-to-herself-out-loud
+  motivation: To find and catch the most beautiful Pokemon on every cloud island, and to be best friends
+    with all of them.
+  fears:
+  - being forgotten
+  - missing a beautiful Pokemon
+  flaws:
+  - gets bossy and forgets to ask
+  - jumps before she plans
+  strengths:
+  - solves the puzzle
+  - notices tiny things
+  - always cheers her friends up
+  quirks:
+  - mumbles her plans out loud ("Step one... step two... step three... POOF, I'm a genius")
+  - trips over her own feet at least once per adventure
+  - yells "BEAUTIFUL!" at anything sparkly
+  values:
+  - friendship
+  - kindness
+  - never giving up
+  - being silly
+voice:
+  speech_style: punchy, giggly, bossy, full of exclamation marks
+  catchphrases:
+  - BEAUTIFUL AND MINE!
+  - I have a plan. A genius plan.
+  - Follow me, sidekick!
+  - Oops.
+  - One more try!
+  vocabulary_level: age 5-7, short words, lots of sound words
+appearance:
+  age_appearance: 5 years old
+  build: small, round, energetic
+  height: short (about half an adult trainer)
+  skin: fair white skin, pink cheeks
+  hair: long honey-blonde hair, mid-back, with straight-across blunt bangs
+  eyes: huge sparkling blue eyes
+  outfit: red & white pokeball-print hoodie, denim shorts, red sneakers, glittery pink hair bow
+  distinguishing_features:
+  - glittery pink hair bow on the right side
+  - round blushy pink cheeks
+  - one big tooth-gap smile
+  - sticky-berry satchel across her chest
+  color_palette:
+  - part: hair
+    hex: '#e6c46a'
+  - part: eyes
+    hex: '#3aa6ff'
+  - part: hoodie-red
+    hex: '#e6443a'
+  - part: hoodie-white
+    hex: '#fff7e6'
+  - part: bow
+    hex: '#ff7fb6'
+  - part: skin
+    hex: '#ffe7d6'
+  silhouette_notes: Short girl with a big round head, a wide hoodie, and a tall fluffy ponytail of honey
+    hair flying behind her when she runs. The pink bow is her unmistakable mark.
+appearance_token: 'CLARA: 5-year-old human girl, short and round, fair white skin with pink cheeks, long
+  honey-blonde hair to mid-back with straight-across blunt bangs, huge sparkling blue eyes, big tooth-gap
+  grin, glittery pink hair bow on the right side, red and white pokeball-print hoodie, denim shorts, red
+  sneakers, sticky-berry satchel across chest, big-eyed bright Pokemon-anime cel-shaded style, default
+  expression is a giant bossy smile with one hand on hip'
+reference_images:
+- characters/clara.refs/model-sheet.png
+- characters/clara.refs/model-sheet.svg
+seed: 4242
+relationships:
+- character: pip
+  relation: best-friend-sidekick
+evolution:
+- stage: base
+  order: 0
+  summary: Starting look and personality, for the first book.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- trainer
+- protagonist
+- funny
+- smart
+- never-give-up

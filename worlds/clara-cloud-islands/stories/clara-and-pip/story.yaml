@@ -1,0 +1,419 @@
+slug: clara-and-pip
+world: clara-cloud-islands
+title: Clara and Pip
+logline: A loud, sparkle-loving girl lands on a cloud island, scares away the tiny Pokemon who hatches
+  there, and must be quiet and kind to win him as her first friend.
+summary: Clara is a bossy, super-smart 5-year-old who loves sparkly things and wants a beautiful Pokemon
+  of her own. But she's too loud — every Pokemon runs away. One day a balloon lifts her up to a pink cloud
+  island. She finds a glowing egg under a berry bush, it hatches, and out pops Pip, a tiny fire-mouse
+  Pokemon. When Clara shouts "MINE!", Pip runs. To find him and become his friend, Clara must solve a
+  trail of logic puzzles across the island, learning that quiet kindness works better than loud bossiness.
+  In the end, Pip chooses her — jumping into her hoodie pocket — and Clara learns to listen before she
+  yells.
+age_band: 5-7
+reading_level:
+  target_fk_grade: 0.5
+  fk_grade_tolerance: 0.5
+  lexile_range: BR-200L
+  fountas_pinnell: A-B
+  max_words_per_page: 20
+  max_sentence_words: 6
+  decoding_focus: 'CVC words (short a i o u); sight words: the, is, a, she, he, and, in, up, not, so,
+    big, run, pop, look, said, yes'
+  decodable: false
+themes:
+- friendship
+- kindness
+- perseverance
+- listening
+moral: Quiet words make big friends.
+characters:
+- slug: clara
+  stage: base
+  role_in_story: protagonist
+- slug: pip
+  stage: base
+  role_in_story: sidekick
+spine:
+  once_upon_a_time: Clara is a bossy little girl who loves sparkly things and wants a beautiful Pokemon
+    of her own.
+  every_day: She yells and chases Pokemon, but every Pokemon runs away.
+  until_one_day: A runaway balloon lifts her up to a pink cloud island in the sky.
+  because_of_that:
+  - She hears squeaks, follows them, and finds a glowing egg under a berry bush. The egg hatches — out
+    pops Pip, a tiny fire-mouse Pokemon.
+  - Clara shouts "MINE!" and Pip gets scared, running into the berry bushes.
+  - 'To find Pip, Clara solves three logic puzzles: following his flame-puff trail, using clues to pick
+    the right hiding spot, and choosing kind words over bossy ones.'
+  until_finally: Clara finds Pip, speaks softly, and Pip chooses her — jumping into her hoodie pocket
+    with a happy flame-sneeze.
+  ever_since_then: Clara and Pip are best friends. Clara still yells "BEAUTIFUL!" at sparkly things —
+    but now she remembers to listen first.
+pages:
+- number: 0
+  kind: title
+  text: Clara and Pip
+  image:
+    prompt: Clara and Pip together on a fluffy pink cloud, Clara grinning with her hands on her hips,
+      Pip perched on her shoulder sneezing a tiny flame. Sunny meadow with candy-pink grass and sparkly
+      berry bushes behind them, bright blue sky.
+    characters_present:
+    - clara
+    - pip
+    alt: Clara and Pip the fire-mouse Pokemon on a pink cloud island
+    text_zone: center
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: This is Clara. Clara loves sparkly things.
+  image:
+    prompt: Clara standing in a sunny meadow on the ground, reaching toward sparkly dust in the air. Hands
+      on hips, big tooth-gap grin. Bright daytime, green grass, simple background.
+    characters_present:
+    - clara
+    alt: Clara reaching for sparkles in a sunny meadow
+    file: images/page-01.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - sparkly
+  reading_notes: 'Ask: What sparkly things do you see?'
+- number: 2
+  kind: story
+  text: Clara is loud. Pokemon run and hide.
+  image:
+    prompt: Clara shouting "COME HERE!" with arms wide open, eyes squeezed shut. A swirl of small Pokemon
+      shapes running away in all directions, leaving dust trails. Green meadow, bright day.
+    characters_present:
+    - clara
+    alt: Clara shouting while Pokemon run away
+    file: images/page-02.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  reading_notes: 'Ask: Why do you think the Pokemon run?'
+- number: 3
+  kind: interaction
+  text: A big red balloon. Up, up, up she goes!
+  image:
+    prompt: A big red hot-air balloon lifting Clara off the ground. Clara inside the basket, looking down
+      with wide eyes. Three balloons visible in the sky — one big, one middle, one small — drifting upward
+      with puff clouds behind them. Bright blue sky.
+    characters_present:
+    - clara
+    alt: Clara rising into the sky in a red hot-air balloon
+    file: images/page-03.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: drag-order
+    prompt: Put the balloons in order. Start with the BIGGEST!
+    skill: vocabulary
+    data:
+      sequence:
+      - big
+      - middle
+      - small
+    feedback:
+      correct: Yes! The big one is first!
+      try_again: Which one is the biggest? Try again!
+  vocabulary:
+  - balloon
+- number: 4
+  kind: story
+  text: A pink island in the sky!
+  image:
+    prompt: Clara stepping out of the balloon basket onto Sunny Meadow Island. Fluffy pink cloud ground,
+      candy-pink grass, sparkly berry bushes dotted around. Wispy white clouds in a bright blue sky. Clara's
+      eyes are wide with wonder.
+    characters_present:
+    - clara
+    alt: Clara stepping onto a pink cloud island in the sky
+    file: images/page-04.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - island
+  reading_notes: 'Ask: What colour is the grass on this island?'
+- number: 5
+  kind: interaction
+  text: Squeak, squeak. What is that?
+  image:
+    prompt: Clara crouching beside a row of tall berry bushes. A winding path of tiny orange flame-puffs
+      leads from the foreground into the bushes. Sparkly berries glint on the bushes. Soft pink sky. Clara's
+      face is curious, one finger to her chin.
+    characters_present:
+    - clara
+    alt: Clara following tiny flame-puffs through berry bushes
+    file: images/page-05.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: maze
+    prompt: Follow the flame-puffs to find the egg!
+    skill: phonics
+    data:
+      grid: '. . . B B . .
+
+        . P P . B . .
+
+        . . P . B E .
+
+        . . P P P . .
+
+        . . . . . . .
+
+        '
+      start:
+      - 1
+      - 1
+      end:
+      - 5
+      - 3
+    feedback:
+      correct: You found the egg!
+      try_again: Follow the puffs! Go that way.
+  vocabulary:
+  - squeak
+- number: 6
+  kind: story
+  text: Crack! A tiny friend pops out.
+  image:
+    prompt: A glowing cream-orange egg cracking open under a berry bush. Pip emerging from the egg, tiny
+      round fluffball with his orange flame-tuft wobbling, huge black sparkle eyes blinking open. Clara
+      kneeling beside him, hands clasped, amazed smile. Pink grass, sparkly bushes, soft warm light.
+    characters_present:
+    - clara
+    - pip
+    alt: Pip hatching from a glowing egg as Clara watches
+    file: images/page-06.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - crack
+  - pops
+- number: 7
+  kind: story
+  text: '"MINE!" Pip ran. Clara is sad.'
+  image:
+    prompt: Pip scurrying away into a dark gap between berry bushes, flame-tuft trailing a tiny puff.
+      Clara standing still a few feet away, arms drooping, mouth in a small sad O, eyes downcast. Soft
+      pink light, long shadows.
+    characters_present:
+    - clara
+    - pip
+    alt: Pip running away and Clara looking sad
+    file: images/page-07.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  reading_notes: 'Ask: How does Clara feel right now?'
+- number: 8
+  kind: interaction
+  text: Is Pip in here?
+  image:
+    prompt: Clara peering at three berry bushes in a row across the page. One bush has a tiny orange flame-puff
+      glowing on the ground right in front of it. The other two bushes are empty. Pink sky, sparkly berries.
+      Clara's hand is on her chin.
+    characters_present:
+    - clara
+    alt: Three berry bushes with one hiding Pip
+    file: images/page-08.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: seek-and-find
+    prompt: Which bush has a flame-puff in front? That is Pip!
+    skill: comprehension
+    data:
+      items:
+      - flame-puff
+    feedback:
+      correct: You found Pip's hiding spot!
+      try_again: Look in front of each bush. Is there a puff?
+- number: 9
+  kind: interaction
+  text: Not here. Not there. Where is Pip?
+  image:
+    prompt: Clara looking down at a trail of Pip's footprints in the cloud-pink grass. Two sets of footprints
+      visible — one big pair leading to a large round bush, one tiny pair meandering in the opposite direction.
+      Three bushes of different sizes. Sun low, warm pink sky.
+    characters_present:
+    - clara
+    alt: Clara examining footprints leading to different bushes
+    file: images/page-09.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: drag-order
+    prompt: Match the BIG prints to the BIG bush. Pip has big feet!
+    skill: comprehension
+    data:
+      sequence:
+      - big-footprints
+      - big-bush
+    feedback:
+      correct: You matched the big prints! Pip is in the big bush!
+      try_again: Which prints are biggest? Which bush is biggest?
+- number: 10
+  kind: interaction
+  text: I found you!
+  image:
+    prompt: Clara standing in front of a rock, a bush, a flower, and a small puffy cloud — four hiding
+      spots spread across the page. Pip's little orange flame-tuft barely peeking up from behind the flower.
+      Warm afternoon light, pink sky, sparkly air.
+    characters_present:
+    - clara
+    - pip
+    alt: Clara looking at four hiding spots where Pip could be
+    file: images/page-10.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: riddle
+    prompt: Pip is NOT behind the rock. He is NOT behind the cloud. The thing he hides behind is NOT blue.
+      Where is Pip?
+    skill: comprehension
+    data:
+      question: Pip is NOT behind the rock. He is NOT behind the cloud. The thing he hides behind is NOT
+        blue.
+      answer: flower
+      hint: Look at the four things. Cross off the wrong ones!
+    feedback:
+      correct: Yes! Pip is behind the flower!
+      try_again: Cross out the rock. Cross out the cloud. What is left?
+- number: 11
+  kind: interaction
+  text: I will be quiet. Can we be friends?
+  image:
+    prompt: Clara kneeling down softly at eye level with the flower, hands folded gently in her lap, a
+      kind small smile on her face instead of a big grin. Pip's big black sparkle eyes peeking out from
+      behind the flower stem, curious but wary. Warm golden-pink light.
+    characters_present:
+    - clara
+    - pip
+    alt: Clara speaking softly to Pip hiding behind a flower
+    file: images/page-11.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: choice
+    prompt: What should Clara say?
+    skill: comprehension
+    data:
+      options:
+      - label: You are MINE!
+        goto: 11
+      - label: Can we be friends?
+        goto: 12
+    feedback:
+      correct: Kind words! Pip wants to be your friend.
+      try_again: That is too loud. Try the kind words.
+- number: 12
+  kind: story
+  text: Pip! He jumps into my hoodie!
+  image:
+    prompt: Pip leaping through the air, tiny round fluffball with flame-tuft streaming behind him, huge
+      happy sparkle eyes, paws outstretched, directly toward Clara's red-and-white pokeball-print hoodie
+      pocket. Clara sitting on the pink cloud grass, arms open, huge joyful tooth-gap grin, eyes sparkling
+      with happy tears. Sparkly air, warm sunset pink sky.
+    characters_present:
+    - clara
+    - pip
+    alt: Pip jumping into Clara's hoodie pocket
+    file: images/page-12.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  reading_notes: 'Ask: How does Clara feel now?'
+- number: 13
+  kind: interaction
+  text: Best, best, best friends!
+  image:
+    prompt: 'Clara sitting cross-legged on the pink cloud grass, Pip perched on her knee. Pip sneezing
+      a happy burst of tiny flames — three flames of different sizes floating in the air: one big, one
+      medium, one tiny. Clara laughing, clapping her hands. Sunset colours. Silhouettes of other cloud
+      islands in the distance.'
+    characters_present:
+    - clara
+    - pip
+    alt: Clara and Pip celebrating as best friends with happy flames
+    file: images/page-13.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: drag-order
+    prompt: Put Pip's flames in order. Start with the BIGGEST flame!
+    skill: engagement
+    data:
+      sequence:
+      - big-flame
+      - middle-flame
+      - small-flame
+    feedback:
+      correct: Yes! The big flame is first!
+      try_again: Which flame is biggest? Try again!
+- number: 14
+  kind: end
+  text: Two friends. Big sky. Let's go!
+  image:
+    prompt: Clara in her red-and-white hoodie standing on the edge of Sunny Meadow Island, facing out
+      toward a chain of other cloud islands in the distance connected by rainbow rope-bridges and drifting
+      gondolas. Pip tucked in her hoodie pocket, just his flame-tuft and sparkle eyes visible. Clara's
+      arm pointing forward heroically. Vast pink-gold sunset sky, sparkly clouds, hopeful feeling.
+    characters_present:
+    - clara
+    - pip
+    alt: Clara and Pip looking out at the cloud islands ready for their next adventure
+    file: images/page-14.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+interactions_summary:
+- 'Page 3 - Drag-order: order three balloons by size (biggest to smallest)'
+- 'Page 5 - Maze: follow flame-puffs to find the egg'
+- 'Page 8 - Seek-and-find: which bush has a flame-puff'
+- 'Page 9 - Drag-order: match big footprints to the big bush'
+- 'Page 10 - Riddle: elimination logic with four hiding spots'
+- 'Page 11 - Choice: pick kind words over bossy words'
+- 'Page 13 - Drag-order: order three flames by size (biggest to smallest)'
+status: published
+tags:
+- origin-story
+- friendship
+- puzzles
+- meet-cute
+cover:
+  image: ''
+  image_prompt: Clara and Pip sitting together on a fluffy pink cloud, Clara grinning with her hands on
+    her knees and Pip tucked into her hoodie pocket, flame-tuft glowing. Sunny Meadow Island with candy-pink
+    grass and sparkling berry bushes behind them. Bright blue sky, sparkly sun rays. Warm and inviting.
+  alt: Cover of Clara and Pip — a girl and her fire-mouse Pokemon on a pink cloud island

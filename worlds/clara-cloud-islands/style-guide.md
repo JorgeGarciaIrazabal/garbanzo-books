@@ -24,7 +24,7 @@ stars float in the air when something is "beautiful."
 - **Line:** bold clean ink lines, rounded, expressive
 - **Shading:** cel-shaded with soft gradients
 - **Lighting:** bright sunny with crisp rim light and pink sunset highlights
-- **Mood:** funny, sparkly, warm, giggly
+- **Mood:** very funny, sparkly, warm, giggly, clever
 - **Perspective:** dynamic three-quarter, character-centered
 
 ## Do
@@ -38,5 +38,5 @@ stars float in the air when something is "beautiful."
 - No photorealism, 3D renders, or horror.
 - No scary faces or distorted hands/extra fingers.
 - No text baked into the art (text is overlaid by the reader).
-- Don't break the world's `rules` (see world.yaml) — Pokemon are befriended, never
-  trapped.
+- Don't break the world's `rules` (see world.yaml) — a real catch only counts when
+  the Pokemon chooses to be Clara's friend.
