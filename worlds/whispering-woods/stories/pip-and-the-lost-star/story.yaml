@@ -101,7 +101,7 @@ pages:
     - pip
     alt: A busy forest scene with leaves, fish, a snail, mushrooms and a firefly to spot
     text_zone: top
-    file: images/page-03.svg
+    file: images/page-03.png
   layout:
     text_position: upper-third
     text_align: center
@@ -145,7 +145,7 @@ pages:
     - pip
     alt: Pip creeping toward a glowing star nestled in ferns at night
     text_zone: top
-    file: images/page-05.svg
+    file: images/page-05.png
   layout:
     text_position: upper-third
     text_align: center
@@ -172,7 +172,7 @@ pages:
     - pip
     alt: Pip holding a fading glowing star carefully in her paws, looking concerned
     text_zone: lower third
-    file: images/page-06.svg
+    file: images/page-06.png
   layout:
     text_position: lower-third
     text_align: center
@@ -206,7 +206,7 @@ pages:
     - olo
     alt: Olo pointing toward dark pine trees while Pip looks nervous holding the star
     text_zone: lower third
-    file: images/page-08.svg
+    file: images/page-08.png
   layout:
     text_position: lower-third
     text_align: center
@@ -223,7 +223,7 @@ pages:
     - pip
     alt: Pip standing at the edge of dark woods, warm light behind and shadows ahead
     text_zone: top
-    file: images/page-09.svg
+    file: images/page-09.png
   layout:
     text_position: upper-third
     text_align: center
@@ -251,7 +251,7 @@ pages:
     - pip
     alt: Pip turning home but looking back sadly at the dim star
     text_zone: lower third
-    file: images/page-10.svg
+    file: images/page-10.png
   layout:
     text_position: lower-third
     text_align: center
@@ -267,7 +267,7 @@ pages:
     - pip
     alt: Pip stepping into dark pine trees, the glowing star lighting the path around her
     text_zone: lower third
-    file: images/page-11.svg
+    file: images/page-11.png
   layout:
     text_position: lower-third
     text_align: center
@@ -285,7 +285,7 @@ pages:
     - pip
     alt: Pip in the pines near a shell, a sock, a fish, and the moon
     text_zone: top
-    file: images/page-12.svg
+    file: images/page-12.png
   layout:
     text_position: upper-third
     text_align: center
@@ -317,7 +317,7 @@ pages:
     - pip
     alt: Pip lifting the glowing star up into a starry night sky from a high rock
     text_zone: lower third
-    file: images/page-13.svg
+    file: images/page-13.png
   layout:
     text_position: lower-third
     text_align: center
@@ -333,7 +333,7 @@ pages:
     - olo
     alt: Pip walking home smiling under a starry sky with Olo flying beside her
     text_zone: top
-    file: images/page-14.svg
+    file: images/page-14.png
   layout:
     text_position: upper-third
     text_align: center
@@ -362,7 +362,7 @@ pages:
     - pip
     alt: Pip cozy in her burrow with a softly glowing acorn pendant and stars outside
     text_zone: lower third
-    file: images/page-15.svg
+    file: images/page-15.png
   layout:
     text_position: lower-third
     text_align: center

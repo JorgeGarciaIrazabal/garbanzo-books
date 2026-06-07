@@ -89,6 +89,33 @@ Or run the whole thing from the **dynamic UI** in `ui/` (the Claude-Agent-SDK en
 - Dates are absolute (ISO 8601).
 - Prefer the scripts/skills over ad-hoc work so consistency invariants are preserved.
 
+## Image generation key — ALWAYS CHECK FIRST
+
+Before running `/illustrate` (or anything that calls `scripts/generate_images.py`),
+verify the image-gen key is present:
+
+```bash
+make check-gemini
+```
+
+- ✓ key found → `/illustrate` will render real images with the Nano Banana provider
+- ✗ key missing → `/illustrate` falls back to labeled SVG placeholders, and the book
+  can't actually be marked `published` without the user adding a key
+
+The key lives in `.env` as `GEMINI_API_KEY=...` (or `GOOGLE_API_KEY=...`). A real
+exported env var beats the .env value. A blank exported value is treated as unset,
+so the .env value always fills in.
+
+The server (`ui/server.py`) loads `.env` exactly the same way at startup, and every
+subprocess it spawns (including the agent's tool calls) inherits the result. So
+restarting `make ui` is required after editing `.env` for the new key to reach the
+agent's image-generation calls.
+
+If the key is missing AND the user asked for a new book, do NOT silently switch to
+placeholders — run `make check-gemini`, report the result, and ask the user how to
+proceed (e.g. "Add a key to `.env` and I'll re-run, or shall I generate placeholders
+for now?").
+
 ## Setup
 
 `uv sync` (or `make setup`) creates the `.venv` from `pyproject.toml`/`uv.lock`; run tools with

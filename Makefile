@@ -1,4 +1,4 @@
-.PHONY: setup validate build serve clean test test-backend test-frontend test-all lint ui opencode help
+.PHONY: setup validate build serve clean test test-backend test-frontend test-all lint ui opencode help check-gemini
 
 # OpenCode + local Ollama settings. The model/provider are defined in opencode.json;
 # override here if you point Ollama elsewhere.
@@ -20,6 +20,7 @@ help:
 	@echo "  make build         build the static site into site/"
 	@echo "  make serve         build + preview at http://localhost:8008"
 	@echo "  make test          run the toolchain self-test"
+	@echo "  make check-gemini  verify GEMINI_API_KEY is set (image generation)"
 	@echo "  make test-backend  run the full pytest suite (lib + scripts + server)"
 	@echo "  make test-frontend run the vitest suite (app.js + reader.js)"
 	@echo "  make test-all      run backend + frontend (one command)"
@@ -39,6 +40,30 @@ build:
 
 serve: build
 	$(RUN) -m http.server -d site 8008
+
+check-gemini:
+	@# Quick check for the image-gen key. The studio/server load it the same way
+	@# (env first, then .env) so this is the authoritative pre-flight for /illustrate.
+	@if [ -n "$$GEMINI_API_KEY" ] || [ -n "$$GOOGLE_API_KEY" ]; then \
+		[ -n "$$GEMINI_API_KEY" ] && src="GEMINI_API_KEY (env, length=$${#GEMINI_API_KEY})" \
+			|| src="GOOGLE_API_KEY (env, length=$${#GOOGLE_API_KEY})"; \
+		printf "  \033[32m✓\033[0m image key present: %s\n" "$$src"; \
+		printf "    /illustrate will render real images (provider: nano-banana).\n"; \
+	else \
+		if [ -f .env ] && grep -qE '^(GEMINI_API_KEY|GOOGLE_API_KEY)=.+\S' .env; then \
+			val=$$(grep -E '^(GEMINI_API_KEY|GOOGLE_API_KEY)=' .env | head -1 | cut -d= -f2-); \
+			printf "  \033[32m✓\033[0m image key present: .env (length=%d)\n" "$${#val}"; \
+			printf "    /illustrate will render real images (provider: nano-banana).\n"; \
+		else \
+			printf "  \033[31m✗\033[0m no image key found.\n"; \
+			printf "    Image generation will fall back to labeled placeholders.\n"; \
+			printf "    To render real images:\n"; \
+			printf "      1. Get a free key at https://aistudio.google.com/apikey\n"; \
+			printf "      2. Add to .env:   GEMINI_API_KEY=your-key\n"; \
+			printf "      3. Run \`make ui\` again so the server reloads .env\n"; \
+			exit 1; \
+		fi; \
+	fi
 
 test:
 	$(RUN) scripts/selftest.py
