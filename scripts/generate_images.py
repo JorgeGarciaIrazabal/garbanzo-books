@@ -37,6 +37,7 @@ import textwrap
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lib.colors import palette_hexes  # noqa: E402
 from lib.model import (ROOT, World, dump_yaml, load_dotenv, load_world, load_yaml)  # noqa: E402
 from lib.prompt_assembly import (AssembledPrompt, assemble_character_sheet_prompt,  # noqa: E402
                                  assemble_page_prompt)
@@ -51,7 +52,7 @@ DEFAULT_NANO_BANANA_MODEL = "gemini-2.5-flash-image"
 # larger is downscaled, preserving aspect ratio. Override with GEMINI_MAX_EDGE.
 DEFAULT_MAX_EDGE = 1184
 _RASTER_EXT = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}
-_warned_nokey = set()
+_warned_nokey: set[str] = set()
 
 
 def _cap_image_bytes(data: bytes, max_edge: int) -> bytes:
@@ -74,12 +75,9 @@ def _cap_image_bytes(data: bytes, max_edge: int) -> bytes:
 
 
 def _palette_hexes(world: World) -> list[str]:
-    out = []
-    for s in (world.data.get("art_style", {}) or {}).get("palette", []) or []:
-        h = str(s.get("hex", "")).lstrip("#")
-        if len(h) == 6:
-            out.append("#" + h)
-    return out or ["#f4e1c1", "#6b8f71", "#d98a5b", "#3d5a73"]
+    """The world palette as ``#rrggbb`` strings, with a sensible fallback so a
+    placeholder still draws colour bands. Thin wrapper over the shared helper."""
+    return palette_hexes(world.data.get("art_style"), fallback=True)
 
 
 def write_placeholder_svg(path: Path, title: str, ap: AssembledPrompt, world: World) -> None:
@@ -301,11 +299,81 @@ def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int
         page.setdefault("image", {})["file"] = f"images/{fname}"
         if not page["image"].get("alt"):
             page["image"]["alt"] = _auto_alt(page, ap)
+        _write_prompt_sidecar(images_dir / fname, ap)
         changed = True
 
     if changed and not print_only:
         dump_yaml(story, spath)
         print(f"+ updated {spath.relative_to(ROOT)} with image paths + alt text")
+
+
+def _write_prompt_sidecar(image_path: Path, ap: AssembledPrompt) -> None:
+    """Record the EXACT assembled prompt next to the image (page-NN.prompt.txt).
+
+    This makes every render auditable and reproducible: you can see precisely which
+    style block + appearance_tokens + palette + seed produced a frame, diff it when a
+    character drifts, and regenerate deterministically. Written for real renders AND
+    placeholders so the audit trail is always present."""
+    side = image_path.with_suffix(".prompt.txt")
+    side.parent.mkdir(parents=True, exist_ok=True)
+    side.write_text(
+        f"PROMPT:\n{ap.prompt}\n\n"
+        f"NEGATIVE:\n{ap.negative}\n\n"
+        f"SEED: {ap.seed}\n"
+        f"ASPECT: {ap.aspect_ratio}\n"
+        f"CHARACTERS: {', '.join(ap.characters) or '—'}\n"
+        f"REFERENCES: {', '.join(ap.reference_images) or '—'}\n",
+        encoding="utf-8",
+    )
+
+
+def verify_story(ref: str) -> int:
+    """Re-assert the visual-consistency invariants for every page WITHOUT calling any
+    provider (A4): each character in frame resolves and carries an appearance_token, and
+    recurring characters have a locked seed + a reference image to anchor renders.
+
+    Returns a process exit code: 0 = ready to illustrate on-model, 1 = hard problems."""
+    world_slug, story_slug = _resolve_story(ref)
+    world = load_world(world_slug, with_stories=False)
+    spath = ROOT / "worlds" / world_slug / "stories" / story_slug / "story.yaml"
+    story = load_yaml(spath)
+    pages = story.get("pages", []) or []
+
+    errors: list[str] = []
+    warnings: list[str] = []
+    appearances: dict[str, int] = {}
+    for page in pages:
+        num = page.get("number", 0)
+        present = (page.get("image", {}) or {}).get("characters_present", []) or []
+        for slug in present:
+            appearances[slug] = appearances.get(slug, 0) + 1
+            char = world.characters.get(slug)
+            if not char:
+                errors.append(f"p{num}: character '{slug}' is not in world '{world_slug}'")
+            elif not char.get("appearance_token"):
+                errors.append(f"p{num}: character '{slug}' has no appearance_token to inject")
+        # Assembling proves the prompt builds and shows what would be sent.
+        assemble_page_prompt(world, story, page)
+
+    for slug, count in appearances.items():
+        char = world.characters.get(slug)
+        if not char or count < 2:
+            continue
+        if not char.get("reference_images"):
+            warnings.append(f"recurring '{slug}' has no reference_images (model sheet) to anchor renders")
+        if char.get("seed") is None:
+            warnings.append(f"recurring '{slug}' has no locked seed (renders won't be reproducible)")
+
+    print(f"--- verify: {world_slug}/{story_slug} ({len(pages)} pages) ---")
+    for w in warnings:
+        print(f"  ⚠  {w}")
+    for e in errors:
+        print(f"  ✗  {e}")
+    if errors:
+        print(f"  => NOT READY ({len(errors)} blocker(s))")
+        return 1
+    print("  => READY to illustrate on-model" + (f" ({len(warnings)} warning(s))" if warnings else ""))
+    return 0
 
 
 def _auto_alt(page: dict, ap: AssembledPrompt) -> str:
@@ -337,6 +405,9 @@ def main() -> int:
                     help="default: nano-banana (Google Gemini image model); falls back to "
                          "placeholders if no API key is set")
     ap.add_argument("--print-prompts", action="store_true", help="dry run: only print prompts")
+    ap.add_argument("--verify", action="store_true",
+                    help="check render-readiness invariants (tokens/seeds/refs) without "
+                         "calling any provider; exit 1 if a character can't render on-model")
     args = ap.parse_args()
 
     if args.character:
@@ -344,6 +415,8 @@ def main() -> int:
         return 0
     if not args.target:
         ap.error("provide <world>/<story> or --character <world>/<char>")
+    if args.verify:
+        return verify_story(args.target)
     gen_story(args.target, args.provider, args.page, args.seed, args.print_prompts)
     return 0
 

@@ -170,6 +170,22 @@ def test_get_api_models_returns_known_picker_options(client):
     assert data["default"] in server.ALLOWED_MODELS
 
 
+def test_post_api_quality_runs_scorecard_tool(client, monkeypatch):
+    """The Quality button runs scripts/quality_report.py via run_tool and returns its output.
+    We stub run_tool so the test stays isolated from the subprocess."""
+    calls = {}
+
+    async def fake_run_tool(cmd):
+        calls["cmd"] = cmd
+        return {"ok": True, "output": "7/7 gates — excellent"}
+
+    monkeypatch.setattr(server, "run_tool", fake_run_tool)
+    r = client.post("/api/quality")
+    assert r.status_code == 200
+    assert r.json() == {"ok": True, "output": "7/7 gates — excellent"}
+    assert calls["cmd"] == ["scripts/quality_report.py"]
+
+
 def test_get_api_voice_returns_voice_caps(client, monkeypatch):
     monkeypatch.setattr(server, "voice", _FakeVoice(tts=False, stt=True))
     r = client.get("/api/voice")

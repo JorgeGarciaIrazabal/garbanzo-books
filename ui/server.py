@@ -299,6 +299,12 @@ async def api_validate():
     return JSONResponse(await run_tool(["scripts/validate.py"]))
 
 
+@app.post("/api/quality")
+async def api_quality():
+    # The 7-gate quality scorecard (how *good* the books are, beyond pass/fail validation).
+    return JSONResponse(await run_tool(["scripts/quality_report.py"]))
+
+
 # ----------------------------------------------------------------------------- speech (TTS / STT)
 @app.get("/api/voice")
 async def api_voice():

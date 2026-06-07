@@ -16,3 +16,7 @@ Steps:
    - Accessibility/layout: `layout` + `text_zone` + alt text on every page.
    - Illustration: every page has a real Gemini `.png` (SVG placeholders = hard FAIL).
 3. Report an overall PASS/FAIL and an ordered, specific fix list. Offer to apply the fixes.
+4. For a finished book, also run `uv run python scripts/quality_report.py $ARGUMENTS` and
+   report the 7-gate scorecard — validation is "is it broken?", the scorecard is "how good is
+   it?". Surface any WARN gates (voice/colour drift, missing feedback, thin pacing) as polish
+   suggestions.

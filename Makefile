@@ -1,4 +1,4 @@
-.PHONY: setup validate build serve clean test test-backend test-frontend test-all lint ui opencode help check-gemini
+.PHONY: setup validate report build serve clean test test-backend test-frontend test-all lint format type-check coverage quality ci ui opencode help check-gemini
 
 # OpenCode + local Ollama settings. The model/provider are defined in opencode.json;
 # override here if you point Ollama elsewhere.
@@ -16,7 +16,8 @@ RUN ?= uv run python
 help:
 	@echo "Garbanzo Books — storybook studio"
 	@echo "  make setup         create .venv from pyproject.toml via uv (uv sync)"
-	@echo "  make validate      QA all worlds/stories"
+	@echo "  make validate      QA all worlds/stories (pass/fail gate)"
+	@echo "  make report        grade all books against the 7-gate quality checklist"
 	@echo "  make build         build the static site into site/"
 	@echo "  make serve         build + preview at http://localhost:8008"
 	@echo "  make test          run the toolchain self-test"
@@ -25,6 +26,10 @@ help:
 	@echo "  make test-frontend run the vitest suite (app.js + reader.js)"
 	@echo "  make test-all      run backend + frontend (one command)"
 	@echo "  make lint          ruff check the Python tooling"
+	@echo "  make format        ruff format the Python tooling"
+	@echo "  make type-check    mypy type-check the Python tooling"
+	@echo "  make coverage      backend tests with a coverage report"
+	@echo "  make ci            everything CI runs: lint + type-check + tests + validate"
 	@echo "  make ui            run the dynamic UI (FastAPI + OpenCode + local Ollama, no API key)"
 	@echo "  make opencode      start OpenCode with local Ollama ($(OPENCODE_MODEL))"
 	@echo "  make clean         remove site/ build output"
@@ -34,6 +39,9 @@ setup:
 
 validate:
 	$(RUN) scripts/validate.py
+
+report:
+	$(RUN) scripts/quality_report.py
 
 build:
 	$(RUN) scripts/build_site.py
@@ -80,6 +88,21 @@ test-all:
 
 lint:
 	uv run ruff check scripts
+
+format:
+	uv run ruff format scripts
+
+type-check:
+	uv run mypy
+
+coverage:
+	$(RUN) -m pytest tests/backend/ --cov --cov-report=term-missing
+
+# The full local gate — mirrors .github/workflows/deploy-pages.yml so you can catch
+# everything before pushing.
+quality: lint type-check test-backend validate
+
+ci: quality
 
 ui:
 	# The studio UI is a Python FastAPI server (ui/server.py). It shells out to the Python

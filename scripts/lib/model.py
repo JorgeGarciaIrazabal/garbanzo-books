@@ -143,6 +143,7 @@ class Story:
     slug: str
     data: dict[str, Any]
     path: Path  # the story.yaml path
+    included: bool = True  # set by build_site to mark stories in the current build (drafts toggle)
 
     @property
     def dir(self) -> Path:
@@ -238,6 +239,27 @@ def find_story(world_slug: str, story_slug: str) -> Story:
         raise FileNotFoundError(f"No story.yaml at {spath}")
     data = load_yaml(spath)
     return Story(slug=data.get("slug", story_slug), data=data, path=spath)
+
+
+def normalize_rules(world_data: dict[str, Any]) -> list[dict[str, str]]:
+    """Return the world's ``rules`` as a list of ``{"id", "text"}`` dicts.
+
+    Rules may be authored two ways and both are supported so existing worlds keep
+    working: a plain string (gets a positional id ``r1``, ``r2``, …) or a mapping
+    ``{id?, text}`` (an explicit, stable id the author can reference from a story's
+    ``affirms_rules``). This is the bridge that makes prose world-rules
+    machine-affirmable without forcing anyone to rewrite them.
+    """
+    out: list[dict[str, str]] = []
+    for i, rule in enumerate(world_data.get("rules", []) or [], start=1):
+        if isinstance(rule, dict):
+            text = str(rule.get("text", "")).strip()
+            rid = str(rule.get("id") or f"r{i}").strip()
+        else:
+            text = str(rule).strip()
+            rid = f"r{i}"
+        out.append({"id": rid, "text": text})
+    return out
 
 
 def character_with_stage(character: dict[str, Any], stage_id: str | None) -> dict[str, Any]:

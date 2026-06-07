@@ -356,3 +356,19 @@ footer.site { text-align: center; color: var(--muted); padding: 40px 16px; }
   .play-game-btn { padding: 10px; }
   .play-game-btn .play-label { display: none; }
 }
+
+/* Authored fields surfaced on the site (E2): back-cover blurb + the world's laws. */
+.story-summary { color: var(--muted); margin: 0 0 1.2em; max-width: 60ch; line-height: 1.5; }
+.world-rules {
+  list-style: none; padding: 0; margin: 8px 0 0;
+  display: grid; gap: 8px; max-width: 70ch;
+}
+.world-rules li {
+  position: relative; padding: 10px 14px 10px 34px;
+  background: var(--card, #fffdf7); border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+}
+.world-rules li::before {
+  content: "§"; position: absolute; left: 12px; top: 10px;
+  color: var(--accent, #d98a5b); font-weight: 700;
+}

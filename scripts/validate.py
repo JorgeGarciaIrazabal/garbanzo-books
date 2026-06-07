@@ -8,203 +8,55 @@ Usage:
     uv run python scripts/validate.py worlds/<world>/stories/<story>
 
 Exit code 0 = all PASS, 1 = failures, 2 = setup error.
+
+The individual invariants live as focused, independently-testable checkers under
+``scripts/lib/checks/``. This file is the thin runner that composes them and prints
+one report. ``Report``, ``INTERACTION_DATA_KEYS`` and ``PILLARS`` are re-exported here
+for backwards compatibility with existing imports/tests.
 """
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.model import (SCHEMAS, WORLDS, ContentError, load_all_worlds, load_world)  # noqa: E402
-from lib.readability import BANDS, analyze, words  # noqa: E402
-
-try:
-    from jsonschema import Draft202012Validator
-    HAVE_JSONSCHEMA = True
-except Exception:  # noqa: BLE001
-    HAVE_JSONSCHEMA = False
-
-# Allowed interaction types and the keys their `data` payload should carry.
-INTERACTION_DATA_KEYS = {
-    "seek-and-find": ["items"],
-    "spot-the-difference": ["count"],
-    "counting": ["answer"],
-    "rhyme-complete": ["answer"],
-    "word-match": ["pairs"],
-    "sound-hunt": ["sound", "words"],
-    "riddle": ["answer"],
-    "comprehension-question": ["question"],
-    "choice": ["options"],
-    "maze": [],
-    "trace-letter": ["letter"],
-    "memory": [],
-    "drag-order": ["sequence"],
-    "tap-to-reveal": [],
-    "coloring": [],
-    "sorting": ["bins", "items"],
-    "pattern": ["answer"],
-    "odd-one-out": ["answer", "items"],
-    "melody": ["notes"],
-}
-PILLARS = {"phonemic-awareness", "phonics", "fluency", "vocabulary", "comprehension"}
-
-
-class Report:
-    def __init__(self) -> None:
-        self.passes = 0
-        self.fails: list[str] = []
-        self.warns: list[str] = []
-
-    def ok(self, msg: str) -> None:
-        self.passes += 1
-
-    def fail(self, msg: str) -> None:
-        self.fails.append(msg)
-
-    def warn(self, msg: str) -> None:
-        self.warns.append(msg)
-
-
-def load_schema(name: str) -> dict | None:
-    p = SCHEMAS / name
-    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
-
-
-def schema_check(rep: Report, data: dict, schema_name: str, where: str) -> None:
-    if not HAVE_JSONSCHEMA:
-        rep.warn(f"jsonschema not installed — skipped schema check for {where} (pip install jsonschema)")
-        return
-    schema = load_schema(schema_name)
-    if not schema:
-        rep.warn(f"schema {schema_name} missing")
-        return
-    errs = sorted(Draft202012Validator(schema).iter_errors(data), key=lambda e: list(e.path))
-    if errs:
-        for e in errs[:10]:
-            loc = "/".join(str(p) for p in e.path) or "(root)"
-            rep.fail(f"[schema] {where}: {loc}: {e.message}")
-    else:
-        rep.ok(f"schema {where}")
+from lib.checks import (INTERACTION_DATA_KEYS, PILLARS, Report,  # noqa: E402,F401
+                        check_accessibility, check_appearance_token,
+                        check_character_tokens, check_color_consistency,
+                        check_illustration, check_interactivity, check_publish_gate,
+                        check_reading, check_relationships, check_render_readiness,
+                        check_story_roster, check_voice, check_world_rules,
+                        check_world_style, load_schema, schema_check)
+from lib.model import (SCHEMAS, WORLDS, ContentError, Story,  # noqa: E402,F401
+                       load_all_worlds, load_world)
 
 
 def check_world(rep: Report, world) -> None:
+    """Schema + identity/consistency invariants for a world and its characters."""
     schema_check(rep, world.data, "world.schema.json", f"world {world.slug}")
-    art = world.data.get("art_style", {}) or {}
-    if not art.get("prompt_style_block"):
-        rep.fail(f"[consistency] world {world.slug}: art_style.prompt_style_block missing (style won't lock)")
-    else:
-        rep.ok("style block")
-    if not art.get("palette"):
-        rep.fail(f"[consistency] world {world.slug}: art_style.palette empty")
     for cslug, c in world.characters.items():
         schema_check(rep, c, "character.schema.json", f"character {world.slug}/{cslug}")
-        if not c.get("appearance_token"):
-            rep.fail(f"[consistency] character {cslug}: appearance_token missing (visual consistency lever)")
-        elif "TODO" in c.get("appearance_token", ""):
-            rep.warn(f"character {cslug}: appearance_token still has TODO")
-        else:
-            rep.ok(f"appearance_token {cslug}")
+    check_world_style(rep, world)
+    check_character_tokens(rep, world)
+    check_relationships(rep, world)
+    check_color_consistency(rep, world)
+    check_appearance_token(rep, world)
 
 
 def check_story(rep: Report, world, story) -> None:
-    s = story.data
-    where = f"{world.slug}/{story.slug}"
-    schema_check(rep, s, "story.schema.json", f"story {where}")
-
-    band_id = s.get("age_band", "5-7")
-    band = BANDS.get(band_id, BANDS["5-7"])
-    rl = s.get("reading_level", {}) or {}
-    pages = s.get("pages", []) or []
-
-    # --- Consistency: characters referenced exist + have tokens + valid stage ---
-    roster = {c.get("slug"): c for c in s.get("characters", []) or []}
-    for slug, entry in roster.items():
-        ch = world.characters.get(slug)
-        if not ch:
-            rep.fail(f"[consistency] {where}: references missing character '{slug}'")
-            continue
-        if not ch.get("appearance_token"):
-            rep.fail(f"[consistency] {where}: character '{slug}' has no appearance_token")
-        stage = entry.get("stage")
-        if stage:
-            stages = {st.get("stage") for st in ch.get("evolution", []) or []}
-            if stage not in stages and stage != "base":
-                rep.fail(f"[consistency] {where}: character '{slug}' pinned to unknown stage '{stage}'")
-    # Pages referencing characters not in the roster
-    page_nums = {p.get("number") for p in pages}
-    for p in pages:
-        for cp in (p.get("image", {}) or {}).get("characters_present", []) or []:
-            if cp not in world.characters:
-                rep.fail(f"[consistency] {where} p{p.get('number')}: image character '{cp}' not in world")
-    if roster:
-        rep.ok(f"character roster {where}")
-
-    # --- Reading level ---
-    text = " ".join((p.get("text") or "") for p in pages)
-    m = analyze(text)
-    target = rl.get("target_fk_grade", band.get("fk_grade"))
-    tol = rl.get("fk_grade_tolerance", 1.0)
-    max_wpp = rl.get("max_words_per_page", band["max_words_per_page"])
-    if band.get("fk_grade") is not None and target is not None:
-        if m.fk_grade > target + tol:
-            rep.fail(f"[reading] {where}: FK grade {m.fk_grade} > target {target}+{tol}")
-        else:
-            rep.ok(f"reading level {where}")
-    over = [p.get("number") for p in pages
-            if p.get("kind") not in ("title", "interaction")
-            and len(words(p.get("text") or "")) > max_wpp]
-    if over:
-        rep.fail(f"[reading] {where}: pages over {max_wpp}-word cap: {over}")
-
-    # --- Interactivity ---
-    pillars_seen = set()
-    has_interaction = False
-    for p in pages:
-        it = p.get("interaction")
-        if not it:
-            continue
-        has_interaction = True
-        t = it.get("type")
-        need = INTERACTION_DATA_KEYS.get(t)
-        if need is None:
-            rep.fail(f"[interaction] {where} p{p.get('number')}: unknown type '{t}'")
-            continue
-        data = it.get("data", {}) or {}
-        missing = [k for k in need if k not in data]
-        if missing:
-            rep.fail(f"[interaction] {where} p{p.get('number')} ({t}): data missing {missing}")
-        if it.get("skill") in PILLARS:
-            pillars_seen.add(it.get("skill"))
-        # branching targets resolve
-        if t == "choice":
-            for opt in data.get("options", []) or []:
-                if opt.get("goto") not in page_nums:
-                    rep.fail(f"[interaction] {where} p{p.get('number')}: choice goto "
-                             f"{opt.get('goto')} is not a real page")
-    if has_interaction:
-        rep.ok(f"interactions {where}")
-        if len(pillars_seen) < 3:
-            rep.warn(f"{where}: interactions cover only {len(pillars_seen)} reading pillar(s) (<3)")
-    else:
-        rep.warn(f"{where}: no interactions yet")
-
-    # --- Accessibility / layout / illustration ---
-    for p in pages:
-        n = p.get("number")
-        img = p.get("image", {}) or {}
-        if not img.get("alt"):
-            rep.warn(f"{where} p{n}: image has no alt text")
-        if p.get("kind") not in ("title",) and not p.get("layout"):
-            rep.warn(f"{where} p{n}: no layout (text placement) set")
-        if not img.get("file"):
-            rep.warn(f"{where} p{n}: no image file yet (run /illustrate)")
-        elif not (story.dir / img["file"]).exists():
-            rep.fail(f"[illustration] {where} p{n}: image file '{img['file']}' not found")
-
-    if s.get("status") == "published" and rep.fails:
-        rep.fail(f"[publish] {where}: marked published but has failures above")
+    """All story-level invariants. Order matters: the publish gate runs LAST because it
+    reads the failures accumulated by every checker above it."""
+    schema_check(rep, story.data, "story.schema.json", f"story {world.slug}/{story.slug}")
+    check_story_roster(rep, world, story)
+    check_reading(rep, world, story)
+    check_interactivity(rep, world, story)
+    check_world_rules(rep, world, story)
+    check_voice(rep, world, story)
+    check_accessibility(rep, world, story)
+    check_illustration(rep, world, story)
+    check_render_readiness(rep, world, story)
+    check_publish_gate(rep, world, story)
 
 
 def discover(target: str | None, errors: list[str]):
@@ -224,10 +76,10 @@ def discover(target: str | None, errors: list[str]):
             story_slug = parts[parts.index("stories") + 1]
             w = load_world(world_slug)
             errors.extend(w.errors)
-            st = next((s for s in w.stories if s.slug == story_slug), None)
+            story_obj: Story | None = next((s for s in w.stories if s.slug == story_slug), None)
             yield w, None
-            if st:
-                yield w, st
+            if story_obj:
+                yield w, story_obj
         else:
             world_slug = parts[parts.index("worlds") + 1] if "worlds" in parts else p.name
             w = load_world(world_slug)

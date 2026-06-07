@@ -336,3 +336,33 @@ def test_build_clears_old_site_dir_on_each_run(workspace, write_world, factories
     assert stale.exists()
     build(include_drafts=False)
     assert not stale.exists(), "Stale files should not survive a rebuild"
+
+
+# ============================================================================ surfaced authored fields (E2)
+def test_reader_renders_story_summary(workspace, write_world, factories):
+    """The back-cover blurb (story.summary) appears on the reader landing — but
+    never inside the runtime JSON payload."""
+    import re
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww", status="published",
+                                          summary="A cozy tale about courage and acorns.")])
+    build(include_drafts=False)
+    reader = (workspace.site / "story" / "ww" / "s1" / "index.html").read_text()
+    chrome = re.sub(r'<script id="story-data"[^>]*>[\s\S]*?</script>', "", reader)
+    assert "A cozy tale about courage and acorns." in chrome
+    assert "story-summary" in chrome
+
+
+def test_world_hub_lists_world_rules(workspace, write_world, factories):
+    """A world's laws are surfaced on its hub so every story's adherence is reviewable."""
+    write_world(slug="ww",
+                world_overrides={"rules": ["Magic is gentle and small.",
+                                           {"id": "kindness", "text": "Kindness always wins."}]},
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww", status="published")])
+    build(include_drafts=False)
+    hub = (workspace.site / "world" / "ww" / "index.html").read_text()
+    assert "The rules of this world" in hub
+    assert "Magic is gentle and small." in hub
+    assert "Kindness always wins." in hub

@@ -16,6 +16,44 @@ let busy = false;
 let currentAbort = null; // AbortController for the in-flight chat stream (for the Stop button)
 let libraryWorlds = []; // cached for the world <select> in forms
 
+// Session persistence: a refresh used to lose the whole studio conversation. We keep the
+// OpenCode sessionId + a lightweight (role,text) transcript in localStorage so a reload
+// resumes where you left off. "New session" clears it.
+const GB_SESS_KEY = "gb_session";
+let transcript = []; // [{role, text}] of user/assistant turns, capped
+function persistSession() {
+  try { localStorage.setItem(GB_SESS_KEY, JSON.stringify({ id: sessionId, msgs: transcript.slice(-40) })); } catch (e) { /* storage full/blocked — non-fatal */ }
+}
+function pushMsg(role, text) {
+  if (!text) return;
+  transcript.push({ role, text });
+  if (transcript.length > 50) transcript = transcript.slice(-50);
+  persistSession();
+}
+function clearSession() {
+  transcript = [];
+  try { localStorage.removeItem(GB_SESS_KEY); } catch (e) { /* non-fatal */ }
+}
+function restoreSession() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(GB_SESS_KEY) || "null"); } catch (e) { saved = null; }
+  if (!saved || !Array.isArray(saved.msgs) || !saved.msgs.length) return false;
+  sessionId = saved.id || null;
+  transcript = saved.msgs.slice(-40);
+  if (messagesEl) messagesEl.innerHTML = ""; // drop the fresh-load welcome before replaying
+  for (const m of saved.msgs) {
+    if (m.role === "assistant") {
+      const b = addMsg("assistant", "");
+      if (b) { b._md = m.text; renderAssistant(b); }
+    } else {
+      addMsg(m.role, m.text, m.role === "system" ? "system" : undefined);
+    }
+  }
+  addMsg("system", "↩ Resumed your previous session — keep going, or tick “New session” to start fresh.", "system");
+  if (sessionId) setText("#conn", "resumed " + String(sessionId).slice(0, 8));
+  return true;
+}
+
 // Model ids (must match the server's MODELS / opencode.json). MiniMax = fast & reliable default;
 // DeepSeek = more creative, auto-selected for the story-writing form.
 const M_FAST = "ollama/minimax-m3:cloud";
@@ -605,7 +643,10 @@ async function streamChat(prompt) {
   closeForm();
   setBusy(true);
   startActivity("Sending…");
+  // Ticking "New session" starts a clean transcript so the resumed history doesn't bleed in.
+  if ($("#newsess") && $("#newsess").checked) clearSession();
   addMsg("user", prompt);
+  pushMsg("user", prompt);
   const state = { curBubble: null, toolEls: new Map() };
   currentAbort = new AbortController();
   try {
@@ -682,6 +723,8 @@ async function streamChat(prompt) {
         const plain = mdToSpeech(state.curBubble._md);
         if ((ttsOn || kidsMode) && plain) speak(plain);
       }
+      // Persist the finished assistant turn (form JSON already stripped from _md above).
+      if (state.curBubble._md) pushMsg("assistant", state.curBubble._md);
     }
     if (!formShown) showQuickReplies();
     loadLibrary();
@@ -702,6 +745,7 @@ function handleEvent(ev, state) {
     case "session":
       sessionId = ev.sessionId;
       setText("#conn", "session " + String(ev.sessionId || "").slice(0, 8));
+      persistSession();
       break;
     case "status":
       // busy/idle heartbeat from OpenCode
@@ -1016,6 +1060,7 @@ if (guided) guided.addEventListener("submit", submitForm);
 const btnStop = $("#stop"); if (btnStop) btnStop.onclick = stopWorkflow;
 const btnBuild = $("#btn-build"); if (btnBuild) btnBuild.onclick = () => runScript("/api/build", "Build site");
 const btnValidate = $("#btn-validate"); if (btnValidate) btnValidate.onclick = () => runScript("/api/validate", "Validate");
+const btnQuality = $("#btn-quality"); if (btnQuality) btnQuality.onclick = () => runScript("/api/quality", "Quality report");
 const btnRefresh = $("#btn-refresh"); if (btnRefresh) btnRefresh.onclick = loadLibrary;
 
 document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
@@ -1080,6 +1125,7 @@ if (micBtn) {
 }
 
 addMsg("system", "Welcome to the studio. Pick a guided form on the left, or just type what you'd like to make.", "system");
+restoreSession(); // replays a prior conversation (and replaces the welcome) if one was saved
 loadModels();
 loadVoiceCaps();
 loadLibrary();

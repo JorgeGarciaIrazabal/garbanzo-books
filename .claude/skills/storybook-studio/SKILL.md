@@ -9,33 +9,31 @@ You are running a professional children's-book studio in this repo. Your job is 
 request from idea → world → characters → written, illustrated, interactive, age-appropriate
 book → validated → published, while never breaking character/world/style consistency.
 
+This skill is a **thin router**: it sequences the work and runs the interview. It does *not*
+restate the craft rules — those live in one place, `CLAUDE.md` (pre-flight checklist, the
+skill/agent/command model, the per-stage definition of done, and the Core principles). Read
+those once, then route.
+
 ## First, orient
-1. Read `CLAUDE.md` (workspace map + invariants) and `methodology/README.md`.
+1. Complete the **pre-flight checklist** in `CLAUDE.md` (schemas + methodology + principles).
 2. Decide which stage the user needs and jump in — you rarely do all stages at once.
 
 ## The pipeline (and which skill owns each stage)
-| Stage | Skill | Output |
+| Stage | Skill / agent | Output |
 |---|---|---|
 | 1. World bible + art style | `world-building` | `worlds/<world>/world.yaml`, `style-guide.md` |
 | 2. Characters | `character-design` | `worlds/<world>/characters/*.yaml` (+ reference art) |
 | 3. Story plan & pages | `story-craft` | `worlds/<world>/stories/<story>/story.yaml` |
 | 4. Age/reading adaptation | `reading-level-adaptation` | revised page text, verified levels |
 | 5. Interactions | `interactive-elements` | `interaction` blocks on pages |
-| 6. Page layout (text on image) | `page-layout` | `layout` + `text_zone` per page |
+| 6. Page layout (text on image) | `page-layout` (inline — no agent) | `layout` + `text_zone` per page |
 | 7. Illustration | `illustration-consistency` | `images/page-*.png` |
-| 8. Validate | (scripts/validate.py) | green checks |
+| 8. Validate + grade | `scripts/validate.py` + `scripts/quality_report.py` | green checks + scorecard |
 | 9. Publish | `publishing` | `site/` + GitHub Pages |
 
-## Hard rules you enforce at every stage
-- **A book always belongs to a world** (`world → story → tags`). If none exists, do
-  `world-building` first.
-- **Never hand-write a full image prompt.** Image prompts are *assembled* (scene +
-  `appearance_token`s + world `prompt_style_block` + palette + negative). Use
-  `scripts/generate_images.py`.
-- **Every character referenced in a story must exist** as a `*.yaml` with an
-  `appearance_token`, and the story must pin its `evolution.stage`.
-- **Language is age-adapted and verified** (`scripts/reading_level.py`) before publish.
-- **Validate before publish** (`scripts/validate.py`); only then set `status: published`.
+At each stage hand-off, honour the **definition of done** in `CLAUDE.md`: schema-valid,
+stage invariants hold, no `quality_report` gate regressed. Delegate a stage to its paired
+**agent** when the work is large/iterative; otherwise run the skill inline.
 
 ## Working with the user
 - Confirm the **age band & reading level** early — it shapes everything downstream.

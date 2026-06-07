@@ -57,8 +57,21 @@
     },
     "rules": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "The laws of the world (how magic/technology/society works). Stories must never contradict these — they are the consistency contract."
+      "description": "The laws of the world (how magic/technology/society works). Stories must never contradict these — they are the consistency contract. Each rule may be a plain string (the validator gives it a positional id r1, r2, …) or an object with a stable `id` + `text` so a story can reference it via `affirms_rules`.",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["text"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "Stable id a story's affirms_rules can point at." },
+              "text": { "type": "string" }
+            }
+          }
+        ]
+      }
     },
     "factions": {
       "type": "array",

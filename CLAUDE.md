@@ -64,7 +64,55 @@ ui/             Dynamic UI server (OpenCode + local Ollama, no API key) — the 
    choices, comprehension). Match the interaction type to the age band & target skill.
 6. **Validate before publish.** `scripts/validate.py` checks schema validity, consistency
    (every character referenced exists; appearance_tokens present; reading level on target;
-   images exist) before a book may be marked `published`.
+   images exist) before a book may be marked `published`. `scripts/quality_report.py` then
+   grades *how good* the book is against the 7-gate pipeline.
+
+## Before acting (pre-flight)
+
+**Every skill and agent shares this checklist — read it once here instead of each restating
+its own.** Before producing or editing any world/character/story:
+
+1. Read the **schema** for what you're touching (`schemas/world|character|story.schema.json`) —
+   it is the data contract.
+2. Read the **methodology** doc(s) relevant to the stage (`methodology/`): `storybook-pipeline.md`
+   (structure & gates), `reading-pedagogy.md` (age/level), `consistency.md` (visual + behavioural
+   identity), `interactivity.md` (games), `accessibility.md` (legible text-on-image).
+3. Re-read the **Core principles** above — they are inviolable (consistency is assembled,
+   personality is a contract, age-adapt the language not the heart).
+4. Load the owning `world.yaml` (+ any referenced `characters/*.yaml`) so you inherit the locked
+   tone, art style, rules, and appearance tokens. Never invent details that contradict them.
+
+A specialist skill/agent may name the *one* methodology doc most central to its craft, but it
+should point here rather than maintain its own divergent read-list.
+
+## Skills, agents, and commands
+
+Three layers, one job each — don't confuse them:
+
+- **Skill** (`.claude/skills/<name>/SKILL.md`) — *the procedure*: the how-to for one craft
+  (world-building, character-design, story-craft, …). The source of method.
+- **Agent** (`.claude/agents/<name>.md`) — *a delegated worker* that runs a skill in its **own
+  context window**. Use one when a stage is large or iterative and you want it handled
+  independently; for a quick single-author pass, just run the skill inline. An agent adds
+  isolation, not a different method — it follows the same skill. (`book-validator` is the
+  exception: a read-only QA *gate*, not a craft specialist.)
+- **Command** (`.claude/commands/<name>.md`) — *the user entry point* (`/new-world`, `/new-story`,
+  …) that kicks off a skill or the orchestrator.
+
+`page-layout` has no paired agent by design — it always runs inline as part of a story pass.
+
+## Definition of done (every stage)
+
+A stage is not "done" — and must not hand off to the next — until:
+
+1. The artifact is **schema-valid** (`uv run python scripts/validate.py worlds/<world>` reports no
+   new failures for it).
+2. Its **stage-specific invariants** hold (e.g. reading level on target after leveling; every page
+   illustrated before publish).
+3. For a finished book, `uv run python scripts/quality_report.py <world>/<story>` is reviewed and
+   no gate regressed.
+
+Never mark a story `published` with outstanding validator failures — the publish gate blocks it.
 
 ## Typical workflow
 

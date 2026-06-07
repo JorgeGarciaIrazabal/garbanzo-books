@@ -190,9 +190,11 @@ def test_gen_story_only_page_skips_other_pages(workspace, write_world, factories
     gi.gen_story("ww/s1", provider="placeholder", only_page=1,
                  seed_override=None, print_only=False)
     sdir = workspace.worlds / "ww" / "stories" / "s1"
-    files = sorted(p.name for p in (sdir / "images").iterdir())
+    images = sorted(p.name for p in (sdir / "images").iterdir() if p.suffix != ".txt")
     # only page-01 was rendered
-    assert files == ["page-01.svg"]
+    assert images == ["page-01.svg"]
+    # and its audit sidecar sits beside it (A4)
+    assert (sdir / "images" / "page-01.prompt.txt").exists()
 
 
 def test_gen_story_print_prompts_does_not_write_files(workspace, write_world, factories, capsys):
@@ -237,6 +239,44 @@ def test_gen_story_evolution_stage_flows_through_to_prompt(workspace, write_worl
                  seed_override=None, print_only=True)
     out = capsys.readouterr().out
     assert "[brave: a brave-medal pinned to the coat]" in out
+
+
+# ============================================================================ prompt sidecar (A4)
+def test_gen_story_writes_prompt_sidecar_with_assembled_prompt(workspace, write_world, factories):
+    """Every rendered page gets a page-NN.prompt.txt recording the exact assembled
+    prompt + seed + characters, so renders are auditable and reproducible."""
+    char = factories.character(slug="hero", world="ww")
+    char["seed"] = 4242
+    write_world(slug="ww", characters=[char],
+                stories=[factories.story(slug="s1", world="ww")])
+    gi.gen_story("ww/s1", provider="placeholder", only_page=1,
+                 seed_override=None, print_only=False)
+    side = workspace.worlds / "ww" / "stories" / "s1" / "images" / "page-01.prompt.txt"
+    assert side.exists()
+    body = side.read_text()
+    assert "PROMPT:" in body and "SEED:" in body and "CHARACTERS: hero" in body
+
+
+# ============================================================================ verify mode (A4)
+def test_verify_story_ready_returns_zero(workspace, write_world, factories):
+    char = factories.character(slug="hero", world="ww")
+    char["seed"] = 4242
+    char["reference_images"] = ["hero.refs/model-sheet.png"]
+    write_world(slug="ww", characters=[char],
+                stories=[factories.story(slug="s1", world="ww")])
+    assert gi.verify_story("ww/s1") == 0
+
+
+def test_verify_story_blocks_when_present_character_missing_token(workspace, write_world,
+                                                                   factories, capsys):
+    char = factories.character(slug="hero", world="ww")
+    char["appearance_token"] = ""  # can't be injected → not render-ready
+    write_world(slug="ww", characters=[char],
+                stories=[factories.story(slug="s1", world="ww")])
+    rc = gi.verify_story("ww/s1")
+    out = capsys.readouterr().out
+    assert rc == 1
+    assert "NOT READY" in out
 
 
 # ============================================================================ character sheet

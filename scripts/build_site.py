@@ -21,13 +21,18 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.model import ROOT, load_all_worlds  # noqa: E402
+from lib.colors import norm_hex  # noqa: E402
+from lib.model import ROOT, load_all_worlds, normalize_rules  # noqa: E402
 
 SITE = ROOT / "site"
 ASSET_SRC = Path(__file__).resolve().parent / "site_assets"
 
 # Reader base font size (px) per age band (accessibility.md).
 READER_BASE = {"0-3": 28, "3-5": 24, "5-7": 22, "7-9": 18, "9-12": 16}
+
+# Image file types copied into the published site (everything else in images/, e.g. the
+# page-NN.prompt.txt audit sidecars, stays internal).
+IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif", ".avif"}
 
 
 def esc(s) -> str:
@@ -78,7 +83,9 @@ def thumb_for_story(story) -> str | None:
 def palette_swatches(world) -> str:
     out = ""
     for s in (world.data.get("art_style", {}) or {}).get("palette", []) or []:
-        hexc = "#" + str(s.get("hex", "")).lstrip("#")
+        hexc = norm_hex(s.get("hex"))
+        if not hexc:
+            continue
         out += f'<div class="swatch" title="{esc(s.get("name",""))} {esc(hexc)}" style="background:{esc(hexc)}"></div>'
     return out
 
@@ -134,6 +141,15 @@ def build_world(world, root="../../") -> str:
   <p>{esc(c.get('one_liner') or c.get('role',''))}</p>
   <div class="chips">{chips(c.get('personality',{}).get('traits'))}</div></div>
 </div>"""
+    # The laws of the world — surfaced so a reader (and the author) can see what every
+    # story here must honour (Core Principle #2; ties to story.affirms_rules).
+    rules = normalize_rules(world.data)
+    rules_html = ""
+    if rules:
+        items = "".join(f"<li>{esc(r['text'])}</li>" for r in rules if r["text"])
+        if items:
+            rules_html = (f'\n  <h2 class="section-title">The rules of this world</h2>'
+                          f'\n  <ul class="world-rules">{items}</ul>')
     story_cards = ""
     for s in pub:
         thumb = thumb_for_story(s)
@@ -156,7 +172,7 @@ def build_world(world, root="../../") -> str:
   <h2 class="section-title">Stories</h2>
   <div class="grid">{story_cards or '<p>No stories yet.</p>'}</div>
   <h2 class="section-title">Characters</h2>
-  <div class="grid">{chars or '<p>No characters yet.</p>'}</div>
+  <div class="grid">{chars or '<p>No characters yet.</p>'}</div>{rules_html}
 </div>"""
     return shell(world.data.get("title", "World"), body, root)
 
@@ -186,12 +202,15 @@ def build_reader(world, story, root="../../../") -> str:
         f'<a class="chip" href="{root}tags/{esc(t)}/index.html">{esc(t)}</a>'
         for t in story.data.get("tags", []) or []
     )
+    # The back-cover blurb (summary) sits under the logline on the landing, when present.
+    summary = (story.data.get("summary") or "").strip()
+    summary_html = f'\n  <p class="story-summary">{esc(summary)}</p>' if summary else ""
     body = f"""<div class="reader" style="--reader-base:{base}px">
   <div class="breadcrumb"><a href="{root}index.html">Worlds</a> ›
     <a href="{root}world/{world.slug}/index.html">{esc(world.data.get('title'))}</a> ›
     {esc(story.data.get('title'))}</div>
   <h1 style="margin:.2em 0">{esc(story.data.get('title'))}</h1>
-  <p style="color:var(--muted);margin:.2em 0 1em">{esc(story.data.get('logline',''))}</p>
+  <p style="color:var(--muted);margin:.2em 0 1em">{esc(story.data.get('logline',''))}</p>{summary_html}
   <div id="stage"></div>
   <div id="interaction"></div>
   <div class="reader-controls">
@@ -273,11 +292,12 @@ def build(include_drafts: bool) -> dict:
                 continue
             sdir = SITE / "story" / w.slug / s.slug
             (sdir / "images").mkdir(parents=True, exist_ok=True)
-            # copy page images
+            # copy page images (only image files — never the page-NN.prompt.txt audit
+            # sidecars, which are internal and may quote the full assembled prompt)
             src_images = s.dir / "images"
             if src_images.is_dir():
                 for img in src_images.iterdir():
-                    if img.is_file():
+                    if img.is_file() and img.suffix.lower() in IMAGE_EXTS:
                         shutil.copy2(img, sdir / "images" / img.name)
             # copy cover if outside images
             cover = (s.data.get("cover") or {}).get("image")

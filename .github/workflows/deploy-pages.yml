@@ -3,6 +3,8 @@ name: Deploy storybooks to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -15,7 +17,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Quality gate — runs on every push AND pull request. The build/deploy below depend
+  # on it, so a lint error, a failing test, or invalid content can never reach Pages.
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Sync environment (with dev tooling)
+        run: uv sync
+      - name: Lint
+        run: uv run ruff check scripts
+      - name: Type-check
+        run: uv run mypy
+      - name: Backend tests
+        run: uv run python -m pytest tests/backend/ -q
+      - name: Frontend tests
+        working-directory: tests/frontend
+        run: |
+          npm install --no-fund --no-audit
+          npx vitest run
+      - name: Validate all books
+        run: uv run python scripts/validate.py
+
   build:
+    needs: quality
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +51,6 @@ jobs:
         uses: astral-sh/setup-uv@v5
       - name: Sync environment
         run: uv sync --no-dev
-      - name: Validate all books
-        run: uv run python scripts/validate.py
       - name: Build site
         run: uv run python scripts/build_site.py
       - uses: actions/upload-pages-artifact@v3
@@ -33,6 +59,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

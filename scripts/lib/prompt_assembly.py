@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .colors import norm_hex
 from .model import World, character_with_stage
 
 
@@ -26,9 +27,9 @@ def _palette_phrase(art_style: dict[str, Any]) -> str:
     swatches = art_style.get("palette", []) or []
     parts = []
     for s in swatches:
-        hex_ = str(s.get("hex", "")).lstrip("#")
-        if hex_:
-            parts.append(f"{s.get('name', s.get('role', 'color'))} #{hex_}")
+        h = norm_hex(s.get("hex"))
+        if h:
+            parts.append(f"{s.get('name', s.get('role', 'color'))} {h}")
     return ", ".join(parts)
 
 
@@ -60,9 +61,9 @@ def assemble_page_prompt(world: World, story: dict[str, Any], page: dict[str, An
             tokens.append(token)
         used_chars.append(slug)
         for cp in char.get("appearance", {}).get("color_palette", []) or []:
-            hex_ = str(cp.get("hex", "")).lstrip("#")
-            if hex_:
-                char_palettes.append(f"{slug} {cp.get('part','')} #{hex_}")
+            h = norm_hex(cp.get("hex"))
+            if h:
+                char_palettes.append(f"{slug} {cp.get('part','')} {h}")
         refs.extend(char.get("reference_images", []) or [])
         if seed is None and char.get("seed") is not None and len(present) == 1:
             seed = char.get("seed")

@@ -25,4 +25,7 @@ Steps:
 falls back to SVG placeholders — treat that as a hard failure: set the key, re-run, and
 verify every page has a real `.png` before continuing. Never accept `.svg` output for a page
 or character sheet.)
-You may delegate to the **illustration-director** agent.
+
+**Delegation:** for a large or iterative illustration pass, hand this to the
+**illustration-director** agent (its own context window); for a quick pass, run the skill
+inline. See *Skills, agents, and commands* in `CLAUDE.md`.

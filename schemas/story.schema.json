@@ -36,6 +36,12 @@
     "themes": { "type": "array", "items": { "type": "string" } },
     "moral": { "type": "string", "description": "The takeaway, shown not told." },
 
+    "affirms_rules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Ids of the world `rules` this book deliberately engages (see world.rules). Makes the world's laws traceable/reviewable per book; the validator checks each id resolves."
+    },
+
     "characters": {
       "type": "array",
       "minItems": 1,
