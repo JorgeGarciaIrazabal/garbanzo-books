@@ -24,19 +24,24 @@ def _gate(gates, name):
 
 
 def _full_story(factories):
-    """A story rich enough to pass every gate, for one-failure-at-a-time tests."""
+    """A story rich enough to pass every gate, for one-failure-at-a-time tests.
+    Fun-first: the games are VARIED kinds of fun and include rich (non-quiz) ones."""
     pages = [{"number": 0, "kind": "title", "text": "T", "image": {"prompt": "t", "alt": "t", "file": "images/p0.png"}}]
-    skills = ["phonics", "vocabulary", "comprehension"]
+    games = {
+        3: {"type": "rhyme-complete", "data": {"answer": "x"}},
+        7: {"type": "drag-sort", "data": {"bins": [{"label": "In", "key": "in"}],
+                                          "items": [{"label": "sock", "bin": "in"}]}},
+        11: {"type": "sequence-recall", "data": {"sequence": ["A", "B", "C"]}},
+    }
     for i in range(1, 13):
         page = {
             "number": i, "kind": "story", "text": "The hero ran fast and had fun today.",
             "image": {"prompt": "scene", "characters_present": ["hero"], "alt": "a", "file": f"images/p{i}.png"},
             "layout": {"text_position": "lower-third"},
         }
-        if i in (3, 7, 11):
-            page["interaction"] = {"type": "rhyme-complete", "prompt": "go",
-                                   "skill": skills[(i // 4) % 3], "data": {"answer": "x"},
-                                   "feedback": {"correct": "Yes!", "try_again": "Again"}}
+        if i in games:
+            page["interaction"] = {"prompt": "go", "skill": "engagement",
+                                   "feedback": {"correct": "Yes!", "try_again": "Again"}, **games[i]}
         pages.append(page)
     return _story(factories, pages=pages, cover={"image": "images/cover.png"})
 
@@ -85,15 +90,18 @@ def test_character_art_gate_warns_without_reference(factories):
     assert _gate(qr.score_story(w, _full_story(factories)), "Character art").ok is False
 
 
-def test_engagement_gate_warns_on_low_pillar_coverage(factories):
+def test_engagement_gate_warns_when_all_games_are_quizzes(factories):
+    """Fun-first: a book whose every game is the same pick-an-answer quiz fails the gate —
+    it lacks variety AND lacks a rich game a kid actually DOES."""
     char = factories.character(slug="hero", world="ww")
     char["reference_images"] = ["x.png"]
     w = _world(factories, characters=[char])
     st = _full_story(factories)
     for p in st.data["pages"]:
         if p.get("interaction"):
-            p["interaction"]["skill"] = "phonics"  # collapse to one pillar
-    assert _gate(qr.score_story(w, st), "Engagement & skills").ok is False
+            p["interaction"]["type"] = "comprehension-question"  # collapse to one quiz type
+            p["interaction"]["data"] = {"question": "?", "options": ["a", "b"], "answer_index": 0}
+    assert _gate(qr.score_story(w, st), "Fun & games").ok is False
 
 
 def test_finish_gate_warns_without_cover(factories):

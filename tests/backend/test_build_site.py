@@ -29,7 +29,7 @@ def test_build_emits_top_level_files(workspace):
     assert (site / "assets").is_dir()
     assert (site / "search-index.json").exists()
     assert (site / "sitemap.xml").exists()
-    assert stats == {"worlds": 0, "stories": 0, "tags": 0, "drafts_included": False}
+    assert stats == {"worlds": 0, "stories": 0, "tags": 0, "drafts_included": False, "out": "site"}
 
 
 def test_build_returns_counts_in_stats(workspace, write_world, factories):
@@ -161,8 +161,9 @@ def test_reader_html_embeds_story_data_json(workspace, write_world, factories):
     build(include_drafts=False)
     reader = (workspace.site / "story" / "ww" / "s1" / "index.html").read_text()
     assert '<script id="story-data" type="application/json">' in reader
-    # the runtime depends on the reader.js bundle
-    assert "reader.js" in reader
+    # the runtime depends on the split reader bundle (core controller + last-loaded boot)
+    assert "reader.core.js" in reader
+    assert "reader.boot.js" in reader
 
 
 def test_reader_html_payload_only_contains_runtime_keys(workspace, write_world, factories):

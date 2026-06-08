@@ -34,6 +34,18 @@ function clearSession() {
   transcript = [];
   try { localStorage.removeItem(GB_SESS_KEY); } catch (e) { /* non-fatal */ }
 }
+function clearChat() {
+  // Stop anything in flight so the cleared UI can't get clobbered by late events.
+  if (currentAbort) { try { currentAbort.abort(); } catch (e) { /* non-fatal */ } }
+  if (messagesEl) messagesEl.innerHTML = "";
+  hideQuickReplies();
+  closeForm();
+  sessionId = null;
+  clearSession();
+  setText("#conn", "fresh session");
+  // Make the next Send start clean without the user having to remember the checkbox.
+  const ns = $("#newsess"); if (ns) ns.checked = true;
+}
 function restoreSession() {
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(GB_SESS_KEY) || "null"); } catch (e) { saved = null; }
@@ -54,14 +66,49 @@ function restoreSession() {
   return true;
 }
 
-// Model ids (must match the server's MODELS / opencode.json). MiniMax = fast & reliable default;
-// DeepSeek = more creative, auto-selected for the story-writing form.
-const M_FAST = "ollama/minimax-m3:cloud";
+// Model ids (must match the server's MODELS / opencode.json). The studio's three tiers:
+//   M_FAST     = Nemotron-3-Ultra    — default for craft / world / character / build / validate
+//   M_CREATIVE = DeepSeek-V4-Pro     — used when the agent is writing the story
+//   M_SEARCH   = MiniMax-M3          — used when the agent is doing information gathering
+// Plus the "auto" sentinel: the server picks the right one per the agent's [[stage:...]] tag.
+const M_FAST = "ollama/nemotron-3-ultra:cloud";
 const M_CREATIVE = "ollama/deepseek-v4-pro:cloud";
-function currentModel() { const s = $("#model-select"); return s && s.value ? s.value : M_FAST; }
+const M_SEARCH = "ollama/minimax-m3:cloud";
+const M_AUTO = "auto";
+// stage → friendly label, for the live "currently using" chip next to the picker.
+const STAGE_LABEL = {
+  story: "story (DeepSeek)", craft: "craft (Nemotron)", world: "world (Nemotron)",
+  character: "character (Nemotron)", build: "build (Nemotron)", validate: "validate (Nemotron)",
+  research: "research (MiniMax)", done: "done (Nemotron)",
+};
+// Server-resolved model for the current/last turn (when in Auto mode), so the picker can show it.
+let resolvedModel = null;
+let lastStage = null;
+function currentModel() { const s = $("#model-select"); return s && s.value ? s.value : M_AUTO; }
 function setModel(id) {
   const s = $("#model-select");
   if (s && id && [...s.options].some(o => o.value === id)) s.value = id;
+  paintStageChip();
+}
+function paintStageChip() {
+  const chip = $("#stage-chip");
+  if (!chip) return;
+  const sel = $("#model-select");
+  const v = sel ? sel.value : M_AUTO;
+  if (v === M_AUTO) {
+    const label = lastStage ? STAGE_LABEL[lastStage] || `auto (${lastStage})` : "auto (default → fast)";
+    chip.textContent = `✨ ${label}`;
+    chip.className = "stage-chip auto";
+  } else {
+    // Pinned — show what was picked, plus what Auto would have used right now.
+    const autoLabel = lastStage ? STAGE_LABEL[lastStage] : "auto";
+    const tip = (v !== (resolvedModel || v)) ? ` · auto would use ${autoLabel}` : "";
+    chip.textContent = `📌 ${v.split("/").pop().replace(":cloud","")}${tip}`;
+    chip.className = "stage-chip pinned";
+  }
+  chip.title = v === M_AUTO
+    ? "Auto mode — the server picks the best model for the next step based on the stage tag the agent emits."
+    : "Pinned — the studio always uses this model. Switch to Auto to let the studio pick per stage.";
 }
 async function loadModels() {
   const sel = $("#model-select");
@@ -70,13 +117,31 @@ async function loadModels() {
     const res = await fetch("/api/models");
     const data = await res.json();
     const models = data.models || [];
-    sel.innerHTML = models.map(m => `<option value="${escapeHtml(m.id)}">${escapeHtml(m.label || m.id)}</option>`).join("");
-    setModel(data.default || M_FAST);
+    // Put Auto first so it's the obvious default, then the rest in server order.
+    const ordered = models.slice().sort((a, b) => {
+      if (a.id === M_AUTO) return -1;
+      if (b.id === M_AUTO) return 1;
+      return 0;
+    });
+    sel.innerHTML = ordered.map(m => `<option value="${escapeHtml(m.id)}">${escapeHtml(m.label || m.id)}</option>`).join("");
+    // Persisted user choice wins (so a user who explicitly pinned a model isn't overridden on reload).
+    const saved = localStorage.getItem("gb_model");
+    if (saved && ordered.some(m => m.id === saved)) sel.value = saved;
+    else sel.value = M_AUTO;
+    paintStageChip();
   } catch (e) {
     // Fallback so the picker still works if /api/models is unreachable.
-    sel.innerHTML = `<option value="${M_FAST}">MiniMax-M3 (default)</option>` +
-                    `<option value="${M_CREATIVE}">DeepSeek-V4-Pro (creative)</option>`;
+    sel.innerHTML = `<option value="${M_AUTO}">✨ Auto (switch by stage) — recommended</option>` +
+                    `<option value="${M_FAST}">Nemotron-3-Ultra — fast (default for craft)</option>` +
+                    `<option value="${M_CREATIVE}">DeepSeek-V4-Pro — more creative</option>` +
+                    `<option value="${M_SEARCH}">MiniMax-M3 — best for research</option>`;
+    sel.value = M_AUTO;
+    paintStageChip();
   }
+}
+// Persist the user's explicit picker choice so reloads don't reset it (Auto is also persisted).
+function persistModelChoice() {
+  try { localStorage.setItem("gb_model", currentModel()); } catch (e) { /* storage full/blocked — non-fatal */ }
 }
 
 // ----------------------------------------------------------------- small DOM helpers (null-safe)
@@ -692,14 +757,20 @@ async function streamChat(prompt) {
     // raw JSON from the message). Otherwise offer the generic quick-reply chips.
     let formShown = false;
     if (state.curBubble) {
-      // Auto-switch the model for the next step based on the agent's hidden stage tag.
-      const stage = detectStage(state.curBubble._md);
-      if (stage) {
-        const want = stage === "story" ? M_CREATIVE : M_FAST;
-        if (currentModel() !== want) {
-          setModel(want);
-          addMsg("system", `↻ Switched to ${want === M_CREATIVE ? "DeepSeek (more creative)" : "MiniMax (fast)"} for the next step.`, "system");
-        }
+      // Update the "currently using" chip from the server's resolved model + last stage tag.
+      // (In Auto mode the server tells us which model it actually used for this turn — useful
+      // for the chip even when the user has it pinned. The picker itself is NOT changed when
+      // pinned; that only happens in Auto mode, below.)
+      if (state.resolvedModel) resolvedModel = state.resolvedModel;
+      paintStageChip();
+      // Auto mode + a new stage tag from the agent → switch the picker to that tier for next time
+      // (we don't override an explicit pin).
+      if (currentModel() === M_AUTO && state.lastStage) {
+        const want = state.lastStage === "story" ? M_CREATIVE
+                   : state.lastStage === "research" ? M_SEARCH
+                   : M_FAST;
+        const labels = { [M_FAST]: "Nemotron (fast)", [M_CREATIVE]: "DeepSeek (creative)", [M_SEARCH]: "MiniMax (research)" };
+        addMsg("system", `↻ Auto → next turn will use ${labels[want]} (the agent flagged [[stage:${state.lastStage}]]).`, "system");
       }
       const found = extractForm(state.curBubble._md || "");
       if (found) {
@@ -746,6 +817,18 @@ function handleEvent(ev, state) {
       sessionId = ev.sessionId;
       setText("#conn", "session " + String(ev.sessionId || "").slice(0, 8));
       persistSession();
+      break;
+    case "model":
+      // Server tells us which model it actually used for this turn (in Auto mode the agent's
+      // stage tag from the previous turn decided it). Stash it so the chip can show it.
+      if (ev.model) { state.resolvedModel = ev.model; resolvedModel = ev.model; }
+      if (ev.stage) { state.lastStage = ev.stage; lastStage = ev.stage; }
+      paintStageChip();
+      break;
+    case "stage":
+      // Streamed as soon as the agent's [[stage:...]] tag is observed in the live text.
+      if (ev.stage) { state.lastStage = ev.stage; lastStage = ev.stage; }
+      paintStageChip();
       break;
     case "status":
       // busy/idle heartbeat from OpenCode
@@ -795,7 +878,7 @@ const FORMS = {
   book: {
     title: "✨ New storybook",
     submit: "Create book ▸",
-    model: M_FAST,
+    model: M_AUTO,
     fields: [
       { name: "about", label: "What's it about?", type: "textarea", required: true, placeholder: "a shy dragon who learns to share" },
       { name: "age", label: "Age band", type: "select", options: AGE_BANDS, default: "5-7" },
@@ -819,7 +902,7 @@ const FORMS = {
   world: {
     title: "🌍 New world",
     submit: "Create world ▸",
-    model: M_FAST,
+    model: M_AUTO,
     fields: [
       { name: "name", label: "Name idea (optional)", type: "text", placeholder: "e.g. The Whispering Woods" },
       { name: "setting", label: "Setting / premise", type: "textarea", required: true, placeholder: "an underwater city of curious octopus children" },
@@ -843,7 +926,7 @@ const FORMS = {
   character: {
     title: "🧸 New character",
     submit: "Create character ▸",
-    model: M_FAST,
+    model: M_AUTO,
     fields: [
       { name: "world", label: "World", type: "world", required: true },
       { name: "name", label: "Name", type: "text", required: true, placeholder: "Tilly" },
@@ -866,7 +949,7 @@ const FORMS = {
   story: {
     title: "📖 New story",
     submit: "Write story ▸",
-    model: M_CREATIVE,
+    model: M_AUTO,
     fields: [
       { name: "world", label: "World", type: "world", required: true },
       { name: "characters", label: "Starring", type: "text", required: true, placeholder: "Pip and Olo" },
@@ -994,13 +1077,24 @@ function renderLibrary(worlds, errors) {
       <div class="swatches">${(w.palette||[]).map(p=>`<span class="sw" title="${escapeHtml(p.name)}" style="background:${escapeHtml(p.hex)}"></span>`).join("")}</div>
       <div class="row">${(w.age_bands||[]).map(a=>pill(a,"age")).join("")}${(w.themes||[]).slice(0,4).map(t=>pill(t)).join("")}</div>
       <div class="subhead">Stories (${w.stories.length})</div>
-      ${w.stories.map(s=>`
-        <div class="story">
+      ${w.stories.map(s=>{
+        const pub = s.status === "published";
+        // A draft only lives in the studio preview build; a published story lives in BOTH the
+        // studio preview and the public preview. Linking straight to the right build avoids
+        // the user landing on a 404 (drafts are not in /publish-preview/).
+        const readHref = pub
+          ? `/publish-preview/story/${w.slug}/${s.slug}/index.html`
+          : `/preview/story/${w.slug}/${s.slug}/index.html`;
+        const readLabel = pub ? "Read (public) ↗" : "Read (studio) ↗";
+        return `
+        <div class="story ${pub ? "is-pub" : "is-draft"}">
           <h4>${escapeHtml(s.title)}</h4>
           <p>${escapeHtml(s.logline||"")}</p>
-          <div class="row">${pill(s.age_band,"age")}${pill(s.status, s.status==="published"?"pub":"draft")}${pill(s.pages+" pages")}${pill(s.interactions+" games")}</div>
-          <a class="read" href="/preview/story/${w.slug}/${s.slug}/index.html" target="_blank">Read ↗</a>
-        </div>`).join("") || '<p class="tagline">No stories yet.</p>'}
+          <div class="row">${pill(s.age_band,"age")}${pill(pub ? "published" : "draft", pub?"pub":"draft")}${pill(s.pages+" pages")}${pill(s.interactions+" games")}</div>
+          <a class="read" href="${readHref}" target="_blank">${readLabel}</a>
+          ${pub ? "" : '<span class="hint">draft — not deployed to GitHub Pages until you mark it <code>published</code></span>'}
+        </div>`;
+      }).join("") || '<p class="tagline">No stories yet.</p>'}
       <div class="subhead">Characters (${w.characters.length})</div>
       ${w.characters.map(c=>`
         <div class="char"><h4>${escapeHtml(c.name)} ${c.has_reference?"🎨":""}</h4>
@@ -1013,19 +1107,53 @@ function refreshPreview() {
   const f = $("#preview");
   if (f) f.src = f.src.split("?")[0] + "?t=" + Date.now();
 }
+function refreshPublicPreview() {
+  const f = $("#public-preview");
+  if (f) f.src = f.src.split("?")[0] + "?t=" + Date.now();
+}
+async function refreshPublishStatus() {
+  // Surface "last built 2m ago" on the public-preview tab and disable its iframe until a
+  // build exists (so the user doesn't see a 404 iframe with no explanation).
+  const badge = $("#public-badge");
+  const frame = $("#public-preview");
+  try {
+    const r = await fetch("/api/publish/status");
+    const s = await r.json();
+    if (badge) {
+      if (s.built) {
+        const m = s.last_built_mtime ? Math.max(1, Math.round((Date.now()/1000 - s.last_built_mtime) / 60)) : null;
+        badge.textContent = m != null ? `built ${m}m ago` : "built";
+        badge.className = "badge pub ok";
+      } else {
+        badge.textContent = "no build yet — click Publish";
+        badge.className = "badge pub empty";
+      }
+    }
+    if (frame) {
+      // A 404 iframe renders as the studio's 404 page inside; the badge tells the user
+      // to click Publish first. We still load the iframe so the tab is ready to show
+      // the result the moment they rebuild.
+      frame.dataset.built = s.built ? "1" : "0";
+    }
+  } catch (e) { /* non-fatal — leave the badge as-is */ }
+}
 
-async function runScript(endpoint, label) {
+async function runScript(endpoint, label, opts) {
   addMsg("system", "▸ " + label + "…", "system");
   try {
     const res = await fetch(endpoint, { method: "POST" });
     const data = await res.json();
     addMsg("tool", (data.ok ? "✓ " : "✗ ") + label + "\n" + (data.output || ""), "tool out");
     if (endpoint === "/api/build") refreshPreview();
+    if (endpoint === "/api/build/publish") { refreshPublicPreview(); refreshPublishStatus(); }
     loadLibrary();
+    if (opts && opts.onDone) opts.onDone(data);
   } catch (e) { addMsg("system", "⚠ " + e.message, "system"); }
 }
 
 // ===================================================================================== wire up
+const modelSelect = $("#model-select");
+if (modelSelect) modelSelect.addEventListener("change", () => { persistModelChoice(); paintStageChip(); });
 const composer = $("#composer");
 if (composer) composer.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -1058,18 +1186,40 @@ const guided = $("#guided-form");
 if (guided) guided.addEventListener("submit", submitForm);
 
 const btnStop = $("#stop"); if (btnStop) btnStop.onclick = stopWorkflow;
-const btnBuild = $("#btn-build"); if (btnBuild) btnBuild.onclick = () => runScript("/api/build", "Build site");
+// "Preview" = rebuild the studio preview (with drafts), what the in-app /preview/ tab shows.
+const btnBuild = $("#btn-build"); if (btnBuild) btnBuild.onclick = () => runScript("/api/build", "Build studio preview");
+// "Publish" = rebuild the public-only version, what GitHub Pages will deploy. After it
+// succeeds we surface the deploy instructions and switch to the Public preview tab so the
+// author immediately sees what will go live.
+const btnPublish = $("#btn-publish");
+if (btnPublish) btnPublish.onclick = () => runScript("/api/build/publish", "Build public preview", {
+  onDone: (data) => {
+    if (data && data.ok) {
+      addMsg("system",
+        "🚀 Public preview built — open the 'Public preview' tab to confirm. " +
+        "When you're happy, push to main (or `gh workflow run deploy-pages.yml`) to ship it.",
+        "system");
+      // Switch to the public tab so the user lands on the result.
+      const pub = document.querySelector('.tab[data-tab="public"]');
+      if (pub) pub.click();
+    }
+  },
+});
 const btnValidate = $("#btn-validate"); if (btnValidate) btnValidate.onclick = () => runScript("/api/validate", "Validate");
 const btnQuality = $("#btn-quality"); if (btnQuality) btnQuality.onclick = () => runScript("/api/quality", "Quality report");
 const btnRefresh = $("#btn-refresh"); if (btnRefresh) btnRefresh.onclick = loadLibrary;
+const btnClear = $("#btn-clear"); if (btnClear) btnClear.onclick = clearChat;
 
 document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
   document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
   t.classList.add("active");
-  const lib = $("#view-library"), prev = $("#view-preview");
-  if (lib) lib.classList.toggle("hidden", t.dataset.tab !== "library");
-  if (prev) prev.classList.toggle("hidden", t.dataset.tab !== "preview");
-  if (t.dataset.tab === "preview") refreshPreview();
+  const lib = $("#view-library"), prev = $("#view-preview"), pub = $("#view-public");
+  const tab = t.dataset.tab;
+  if (lib) lib.classList.toggle("hidden", tab !== "library");
+  if (prev) prev.classList.toggle("hidden", tab !== "preview");
+  if (pub) pub.classList.toggle("hidden", tab !== "public");
+  if (tab === "preview") refreshPreview();
+  if (tab === "public") { refreshPublicPreview(); refreshPublishStatus(); }
 });
 
 // ---- voice & kids-mode controls ---------------------------------------------------------------
@@ -1129,3 +1279,4 @@ restoreSession(); // replays a prior conversation (and replaces the welcome) if 
 loadModels();
 loadVoiceCaps();
 loadLibrary();
+refreshPublishStatus();

@@ -11,8 +11,8 @@ Steps:
    - Schema validity of world/character/story.
    - Consistency: referenced characters exist with `appearance_token`; valid pinned
      `evolution.stage`; no contradiction of world `rules`/`timeline`; art style present.
-   - Reading level within target (`reading_level.py`); word caps; decodable focus.
-   - Interactivity: data shapes correct; branching `goto`s resolve; no dead ends; ≥3 pillars.
+   - Language roughly age-fit (`reading_level.py` as a soft guardrail) — words don't block the fun.
+   - Interactivity: data shapes correct; branching `goto`s resolve; no dead ends; games are varied.
    - Accessibility/layout: `layout` + `text_zone` + alt text on every page.
    - Illustration: every page has a real Gemini `.png` (SVG placeholders = hard FAIL).
 3. Report an overall PASS/FAIL and an ordered, specific fix list. Offer to apply the fixes.

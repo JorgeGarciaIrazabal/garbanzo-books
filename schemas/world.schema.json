@@ -18,7 +18,7 @@
     "tone": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Emotional register, e.g. ['cozy','whimsical','gently-adventurous']."
+      "description": "Emotional register. Lean bold and fun, e.g. ['madcap','adventurous','mischievous','a-little-spooky'] or ['witty','high-stakes','laugh-out-loud']. Cozy/gentle is fine as ONE colour in the mix, not the whole palette."
     },
     "genres": { "type": "array", "items": { "type": "string" } },
     "target_age_bands": {
@@ -107,7 +107,7 @@
     "themes": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "The values and life-lessons stories in this world tend to explore (e.g. courage, friendship, curiosity)."
+      "description": "Recurring ideas/flavours the world plays with (e.g. adventure, mischief, mystery, friendship) — NOT values or life-lessons to teach. These colour the fun, they don't moralise it."
     },
     "art_style": { "$ref": "#/$defs/artStyle" },
     "tags": {

@@ -1,26 +1,30 @@
 # 🌱 Garbanzo Books — an AI studio for interactive children's storybooks
 
-Garbanzo Books is a complete **AI workspace** for producing professional-quality, interactive
-children's storybooks: warm full-page illustrations with embedded text, small puzzles and
-games that keep kids reading, language tuned to a chosen age & reading level, and obsessive
-**character / world / art-style consistency** across a whole series. Finished books publish to
-**GitHub Pages**, organised as `world → story → tags`. A **dynamic UI** — driven by
-**OpenCode + a local Ollama model (no API key)** — lets you make a book just by asking.
+Garbanzo Books is a complete **AI workspace** for producing interactive children's storybooks
+that **kids beg to re-read** — funny, surprising, a little mischievous, with real stakes and a
+relentless page-turn pull. Full-page illustrations with embedded text, games that are a fun
+break (not a drill), language lightly age-fit so the words never block the fun, and obsessive
+**character / world / art-style consistency** across a whole series. We make irresistible
+romps, **not lessons.** Finished books publish to **GitHub Pages**, organised as
+`world → story → tags`. A **dynamic UI** — driven by **OpenCode + a local Ollama model (no API
+key)** — lets you make a book just by asking.
 
 ---
 
 ## Why it's good (the craft is built in)
+- **Fun first** — the [north star](methodology/fun-first.md): bold, funny, a little mischievous,
+  with real stakes and a page-turn pull. No moral-of-the-story endings; no plot that's secretly
+  a lesson. Every other rule below serves the romp.
 - **Professional pipeline** — premise → [story spine](methodology/storybook-pipeline.md) →
-  ~14-spread pacing → deliberate page-turns → model sheets, style guide & color script →
-  sensitivity pass. Distilled from how top studios/publishers actually work.
-- **Reading science** — every book targets an [age band & reading level](methodology/reading-pedagogy.md)
-  (Lexile / Fountas-&-Pinnell / Flesch-Kincaid), with decodable-text & phonics controls,
-  verified by tooling.
+  ~14-spread pacing → deliberate page-turns → model sheets, style guide & color script.
+  Distilled from how top studios/publishers actually work — structure that powers the fun.
+- **Lightly age-fit language** — words tuned to a chosen [age band](methodology/reading-pedagogy.md)
+  so a kid can read them, never at the cost of a joke or the pace. A light touch, not a curriculum.
 - **Consistency, assembled not hoped-for** — image prompts are *built* from a locked world
   style block + each character's `appearance_token` + palette + seed + reference art, so the
   whole series looks like one artist drew it. ([how](methodology/consistency.md))
-- **Engagement** — seek-and-find, rhyme-complete, sound-hunts, mazes, riddles, branching
-  choices, comprehension questions — [matched to age & reading skill](methodology/interactivity.md).
+- **Games, not drills** — seek-and-find, mazes, riddles, music challenges, branching choices —
+  a fun break that's part of the story, [matched to the age band](methodology/interactivity.md).
 - **Accessible** — dyslexia-friendly type, contrast, legible [text-on-image](methodology/accessibility.md).
 
 ## What's in the box

@@ -1,10 +1,15 @@
 # Garbanzo Books — AI Storybook Workspace
 
-This repository is an **AI workspace for producing interactive children's storybooks** with
-professional-grade craft: strong narrative structure, age/reading-level adaptation, deep
-**character / world / style consistency**, full-page illustrations with embedded text, and
-small puzzles & games that keep young readers engaged. Finished books are published to
-**GitHub Pages**, organised as `world → story → tags`.
+This repository is an **AI workspace for producing interactive children's storybooks** that
+kids beg to re-read — **fun, funny, surprising, a little mischievous, with real stakes and
+a relentless page-turn pull.** We make irresistible romps, NOT lessons. Professional craft
+(narrative structure, deep **character / world / style consistency**, full-page illustrations
+with embedded text, and small games that are a fun break, not a drill) is all in service of
+that one goal: make kids *love reading*. Finished books are published to **GitHub Pages**,
+organised as `world → story → tags`.
+
+**The north star is `methodology/fun-first.md`. Read it before writing anything. It outranks
+every other rule here.**
 
 ## How the system is organised
 
@@ -48,24 +53,34 @@ ui/             Dynamic UI server (OpenCode + local Ollama, no API key) — the 
 
 ## Core principles (always uphold these)
 
-1. **Consistency is assembled, not hoped for.** Never write a full image prompt by hand.
+1. **Fun is the whole job.** We make books kids beg to re-read — funny, surprising, a
+   little mischievous, with real stakes and a page-turn pull. We are NOT in the lesson
+   business: no moral-of-the-story endings, no plot that's secretly a values delivery
+   vehicle, no sanded-down conflict-free niceness. If a choice trades delight for a tidy
+   message, kill the message. `methodology/fun-first.md` is the north star every other
+   rule below serves.
+2. **Consistency is assembled, not hoped for.** Never write a full image prompt by hand.
    A prompt = `scene` (from the page) + `appearance_token` of each character present +
    the world `prompt_style_block` + `palette` + `negative_prompt`. Use
    `scripts/generate_images.py`, which assembles this for you. Reuse `seed`s and
    `reference_images`.
-2. **Personality is a contract.** Characters act from their `personality` (traits,
-   motivation, flaws). The world `rules` are inviolable. Continuity follows the `timeline`.
-3. **Age-adapt the language, not the heart.** Every story declares an `age_band` and
-   `reading_level`. Verify with `scripts/reading_level.py` before publishing. See
-   `methodology/reading-pedagogy.md` for per-band targets.
-4. **Full-page image, text on top.** Pages are full-bleed illustrations; text sits in a
+3. **Personality is a contract — and let them be naughty.** Characters act from their
+   `personality` (traits, motivation, flaws). Heroes can scheme, break rules, talk back,
+   and make a glorious mess — mischief is funny, not a crime to be punished on the last
+   page. The world `rules` are inviolable; continuity follows the `timeline`.
+4. **Age-fit the words, never the fun.** Pick words a kid that age can actually read so
+   nothing blocks the story — short sentences for the little ones, richer language as they
+   grow. That's a *light touch*, not a curriculum. Never sand down a joke, a great word, or
+   the excitement to hit a readability number.
+5. **Full-page image, text on top.** Pages are full-bleed illustrations; text sits in a
    reserved zone with a scrim for legibility. Keep that zone clear in the image prompt.
-5. **Engagement every few pages.** Interleave interactions (seek-and-find, rhyme-complete,
-   choices, comprehension). Match the interaction type to the age band & target skill.
-6. **Validate before publish.** `scripts/validate.py` checks schema validity, consistency
-   (every character referenced exists; appearance_tokens present; reading level on target;
-   images exist) before a book may be marked `published`. `scripts/quality_report.py` then
-   grades *how good* the book is against the 7-gate pipeline.
+6. **A fun break every few pages.** Interleave interactions (seek-and-find, mazes, choices,
+   riddles) as *games* that are part of the romp — a delightful few-second break, never a
+   hidden reading drill. Match the game to the story beat, not to a skill quota.
+7. **Validate before publish.** `scripts/validate.py` checks schema validity and consistency
+   (every character referenced exists; appearance_tokens present; images exist) before a book
+   may be marked `published`. `scripts/quality_report.py` then grades *how good* the book is
+   against the pipeline gates — the first of which is simply: **is it fun?**
 
 ## Before acting (pre-flight)
 
@@ -74,11 +89,12 @@ its own.** Before producing or editing any world/character/story:
 
 1. Read the **schema** for what you're touching (`schemas/world|character|story.schema.json`) —
    it is the data contract.
-2. Read the **methodology** doc(s) relevant to the stage (`methodology/`): `storybook-pipeline.md`
-   (structure & gates), `reading-pedagogy.md` (age/level), `consistency.md` (visual + behavioural
-   identity), `interactivity.md` (games), `accessibility.md` (legible text-on-image).
-3. Re-read the **Core principles** above — they are inviolable (consistency is assembled,
-   personality is a contract, age-adapt the language not the heart).
+2. Read **`methodology/fun-first.md` first — it's the north star** — then the doc(s) relevant
+   to the stage (`methodology/`): `storybook-pipeline.md` (structure & gates), `reading-pedagogy.md`
+   (light-touch age-fit of language), `consistency.md` (visual + behavioural identity), `interactivity.md`
+   (games), `accessibility.md` (legible text-on-image).
+3. Re-read the **Core principles** above — they are inviolable (fun is the whole job,
+   consistency is assembled, personality is a contract, age-fit the words not the fun).
 4. Load the owning `world.yaml` (+ any referenced `characters/*.yaml`) so you inherit the locked
    tone, art style, rules, and appearance tokens. Never invent details that contradict them.
 

@@ -4,9 +4,11 @@
 ``scripts/validate.py`` answers "is this book broken?". This answers "is this book
 *good*?" by scoring each story against measurable proxies for the gates in
 ``methodology/storybook-pipeline.md`` (premise, spine, manuscript length, page-turn
-pacing, character art, engagement, accessibility/finish). Every gate returns PASS or
+pacing, character art, fun & games, accessibility/finish). Every gate returns PASS or
 WARN with a specific reason, plus an overall score — so an author can see, at a glance,
 the difference between a book that merely validates and a book that's ready to delight.
+(Note: these are structural proxies — whether a book is actually *fun* is a human call;
+see ``methodology/fun-first.md``, the north star the whole pipeline serves.)
 
 Usage:
     uv run python scripts/quality_report.py                          # every book
@@ -25,7 +27,7 @@ from math import ceil
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.checks.interactivity import PILLARS, SKILL_PRACTICE_TYPES  # noqa: E402
+from lib.checks.interactivity import RICH_TYPES, SKILL_PRACTICE_TYPES  # noqa: E402
 from lib.model import load_all_worlds, load_world  # noqa: E402
 from lib.readability import BANDS, words  # noqa: E402
 
@@ -130,22 +132,31 @@ def _gate_character_art(world, story: dict) -> Gate:
 
 
 def _gate_engagement(story: dict) -> Gate:
+    """Fun & games: the interactions should be VARIED kinds of fun (not the same mechanic),
+    at least one should be RICH (a kid DOES something — plays on the art, drags, solves a
+    puzzle, makes music — not just picks an answer), and every game that can be 'gotten
+    wrong' should respond warmly. We do NOT grade reading-skill coverage — fun is the point,
+    not pedagogy."""
     pages = story.get("pages", []) or []
-    pillars = {p["interaction"].get("skill") for p in pages
-               if p.get("interaction") and p["interaction"].get("skill") in PILLARS}
+    interactions = [p["interaction"] for p in pages if p.get("interaction")]
+    types = {it.get("type") for it in interactions if it.get("type")}
+    rich = types & RICH_TYPES
     no_feedback = [p.get("number") for p in pages
                    if p.get("interaction")
                    and p["interaction"].get("type") in SKILL_PRACTICE_TYPES
                    and not (p["interaction"].get("feedback") or {})]
     problems = []
-    if len(pillars) < 3:
-        problems.append(f"interactions cover {len(pillars)} reading pillar(s) (<3)")
+    if len(types) < 3 and len(types) < len(interactions):
+        problems.append(f"games use only {len(types)} kind(s) of fun (<3) — vary them")
+    if len(interactions) >= 2 and not rich:
+        problems.append("every game is a quiz/tap — add at least one rich game "
+                        "(in-scene, drag-and-drop, a puzzle, music, or a custom game)")
     if no_feedback:
-        problems.append(f"skill beats lacking feedback on pages {no_feedback}")
+        problems.append(f"games lacking warm feedback on pages {no_feedback}")
     if not problems:
-        return Gate("Engagement & skills", True,
-                    f"{len(pillars)} reading pillars, every skill beat gives feedback")
-    return Gate("Engagement & skills", False, "; ".join(problems))
+        return Gate("Fun & games", True,
+                    f"{len(types)} kinds of game ({len(rich)} rich), each gives warm feedback")
+    return Gate("Fun & games", False, "; ".join(problems))
 
 
 def _gate_finish(world, story: dict) -> Gate:

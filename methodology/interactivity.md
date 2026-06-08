@@ -1,18 +1,23 @@
-# Engagement & Interactivity
+# Games & Interactivity
 
-An interaction is a **fun break from reading** — a moment where the child puts the story down
-for a few seconds and *does* something delightful: solves a little puzzle, plays a tune, sorts
-a pile, finds the way out. The best ones do three things at once:
+> **Read `fun-first.md` first.** Interactions are *games*, full stop — a fun break that's
+> part of the romp. They are NOT hidden reading drills. If it feels like a worksheet, cut it.
 
-1. **Give the brain a rest** from decoding text, then send the child back to the page eager.
-2. **Deepen the story** — the game is *about* what just happened, so playing it = understanding it.
-3. **Hide the learning.** Counting hatchlings, matching rhymes, or repeating a melody all build
-   real skills, but to the child it just feels like play. Never make it look like a worksheet.
+An interaction is a **fun break** — a moment where the child puts the story down for a few
+seconds and *does* something delightful: solves a puzzle, plays a tune, escapes a maze, finds
+the hidden thing. The best ones do two things at once:
 
-**Be creative.** You are not limited to "reading exercises." A page can carry a logic puzzle, a
-sneaky bit of math (disguised as sorting, counting, or a pattern), a music challenge (play the
-dragon's song back), a maze, a mystery, a memory game. Invent the framing that fits *this* story
-beat. The renderer below plays each `type` fully — pick the type whose mechanic matches your idea
+1. **Are genuinely fun on their own** — you'd play it even outside the book.
+2. **Belong to *this* page** — the game is *about* what just happened, so it pulls the kid
+   deeper into the story instead of yanking them out of it.
+
+(If a kid sharpens a real skill by playing — counting, rhyming, repeating a melody — lovely.
+That's a side effect. Never the pitch, never visible, never the reason the game is there.)
+
+**Be wildly creative.** A page can carry a logic puzzle, a sneaky bit of math (as sorting,
+counting, a pattern), a music challenge (play the dragon's song back), a maze, a mystery, a
+memory game, a "help the hero pick" branch. Invent the framing that fits *this* story beat.
+The renderer below plays each `type` fully — pick the type whose mechanic matches your idea
 and pour the story's flavour into `prompt`, the labels, and `feedback`.
 
 Interleave roughly one every 2–4 pages, placed at a natural beat — never mid-climax.
@@ -64,8 +69,9 @@ Notes:
   encouraging feedback and a celebration on success automatically — write warm `feedback` text.
 - **Tie it to the page.** A seek-and-find hunts for things actually in *that* illustration; a
   sorting game sorts things from *this* scene; a melody is the song a character just sang.
-- **Disguise the skill.** Set `interaction.skill` (a reading pillar or `engagement`) for our
-  pedagogy checks, but never surface "this is a phonics drill" to the child.
+- **Fun is the point.** `interaction.skill` is an optional, internal label only (use it or
+  set `engagement`); it must NEVER leak into what the child sees. Never frame a game as a
+  "drill" or a "practice." If a game isn't fun without its skill label, it's the wrong game.
 - **Co-reader prompts.** For read-aloud bands, set page `reading_notes` with a question to ask.
 
 ## Payload shapes (`interaction.data`) by type

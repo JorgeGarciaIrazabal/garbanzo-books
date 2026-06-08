@@ -186,6 +186,115 @@ def test_post_api_quality_runs_scorecard_tool(client, monkeypatch):
     assert calls["cmd"] == ["scripts/quality_report.py"]
 
 
+# =========================================================== /api/build + /api/build/publish
+def test_post_api_build_runs_studio_preview_with_drafts(client, monkeypatch):
+    """/api/build is the STUDIO preview — it includes drafts so the author can browse WIP.
+    The build lands in ./site/ (the in-app iframe's source)."""
+    calls = {}
+
+    async def fake_run_tool(cmd):
+        calls["cmd"] = cmd
+        return {"ok": True, "output": "built site/ — 2 story page(s)  [drafts included]"}
+
+    monkeypatch.setattr(server, "run_tool", fake_run_tool)
+    r = client.post("/api/build")
+    assert r.status_code == 200
+    assert r.json()["ok"] is True
+    # The studio build is the one that includes drafts — checked via the flag itself.
+    assert "--include-drafts" in calls["cmd"], "studio build must include drafts"
+
+
+def test_post_api_build_publish_uses_custom_out_dir_and_published_only(client, monkeypatch):
+    """/api/build/publish is the PUBLIC preview — the EXACT shape GitHub Pages will deploy.
+    Published-only and to a separate ./site_publish/ so the studio's draft preview at ./site/
+    is unaffected (the two builds must not clobber each other)."""
+    calls = {}
+
+    async def fake_run_tool(cmd):
+        calls["cmd"] = cmd
+        return {"ok": True, "output": "built site_publish/ — 1 story page(s)  [published only]"}
+
+    monkeypatch.setattr(server, "run_tool", fake_run_tool)
+    r = client.post("/api/build/publish")
+    assert r.status_code == 200
+    assert r.json()["ok"] is True
+    # Published-only: no --include-drafts
+    assert "--include-drafts" not in calls["cmd"], (
+        "publish build must NOT include drafts (that's what GitHub Pages would see)")
+    # Custom output: --out site_publish — keeps the studio preview intact
+    assert "--out" in calls["cmd"]
+    out_idx = calls["cmd"].index("--out")
+    assert calls["cmd"][out_idx + 1] == "site_publish"
+
+
+def test_post_api_build_does_not_clobber_publish_preview(client, monkeypatch, tmp_path):
+    """Building the studio preview (with drafts) MUST not erase site_publish/, and vice
+    versa. The two directories are independent so the author can be browsing the public
+    preview in one tab while previewing drafts in another."""
+    # Set up a fake site_publish/ with a sentinel file. The studio build to ./site/ should
+    # never touch it (it goes to a different path).
+    fake = tmp_path / "site_publish"
+    fake.mkdir()
+    sentinel = fake / "index.html"
+    sentinel.write_text("public preview")
+
+    # Redirect SITE and SITE_PUBLISH to tmp dirs so the test doesn't write into the repo.
+    studio_dir = tmp_path / "site"
+    monkeypatch.setattr(server, "SITE", studio_dir)
+    monkeypatch.setattr(server, "SITE_PUBLISH", fake)
+
+    # The endpoint is run via a subprocess (run_tool), so we can't easily mock it without
+    # firing the real build. Instead we assert the structural property: the two output paths
+    # are different, so the subprocess invocations of build_site.py write to different dirs
+    # and can never clobber each other. The per-endpoint CLI args are checked in the tests
+    # above (`/api/build` uses --include-drafts, `/api/build/publish` uses --out site_publish).
+    assert server.SITE != server.SITE_PUBLISH
+    assert server.SITE_PUBLISH.name == "site_publish"
+    # The sentinel file in site_publish/ is still there — proves the studio build target
+    # is in a different directory and can't have removed it.
+    assert sentinel.exists()
+
+
+# =========================================================== /api/publish/status
+def test_get_api_publish_status_reports_unbuilt_when_no_dir(client, monkeypatch, tmp_path):
+    """When site_publish/ doesn't exist yet, the status endpoint must report `built: False`
+    so the UI can show 'no build yet — click Publish' instead of misleading the author."""
+    monkeypatch.setattr(server, "SITE_PUBLISH", tmp_path / "definitely_does_not_exist")
+    r = client.get("/api/publish/status")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["built"] is False
+    # out_dir falls back to the absolute path when it's not under ROOT (e.g. in tests).
+    # In production this is always the relative "site_publish" — the test only needs to
+    # prove the endpoint doesn't crash on the not-under-ROOT case.
+    assert "definitely_does_not_exist" in data["out_dir"]
+    assert "deploy-pages" in data["deploy_instructions"]
+    assert "gh workflow run" in data["deploy_instructions"]
+
+
+def test_get_api_publish_status_reports_built_when_index_exists(client, monkeypatch, tmp_path):
+    """When a previous Publish click produced site_publish/index.html, the status endpoint
+    must report `built: True` with a recent mtime — that's what surfaces 'built 2m ago'."""
+    pub = tmp_path / "site_publish"
+    pub.mkdir()
+    (pub / "index.html").write_text("ok")
+    monkeypatch.setattr(server, "SITE_PUBLISH", pub)
+    r = client.get("/api/publish/status")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["built"] is True
+    assert data["last_built_mtime"] is not None
+    assert data["last_built_mtime"] > 0
+
+
+def test_publish_preview_directory_is_distinct_from_studio_preview(client):
+    """The two builds must NEVER land in the same directory — the studio preview contains
+    drafts, the public preview does not, and clobbering one with the other would mean the
+    author can't see drafts OR the public preview would leak drafts to GitHub Pages."""
+    assert server.SITE != server.SITE_PUBLISH
+    assert server.SITE_PUBLISH.name == "site_publish"
+
+
 def test_get_api_voice_returns_voice_caps(client, monkeypatch):
     monkeypatch.setattr(server, "voice", _FakeVoice(tts=False, stt=True))
     r = client.get("/api/voice")

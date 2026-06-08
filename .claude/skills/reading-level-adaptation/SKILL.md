@@ -1,44 +1,36 @@
 ---
 name: reading-level-adaptation
-description: Adapt a story's language to a target age band and reading level — sentence length, vocabulary tier, words-per-page, decodable vs predictable text, sight words, and phonics focus — then verify with readability tooling. Use when setting/checking a story's reading level, simplifying or leveling text, or producing the same story at multiple reading levels. Reads methodology/reading-pedagogy.md; verifies with scripts/reading_level.py.
+description: Lightly age-fit a story's language so the words never get in the way of the fun — roughly right sentence length, words-per-page, and word choice for the age band. A light touch, NOT a reading curriculum. Use to set/check a story's age fit or to make easier/harder variants. Reads methodology/reading-pedagogy.md; optionally checks with scripts/reading_level.py.
 ---
 
-# Reading-level adaptation
+# Age-fit the language (light touch)
 
-Adapt the *language* without changing the heart of the story. Read
-`methodology/reading-pedagogy.md` for the per-band targets and formulas.
+Make sure the words don't block the story — a kid who can't read the sentence can't enjoy the
+joke. That's the whole job. Read `methodology/fun-first.md` first, then the short table in
+`methodology/reading-pedagogy.md`. **Never** trade a funnier word, a great line, or the pace
+to hit a readability number.
 
 ## Procedure
-1. **Confirm the target.** Set `story.reading_level`:
-   - `target_fk_grade` (+ `fk_grade_tolerance`), optional `lexile_range`, `fountas_pinnell`.
-   - `max_words_per_page`, `max_sentence_words` from the band table.
-   - `decoding_focus` (phonics patterns + allowed sight words), and `decodable: true` for
-     independent decoders (bands 5–7+) when you want strict phonics control.
-2. **Rewrite page text to hit the band** (use the table in reading-pedagogy.md):
-   - Shorten sentences; prefer concrete Tier-1 words for young bands, introduce Tier-2 words
-     deliberately (and add them to the page `vocabulary` + glossary).
-   - For **0–5**: lean on rhyme, repetition, and predictable refrains (great for read-aloud).
-   - For **5–7**: prefer **decodable** text — use words built from taught phonics patterns
-     plus listed sight/heart words; keep within `decoding_focus`.
-   - For **7–12**: vary sentence structure, allow figurative language, grow vocabulary depth.
-   - Keep one idea per page; respect words-per-page caps.
-3. **Verify with tooling**:
-   `uv run python scripts/reading_level.py worlds/<world>/stories/<slug>` → reports FKGL, Flesch
-   Reading Ease, words/page, longest sentence, and (if `decodable`) flags words outside the
-   phonics focus. Iterate until within tolerance.
-4. **Remember the formula limits** (reading-pedagogy.md): for bands 0–5, FKGL is unreliable —
-   judge by words/page, sentence length, rhyme & repetition instead, and treat FKGL as a
-   soft guardrail only.
-5. **Multi-level variants (optional).** To publish the same story at two levels, create
-   sibling stories sharing the world/characters/spine but with different `reading_level` and
-   re-leveled `text` (tag them, e.g. `level-easy` / `level-fluent`).
+1. **Set a rough target.** `story.reading_level.target_fk_grade` (+ `fk_grade_tolerance`), and
+   optionally `max_words_per_page` / `max_sentence_words` from the band table. The deeper
+   phonics fields (`decoding_focus`, `decodable`) are **optional** — only bother with them if
+   you're deliberately making a strict early-reader; most fun books should skip them.
+2. **Pass over the page text** with the band table as a guide:
+   - Younger bands (0–5): write for the *ear* — rhythm, rhyme, repetition, words fun to *say*.
+   - Keep sentences roughly in range and one big idea per page so the picture can carry it.
+   - A few giant, ridiculous, delicious stretch words are GOOD — keep them, don't sand them out.
+   - Older bands (7–12): let the voice, wordplay, and jokes run; vary sentence shape.
+3. **Optional soft check.** `uv run python scripts/reading_level.py worlds/<world>/stories/<slug>`
+   reports FKGL, words/page, and longest sentence. Use it only to catch a page that drifted
+   *way* too dense — not as a target to optimise toward. If it reads great aloud and a kid that
+   age can follow it, it passes whatever the number says.
+4. **Multi-level variants (optional).** To publish the same romp at two levels, create sibling
+   stories sharing the world/characters/spine with re-fit `text` (tag `level-easy` / `level-fluent`).
 
 ## Quality bar
-- FKGL within `target_fk_grade ± tolerance` for bands 5–12.
-- No sentence exceeds `max_sentence_words`; no page exceeds `max_words_per_page`.
-- If `decodable`, every word is decodable under `decoding_focus` or a listed sight word.
-- New/Tier-2 words are captured in page `vocabulary` for the glossary.
+- The words never get in the way of the fun — that's the only one that really matters.
+- Sentences/words-per-page are roughly in band (rough, not strict).
+- It reads great *aloud* for the younger bands.
 
 ## Output
-Revised `pages[].text`, populated `reading_level`, and a passing `reading_level.py` report.
-Next: `interactive-elements`.
+Lightly revised `pages[].text` and a populated `reading_level`. Next: `interactive-elements`.

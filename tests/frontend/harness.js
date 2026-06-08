@@ -18,7 +18,16 @@ import { resolve, dirname } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const APP_JS = resolve(__dirname, "..", "..", "ui", "public", "app.js");
-export const READER_JS = resolve(__dirname, "..", "..", "scripts", "site_assets", "reader.js");
+
+// The reader is split into a toolkit + game registry; load in this exact order (mirrors
+// scripts/build_site.py READER_SCRIPTS). reader.boot.js (last) calls GB.boot().
+const ASSET_DIR = resolve(__dirname, "..", "..", "scripts", "site_assets");
+export const READER_SCRIPTS = [
+  "reader.core.js", "toolkit.audio.js", "toolkit.juice.js", "toolkit.scene.js",
+  "toolkit.dnd.js", "toolkit.steps.js", "toolkit.reward.js", "toolkit.shared.js",
+  "games.builtin.js", "games.rich.js", "games.custom.js", "reader.boot.js",
+];
+export const READER_JS = resolve(ASSET_DIR, "reader.core.js"); // kept for back-compat imports
 
 // Strip the bottom side effects. Anchor on the stable English "Welcome" string.
 const APP_SRC = readFileSync(APP_JS, "utf-8");
@@ -87,7 +96,10 @@ export function loadReaderWith(story) {
   // override mirrors what jsdom provides by default (it returns true for
   // reduce), but installing it as a *replacement* avoids any timing/identity
   // differences with jsdom's internal copy.
-  const src = readFileSync(READER_JS, "utf-8");
+  // Concatenate the ordered reader files into one script (same effect as the page's
+  // ordered <script> tags). Reset window.GB so each load starts from a clean registry.
+  delete window.GB;
+  const src = READER_SCRIPTS.map((f) => readFileSync(resolve(ASSET_DIR, f), "utf-8")).join("\n;\n");
   const stub = `window.matchMedia = window.matchMedia || function (q) {
     return { matches: q.indexOf("reduce") >= 0,
              addListener: function() {}, removeListener: function() {} };

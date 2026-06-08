@@ -38,23 +38,47 @@ import voice  # local Kokoro TTS + faster-whisper STT (read-aloud & voice input)
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                      # repo root = the workspace OpenCode operates in
 PUBLIC = HERE / "public"
-SITE = ROOT / "site"
+SITE = ROOT / "site"                   # studio preview build (with drafts) — what the in-app iframe shows
+SITE_PUBLISH = ROOT / "site_publish"   # "what GitHub Pages will see" build (published only)
 PORT = int(os.environ.get("PORT", "4317"))
 PY_CMD = os.environ.get("PY_CMD", "uv run python").split()
 OPENCODE_BIN = os.environ.get("OPENCODE_BIN", "opencode")
-OPENCODE_MODEL = os.environ.get("OPENCODE_MODEL", "ollama/minimax-m3:cloud")
+OPENCODE_MODEL = os.environ.get("OPENCODE_MODEL", "ollama/nemotron-3-ultra:cloud")
 PROVIDER_ID, MODEL_ID = OPENCODE_MODEL.split("/", 1)
 
 # Models the studio offers in its model picker. Each must also be registered under the matching
-# provider in opencode.json. MiniMax is the default (fast + reliable tool use); DeepSeek is slower
-# but more creative, so the UI auto-selects it for the story-writing stage.
+# provider in opencode.json. Three tiers, each tuned to a different job:
+#   - Nemotron-3-Ultra  : fast + reliable, the default for world/character/building/validation
+#   - DeepSeek-V4-Pro   : slower but more creative, used when the agent is writing the STORY
+#   - MiniMax-M3        : best for information gathering (web search, summarising, looking things up)
+# The "auto" sentinel lets the studio pick the right model per stage (see STAGE_TO_MODEL).
 MODELS = [
-    {"id": "ollama/minimax-m3:cloud",
-     "label": "MiniMax-M3 — fast & reliable (default)"},
+    {"id": "ollama/nemotron-3-ultra:cloud",
+     "label": "Nemotron-3-Ultra — fast & reliable (default for craft)"},
     {"id": "ollama/deepseek-v4-pro:cloud",
      "label": "DeepSeek-V4-Pro — more creative (best for stories)"},
+    {"id": "ollama/minimax-m3:cloud",
+     "label": "MiniMax-M3 — best for research & information gathering"},
+    {"id": "auto",
+     "label": "Auto (switch by stage) — recommended"},
 ]
 ALLOWED_MODELS = {m["id"] for m in MODELS}
+
+# Stage tag → model. The agent emits [[stage:<name>]] (see STUDIO_BRIEF) at the end of its message
+# to tell the studio what kind of step it just finished. In Auto mode, the NEXT turn uses the model
+# mapped below. (OpenCode's HTTP API binds a model at prompt time, so we can't switch mid-turn —
+# the next user reply is the natural place to swap.) The "craft" stages all share the fast default
+# because they're tool-heavy; "story" is the only creative stage; "research" routes to MiniMax.
+STAGE_TO_MODEL = {
+    "craft":     "ollama/nemotron-3-ultra:cloud",
+    "world":     "ollama/nemotron-3-ultra:cloud",
+    "character": "ollama/nemotron-3-ultra:cloud",
+    "build":     "ollama/nemotron-3-ultra:cloud",
+    "validate":  "ollama/nemotron-3-ultra:cloud",
+    "done":      "ollama/nemotron-3-ultra:cloud",
+    "story":     "ollama/deepseek-v4-pro:cloud",
+    "research":  "ollama/minimax-m3:cloud",
+}
 
 
 def load_env_file() -> dict:
@@ -131,14 +155,24 @@ types are "text" and "textarea". A one-sentence lead-in before the block is fine
 after the block. For plain yes/no confirmations ("Does this look right?") it is fine to just ask in
 one short sentence and stop. NEVER call any interactive "question"/"ask" tool (it is disabled).
 
-MODEL STAGES — story writing uses a more creative model, everything else a faster one, and the
-console switches models for you based on a tag you emit. On its OWN line in your message, include:
-  [[stage:story]]  whenever the NEXT thing you'll do is write or revise the STORY text/pages
-                   (including the confirmation right before you start writing the story), and keep
-                   emitting it while you are writing the story.
-  [[stage:craft]]  for world-building, character design, reading-level work, validation, or building
-                   the site.
-Put the tag at the very end of the message. It is hidden from the user — do not mention it.
+MODEL STAGES — the console can AUTO-PICK a model tuned to whatever step you're about to do, but
+only if you tell it which step that is. Emit exactly ONE of the following on its OWN line at the
+END of your message (the tag is hidden from the user — never mention it):
+  [[stage:story]]     whenever the NEXT thing you'll do is write or revise the STORY text/pages
+                      (emit it on the confirmation message right before you start writing, and keep
+                      emitting it on messages WHILE you are writing the story).
+  [[stage:craft]]     for tool-heavy craft work that is NOT a story — scaffolding/validating files,
+                      reading-level work, building the site, image prompts, etc.
+  [[stage:world]]     specifically when you are world-building (creating or editing a world.yaml).
+  [[stage:character]] specifically when you are designing a character (creating or editing a
+                      character bible / reference art).
+  [[stage:build]]     specifically when you are generating page images or building the static site.
+  [[stage:research]]  specifically when you are gathering information (web search, reading docs,
+                      looking things up) before making a decision.
+  [[stage:done]]      when the user's request is complete and you are signing off.
+
+If you forget, the console falls back to the fast default. The exact text of the tag is matched —
+no extra spaces inside the brackets, the word after the colon is lowercase.
 
 FILE SAFETY — the workspace must never be left with a broken file:
 - Prefer the scaffolding scripts (new_world.py, new_character.py, new_story.py) to CREATE files;
@@ -291,7 +325,58 @@ async def api_library():
 
 @app.post("/api/build")
 async def api_build():
+    """Studio preview build: includes drafts. What the in-app /preview/ iframe shows, so
+    the author can browse their WIP. Lands in ./site/ (and would be uploaded by the
+    --include-drafts flag, but the GH Pages deploy workflow does NOT use this — it builds
+    ./site/ from a published-only run, so end users never see drafts)."""
     return JSONResponse(await run_tool(["scripts/build_site.py", "--include-drafts"]))
+
+
+@app.post("/api/build/publish")
+async def api_build_publish():
+    """Published-only build into ./site_publish/. This is the EXACT shape the GH Pages
+    workflow will deploy — letting the author preview 'what will go live' before pushing.
+    Does not touch ./site/, so the studio's in-app preview is unaffected."""
+    out_arg = str(SITE_PUBLISH.relative_to(ROOT)) if SITE_PUBLISH.is_absolute() and SITE_PUBLISH.is_relative_to(ROOT) else str(SITE_PUBLISH)
+    return JSONResponse(await run_tool(["scripts/build_site.py", "--out", out_arg]))
+
+
+@app.get("/api/publish/status")
+async def api_publish_status():
+    """Report whether a publish-preview build exists and how to deploy it. The studio
+    uses this to label the 'Public preview' tab ('last build: 2 min ago' or 'no build
+    yet — click Publish to preview') and to surface the manual deploy command.
+
+    We do not auto-trigger the GH Pages deploy from the studio: that needs a git push
+    (or a gh workflow run), which is the user's action, not ours. The instruction we
+    surface mirrors what /publish + the deploy-pages workflow do."""
+    exists = (SITE_PUBLISH / "index.html").exists()
+    last_built = None
+    if exists:
+        try:
+            last_built = (SITE_PUBLISH / "index.html").stat().st_mtime
+        except OSError:
+            pass
+    # out_dir is shown in the UI; prefer the path relative to ROOT so the user sees the
+    # real repo path, but fall back to the absolute path (e.g. in tests) so we never crash.
+    try:
+        out_dir = str(SITE_PUBLISH.relative_to(ROOT))
+    except ValueError:
+        out_dir = str(SITE_PUBLISH)
+    return {
+        "built": exists,
+        "last_built_mtime": last_built,
+        "out_dir": out_dir,
+        "deploy_instructions": (
+            "Push to main — the .github/workflows/deploy-pages.yml workflow will build "
+            "and publish ./site/ to GitHub Pages. Enable Settings → Pages → Source: "
+            "GitHub Actions once if you haven't.\n\n"
+            "Or trigger the workflow manually:\n"
+            "  gh workflow run deploy-pages.yml\n\n"
+            "Or deploy the gh-pages branch directly:\n"
+            "  scripts/build_site.py --deploy   (prints the git commands)"
+        ),
+    }
 
 
 @app.post("/api/validate")
@@ -359,6 +444,28 @@ async def api_stt(request: Request):
 def sse(obj: dict) -> str:
     return f"data: {json.dumps(obj, ensure_ascii=False)}\n\n"
 
+# Per-session last-seen [[stage:...]] tag. The agent emits these at the END of an assistant turn
+# (see STUDIO_BRIEF). In Auto mode the server uses this to pick the model for the NEXT turn.
+# Keyed by OpenCode session id. Capped so a long-running studio doesn't leak memory.
+LAST_STAGE_BY_SESSION: dict[str, str] = {}
+_LAST_STAGE_MAX = 256
+_STAGE_TAG_RE = __import__("re").compile(r"\[\[stage:(\w+)\]\]", __import__("re").IGNORECASE)
+
+
+def _remember_stage(sid: str | None, stage: str | None) -> None:
+    if not sid or not stage:
+        return
+    stage = stage.lower()
+    # Only record stages the model router knows about — anything else is ignored.
+    if stage in STAGE_TO_MODEL:
+        LAST_STAGE_BY_SESSION[sid] = stage
+        # Cap + drop the oldest entry if we grow past the limit.
+        if len(LAST_STAGE_BY_SESSION) > _LAST_STAGE_MAX:
+            # dicts are insertion-ordered in py3.7+, so the first key is the oldest.
+            oldest = next(iter(LAST_STAGE_BY_SESSION))
+            if oldest != sid:
+                LAST_STAGE_BY_SESSION.pop(oldest, None)
+
 
 def _tool_detail(tool: str, state: dict) -> str:
     """Turn an OpenCode tool part into a short, human-readable 'what is happening' line.
@@ -387,10 +494,22 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
         yield sse({"type": "done"})
         return
 
-    # Resolve the requested model (fall back to the default if missing/unknown).
-    chosen = model if model in ALLOWED_MODELS else OPENCODE_MODEL
+    # Resolve the requested model. "auto" (or any unknown value) means: pick the model that matches
+    # the stage tag from the agent's LAST turn in this session. Falls back to the default if the
+    # session is new, no tag was emitted yet, or the tag is unknown.
+    chosen: str
+    if model == "auto" or model not in ALLOWED_MODELS:
+        last_stage = LAST_STAGE_BY_SESSION.get(session_id) if session_id else None
+        chosen = STAGE_TO_MODEL.get(last_stage or "", OPENCODE_MODEL)
+    else:
+        chosen = model
+    # Belt: if a stale "auto" sneaks in with no resolved stage, use the default rather than crash.
+    if chosen == "auto":
+        chosen = OPENCODE_MODEL
     provider_id, model_id = chosen.split("/", 1)
     system_brief = STUDIO_BRIEF + (KIDS_BRIEF if kids else "")
+    # Tell the client which model we actually picked (so the picker can reflect Auto decisions).
+    yield sse({"type": "model", "model": chosen, "stage": LAST_STAGE_BY_SESSION.get(session_id) if session_id else None})
 
     async with httpx.AsyncClient(base_url=oc.base, timeout=None) as client:
         sid = session_id
@@ -446,6 +565,14 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
                             if len(full) > prev:
                                 yield sse({"type": "assistant", "text": full[prev:]})
                                 text_len[part["id"]] = len(full)
+                            # Stage tag detection: the agent appends a [[stage:foo]] on its own line
+                            # at the end of a turn. We only trust the LAST one we see (and only
+                            # ones we know how to route) so an echo in earlier text can't poison
+                            # the choice for the next turn.
+                            m = _STAGE_TAG_RE.findall(full)
+                            if m:
+                                _remember_stage(sid, m[-1])
+                                yield sse({"type": "stage", "stage": m[-1].lower()})
                         elif part.get("type") == "tool":
                             state = part.get("state", {}) or {}
                             tool = part.get("tool") or "tool"
@@ -473,7 +600,11 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
 
 @app.get("/api/models")
 async def api_models():
-    return JSONResponse({"models": MODELS, "default": OPENCODE_MODEL})
+    return JSONResponse({
+        "models": MODELS,
+        "default": OPENCODE_MODEL,
+        "stage_to_model": STAGE_TO_MODEL,
+    })
 
 
 @app.post("/api/stop")
@@ -506,8 +637,8 @@ async def api_chat(request: Request):
 
 
 # ----------------------------------------------------------------------------- static + preview
-# Mounted AFTER the API routes so /api/* and /preview/* win. check_dir=False lets /preview exist
-# before the first build.
+# Mounted AFTER the API routes so /api/*, /preview/* and /publish-preview/* win.
+# check_dir=False lets the preview dirs exist before the first build.
 class NoCacheStatic(StaticFiles):
     """Local dev UI — never let the browser cache the console assets, so an edit to
     app.js/styles.css always shows up on a normal reload (no Ctrl+Shift+R needed)."""
@@ -520,8 +651,12 @@ class NoCacheStatic(StaticFiles):
         return resp
 
 
-# /preview keeps normal caching (it's the built site the reader sees); only the console is no-cache.
+# /preview = studio preview build (with drafts, lands in ./site/).
+# /publish-preview = published-only build (lands in ./site_publish/) — the EXACT shape
+# GitHub Pages will deploy. Both keep normal caching; only the console is no-cache.
 app.mount("/preview", StaticFiles(directory=str(SITE), html=True, check_dir=False), name="preview")
+app.mount("/publish-preview", StaticFiles(directory=str(SITE_PUBLISH), html=True, check_dir=False),
+          name="publish_preview")
 app.mount("/", NoCacheStatic(directory=str(PUBLIC), html=True), name="public")
 
 

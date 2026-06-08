@@ -1,0 +1,105 @@
+slug: mina
+world: clara-cloud-islands
+name: Mina
+role: co-protagonist
+species: human
+pronouns: she/her
+one_liner: A spunky, rhyme-loving little trainer who battles Clara, loses her Jigglypuff to a friendship
+  choice, and becomes Clara's first human best friend and travel buddy.
+personality:
+  traits:
+  - spunky
+  - confident
+  - quick-thinking
+  - good-at-rhymes
+  - friendly
+  - fair
+  - giggly
+  motivation: To be the best rhyming trainer on the cloud islands — and to find a real friend who loves
+    Pokemon as much as she does.
+  fears:
+  - being left alone
+  - forgetting her rhymes
+  flaws:
+  - gets too competitive and forgets to have fun
+  - assumes she is right about everything
+  strengths:
+  - actually good at rhyming
+  - thinks fast under pressure
+  - graceful when she loses
+  - makes people laugh on purpose
+  quirks:
+  - taps her foot to a beat when she talks
+  - ends arguments with a rhyme even when it makes no sense
+  - carries a tiny notebook of rhymes she has written
+  - hums Jigglypuff's song when she is happy
+  values:
+  - friendship
+  - fairness
+  - creativity
+  - being a good sport
+voice:
+  speech_style: bouncy, rhythmic, rhymes on purpose (and is proud of it), warm and encouraging
+  catchphrases:
+  - That rhymed!
+  - Your turn to rhyme!
+  - Fair is fair!
+  - I wrote that one!
+  vocabulary_level: age 5-7, concrete words, lots of rhyme-play
+appearance:
+  age_appearance: 5 years old
+  build: slim and bouncy, always in motion
+  height: about Clara's height, just a little taller
+  skin: warm brown skin, rosy cheeks
+  hair: big bouncy dark brown curls to her shoulders, tied back with a green music-note scrunchie
+  eyes: bright green eyes with long lashes
+  outfit: yellow sleeveless top with a tiny music-note print, purple shorts with a star pattern, green
+    sneakers, a green music-note scrunchie in her hair, a tiny notebook clipped to her belt loop
+  distinguishing_features:
+  - big bouncy dark curls with the green music-note scrunchie
+  - tiny notebook clipped to her belt
+  - always tapping one foot like she is keeping a beat
+  - bright green eyes with long lashes
+  color_palette:
+  - part: hair
+    hex: '#5c3317'
+  - part: eyes
+    hex: '#4dd62e'
+  - part: top-yellow
+    hex: '#ffe45c'
+  - part: shorts-purple
+    hex: '#9b59b6'
+  - part: sneakers-green
+    hex: '#4dd62e'
+  - part: scrunchie
+    hex: '#27ae60'
+  - part: skin
+    hex: '#c68642'
+  silhouette_notes: A girl with bouncy curly hair pulled into a round puff, one hand always tapping her
+    hip to a beat, tiny notebook bump on her belt. Distinct from Clara by the curly hair puff and the
+    music-note scrunchie.
+appearance_token: 'MINA: 5-year-old human girl, slim and bouncy, warm brown skin (#c68642) with rosy cheeks,
+  big bouncy dark brown curls (#5c3317) tied with a green music-note scrunchie (#27ae60), bright green
+  eyes (#4dd62e) with long lashes, yellow sleeveless top with tiny music-note print (#ffe45c), purple
+  star-pattern shorts (#9b59b6), green sneakers (#4dd62e), tiny notebook clipped to belt loop, always
+  tapping one foot, big-eyed bright Pokemon-anime cel-shaded style, default expression is a confident
+  grin mid-rhyme'
+reference_images:
+- characters/mina.refs/model-sheet.png
+seed: 5678
+relationships:
+- character: clara
+  relation: rival-turned-best-friend-and-travel-companion
+evolution:
+- stage: base
+  order: 0
+  summary: Spunky rhyming trainer with her Jigglypuff, just met Clara, ready for her first real battle.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- trainer
+- co-protagonist
+- rhyme
+- spunky
+- friend

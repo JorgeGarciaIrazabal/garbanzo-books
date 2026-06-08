@@ -2,13 +2,22 @@
 """Build the static site (world -> story -> tags) into site/, ready for GitHub Pages.
 
 Usage:
-    uv run python scripts/build_site.py                 # published stories only
+    uv run python scripts/build_site.py                 # published stories only → ./site
     uv run python scripts/build_site.py --include-drafts
     uv run python scripts/build_site.py --base /garbanzo-books   # project-pages subpath (optional)
+    uv run python scripts/build_site.py --out site_publish       # build to a different dir
+                                                         (used by the studio for the
+                                                         "what GitHub Pages will see" preview)
     uv run python scripts/build_site.py --deploy        # print manual gh-pages deploy commands
 
 Emits: index, world hubs (+ character galleries), interactive readers, tag pages, assets,
 search-index.json, sitemap.xml, .nojekyll.
+
+The two-build pattern: GitHub Pages gets a published-only build of ./site (this is what the
+`deploy-pages` workflow runs and what end users see). The studio can additionally build a
+"with-drafts" preview into the SAME ./site for its in-app preview, or a published-only
+preview into ./site_publish for the "this is what will go live" tab. Both end up identical to
+the GH Pages output when --include-drafts is off; --out only changes WHERE the build lands.
 """
 from __future__ import annotations
 
@@ -24,11 +33,29 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.colors import norm_hex  # noqa: E402
 from lib.model import ROOT, load_all_worlds, normalize_rules  # noqa: E402
 
-SITE = ROOT / "site"
+SITE = ROOT / "site"  # default output dir; `build(out=...)` may override per call
 ASSET_SRC = Path(__file__).resolve().parent / "site_assets"
 
 # Reader base font size (px) per age band (accessibility.md).
 READER_BASE = {"0-3": 28, "3-5": 24, "5-7": 22, "7-9": 18, "9-12": 16}
+
+# The reader runtime, split into a toolkit + game registry. Order matters: the core defines
+# window.GB and the controller; the toolkit + game files populate it; reader.boot.js (last)
+# calls GB.boot() once everything is registered. (tests/frontend/harness.js mirrors this list.)
+READER_SCRIPTS = [
+    "reader.core.js",
+    "toolkit.audio.js",
+    "toolkit.juice.js",
+    "toolkit.scene.js",
+    "toolkit.dnd.js",
+    "toolkit.steps.js",
+    "toolkit.reward.js",
+    "toolkit.shared.js",
+    "games.builtin.js",
+    "games.rich.js",
+    "games.custom.js",
+    "reader.boot.js",
+]
 
 # Image file types copied into the published site (everything else in images/, e.g. the
 # page-NN.prompt.txt audit sidecars, stays internal).
@@ -221,7 +248,7 @@ def build_reader(world, story, root="../../../") -> str:
   <div class="chips" style="margin-top:18px">{tags_html}</div>
 </div>
 <script id="story-data" type="application/json">{data_json}</script>
-<script src="{root}assets/reader.js"></script>"""
+""" + "".join(f'<script src="{root}assets/{s}"></script>\n' for s in READER_SCRIPTS)
     return shell(f"{story.data.get('title')} — read", body, root)
 
 
@@ -253,12 +280,18 @@ def build_tag_page(tag, entries, root="../../") -> str:
 
 # ---------------- driver ----------------
 
-def build(include_drafts: bool) -> dict:
-    if SITE.exists():
-        shutil.rmtree(SITE)
-    SITE.mkdir(parents=True)
-    (SITE / ".nojekyll").write_text("", encoding="utf-8")
-    shutil.copytree(ASSET_SRC, SITE / "assets")
+def build(include_drafts: bool, out: Path | None = None) -> dict:
+    """Render the site tree into `out` (defaults to the module-level SITE = ./site).
+
+    Passing a custom `out` lets the studio build a second, "published-only, what GH Pages
+    will see" copy into e.g. ./site_publish — without clobbering the in-app preview build
+    sitting at ./site (which is --include-drafts so the author can browse their WIP)."""
+    site = Path(out) if out is not None else SITE
+    if site.exists():
+        shutil.rmtree(site)
+    site.mkdir(parents=True)
+    (site / ".nojekyll").write_text("", encoding="utf-8")
+    shutil.copytree(ASSET_SRC, site / "assets")
 
     worlds = load_all_worlds(with_stories=True)
     tag_map: dict[str, list] = defaultdict(list)
@@ -271,10 +304,10 @@ def build(include_drafts: bool) -> dict:
             s.included = include_drafts or s.data.get("status") == "published"
 
     # Index
-    (SITE / "index.html").write_text(build_index(worlds), encoding="utf-8")
+    (site / "index.html").write_text(build_index(worlds), encoding="utf-8")
 
     for w in worlds:
-        wdir = SITE / "world" / w.slug
+        wdir = site / "world" / w.slug
         wdir.mkdir(parents=True, exist_ok=True)
         # Copy character reference images into world/<slug>/refs/
         refs_out = wdir / "refs"
@@ -290,7 +323,7 @@ def build(include_drafts: bool) -> dict:
         for s in w.stories:
             if not s.included:
                 continue
-            sdir = SITE / "story" / w.slug / s.slug
+            sdir = site / "story" / w.slug / s.slug
             (sdir / "images").mkdir(parents=True, exist_ok=True)
             # copy page images (only image files — never the page-NN.prompt.txt audit
             # sidecars, which are internal and may quote the full assembled prompt)
@@ -322,36 +355,46 @@ def build(include_drafts: bool) -> dict:
             })
 
     # Tags
-    (SITE / "tags").mkdir(exist_ok=True)
-    (SITE / "tags" / "index.html").write_text(build_tag_index(tag_map), encoding="utf-8")
+    (site / "tags").mkdir(exist_ok=True)
+    (site / "tags" / "index.html").write_text(build_tag_index(tag_map), encoding="utf-8")
     for tag, entries in tag_map.items():
-        tdir = SITE / "tags" / tag
+        tdir = site / "tags" / tag
         tdir.mkdir(parents=True, exist_ok=True)
         (tdir / "index.html").write_text(build_tag_page(tag, entries), encoding="utf-8")
         urls.append(f"tags/{tag}/index.html")
 
-    (SITE / "search-index.json").write_text(json.dumps(search, ensure_ascii=False, indent=2), encoding="utf-8")
+    (site / "search-index.json").write_text(json.dumps(search, ensure_ascii=False, indent=2), encoding="utf-8")
     sitemap = "\n".join(f"  <url><loc>{u}</loc></url>" for u in urls)
-    (SITE / "sitemap.xml").write_text(
+    (site / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{sitemap}\n</urlset>',
         encoding="utf-8")
 
     return {"worlds": len(worlds), "stories": len(search), "tags": len(tag_map),
-            "drafts_included": include_drafts}
+            "drafts_included": include_drafts,
+            "out": str(site.relative_to(ROOT)) if site.is_absolute() and ROOT in site.parents else str(site)}
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build the static site.")
-    ap.add_argument("--include-drafts", action="store_true")
+    ap.add_argument("--include-drafts", action="store_true",
+                    help="include stories with status=draft (default: only published). "
+                         "The studio uses this for the in-app preview build.")
     ap.add_argument("--base", default="", help="(reserved) base path for project pages")
+    ap.add_argument("--out", default=None,
+                    help="output directory (default: ./site). The studio's 'publish preview' "
+                         "build uses --out site_publish so it doesn't clobber the studio's "
+                         "drafts-included preview at ./site.")
     ap.add_argument("--deploy", action="store_true", help="print manual gh-pages deploy steps")
     args = ap.parse_args()
 
-    stats = build(args.include_drafts)
-    print(f"+ built site/ — {stats['worlds']} world(s), {stats['stories']} story page(s), "
+    out = Path(args.out).resolve() if args.out else None
+    stats = build(args.include_drafts, out=out)
+    out_label = stats.get("out", "site")
+    print(f"+ built {out_label}/ — {stats['worlds']} world(s), {stats['stories']} story page(s), "
           f"{stats['tags']} tag(s)"
-          + ("  [drafts included]" if stats['drafts_included'] else ""))
-    print("  preview: uv run python -m http.server -d site 8008  →  http://localhost:8008")
+          + ("  [drafts included]" if stats['drafts_included'] else "  [published only]"))
+    if out_label == "site":
+        print("  preview: uv run python -m http.server -d site 8008  →  http://localhost:8008")
     if args.deploy:
         print("\n  Manual gh-pages deploy:")
         print("    cd site && git init -q && git add -A && git commit -qm 'site'")

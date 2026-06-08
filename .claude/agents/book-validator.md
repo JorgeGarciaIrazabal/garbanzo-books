@@ -15,10 +15,10 @@ Check, and report each as PASS/FAIL with the exact remedy:
 2. **Consistency** — every character referenced in a story exists and has an
    `appearance_token`; the story pins a valid `evolution.stage`; nothing contradicts world
    `rules`/`timeline`; the world `art_style.prompt_style_block` + palette are present.
-3. **Reading level** — `reading_level.py` within `target_fk_grade ± tolerance` (for 5–12);
-   no page over word caps; if `decodable`, no out-of-focus words.
+3. **Age-fit language** — `reading_level.py` as a soft guardrail (catch pages that drifted
+   way too dense for the band); the words don't block the fun. Not a strict target.
 4. **Interactivity** — interaction `data` matches its `type`; branching `goto`s resolve; no
-   dead ends; ≥3 reading pillars covered; pacing reasonable.
+   dead ends; games are varied (a mix of kinds, not all quizzes); pacing reasonable.
 5. **Layout/accessibility** — each page has `layout` + `image.text_zone` + alt text; text
    treatment present.
 6. **Illustration** — every page has a **real** image file from Gemini (`.png`); SVG

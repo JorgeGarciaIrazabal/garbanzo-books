@@ -1,12 +1,19 @@
 # The Professional Storybook Pipeline
 
+> **Read `fun-first.md` first.** This pipeline is the skeleton; fun is the muscle and the
+> blood. A perfectly-structured book with no jokes and no jeopardy is a dead book. Every
+> gate below serves the romp — never the other way round.
+
 How top studios and publishers move from idea to finished book. Follow the gates in order;
 each one de-risks the next.
 
 ## 1. Concept / premise
-Start with a one-sentence **hook** and a single **emotional truth**. Pressure-test the
-premise *before* any art exists. A good premise names a relatable protagonist, what they
-want, and what's in the way.
+Start with a one-sentence **hook** and answer the only question that matters: **why is this
+fun?** Where are the laughs, the stakes, the mischief, the surprise? Pressure-test it *before*
+any art exists by pitching it out loud — if it doesn't make you grin or lean in, it's not
+ready. A good premise names a protagonist a kid roots for, what they want badly, and the
+gloriously bad thing in the way. (An emotional core is welcome — but it lives *underneath*
+the fun and is never spelled out.)
 
 ## 2. The Story Spine
 A fill-in-the-blanks armature (improv origin, Kenn Adams; adopted at Pixar c.1997 and
@@ -62,17 +69,21 @@ at tension peaks and vary the rhythm — don't resolve everything on the same pa
 3. **Color script** — maps the emotional colour arc spread-by-spread (a Pixar staple).
 4. **Art direction + revision rounds** — thumbnails → rough sketches → line → colour, with
    editorial/AD notes at each gate.
-5. **Sensitivity reading** — cultural, disability, racial accuracy; done late-manuscript /
-   dummy stage, *before* final art.
+5. **Don't-punch-down check** — a quick, light pass: is any joke built on a lazy stereotype
+   of a real group of people? Fix only that. This is NOT a pass to sand the edges, danger,
+   mischief, or scares off the story — villains, peril, gross-out, and rule-breaking heroes
+   all stay. (See the "one line of decency" in `fun-first.md`.)
 
 ## The gate checklist (don't skip ahead)
-- [ ] One-sentence hook + emotional truth agreed
-- [ ] Spine complete, each beat causes the next
-- [ ] Word count within the age-band target
-- [ ] Page/spread outline with deliberate page-turns
+- [ ] **Is it FUN?** Real laughs, real stakes, or real mischief on the page — would a kid
+      grab the next page before you finish this one? (If no, nothing else matters yet.)
+- [ ] One-sentence hook agreed; the "why is this fun" answered
+- [ ] Spine complete, each beat causes the next; no moral-of-the-story ending
+- [ ] Words roughly age-fit (light touch — never at the cost of a joke or the pace)
+- [ ] Page/spread outline with deliberate page-turns ending on cliffs/uh-ohs
 - [ ] Characters have model sheets/reference art; style guide locked
 - [ ] Color/mood arc planned across the book
-- [ ] Sensitivity pass before final illustration
+- [ ] Quick don't-punch-down check before final illustration
 
 (Sources: aerogrammestudio.com; storyprompt.com; highlightsfoundation.org; taralazar.com;
 champandnessie.com; debbieohi.com)

@@ -5,16 +5,20 @@ description: Plan and write a well-structured picture-book story using the profe
 
 # Story-craft
 
-Turn an idea into a paced, page-by-page book. Read `methodology/storybook-pipeline.md` first.
-This skill owns structure & prose; later skills adapt the language, add interactions, lay out
-text, and illustrate.
+Turn an idea into a paced, page-by-page book that **kids beg to re-read**. Read
+`methodology/fun-first.md` first (the north star), then `methodology/storybook-pipeline.md`.
+This skill owns structure & prose — but structure serves the fun, never replaces it. A
+well-built skeleton with no jokes and no jeopardy is a dead book. Later skills adapt the
+language, add games, lay out text, and illustrate.
 
 ## Procedure
 1. **Pick the world + cast + age band.** Confirm the `age_band` and a target `reading_level`
    (defer the fine-tuning to `reading-level-adaptation`, but set targets now — they shape
    sentence length and word choice). Pin each character's `evolution.stage` for this book.
-2. **Hook + emotional truth.** One-sentence `logline` (protagonist + goal + obstacle) and the
-   single feeling the book is about. Pressure-test before writing pages.
+2. **Hook + why it's fun.** One-sentence `logline` (protagonist + goal + obstacle) AND a
+   clear answer to "where are the laughs / stakes / mischief / surprise?". Pressure-test by
+   pitching it aloud — if it doesn't make you grin or lean in, fix it before writing pages.
+   (A feeling underneath is welcome; never spell it out.)
 3. **Build the `spine`** (cause → effect, never coincidence):
    `once_upon_a_time / every_day / until_one_day / because_of_that[] / until_finally /
    ever_since_then`. Make sure each beat *causes* the next, and the protagonist's `flaw`
@@ -26,20 +30,28 @@ text, and illustrate.
      descriptions; the illustrator injects `appearance_token`s + world style automatically.
      List `characters_present` (slugs).
    - `kind` — title / story / interaction / comprehension / end.
-   - **Deliberate page-turns** — end tense spreads on a question/threat so the turn pays off.
-5. **Show, don't tell the moral.** Let the resolution dramatize the `theme`/`moral`.
+   - **Deliberate page-turns** — end spreads on a cliff/threat/uh-oh so the turn *must* happen.
+   - **Land a laugh or a gasp on most spreads** — slapstick, a twist, a cheeky narrator aside,
+     a running gag paying off. Reach for the fun levers in `fun-first.md` on any flat page.
+5. **End on the payoff, not a lesson.** Close on the funniest or most satisfying image and
+   *stop*. No character explaining what they learned, no "and that's how…" moral. Let a
+   naughty hero get away with it (or earn a funnier comeuppance, never a moral one).
 6. **Front/back matter** — title page (page 0) and an end page; optional dedication.
 7. **Scaffold & save**: `uv run python scripts/new_story.py <world> "<Title>" --age 5-7` then write
    the pages into `story.yaml`.
 
 ## Craft checklist
-- [ ] Logline names protagonist, goal, obstacle.
+- [ ] **It's FUN** — laughs, stakes, or mischief land on most spreads; a kid would beg for
+      the next page. (This is the gate that matters most — see `fun-first.md`.)
+- [ ] **No moral-of-the-story ending**; the plot isn't a values-delivery vehicle.
+- [ ] Logline names protagonist, goal, obstacle; the "why it's fun" is clear.
 - [ ] Spine beats are causally linked; the flaw drives the middle.
-- [ ] Page-turns placed at tension peaks; varied rhythm.
-- [ ] Every page advances plot OR character OR world (cut pages that don't).
+- [ ] Page-turns placed at tension peaks, ending on cliffs/uh-ohs; varied rhythm.
+- [ ] Every page advances plot OR character OR world OR a laugh (cut pages that don't).
 - [ ] Each `image.prompt` is scene-only with `characters_present` listed.
-- [ ] Characters act from their `personality`; nothing contradicts world `rules`/`timeline`.
-- [ ] Word count within the age-band target (see reading-pedagogy.md).
+- [ ] Characters act from their `personality` (let them be naughty/clever/flawed); nothing
+      contradicts world `rules`/`timeline`.
+- [ ] Words roughly age-fit — a light touch, never traded for a joke or the pace.
 
 ## Output
 `worlds/<world>/stories/<slug>/story.yaml` with `spine` + `pages[]`.

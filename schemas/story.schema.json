@@ -33,8 +33,8 @@
       }
     },
 
-    "themes": { "type": "array", "items": { "type": "string" } },
-    "moral": { "type": "string", "description": "The takeaway, shown not told." },
+    "themes": { "type": "array", "items": { "type": "string" }, "description": "Optional. Recurring ideas/flavours the book plays with (e.g. adventure, mischief, friendship) — NOT lessons to teach." },
+    "moral": { "type": "string", "description": "Optional and usually unnecessary. At most a quiet feeling the book leaves behind — NEVER a lesson spelled out on the page. Most fun books should leave this empty (see methodology/fun-first.md)." },
 
     "affirms_rules": {
       "type": "array",
@@ -155,7 +155,7 @@
     "interaction": {
       "type": "object",
       "additionalProperties": false,
-      "description": "An interactive element embedded in the page to keep readers engaged and reinforce reading skills.",
+      "description": "A short, playable game embedded in the page — a fun break that's part of the romp, about what just happened on this page. Not a hidden drill.",
       "required": ["type", "prompt"],
       "properties": {
         "type": {
@@ -165,15 +165,47 @@
             "rhyme-complete", "word-match", "tap-to-reveal", "choice",
             "riddle", "comprehension-question", "sound-hunt", "drag-order",
             "coloring", "memory", "trace-letter",
-            "sorting", "pattern", "odd-one-out", "melody"
+            "sorting", "pattern", "odd-one-out", "melody",
+            "hidden-object", "find-in-scene", "tap-on-art", "hotspot-reveal", "place-on-scene",
+            "drag-sort", "drag-match", "jigsaw", "dress-up", "feed-the-thing",
+            "connect-dots", "scratch-reveal", "sliding-puzzle", "balance-scale",
+            "word-build", "anagram", "fill-the-blank",
+            "rhythm-tap", "song-builder", "sequence-recall",
+            "custom"
           ],
-          "description": "Interaction type — a short, playable break that also reinforces a skill. Decode-skill builders: word-match, sound-hunt, rhyme-complete, trace-letter. Logic puzzles: maze, sorting, pattern, odd-one-out. Music: melody. The rest are engagement/comprehension. Be creative with the framing (sneaky math, music, mystery) — the renderer plays each type fully."
+          "description": "Interaction type — a short, playable, FUN break that belongs to this page. Reach for RICH games first; quizzes are seasoning. ON THE ART (normalized 0..1 coords over the page image): hidden-object, find-in-scene, tap-on-art, hotspot-reveal, place-on-scene, spot-the-difference. TRUE DRAG-AND-DROP: drag-sort, drag-match, jigsaw, dress-up, feed-the-thing, place-on-scene. DRAW/REVEAL: connect-dots, scratch-reveal, trace-letter, coloring. SPATIAL/LOGIC: maze, sliding-puzzle, balance-scale, sorting, pattern, odd-one-out, counting. WORD/PHONICS: word-build, anagram, fill-the-blank, word-match, sound-hunt, rhyme-complete. MUSIC/RHYTHM: melody, rhythm-tap, song-builder. MEMORY: memory, sequence-recall. COMPREHENSION/BRANCH: comprehension-question, riddle, choice. REVEAL: tap-to-reveal. When no built-in fits, invent one with 'custom' (a declarative game spec — see $defs/customGameSpec). The renderer plays each type fully."
         },
         "prompt": { "type": "string", "description": "The instruction shown to the reader." },
-        "skill": { "type": "string", "description": "Reading skill reinforced (phonemic-awareness, phonics, fluency, vocabulary, comprehension) or 'engagement'." },
+        "skill": { "type": "string", "description": "Optional INTERNAL label only — never shown to the child. Default 'engagement'. If a game happens to exercise a reading skill (phonemic-awareness, phonics, fluency, vocabulary, comprehension) you may tag it, but fun is the point, not skill coverage." },
         "data": {
           "type": "object",
-          "description": "Type-specific payload. Shape depends on 'type' (e.g. seek-and-find: {items:[...]}, choice: {options:[{label,goto}]}, rhyme-complete: {sentence, answer, distractors})."
+          "description": "Type-specific payload. Shape depends on 'type' — see methodology/interactivity.md for every shape. On-art types use normalized coords {at:{x,y}} with x,y in 0..1. For type 'custom', data MUST match $defs/customGameSpec."
+        },
+        "steps": {
+          "type": "array",
+          "description": "Optional multi-beat chain: each entry is a mini-interaction played in turn; the whole game is solved only after the last beat. Steps may NOT nest their own steps.",
+          "items": { "$ref": "#/$defs/interaction" }
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["easy", "medium", "hard"],
+          "description": "Optional hint to the renderer to scale the challenge (e.g. sliding-puzzle 2x2 vs 4x4)."
+        },
+        "coord_space": {
+          "type": "string",
+          "enum": ["normalized", "percent"],
+          "default": "normalized",
+          "description": "Coordinate convention for on-art games. 'normalized' = 0..1 (recommended). 'percent' = 0..100 (legacy)."
+        },
+        "reward": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional theming for the collectible the child earns by solving this game. Without it the reader awards a default sticker automatically.",
+          "properties": {
+            "label": { "type": "string", "description": "Name of the sticker, e.g. 'Dragon Scale'." },
+            "emoji": { "type": "string", "description": "The sticker glyph, e.g. '🐉'." },
+            "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "Stable id so the same collectible can recur across a series." }
+          }
         },
         "feedback": {
           "type": "object",
@@ -183,6 +215,74 @@
             "try_again": { "type": "string" }
           }
         }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "custom" } }, "required": ["type"] },
+          "then": { "properties": { "data": { "$ref": "#/$defs/customGameSpec" } } }
+        }
+      ]
+    },
+
+    "customGameSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "A declarative game an author (or LLM) invents from primitives — no code. Elements (draggables / dropzones / hotspots / targets / toggles) plus a win condition. There is NO fail state in the model, so a custom game is winnable by construction; the reader adds a hint ladder + auto-solve as the final backstop.",
+      "required": ["elements", "win"],
+      "properties": {
+        "spec": { "type": "string", "description": "Spec version, e.g. 'v1'." },
+        "stage": { "type": "string", "enum": ["scene", "board"], "description": "'scene' plays on the page art; 'board' plays in a plain card. Auto-detected from element coords if omitted." },
+        "elements": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Every interactive thing in the game; each needs a unique id.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind"],
+            "properties": {
+              "id": { "type": "string" },
+              "kind": { "type": "string", "enum": ["draggable", "dropzone", "hotspot", "target", "tile", "toggle"] },
+              "label": { "type": "string" },
+              "emoji": { "type": "string" },
+              "at": { "$ref": "#/$defs/coord" },
+              "r": { "type": "number" },
+              "accepts": { "type": "array", "items": { "type": "string" }, "description": "(dropzone) ids/groups of draggables it accepts." },
+              "group": { "type": "string", "description": "(draggable) bucket key a dropzone may accept." },
+              "order": { "type": "integer" }
+            }
+          }
+        },
+        "win": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["mode"],
+          "description": "How the game is won. Combine with all/any/not for composite wins.",
+          "properties": {
+            "mode": { "type": "string", "enum": ["all-placed", "matched-pairs", "ordered", "sequence", "all-found", "toggled-all", "expression"] },
+            "pairs": { "type": "array", "items": { "type": "array", "items": { "type": "string" } } },
+            "order": { "type": "array", "items": { "type": "string" } },
+            "steps": { "type": "array", "items": { "type": "string" } },
+            "targets": { "type": "array", "items": { "type": "string" } },
+            "state": { "type": "object" },
+            "all": { "type": "array" },
+            "any": { "type": "array" },
+            "not": { "type": "object" }
+          }
+        },
+        "hint": { "type": "string" },
+        "hints": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "coord": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A point on the page art, normalized 0..1 (origin top-left). Legacy percent (0..100) is auto-detected.",
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 100 },
+        "y": { "type": "number", "minimum": 0, "maximum": 100 }
       }
     }
   }

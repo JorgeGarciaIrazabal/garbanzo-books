@@ -1,0 +1,10 @@
+PROMPT:
+The tall crystal tower glowing softly under a big upside-down crescent moon with a gentle smile, sparkly stars twinkling all around, a warm golden light, calm and inviting. bright magical-girl anime illustration, glossy cel-shaded style, large shiny anime eyes with star highlights, sparkles and lens-flares, big midnight-cobalt sky with a giant upside-down crescent moon, palette #1a2a6c #fde08a #ff8fb1 #fff5e1 #d6e3ff #9a7bd1 #1a1a2e, glowing rim light, glittery star particles, dreamy soft cloud textures, no text. palette: midnight-cobalt #1a2a6c, moonlight-gold #fde08a, sailor-rose #ff8fb1, cloud-cream #fff5e1, starlight-silver #d6e3ff, crystal-violet #9a7bd1, luna-black #1a1a2e. leave the center as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, 3D render, muted colors, scary or distorted faces, extra fingers, gore, dark horror, text artifacts, watermark, blurry composition
+
+SEED: None
+ASPECT: 4:3
+CHARACTERS: —
+REFERENCES: —

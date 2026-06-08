@@ -1,0 +1,101 @@
+slug: stella-moonweaver
+world: lunaria-crystal
+name: Stella Moonweaver
+role: protagonist
+species: human
+pronouns: she/her
+one_liner: A quiet, star-loving girl in a midnight-blue cloak who keeps the upside-down moon glowing.
+personality:
+  traits:
+  - quiet
+  - kind
+  - curious
+  - patient
+  - brave-when-it-counts
+  motivation: To keep the upside-down moon glowing and make sure every child in Lunaria feels safe and
+    seen.
+  fears:
+  - being too quiet to be heard
+  - the upside-down moon going dark
+  flaws:
+  - sometimes stays silent when she should speak up
+  - worries too much about getting things wrong
+  strengths:
+  - listens with her whole heart
+  - stays calm in storms
+  - notices small, sparkly things others miss
+  quirks:
+  - hums a tiny tune when she is thinking
+  - collects tiny fallen stars and keeps them in a glass jar
+  - always tucks Luna into her cloak pocket
+  values:
+  - kindness
+  - listening
+  - courage
+  - belonging
+voice:
+  speech_style: soft, gentle, short sentences; often asks "would you like to come with me?"
+  catchphrases:
+  - Look up, the moon is smiling.
+  - Luna hears you.
+  - We can do it together.
+  vocabulary_level: simple, concrete, early-reader friendly
+appearance:
+  age_appearance: about 8
+  build: small and slim
+  height: knee-high to an adult, small for her age
+  skin: warm cream
+  hair: long, very straight, silvery-lavender hair, almost to her waist, with a soft shine
+  eyes: huge, round, shiny sapphire-blue anime eyes with twin star-shaped highlights
+  outfit: a long hooded midnight-blue cloak with silver stars and crescent moons embroidered at the hem,
+    a soft cloud-cream dress underneath, ankle boots the same midnight-blue, and a small silver star pendant
+    on a thin chain
+  distinguishing_features:
+  - long silver-lavender hair past her waist
+  - midnight-blue hooded cloak with silver star/moon embroidery
+  - huge sapphire-blue eyes with twin star highlights
+  - tiny silver star pendant at her throat
+  color_palette:
+  - part: hair
+    hex: '#cfc0e8'
+  - part: eyes
+    hex: '#3a6df0'
+  - part: cloak
+    hex: '#1a2a6c'
+  - part: dress
+    hex: '#fff5e1'
+  - part: boots
+    hex: '#1a2a6c'
+  - part: pendant
+    hex: '#d6e3ff'
+  silhouette_notes: small slim figure wrapped in a long pointed hooded cloak that flares at the bottom,
+    with very long straight hair flowing out from under the hood — instantly recognisable as a hooded
+    star-witch silhouette
+appearance_token: 'STELLA: a small slim girl about 8, long straight silvery-lavender hair (#cfc0e8) past
+  her waist, huge round shiny sapphire-blue anime eyes (#3a6df0) with twin star highlights, wearing a
+  long hooded midnight-blue cloak (#1a2a6c) embroidered with tiny silver stars and crescent moons, soft
+  cloud-cream dress (#fff5e1), midnight-blue boots, a tiny silver star pendant (#d6e3ff), small for her
+  age, calm gentle smile'
+reference_images:
+- characters/stella-moonweaver.refs/model-sheet.png
+seed: 1701
+relationships:
+- character: luna
+  relation: best friend and cat companion
+evolution:
+- stage: base
+  order: 0
+  summary: Quiet keeper of the moon, learning to use her voice.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+- stage: moon-speaker
+  order: 1
+  summary: Finds her brave voice and speaks up to help friends.
+  personality_delta: She now shares her ideas out loud and trusts her own kind heart.
+  appearance_delta: Her pendant glows softly moonlight-gold (#fde08a) and tiny sparkles drift from her
+    cloak hem.
+  unlocked_by: first time she speaks up to save the moon
+tags:
+- protagonist
+- moon-keeper

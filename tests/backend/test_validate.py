@@ -254,34 +254,32 @@ def test_check_story_warns_when_no_interactions_at_all(write_world, factories):
     assert any("no interactions" in warn for warn in rep.warns)
 
 
-def test_check_story_warns_when_pillars_coverage_low(write_world, factories):
+def test_check_story_warns_when_every_game_is_a_quiz(write_world, factories):
+    """Fun-first: if every game is a pick-an-answer quiz, nudge the author to add a rich
+    game a kid actually DOES (in-scene, drag, puzzle, music, custom)."""
     rep = _ok_report()
     w = _world_obj(write_world, factories)
-    # Add ONE interaction in just one pillar
-    w.stories[0].data["pages"][1]["interaction"] = {
-        "type": "seek-and-find",
-        "prompt": "find",
-        "data": {"items": ["a", "b"]},
-        "skill": "vocabulary",
-    }
+    for n in (1, 2):
+        w.stories[0].data["pages"][n]["interaction"] = {
+            "type": "comprehension-question", "prompt": "?",
+            "data": {"question": "?"},
+        }
     check_story(rep, w, w.stories[0])
-    assert any("pillar" in warn.lower() for warn in rep.warns)
+    assert any("rich" in warn.lower() for warn in rep.warns)
 
 
-def test_check_story_no_pillar_warning_when_three_or_more_pillars(write_world, factories):
-    """Cover three different pillars across interactions → no pillar warning."""
+def test_check_story_no_variety_warning_when_games_vary_and_include_rich(write_world, factories):
+    """Varied kinds of fun including a rich (non-quiz) game → no variety/richness nudge."""
     rep = _ok_report()
-    pillars = list(PILLARS)[:3]
     pages = [
         {"number": 1, "kind": "story", "text": "go", "image": {"prompt": "x"},
-         "interaction": {"type": "seek-and-find", "prompt": "go", "skill": pillars[0],
-                         "data": {"items": ["a"]}}},
+         "interaction": {"type": "drag-sort", "prompt": "go",
+                         "data": {"bins": [{"label": "In", "key": "in"}],
+                                  "items": [{"label": "sock", "bin": "in"}]}}},
         {"number": 2, "kind": "story", "text": "go", "image": {"prompt": "x"},
-         "interaction": {"type": "riddle", "prompt": "go", "skill": pillars[1],
-                         "data": {"answer": "x"}}},
+         "interaction": {"type": "riddle", "prompt": "go", "data": {"answer": "x"}}},
         {"number": 3, "kind": "story", "text": "go", "image": {"prompt": "x"},
-         "interaction": {"type": "rhyme-complete", "prompt": "go", "skill": pillars[2],
-                         "data": {"answer": "x"}}},
+         "interaction": {"type": "rhyme-complete", "prompt": "go", "data": {"answer": "x"}}},
     ]
     from lib.model import load_world
     write_world(
@@ -294,7 +292,7 @@ def test_check_story_no_pillar_warning_when_three_or_more_pillars(write_world, f
     )
     w = load_world("ww")
     check_story(rep, w, w.stories[0])
-    assert not any("pillar" in warn.lower() for warn in rep.warns)
+    assert not any("vary the fun" in warn.lower() or "rich game" in warn.lower() for warn in rep.warns)
 
 
 # ================================================================================== accessibility / illustration

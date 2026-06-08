@@ -14,7 +14,8 @@
     <button class="btn ghost toggle" id="btn-tts" title="Read the studio's replies aloud" aria-pressed="false">🔊 Read aloud</button>
     <button class="btn ghost" id="btn-validate" title="Run QA on all books">✓ Validate</button>
     <button class="btn ghost" id="btn-quality" title="Grade books against the 7-gate quality checklist">★ Quality</button>
-    <button class="btn ghost" id="btn-build" title="Rebuild the published site">⚙ Build site</button>
+    <button class="btn ghost" id="btn-build" title="Rebuild the studio preview (includes drafts you can browse here)">🔨 Preview</button>
+    <button class="btn" id="btn-publish" title="Rebuild the public version (published only — what GitHub Pages will see)">🚀 Publish</button>
     <span class="status" id="conn"></span>
   </div>
 </header>
@@ -61,11 +62,13 @@
       </div>
       <div class="composer-row">
         <div class="composer-left">
-          <label class="modelpick" title="MiniMax is fast & reliable; DeepSeek is more creative — great for stories">
+          <label class="modelpick" title="Auto = the studio picks the best model per stage (story → creative, research → MiniMax, everything else → fast). Pick a specific model to pin.">
             <span>Model</span>
             <select id="model-select"></select>
+            <span id="stage-chip" class="stage-chip" title="">✨ auto</span>
           </label>
           <label class="newsess"><input type="checkbox" id="newsess"> new session</label>
+          <button class="btn ghost small clearbtn" id="btn-clear" type="button" title="Clear the chat and start a fresh session">🧹 Clear chat</button>
         </div>
         <div class="composer-send">
           <button class="btn stopbtn hidden" id="stop" type="button" title="Stop the current step so you can redirect">⏹ Stop</button>
@@ -75,11 +78,12 @@
     </form>
   </section>
 
-  <!-- Right: library + live preview -->
+  <!-- Right: library + live previews -->
   <section class="panel">
     <div class="tabs">
       <button class="tab active" data-tab="library">Library</button>
-      <button class="tab" data-tab="preview">Preview</button>
+      <button class="tab" data-tab="preview">Studio preview</button>
+      <button class="tab" data-tab="public">Public preview</button>
     </div>
     <div class="tabview" id="view-library">
       <button class="btn ghost small" id="btn-refresh">↻ Refresh</button>
@@ -87,10 +91,25 @@
     </div>
     <div class="tabview hidden" id="view-preview">
       <div class="preview-bar">
-        <span>Live site preview</span>
+        <span>Studio preview — includes drafts <span class="badge draft">studio only</span></span>
         <a class="btn ghost small" id="open-preview" href="/preview/index.html" target="_blank">Open ↗</a>
       </div>
-      <iframe id="preview" src="/preview/index.html" title="site preview"></iframe>
+      <iframe id="preview" src="/preview/index.html" title="studio site preview"></iframe>
+    </div>
+    <div class="tabview hidden" id="view-public">
+      <div class="preview-bar">
+        <span>Public preview — published only, <em>exactly what GitHub Pages will deploy</em>
+          <span class="badge pub" id="public-badge">no build yet</span></span>
+        <a class="btn ghost small" id="open-public" href="/publish-preview/index.html" target="_blank">Open ↗</a>
+      </div>
+      <iframe id="public-preview" src="/publish-preview/index.html" title="public site preview"></iframe>
+      <div class="deploy-card" id="deploy-card">
+        <strong>Ready to ship?</strong>
+        <p>This preview is the exact shape GitHub Pages will see after you push.</p>
+        <pre id="deploy-cmd">git add -A &amp;&amp; git commit -m "publish" &amp;&amp; git push
+# → .github/workflows/deploy-pages.yml builds &amp; deploys ./site/ to Pages
+# (or:  gh workflow run deploy-pages.yml  to trigger manually)</pre>
+      </div>
     </div>
   </section>
 </main>

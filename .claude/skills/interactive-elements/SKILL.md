@@ -5,17 +5,19 @@ description: Design small games, puzzles, and participation beats that give kids
 
 # Interactive elements
 
-An interaction is a **fun break from reading** — a few-second game where the child *does*
-something delightful that is *about* what just happened in the story. Play it = understand it,
-and the skill-building stays hidden. Read `methodology/interactivity.md` (the mechanic→age map
-and exact payload shapes) first.
+An interaction is a **game** — a few-second fun break where the child *does* something
+delightful that is *about* what just happened in the story. It's part of the romp, not a
+hidden drill. Read `methodology/fun-first.md` (the north star), then
+`methodology/interactivity.md` (the mechanic→age map and exact payload shapes).
 
-## Mindset: be creative, hide the learning
-- Think "what would be **fun** here?", not "what reading drill fits?". A page can carry a logic
-  puzzle, a maze, a memory game, a music challenge (play the dragon's song back), a mystery, or
-  a bit of **sneaky math** (counting, patterns, sorting by size) that never *looks* like math.
+## Mindset: would a kid play this for fun?
+- Think "what would be **fun** here?", never "what reading drill fits?". A page can carry a
+  logic puzzle, a maze, a memory game, a music challenge (play the dragon's song back), a
+  mystery, a "help the hero choose" branch, or a bit of sneaky math (counting, patterns,
+  sorting by size) — pick whatever's the most fun for this beat.
 - Pour the story's flavour into the wording. Not "Order by size" → "Line up Pip's flames,
   biggest first!". The mechanic is the engine; the story is the skin.
+- If a game is only there to "practise a skill" and wouldn't be fun on its own, cut it.
 - Vary the mechanics across the book — don't ship six multiple-choice questions. Mix a search,
   a logic puzzle, a music beat, a sorting game, a branch.
 - The renderer plays every `type` fully (taps, drags, a real maze, audio melodies, canvas
@@ -31,9 +33,10 @@ and exact payload shapes) first.
    surprise → `tap-to-reveal` / `riddle` / `coloring`.
 3. **Tie it to *this* page.** The game uses things actually in the illustration / the rhyme on
    the page / the event that just happened.
-4. **Write the block:** `type`, `prompt` (one clear, in-voice instruction), `skill` (a reading
-   pillar or `engagement`), `data` (match the exact shape in interactivity.md), and warm
-   `feedback.correct` / `feedback.try_again`.
+4. **Write the block:** `type`, `prompt` (one clear, in-voice instruction), `data` (match the
+   exact shape in interactivity.md), and warm `feedback.correct` / `feedback.try_again`.
+   `skill` is an optional internal label (use `engagement` by default) — it must never leak
+   into what the child sees.
 5. **Always winnable.** Never a dead end or fail state. For `choice`/branching, every `goto`
    points to a real page and all branches still reach an ending. (The reader auto-celebrates
    wins and gives gentle retries — your `feedback` text is the voice of that.)
@@ -47,18 +50,18 @@ and exact payload shapes) first.
 - **7–12:** layer it — multi-step `maze`, multi-bin `sorting`, number `pattern`s (sneaky math),
   longer `melody`, branching `choice`, sequencing with `drag-order`.
 
-## Cover the skills (without showing them)
-Across the book, span ≥3 of the five reading pillars (phonemic-awareness, phonics, fluency,
-vocabulary, comprehension) via `interaction.skill`, plus pure-fun `engagement` beats. Logic and
-math games can carry `engagement` or `comprehension`.
+## Keep the games varied
+Mix the *kinds* of fun across the book — a search, a maze, a music beat, a sorting game, a
+branch, a riddle. Don't ship six multiple-choice questions. Variety is about fun and surprise,
+not about ticking skill boxes.
 
 ## Quality bar
+- [ ] Each game would be **fun on its own** — a kid would play it even outside the book.
 - [ ] Mechanics are **varied** across the book (not all quizzes).
 - [ ] Each interaction's `data` matches its `type`'s shape (the validator checks required keys).
-- [ ] Instruction language is within the story's reading level and in the story's voice.
-- [ ] Each game is tied to its page; the skill is hidden, the fun is obvious.
+- [ ] Instruction is short, in the story's voice, readable at the band.
+- [ ] Each game is tied to its page; nothing reads like a worksheet.
 - [ ] Every branching `goto` resolves to a real page; no dead ends.
-- [ ] The book covers ≥3 of the five reading pillars across its interactions.
 - [ ] Interactions sit at natural beats, not emotional peaks.
 
 ## Output

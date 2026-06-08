@@ -1,0 +1,124 @@
+slug: lunaria-crystal
+title: Lunaria Crystal
+tagline: 'A quiet girl and her tiny black cat tend a crystal tower where the moon smiles upside down.'
+premise: 'Lunaria Crystal is a small moon-touched kingdom that floats among soft, sparkly clouds. A quiet, star-loving girl and her tiny black cat Luna are its keepers, and the magical upside-down moon on top of their crystal tower watches over everyone. The stories are gentle adventures about courage, kindness, listening, and the small acts of magic that make a home feel safe and warm.'
+tone:
+- cozy
+- magical
+- sparkly
+- gentle
+genres:
+- magical-girl
+- gentle-adventure
+- fantasy
+target_age_bands:
+- 5-7
+languages:
+- en
+geography:
+  overview: 'A small floating kingdom of crystal towers, starlit gardens, and friendly houses that sits high in a soft, sparkly sky. The big upside-down moon is always overhead and smiles down on the world.'
+  locations:
+  - name: Crystal Tower
+    description: 'A tall crystal tower with a glowing upside-down moon on top, where our hero and Luna live.'
+    mood: warm, safe, sparkly
+    recurring: true
+  - name: Starlight Garden
+    description: 'A little garden of glowing starflowers just below the tower, where kids come to listen to the wind.'
+    mood: peaceful, twinkly
+    recurring: true
+  - name: Cloud Bridge Town
+    description: 'A cluster of cozy houses on a soft cloud, connected by silver stairways.'
+    mood: friendly, bustling
+    recurring: true
+  - name: Moonwell Pool
+    description: 'A round pool that reflects the upside-down moon perfectly, used for quiet wishes.'
+    mood: calm, magical
+  - name: Rainbow Stairway
+    description: 'A glowing stairway that climbs up to the highest clouds, where the heroes fly to see the stars.'
+    mood: hopeful, big-sky
+rules:
+- id: upside-down-moon
+  text: 'The upside-down moon is the heart of the kingdom. When it glows gold, the kingdom is safe and happy. When it fades, the world needs kindness and listening to bring it back.'
+- id: crystal-tower
+  text: 'The crystal tower amplifies the goodness in people''s hearts. Loud, angry, or unkind words dim its glow, and kind words make it sparkle.'
+- id: luna-magic
+  text: 'Luna the cat can hear wishes. She curls up on laps and purrs to send good dreams to children everywhere.'
+- id: starfriends
+  text: 'Every child in Lunaria has a small star inside them. When they are brave or kind, their star shines brighter.'
+- id: kindness-law
+  text: 'No magic in Lunaria is stronger than a kind, honest heart. Big spells need patience, not power.'
+factions:
+- name: The Tower Keepers
+  description: 'The hero, Luna, and the small circle of friends who look after the crystal tower and the upside-down moon.'
+  values: kindness, listening, courage
+- name: The Starflower Gardeners
+  description: 'Gentle folk who grow the glowing starflowers that light the kingdom at night.'
+  values: patience, care, beauty
+- name: The Cloud Bridge Builders
+  description: 'Tinkerers who repair and grow the silver stairways and floating houses.'
+  values: teamwork, craft, steadiness
+timeline:
+- label: The First Glow
+  description: 'The day the upside-down moon first appeared above the crystal tower, and the kingdom began.'
+- label: Luna Arrives
+  description: 'The night the tiny black kitten with silver whiskers followed the moonbeams to the tower door.'
+- label: The Quiet Promise
+  description: 'Our hero vows to listen, be kind, and look after the moon every day.'
+motifs:
+- upside-down moon
+- glowing starflowers
+- silver stairways
+- twinkling cat eyes
+- soft sparkles
+- a tiny purr
+themes:
+- listening
+- kindness
+- courage in small moments
+- belonging
+- friendship
+art_style:
+  medium: bright magical-girl anime illustration with cel shading and sparkles
+  line_quality: clean, confident, glossy
+  shading: cel-shaded with soft gradients and bright highlights
+  lighting: glowing, sparkly, big shining eye highlights, rim light from the upside-down moon
+  perspective: eye-level, character-centered, full-page compositions with big sky and lots of stars
+  palette:
+  - name: midnight-cobalt
+    hex: '#1a2a6c'
+    role: sky
+  - name: moonlight-gold
+    hex: '#fde08a'
+    role: primary
+  - name: sailor-rose
+    hex: '#ff8fb1'
+    role: accent
+  - name: cloud-cream
+    hex: '#fff5e1'
+    role: background
+  - name: starlight-silver
+    hex: '#d6e3ff'
+    role: highlight
+  - name: crystal-violet
+    hex: '#9a7bd1'
+    role: shadow
+  - name: luna-black
+    hex: '#1a1a2e'
+    role: detail
+  influences:
+  - Sailor Moon (Naoko Takeuchi)
+  - magical girl anime
+  - Studio Ghibli skies
+  prompt_style_block: 'bright magical-girl anime illustration, glossy cel-shaded style, large shiny anime eyes with star highlights, sparkles and lens-flares, big midnight-cobalt sky with a giant upside-down crescent moon, palette #1a2a6c #fde08a #ff8fb1 #fff5e1 #d6e3ff #9a7bd1 #1a1a2e, glowing rim light, glittery star particles, dreamy soft cloud textures, no text'
+  negative_prompt: photorealism, 3D render, muted colors, scary or distorted faces, extra fingers, gore, dark horror, text artifacts, watermark, blurry composition
+  aspect_ratio: '4:3'
+  text_treatment:
+    placement: lower third
+    scrim: soft cloud-cream rounded panel at 80% opacity
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+- moon
+- magical-girl
+- cat
+- kindness

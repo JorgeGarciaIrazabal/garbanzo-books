@@ -1,0 +1,97 @@
+slug: luna
+world: lunaria-crystal
+name: Luna
+role: protagonist
+species: cat
+pronouns: she/her
+one_liner: A tiny black kitten with silver whiskers and a glowing upside-down moon on her collar, who
+  hears wishes.
+personality:
+  traits:
+  - brave
+  - playful
+  - loyal
+  - wise-for-her-size
+  - cozy
+  motivation: To hear every child's wish and send them good dreams from her purr.
+  fears:
+  - tall storms
+  - the moon going quiet
+  flaws:
+  - sometimes naps when she should be helping
+  - gets too curious and wanders
+  strengths:
+  - can hear wishes
+  - never gives up on a friend
+  - purrs loudest when someone is sad
+  quirks:
+  - kneads tiny star-shaped biscuits before sleeping
+  - chases sparkles
+  - loves warm laps
+  values:
+  - friendship
+  - kindness
+  - cozy naps
+voice:
+  speech_style: tiny meows, trills, and a soft purr; understands everyone
+  catchphrases:
+  - Mrrp!
+  - Purr purr.
+  vocabulary_level: cat sounds, very few words
+appearance:
+  age_appearance: kitten, about 6 months old
+  build: tiny, round, fluffy, very small
+  height: fits in a hood or a lap
+  skin: soft onyx-black fur with a faint blue sheen under moonlight
+  hair: short, soft, slightly fluffy black fur; long silver whiskers and silver tufts on her chest
+  eyes: big round golden eyes with thin black slits and a small upside-down crescent-moon glint
+  outfit: a soft silver collar with a tiny glowing upside-down crescent moon charm at her throat, and
+    a single small silver star on her forehead
+  distinguishing_features:
+  - tiny glowing upside-down crescent moon on her silver collar
+  - long silver whiskers and a silver chest tuft
+  - big golden eyes with a crescent glint
+  - small silver star on her forehead
+  color_palette:
+  - part: fur
+    hex: '#1a1a2e'
+  - part: whiskers
+    hex: '#d6e3ff'
+  - part: eyes
+    hex: '#fde08a'
+  - part: collar
+    hex: '#d6e3ff'
+  - part: moon-charm
+    hex: '#fde08a'
+  - part: star
+    hex: '#d6e3ff'
+  silhouette_notes: a tiny round black kitten with very long silver whiskers, a glowing moon charm at
+    her throat, and a star on her forehead — instantly recognisable as a starlit moon-cat
+appearance_token: 'LUNA: a tiny round fluffy black kitten about 6 months old, soft onyx-black fur (#1a1a2e)
+  with a faint blue sheen, long silver whiskers (#d6e3ff) and a silver chest tuft, big round golden eyes
+  (#fde08a) with thin black slits and a small upside-down crescent glint, a soft silver collar (#d6e3ff)
+  with a tiny glowing upside-down crescent moon charm (#fde08a), a small silver star on her forehead,
+  fits in a hood, alert and warm'
+reference_images:
+- characters/luna.refs/model-sheet.png
+seed: 2701
+relationships:
+- character: stella-moonweaver
+  relation: best friend and kitten companion
+evolution:
+- stage: base
+  order: 0
+  summary: A tiny moon-kitten who hears wishes and sends good dreams.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+- stage: dream-walker
+  order: 1
+  summary: A bigger, bolder moon-cat who guides children through good dreams.
+  personality_delta: She is now confident, patient, and a true guide to sleepy friends.
+  appearance_delta: A faint galaxy-like shimmer dapples her black fur, and her moon charm always glows.
+  unlocked_by: first time she walks a friend through a good dream
+tags:
+- cat
+- moon-keeper
+- magical
