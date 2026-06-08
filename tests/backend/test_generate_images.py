@@ -6,6 +6,7 @@ flowing through, character sheet path) and avoid hitting any external API.
 """
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -170,7 +171,8 @@ def test_gen_story_with_placeholder_provider_writes_files_and_updates_yaml(
                 characters=[factories.character(slug="hero", world="ww")],
                 stories=[factories.story(slug="s1", world="ww")])
     gi.gen_story("ww/s1", provider="placeholder", only_page=None,
-                 seed_override=None, print_only=False)
+                 seed_override=None, print_only=False,
+                 qc_retries=0, qc_threshold=7.0, qc_model=None, qc_off=True)
     sdir = workspace.worlds / "ww" / "stories" / "s1"
     story = load_yaml(sdir / "story.yaml")
     # Every page that wasn't skipped should now have a file + alt
@@ -188,13 +190,23 @@ def test_gen_story_only_page_skips_other_pages(workspace, write_world, factories
                 characters=[factories.character(slug="hero", world="ww")],
                 stories=[factories.story(slug="s1", world="ww")])
     gi.gen_story("ww/s1", provider="placeholder", only_page=1,
-                 seed_override=None, print_only=False)
+                 seed_override=None, print_only=False,
+                 qc_retries=0, qc_threshold=7.0, qc_model=None, qc_off=True)
     sdir = workspace.worlds / "ww" / "stories" / "s1"
-    images = sorted(p.name for p in (sdir / "images").iterdir() if p.suffix != ".txt")
+    # Only image files (not sidecars) — see comments on the .prompt.txt and .qc.json files
+    # written alongside each render for the audit trail.
+    images = sorted(p.name for p in (sdir / "images").iterdir()
+                    if p.suffix not in (".txt", ".json"))
     # only page-01 was rendered
     assert images == ["page-01.svg"]
     # and its audit sidecar sits beside it (A4)
     assert (sdir / "images" / "page-01.prompt.txt").exists()
+    # and the per-page QC log sidecar records that QC was disabled (regression test for
+    # the new best-of-N loop's persistence step)
+    qc_log = json.loads((sdir / "images" / "page-01.qc.json").read_text())
+    assert qc_log["page"] == 1
+    assert qc_log["attempts"][0]["flags"] == ["qc_disabled"]
+    assert qc_log["winner"] == "page-01.svg"
 
 
 def test_gen_story_print_prompts_does_not_write_files(workspace, write_world, factories, capsys):
@@ -203,7 +215,8 @@ def test_gen_story_print_prompts_does_not_write_files(workspace, write_world, fa
                 characters=[factories.character(slug="hero", world="ww")],
                 stories=[factories.story(slug="s1", world="ww")])
     gi.gen_story("ww/s1", provider="placeholder", only_page=None,
-                 seed_override=None, print_only=True)
+                 seed_override=None, print_only=True,
+                 qc_retries=0, qc_threshold=7.0, qc_model=None, qc_off=True)
     sdir = workspace.worlds / "ww" / "stories" / "s1"
     out = capsys.readouterr().out
     assert "page" in out.lower()
@@ -221,7 +234,8 @@ def test_gen_story_seed_override_takes_priority_over_page_seed(workspace, write_
                 characters=[factories.character(slug="hero", world="ww")],
                 stories=[story])
     gi.gen_story("ww/s1", provider="placeholder", only_page=1,
-                 seed_override=99999, print_only=True)
+                 seed_override=99999, print_only=True,
+                 qc_retries=0, qc_threshold=7.0, qc_model=None, qc_off=True)
     out = capsys.readouterr().out
     assert "SEED: 99999" in out
     assert "SEED: 1" not in out
@@ -236,7 +250,8 @@ def test_gen_story_evolution_stage_flows_through_to_prompt(workspace, write_worl
     story["characters"] = [{"slug": "hero", "stage": "brave"}]
     write_world(slug="ww", characters=[char], stories=[story])
     gi.gen_story("ww/s1", provider="placeholder", only_page=1,
-                 seed_override=None, print_only=True)
+                 seed_override=None, print_only=True,
+                 qc_retries=0, qc_threshold=7.0, qc_model=None, qc_off=True)
     out = capsys.readouterr().out
     assert "[brave: a brave-medal pinned to the coat]" in out
 
@@ -250,7 +265,8 @@ def test_gen_story_writes_prompt_sidecar_with_assembled_prompt(workspace, write_
     write_world(slug="ww", characters=[char],
                 stories=[factories.story(slug="s1", world="ww")])
     gi.gen_story("ww/s1", provider="placeholder", only_page=1,
-                 seed_override=None, print_only=False)
+                 seed_override=None, print_only=False,
+                 qc_retries=0, qc_threshold=7.0, qc_model=None, qc_off=True)
     side = workspace.worlds / "ww" / "stories" / "s1" / "images" / "page-01.prompt.txt"
     assert side.exists()
     body = side.read_text()
@@ -348,6 +364,170 @@ def test_auto_alt_no_characters_just_returns_scene(workspace, factories):
     ap = AssembledPrompt(prompt="...", negative="", seed=None, aspect_ratio="4:3",
                           characters=[])
     assert gi._auto_alt(page, ap).startswith("an empty room")
+
+
+# ============================================================================ best-of-N vision QC
+def test_run_best_of_n_stops_at_first_good_candidate(monkeypatch, workspace, write_world, factories):
+    """If the first candidate passes the threshold the loop MUST short-circuit — no
+    extra renders, no extra API calls. This is the "if the first one is good, go with
+    that" rule the user asked for."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    from lib.model import load_world
+    from lib.prompt_assembly import assemble_page_prompt
+    w = load_world("ww")
+    story = w.stories[0].data
+    page = story["pages"][1]
+    ap = assemble_page_prompt(w, story, page)
+
+    # Stub: generator copies page-01 placeholder; QC always returns a high score.
+    calls = {"n": 0}
+    def fake_gen(ap_, images_dir, world, ref_base, provider, num, title):
+        calls["n"] += 1
+        out = images_dir / f"page-{num:02d}-{ap_.seed}.svg"
+        out.write_text("<svg/>", encoding="utf-8")
+        return out
+    monkeypatch.setattr(gi, "_generate_one_candidate", fake_gen)
+    monkeypatch.setattr(gi, "_qc_candidate",
+                        lambda *a, **kw: {"ok": True, "score": 9.5, "reason": "great",
+                                          "flags": ["good"]})
+
+    img_dir = workspace.worlds / "ww" / "stories" / "s1" / "images"
+    winner, qc_log = gi._run_best_of_n(
+        ap, img_dir, w, w.dir, story, page, provider="nano-banana",
+        num=1, title="t", qc_retries=2, qc_threshold=7.0, qc_model=None,
+        qc_off=False, verbose=False,
+    )
+    assert calls["n"] == 1, f"expected short-circuit on first good candidate, got {calls['n']} attempts"
+    assert qc_log[0]["score"] == 9.5
+
+
+def test_run_best_of_n_retries_until_threshold_is_met(monkeypatch, workspace, write_world, factories):
+    """The whole point of best-of-N: if the first candidate fails QC, retry with a
+    different seed and pick the best."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    from lib.model import load_world
+    from lib.prompt_assembly import assemble_page_prompt
+    w = load_world("ww")
+    story = w.stories[0].data
+    page = story["pages"][1]
+    ap = assemble_page_prompt(w, story, page)
+
+    calls = {"n": 0}
+    def fake_gen(ap_, images_dir, world, ref_base, provider, num, title):
+        calls["n"] += 1
+        out = images_dir / f"page-{num:02d}-{ap_.seed}.svg"
+        out.write_text("<svg/>", encoding="utf-8")
+        return out
+    monkeypatch.setattr(gi, "_generate_one_candidate", fake_gen)
+    # First two attempts are bad (score 3.0), third is good (score 9.0).
+    scores = [3.0, 3.0, 9.0]
+    def fake_qc(cand, **kw):
+        s = scores.pop(0) if scores else 9.0
+        return {"ok": s >= 7.0, "score": s, "reason": "ok" if s >= 7.0 else "bad",
+                "flags": [] if s >= 7.0 else ["scene_mismatch"]}
+    monkeypatch.setattr(gi, "_qc_candidate", fake_qc)
+
+    img_dir = workspace.worlds / "ww" / "stories" / "s1" / "images"
+    winner, qc_log = gi._run_best_of_n(
+        ap, img_dir, w, w.dir, story, page, provider="nano-banana",
+        num=1, title="t", qc_retries=2, qc_threshold=7.0, qc_model=None,
+        qc_off=False, verbose=False,
+    )
+    assert calls["n"] == 3, f"expected 3 attempts (2 bad + 1 good), got {calls['n']}"
+    # Winner path is the THIRD attempt (highest score).
+    assert "page-01" in winner.name
+    # qc_log has all three attempts recorded.
+    assert len(qc_log) == 3
+    assert [e["score"] for e in qc_log] == [3.0, 3.0, 9.0]
+
+
+def test_run_best_of_n_caps_at_max_attempts(monkeypatch, workspace, write_world, factories):
+    """If every candidate fails, the loop still exits (caller gets the best of the bad
+    ones, not an infinite loop)."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    from lib.model import load_world
+    from lib.prompt_assembly import assemble_page_prompt
+    w = load_world("ww")
+    story = w.stories[0].data
+    page = story["pages"][1]
+    ap = assemble_page_prompt(w, story, page)
+
+    calls = {"n": 0}
+    def fake_gen(ap_, images_dir, world, ref_base, provider, num, title):
+        calls["n"] += 1
+        out = images_dir / f"page-{num:02d}-{ap_.seed}.svg"
+        out.write_text("<svg/>", encoding="utf-8")
+        return out
+    monkeypatch.setattr(gi, "_generate_one_candidate", fake_gen)
+    monkeypatch.setattr(gi, "_qc_candidate",
+                        lambda *a, **kw: {"ok": False, "score": 2.0, "reason": "terrible",
+                                          "flags": ["scene_mismatch"]})
+
+    img_dir = workspace.worlds / "ww" / "stories" / "s1" / "images"
+    winner, qc_log = gi._run_best_of_n(
+        ap, img_dir, w, w.dir, story, page, provider="nano-banana",
+        num=1, title="t", qc_retries=2, qc_threshold=7.0, qc_model=None,
+        qc_off=False, verbose=False,
+    )
+    # 3 attempts = 1 initial + 2 retries; all bad, but a winner is still returned.
+    assert calls["n"] == 3
+    assert winner is not None
+    assert all(e["score"] < 7.0 for e in qc_log)
+
+
+def test_run_best_of_n_hard_flags_short_circuit(monkeypatch, workspace, write_world, factories):
+    """A 'duplicate_characters' or 'anatomy_issue' flag is not salvageable by re-rolling
+    the seed — it reflects a prompt problem. The loop should stop early."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    from lib.model import load_world
+    from lib.prompt_assembly import assemble_page_prompt
+    w = load_world("ww")
+    story = w.stories[0].data
+    page = story["pages"][1]
+    ap = assemble_page_prompt(w, story, page)
+
+    calls = {"n": 0}
+    def fake_gen(ap_, images_dir, world, ref_base, provider, num, title):
+        calls["n"] += 1
+        out = images_dir / f"page-{num:02d}-{ap_.seed}.svg"
+        out.write_text("<svg/>", encoding="utf-8")
+        return out
+    monkeypatch.setattr(gi, "_generate_one_candidate", fake_gen)
+    monkeypatch.setattr(gi, "_qc_candidate",
+                        lambda *a, **kw: {"ok": False, "score": 4.0, "reason": "dupes",
+                                          "flags": ["duplicate_characters"]})
+
+    img_dir = workspace.worlds / "ww" / "stories" / "s1" / "images"
+    winner, qc_log = gi._run_best_of_n(
+        ap, img_dir, w, w.dir, story, page, provider="nano-banana",
+        num=1, title="t", qc_retries=2, qc_threshold=7.0, qc_model=None,
+        qc_off=False, verbose=False,
+    )
+    # 1 attempt, not 3 — the hard flag short-circuits the loop.
+    assert calls["n"] == 1
+    assert "duplicate_characters" in qc_log[0]["flags"]
+
+
+def test_qc_off_writes_disabled_marker(monkeypatch, workspace, write_world, factories):
+    """--qc-off (or no vision model available) writes a transparent 'qc disabled' /
+    'qc_unavailable' marker into the per-page QC log so the audit trail is honest."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    gi.gen_story("ww/s1", provider="placeholder", only_page=1,
+                 seed_override=None, print_only=False,
+                 qc_retries=0, qc_threshold=7.0, qc_model=None, qc_off=True)
+    sdir = workspace.worlds / "ww" / "stories" / "s1"
+    qc_log = json.loads((sdir / "images" / "page-01.qc.json").read_text())
+    assert qc_log["attempts"][0]["flags"] == ["qc_disabled"]
 
 
 # ============================================================================ raster refs filter

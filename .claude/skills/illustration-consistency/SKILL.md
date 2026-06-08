@@ -31,15 +31,58 @@ ASPECT   = world art_style.aspect_ratio
    `uv run python scripts/generate_images.py worlds/<world>/stories/<slug>` → renders each page,
    injecting the tokens above and writing `images/page-NN.png` + alt text back into the page.
    Use `--page N` to (re)render one, `--seed N` to override.
-3. **QC every page** against the bible:
+3. **Best-of-N visual QC** (built in — runs automatically when Ollama is up):
+   after each render, the candidate is scored by a local Ollama vision model against the
+   page's spec (page text + expected characters + their appearance_tokens + the world
+   style block + the locked palette + the reserved text_zone). The grader returns
+   `{score, ok, reason, flags}` where `flags` can include `duplicate_characters`,
+   `wrong_characters`, `missing_characters`, `scene_mismatch`, `style_inconsistent`,
+   `text_zone_cluttered`, `anatomy_issue`, `too_dark`, `low_detail`, etc. If the score is
+   below `--qc-threshold` (default 7.0), the seed is varied and a new candidate is generated
+   — up to `--qc-retries+1` (default 3) candidates. The first one that passes wins; if none
+   pass, the highest-scored one ships with its flags in the QC log. Each page writes a
+   `page-NN.qc.json` sidecar recording every attempt's score, flags, and reason so the
+   decision is auditable. `duplicate_characters` / `anatomy_issue` short-circuit the loop
+   (a re-roll won't fix a prompt problem). Disable with `--qc-off`, override the model with
+   `--qc-model gemma3:4b` (or set `VISION_QC_MODEL`), and override the endpoint with
+   `OLLAMA_HOST`. If Ollama is unreachable, QC degrades to a permissive verdict — the first
+   render ships, and the `qc.json` records `qc_unavailable` so the audit trail is honest.
+4. **Human QC** every page against the bible:
    - Each character on-model: proportions, palette hexes, all `distinguishing_features` present.
    - Style matches `prompt_style_block` (medium, line, lighting); no `negative_prompt` items.
    - The `text_zone` is low-detail/clear so the scrim + text will be legible.
    - Scene matches the page text and emotion; honours world `rules` (no anachronisms).
-4. **Fix drift**: strengthen the `appearance_token` (more concrete features/hexes), reuse the
-   approved reference image more heavily, re-pin the seed, or regenerate just the bad page.
-   If a character looks different at an evolution stage, that's intended only if the story
-   pins that `stage` (which appends `appearance_delta`).
+   - The per-page `page-NN.qc.json` log is clean (no `style_inconsistent`,
+     `wrong_characters`, or `anatomy_issue` flags on the winning attempt).
+5. **Fix drift**: strengthen the `appearance_token` (more concrete features/hexes), reuse the
+   approved reference image more heavily, re-pin the seed, or regenerate just the bad page
+   (`--page N` + a stronger prompt). If a character looks different at an evolution stage,
+   that's intended only if the story pins that `stage` (which appends `appearance_delta`).
+
+## Image provider — Google "Nano Banana" (REQUIRED)
+`generate_images.py` MUST run with `--provider nano-banana` (the default — Google Gemini's
+image model, `gemini-2.5-flash-image`). Get a **free** key at https://aistudio.google.com/apikey
+and set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) **before** illustrating. Nano Banana's
+superpower for us: it accepts each character's **reference image as input**, so once you've
+approved a character sheet, every page can be anchored to it — the single best lever for
+character consistency. Override the model with `GEMINI_IMAGE_MODEL` (e.g. `gemini-3-pro-image`
+= "Nano Banana Pro"). Note: Gemini images carry an invisible SynthID watermark.
+
+## QC provider — Local Ollama vision (RECOMMENDED)
+The best-of-N loop above is powered by a local Ollama vision model so the whole pipeline
+stays **API-key-free for QC** (it still needs a Gemini key for the actual image renders).
+Any vision-capable model works; `gemma3:4b` is the default and is small enough to run on
+CPU in a few seconds per page. To set it up:
+
+```bash
+ollama pull gemma3:4b        # one-time, ~3 GB
+# Ollama must be running on $OLLAMA_HOST (default http://localhost:11434)
+```
+
+The grader inspects the rendered image for: characters present, characters on-model, no
+duplicates, scene matches the page text, art style matches the world bible, text-zone
+legible, and no clear anatomy issues. Each attempt's verdict is written to `page-NN.qc.json`
+so the QC decision is reproducible and reviewable.
 
 ## Image provider — Google "Nano Banana" (REQUIRED)
 `generate_images.py` MUST run with `--provider nano-banana` (the default — Google Gemini's
@@ -64,5 +107,7 @@ Do **not** pass `--provider placeholder`. (`--provider openai` with `OPENAI_API_
 only acceptable alternative if Gemini is unavailable.)
 
 ## Output
-`worlds/<world>/stories/<slug>/images/page-*.png`, character `reference_images`, alt text on
-each page. Next: `/validate` then `publishing`.
+`worlds/<world>/stories/<slug>/images/page-*.png` (winner), per-page `page-NN.prompt.txt`
+(the exact assembled prompt that produced it), per-page `page-NN.qc.json` (every QC
+attempt's score/flags/reason), character `reference_images`, alt text on each page. Next:
+`/validate` then `publishing`.

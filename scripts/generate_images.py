@@ -20,18 +20,32 @@ Providers:
     characters + seed over the world palette, so the whole pipeline runs/validates/builds
     offline. Automatically used as a fallback whenever the chosen provider has no API key.
 
+Visual QC (best-of-N):
+  After each render, the image is scored against the page's spec by a LOCAL Ollama vision
+  model (gemma3 / gemma4 / llama3.2-vision / llava / …). If the score is below the threshold
+  the render is rejected, the seed is varied, and a new candidate is generated. Up to
+  ``--qc-retries+1`` candidates per page; the winner is renamed to the canonical
+  ``page-NN.png`` and a per-page ``page-NN.qc.json`` sidecar records every attempt's score
+  + flags + reason so the decision is auditable. Set ``--qc-off`` to disable (single render,
+  no Ollama call). All QC is best-effort: if Ollama is unreachable the first render wins.
+
 Env:
   GEMINI_API_KEY / GOOGLE_API_KEY   key for Nano Banana (free tier from Google AI Studio)
   GEMINI_IMAGE_MODEL                 override model (default gemini-2.5-flash-image; e.g.
                                      gemini-3-pro-image = "Nano Banana Pro", gemini-3.1-flash-image)
   IMAGE_PROVIDER                     default provider (default: nano-banana)
+  OLLAMA_HOST                        Ollama endpoint (default http://localhost:11434)
+  VISION_QC_MODEL                    override the auto-picked vision model
+                                     (default: first vision-capable model pulled)
 Note: Gemini-generated images carry an invisible SynthID watermark.
 """
 from __future__ import annotations
 
 import argparse
 import html
+import json
 import os
+import random
 import sys
 import textwrap
 from pathlib import Path
@@ -41,6 +55,7 @@ from lib.colors import palette_hexes  # noqa: E402
 from lib.model import (ROOT, World, dump_yaml, load_dotenv, load_world, load_yaml)  # noqa: E402
 from lib.prompt_assembly import (AssembledPrompt, assemble_character_sheet_prompt,  # noqa: E402
                                  assemble_page_prompt)
+from lib.vision_qc import score_image as _qc_score  # noqa: E402
 
 PLACEHOLDER_W, PLACEHOLDER_H = 1024, 768
 
@@ -269,8 +284,140 @@ def gen_character_sheet(ref: str, provider: str, print_only: bool) -> None:
     print(f"+ wrote {rel_str} and recorded it in reference_images")
 
 
+def _generate_one_candidate(ap: AssembledPrompt, images_dir: Path, world: World, ref_base: Path,
+                            provider: str, num: int, title: str) -> Path | None:
+    """Render exactly one candidate image. Returns the on-disk path of the real PNG (with the
+    final ``page-NN-K.png`` suffix) or None if the provider failed. The image prompt sidecar
+    is written next to it either way so each candidate is auditable."""
+    suffix = ap.seed if ap.seed is not None else 0
+    cand_png = images_dir / f"page-{num:02d}-{suffix}.png"
+    if provider != "placeholder" and try_real_provider(provider, ap, cand_png, ref_base=ref_base):
+        _write_prompt_sidecar(cand_png, ap)
+        return cand_png
+    if provider != "placeholder":
+        # Real provider was requested but failed (e.g. rate limit); do NOT silently fall back
+        # to a placeholder — the skill is explicit that placeholders aren't acceptable output.
+        # We surface a placeholder only when the provider itself is the placeholder pipeline.
+        return None
+    out_svg = cand_png.with_suffix(".svg")
+    write_placeholder_svg(out_svg, title, ap, world)
+    _write_prompt_sidecar(out_svg, ap)
+    return out_svg
+
+
+def _qc_candidate(cand_path: Path, *, world: World, story: dict, page: dict, qc_model: str | None,
+                  verbose: bool) -> dict:
+    """Score one rendered candidate against the page spec via local Ollama vision. Returns
+    a JSON-serialisable record. ``qc_score`` degrades to a permissive verdict if the local
+    model is unreachable, so the rest of the loop can still pick a winner."""
+    art = world.data.get("art_style", {}) or {}
+    img = page.get("image", {}) or {}
+    palette = palette_hexes(art)[:6]
+    res = _qc_score(
+        cand_path,
+        page_text=page.get("text", ""),
+        characters=img.get("characters_present", []) or [],
+        tokens=[world.characters.get(s, {}).get("appearance_token", "") for s in (img.get("characters_present") or []) if world.characters.get(s)],
+        art_style_block=art.get("prompt_style_block", ""),
+        palette=palette,
+        text_zone=img.get("text_zone") or (art.get("text_treatment", {}) or {}).get("placement", "lower third"),
+        model=qc_model,
+        verbose=verbose,
+    )
+    return res.to_dict()
+
+
+def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base: Path,
+                   story: dict, page: dict, provider: str, num: int, title: str,
+                   *, qc_retries: int, qc_threshold: float, qc_model: str | None,
+                   qc_off: bool, verbose: bool) -> tuple[Path, list[dict]]:
+    """Generate one or more candidates, QC them with local Ollama vision, and pick the best.
+
+    Returns ``(winner_path, qc_log)`` where ``qc_log`` is the per-attempt record (one entry
+    per candidate, with score/flags/path) that gets written to ``page-NN.qc.json`` so the
+    render history is auditable. If QC is off, or no local vision model is available, the
+    first (and only) attempt wins and ``qc_log`` records that fact transparently."""
+    qc_log: list[dict] = []
+    if qc_off or provider == "placeholder" or qc_retries <= 0:
+        cand = _generate_one_candidate(ap, images_dir, world, ref_base, provider, num, title)
+        if cand is None:
+            raise RuntimeError(f"p{num}: image provider failed (no candidate rendered)")
+        qc_log.append({"attempt": 0, "path": cand.name, "ok": True, "score": 10.0,
+                        "reason": "qc disabled", "flags": ["qc_disabled"]})
+        return cand, qc_log
+
+    best_path: Path | None = None
+    best_score: float = -1.0
+    max_attempts = max(1, qc_retries + 1)  # qc_retries=2 → up to 3 candidates
+
+    for attempt in range(max_attempts):
+        # Vary the seed per attempt so retries aren't identical re-rolls. We mutate ap.seed
+        # (it's per-attempt, not the story's stable seed).
+        if attempt == 0 and ap.seed is not None:
+            attempt_seed = ap.seed
+        else:
+            attempt_seed = random.randint(1, 2_000_000_000)
+        ap.seed = attempt_seed
+        cand = _generate_one_candidate(ap, images_dir, world, ref_base, provider, num, title)
+        if cand is None:
+            qc_log.append({"attempt": attempt, "path": None, "ok": False, "score": 0.0,
+                            "reason": "provider failed", "flags": ["provider_failed"]})
+            continue
+        verdict = _qc_candidate(cand, world=world, story=story, page=page,
+                                qc_model=qc_model, verbose=verbose)
+        verdict["attempt"] = attempt
+        verdict["path"] = cand.name
+        qc_log.append(verdict)
+        score = verdict.get("score", 0.0) or 0.0
+        print(f"    qc attempt {attempt + 1}/{max_attempts}: score={score:.1f} "
+              f"ok={verdict.get('ok')} flags={verdict.get('flags', [])} — {verdict.get('reason','')[:80]}")
+        if score > best_score:
+            best_score = score
+            best_path = cand
+        # Hard stops: duplicate characters, anatomy, or empty/blank image are not salvageable
+        # by trying again with a different seed — they reflect a prompt issue. We let the
+        # outer loop continue (we don't waste another API call) but break the local loop.
+        hard_flags = {"duplicate_characters", "anatomy_issue"}
+        if hard_flags.intersection(verdict.get("flags") or []):
+            break
+        # Soft pass: meets the threshold — stop early so we don't burn API calls.
+        if verdict.get("ok") and score >= qc_threshold:
+            break
+
+    if best_path is None:
+        # Every attempt failed to even render. Re-raise so the caller surfaces it.
+        raise RuntimeError(f"p{num}: no candidate rendered after {max_attempts} attempt(s)")
+    return best_path, qc_log
+
+
+def _finalize_winner(winner: Path, images_dir: Path, num: int) -> Path:
+    """Move the winning candidate to the canonical ``page-NN.<ext>`` (and its .prompt.txt
+    sidecar) and clean up the rejected siblings. The QC log in page-NN.qc.json preserves
+    the audit trail."""
+    canonical = images_dir / f"page-{num:02d}{winner.suffix}"
+    if winner.resolve() != canonical.resolve():
+        if canonical.exists():
+            canonical.unlink()
+        winner.rename(canonical)
+        # Move the .prompt.txt sidecar with it so the canonical artifact stays self-contained.
+        sidecar = winner.with_suffix(".prompt.txt")
+        if sidecar.exists():
+            new_sidecar = canonical.with_suffix(".prompt.txt")
+            if new_sidecar.exists():
+                new_sidecar.unlink()
+            sidecar.rename(new_sidecar)
+    # Remove other candidates (and their sidecars) for this page — they're the rejected
+    # siblings, and the QC log in page-NN.qc.json is now the only audit trail for them.
+    for sibling in images_dir.glob(f"page-{num:02d}-*.{winner.suffix.lstrip('.')}"):
+        if sibling.resolve() != canonical.resolve():
+            sibling.unlink()
+            sibling.with_suffix(".prompt.txt").unlink(missing_ok=True)
+    return canonical
+
+
 def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int | None,
-              print_only: bool) -> None:
+              print_only: bool, *, qc_retries: int, qc_threshold: float,
+              qc_model: str | None, qc_off: bool, verbose: bool = False) -> None:
     world_slug, story_slug = _resolve_story(ref)
     world = load_world(world_slug, with_stories=False)
     spath = ROOT / "worlds" / world_slug / "stories" / story_slug / "story.yaml"
@@ -289,17 +436,22 @@ def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int
         if print_only:
             continue
         title = f"{story.get('title','')} — p{num}"
-        out_png = images_dir / f"page-{num:02d}.png"
-        if provider != "placeholder" and try_real_provider(provider, ap, out_png, ref_base=world.dir):
-            fname = out_png.name
-        else:
-            out_svg = images_dir / f"page-{num:02d}.svg"
-            write_placeholder_svg(out_svg, title, ap, world)
-            fname = out_svg.name
-        page.setdefault("image", {})["file"] = f"images/{fname}"
+        winner, qc_log = _run_best_of_n(
+            ap, images_dir, world, world.dir, story, page, provider, num, title,
+            qc_retries=qc_retries, qc_threshold=qc_threshold, qc_model=qc_model,
+            qc_off=qc_off, verbose=verbose,
+        )
+        canonical = _finalize_winner(winner, images_dir, num)
+        # Persist the QC log sidecar.
+        qc_sidecar = images_dir / f"page-{num:02d}.qc.json"
+        qc_sidecar.write_text(
+            json.dumps({"page": num, "prompt_seed": ap.seed, "threshold": qc_threshold,
+                          "attempts": qc_log, "winner": canonical.name}, indent=2),
+            encoding="utf-8",
+        )
+        page.setdefault("image", {})["file"] = f"images/{canonical.name}"
         if not page["image"].get("alt"):
             page["image"]["alt"] = _auto_alt(page, ap)
-        _write_prompt_sidecar(images_dir / fname, ap)
         changed = True
 
     if changed and not print_only:
@@ -408,6 +560,16 @@ def main() -> int:
     ap.add_argument("--verify", action="store_true",
                     help="check render-readiness invariants (tokens/seeds/refs) without "
                          "calling any provider; exit 1 if a character can't render on-model")
+    ap.add_argument("--qc-off", action="store_true",
+                    help="disable vision QC (single render per page, no Ollama call)")
+    ap.add_argument("--qc-retries", type=int, default=2,
+                    help="extra retries if QC rejects a render (default 2 → up to 3 candidates)")
+    ap.add_argument("--qc-threshold", type=float, default=7.0,
+                    help="minimum QC score (0-10) for a render to be accepted (default 7.0)")
+    ap.add_argument("--qc-model", default=None,
+                    help="Ollama vision model for QC (default: first vision-capable model pulled)")
+    ap.add_argument("--qc-verbose", action="store_true",
+                    help="print extra diagnostic info when QC calls fail")
     args = ap.parse_args()
 
     if args.character:
@@ -417,7 +579,9 @@ def main() -> int:
         ap.error("provide <world>/<story> or --character <world>/<char>")
     if args.verify:
         return verify_story(args.target)
-    gen_story(args.target, args.provider, args.page, args.seed, args.print_prompts)
+    gen_story(args.target, args.provider, args.page, args.seed, args.print_prompts,
+              qc_retries=args.qc_retries, qc_threshold=args.qc_threshold,
+              qc_model=args.qc_model, qc_off=args.qc_off, verbose=args.qc_verbose)
     return 0
 
 

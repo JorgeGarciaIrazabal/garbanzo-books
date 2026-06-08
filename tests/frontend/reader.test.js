@@ -366,3 +366,119 @@ describe("schema robustness", () => {
     expect(ind).toBeTruthy();
   });
 });
+
+// ---- the rich game library + toolkit (new mechanics) ------------------------
+describe("rich games + toolkit", () => {
+  // Open the game on the interaction page (page number 3 in makeStory).
+  function openGame(interaction) {
+    const story = makeStory([{
+      number: 3, kind: "story", text: "Play!",
+      image: { file: "images/p3.png", alt: "x" },
+      layout: { text_position: "lower-third", text_align: "center", scrim: true },
+      interaction,
+    }]);
+    loadReaderWith(story);
+    document.getElementById("next").click();
+    document.getElementById("next").click();
+    document.getElementById("next").click();   // page 0→1→2→3 (the interaction page)
+    const play = document.querySelector(".play-game-btn");
+    if (play) play.click();
+    return story;
+  }
+
+  it("hidden-object plays ON the art and is winnable by tapping each spot", () => {
+    openGame({
+      type: "hidden-object", prompt: "Find them!",
+      data: { items: [{ label: "acorn", at: { x: 0.3, y: 0.4 } }, { label: "leaf", at: { x: 0.6, y: 0.5 } }] },
+      feedback: { correct: "Found!" },
+    });
+    const frame = document.querySelector(".scene-frame");
+    expect(frame).toBeTruthy();                       // renders on the page image
+    const spots = document.querySelectorAll(".scene-hotspot");
+    expect(spots.length).toBe(2);
+    spots.forEach((s) => s.click());
+    expect(document.querySelector(".continue-btn")).toBeTruthy();
+  });
+
+  it("connect-dots is winnable by tapping the dots in order", () => {
+    openGame({
+      type: "connect-dots", prompt: "Connect!",
+      data: { dots: [{ n: 1, at: { x: 0.2, y: 0.2 } }, { n: 2, at: { x: 0.5, y: 0.5 } }, { n: 3, at: { x: 0.8, y: 0.3 } }] },
+    });
+    const dots = document.querySelectorAll(".dot");
+    expect(dots.length).toBe(3);
+    dots.forEach((d) => d.click());                   // already in document order = 1,2,3
+    expect(document.querySelector(".continue-btn")).toBeTruthy();
+  });
+
+  it("balance-scale lets the reader tap the heavier pan", () => {
+    openGame({
+      type: "balance-scale", prompt: "Which is heavier?",
+      data: { left: ["🍎", "🍎"], right: ["🍎"], answer: "left" },
+      feedback: { correct: "Yes!" },
+    });
+    const pans = document.querySelectorAll(".scale-pan");
+    expect(pans.length).toBe(2);
+    pans[0].click();                                  // left pan = the answer
+    expect(document.querySelector(".continue-btn")).toBeTruthy();
+  });
+
+  it("word-build is winnable by tapping letters in order", () => {
+    openGame({ type: "word-build", prompt: "Spell it!", data: { letters: ["C", "A", "T"], answer: "cat" } });
+    function tap(letter) {
+      const btn = Array.from(document.querySelectorAll(".gb-chip.letter")).find(
+        (b) => b.textContent === letter && !b.disabled);
+      btn.click();
+    }
+    tap("C"); tap("A"); tap("T");
+    expect(document.querySelector(".continue-btn")).toBeTruthy();
+  });
+
+  it("a custom game (all-found) is interpreted from its declarative spec", () => {
+    openGame({
+      type: "custom", prompt: "Tap the sparkles!",
+      data: {
+        elements: [
+          { id: "a", kind: "hotspot", at: { x: 0.2, y: 0.2 } },
+          { id: "b", kind: "hotspot", at: { x: 0.6, y: 0.6 } },
+        ],
+        win: { mode: "all-found" },
+      },
+    });
+    const spots = document.querySelectorAll(".scene-hotspot");
+    expect(spots.length).toBe(2);
+    spots.forEach((s) => s.click());
+    expect(document.querySelector(".continue-btn")).toBeTruthy();
+  });
+
+  it("a multi-step interaction only wins after every beat", () => {
+    openGame({
+      type: "seek-and-find", prompt: "Two beats!",
+      steps: [
+        { type: "seek-and-find", prompt: "beat 1", data: { items: ["a"] } },
+        { type: "seek-and-find", prompt: "beat 2", data: { items: ["b"] } },
+      ],
+    });
+    // beat 1
+    let items = document.querySelectorAll(".find-item");
+    expect(items.length).toBe(1);
+    expect(document.querySelector(".continue-btn")).toBeFalsy();   // not won yet
+    items[0].click();
+    // beat 2 now showing
+    items = document.querySelectorAll(".find-item");
+    expect(items.length).toBe(1);
+    items[0].click();
+    expect(document.querySelector(".continue-btn")).toBeTruthy();  // both beats done → won
+  });
+
+  it("winning a game drops a sticker into the reward tray", () => {
+    openGame({
+      type: "seek-and-find", prompt: "Find!",
+      data: { items: ["a"] }, reward: { label: "Gold Star", emoji: "🌟" },
+    });
+    expect(document.querySelector(".reward-tray")).toBeTruthy();    // tray rides along
+    document.querySelector(".find-item").click();                   // win
+    const tray = document.querySelector(".reward-tray");
+    expect(tray.textContent).toContain("1/1");                      // collected 1 of 1
+  });
+});

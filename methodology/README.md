@@ -10,7 +10,7 @@ operationalise these docs; read the relevant one before doing the work.
 | [storybook-pipeline.md](storybook-pipeline.md) | Planning a book: premise, spine, page count, storyboard/dummy, page-turns, production gates. |
 | [reading-pedagogy.md](reading-pedagogy.md) | Lightly age-fitting language so the words don't block the fun — a short per-band table. A light touch, NOT a curriculum. |
 | [consistency.md](consistency.md) | Keeping characters, world, and art style coherent across many images & stories. |
-| [interactivity.md](interactivity.md) | Designing games & participation that are a fun break matched to the age band — never hidden drills. |
+| [interactivity.md](interactivity.md) | Designing OPTIONAL games & participation that are a fun break matched to the age band — rich (on-art, drag, puzzle, music, custom), never hidden drills, and never changing the story or art. |
 | [accessibility.md](accessibility.md) | Typography, contrast, dyslexia-friendly text, and legible text-on-image. |
 
 > **Fun outranks every number here.** Targets are targets, not laws — break them whenever the

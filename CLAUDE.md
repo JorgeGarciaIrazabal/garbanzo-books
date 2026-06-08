@@ -74,9 +74,14 @@ ui/             Dynamic UI server (OpenCode + local Ollama, no API key) — the 
    the excitement to hit a readability number.
 5. **Full-page image, text on top.** Pages are full-bleed illustrations; text sits in a
    reserved zone with a scrim for legibility. Keep that zone clear in the image prompt.
-6. **A fun break every few pages.** Interleave interactions (seek-and-find, mazes, choices,
-   riddles) as *games* that are part of the romp — a delightful few-second break, never a
-   hidden reading drill. Match the game to the story beat, not to a skill quota.
+6. **Games are optional add-ons — the story is the product.** Interleave interactions as
+   *games* that are a delightful few-second break, never a hidden reading drill. Prefer RICH
+   games where the kid *does* something — played on the illustration (hidden-object, tap-on-art),
+   true drag-and-drop (drag-sort, jigsaw, dress-up), drawing, spatial puzzles, music, or a
+   bespoke `custom` game — over plain quizzes. But a game **never changes the story or the art**:
+   it must not advance the plot, gate a page, or require editing `page.text` or an `image.prompt`;
+   the book must be a complete, satisfying read for a kid who skips every game. Add games on top
+   of a finished story + finished art; match the game to the story beat, not to a skill quota.
 7. **Validate before publish.** `scripts/validate.py` checks schema validity and consistency
    (every character referenced exists; appearance_tokens present; images exist) before a book
    may be marked `published`. `scripts/quality_report.py` then grades *how good* the book is
@@ -147,11 +152,44 @@ Or run the whole thing from the **dynamic UI** in `ui/` (the Claude-Agent-SDK en
 
 - Slugs are `kebab-case`, unique within their scope. Paths are derived from slugs.
 - YAML for human-authored content (worlds/characters/stories); JSON Schema validates it.
-- Never hand-edit files under `site/` — they are generated.
+- Never hand-edit files under `site/` or `site_publish/` — they are generated.
 - Image files: `worlds/<world>/stories/<story>/images/page-<NN>.png`,
   character refs: `worlds/<world>/characters/<char>.refs/`.
 - Dates are absolute (ISO 8601).
 - Prefer the scripts/skills over ad-hoc work so consistency invariants are preserved.
+
+## Preview vs Publish (the two-build pattern)
+
+There are TWO ways to build the site, and they go to different places — this is intentional.
+
+| Build      | What it includes | Where it lands   | Used by |
+| ---------- | ---------------- | ---------------- | ------- |
+| **Preview** (studio) | published + drafts | `./site/`      | The in-app "Studio preview" tab in `ui/`. Lets the author browse their WIP. **NEVER deployed** — drafts are not for end users. |
+| **Publish** (public) | published only     | `./site_publish/` | The in-app "Public preview" tab in `ui/`. The EXACT shape GitHub Pages will deploy. |
+| **CI** (deploy-pages workflow) | published only | `./site/`  | What GitHub Pages actually serves. The workflow always builds published-only — drafts can never leak to the public site. |
+
+In the studio UI these are two buttons: **🔨 Preview** (studio preview, includes drafts) and
+**🚀 Publish** (public preview, published only). Both are non-agentic — the buttons call the
+build script directly via the FastAPI server. There's no need to ask the AI to "build the
+site" or "publish"; just click the button. The Public preview tab also surfaces the deploy
+instructions (`git push` or `gh workflow run deploy-pages.yml`).
+
+Library cards in the studio show all stories (drafts + published) with a clear `draft` /
+`published` pill. Drafts link to the studio preview build (`/preview/...`); published stories
+link straight to the public preview build (`/publish-preview/...`) — so the "Read" button
+never lands the user on a 404.
+
+CLI equivalents:
+```bash
+# Studio preview — drafts included, into ./site/
+uv run python scripts/build_site.py --include-drafts
+
+# Public preview — published only, into ./site_publish/
+uv run python scripts/build_site.py --out site_publish
+
+# What GitHub Pages actually gets (CI runs this)
+uv run python scripts/build_site.py
+```
 
 ## Image generation key — ALWAYS CHECK FIRST
 

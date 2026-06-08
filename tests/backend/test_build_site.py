@@ -367,3 +367,89 @@ def test_world_hub_lists_world_rules(workspace, write_world, factories):
     assert "The rules of this world" in hub
     assert "Magic is gentle and small." in hub
     assert "Kindness always wins." in hub
+
+
+# ============================================================================ --out (two-build pattern)
+def test_build_out_writes_to_a_custom_directory(workspace, write_world, factories):
+    """The studio builds two flavours of the site side by side: the studio preview (with
+    drafts) at ./site/ and the public preview (published only) at ./site_publish/. The
+    second one MUST be possible without touching the first — verified by passing out=."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww", status="published")])
+    alt = workspace.root / "alt_out"
+    stats = build(include_drafts=False, out=alt)
+    assert (alt / "index.html").exists()
+    assert (alt / "story" / "ww" / "s1" / "index.html").exists()
+    # The default ./site/ was NOT touched by this call.
+    assert not (workspace.site / "index.html").exists()
+    # The stats report reflects the actual output location (so the studio can label the tab).
+    assert stats["out"].endswith("alt_out")
+
+
+def test_build_out_does_not_touch_default_site_dir(workspace, write_world, factories):
+    """Writing a public build to ./alt MUST leave the existing ./site preview intact. This
+    is the property the studio relies on: the in-app preview and the public preview are
+    independent builds that can be browsed side by side."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww", status="published")])
+    # First build the default ./site/ — this is what the in-app iframe shows.
+    build(include_drafts=True)
+    assert (workspace.site / "index.html").exists()
+    # Now build the public flavour elsewhere; the studio preview must still be there.
+    alt = workspace.root / "alt_out"
+    build(include_drafts=False, out=alt)
+    assert (workspace.site / "index.html").exists(), "studio preview must survive public build"
+    assert (alt / "index.html").exists()
+
+
+def test_build_out_clears_the_target_dir_on_each_run(workspace, write_world, factories):
+    """Just like the default build, --out must nuke the target dir first so stale files
+    from a previous build don't leak through (otherwise a story that was renamed would
+    leave a ghost behind in the public preview)."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww", status="published")])
+    alt = workspace.root / "alt_out"
+    build(include_drafts=False, out=alt)
+    (alt / "stale.txt").write_text("from previous build")
+    build(include_drafts=False, out=alt)
+    assert not (alt / "stale.txt").exists()
+
+
+def test_build_out_published_only_excludes_drafts(workspace, write_world, factories):
+    """The studio's 'Publish' build is published-only — even when --include-drafts is
+    *not* set on the out= build, drafts must not appear in the output. This is the
+    invariant that keeps GitHub Pages from ever seeing draft content."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[
+                    factories.story(slug="draftie", world="ww", status="draft"),
+                    factories.story(slug="liveone", world="ww", status="published"),
+                ])
+    alt = workspace.root / "public_out"
+    build(include_drafts=False, out=alt)
+    # The published story is present
+    assert (alt / "story" / "ww" / "liveone" / "index.html").exists()
+    # The draft is NOT present in the published-only build
+    assert not (alt / "story" / "ww" / "draftie" / "index.html").exists()
+    # And the search index has only the published one
+    import json
+    index = json.loads((alt / "search-index.json").read_text())
+    assert [e["slug"] for e in index] == ["liveone"]
+
+
+def test_build_includes_drafts_still_includes_drafts_when_out_set(workspace, write_world,
+                                                                    factories):
+    """Sanity: --include-drafts in combination with --out still emits drafts. The studio's
+    'Preview' build (with drafts) might one day want a custom out — must not silently
+    drop drafts."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[
+                    factories.story(slug="draftie", world="ww", status="draft"),
+                ])
+    alt = workspace.root / "studio_alt"
+    build(include_drafts=True, out=alt)
+    assert (alt / "story" / "ww" / "draftie" / "index.html").exists()

@@ -14,7 +14,10 @@ delegating to the specialist skills/agents:
    rhythm with scene-only image prompts. Scaffold: `uv run python scripts/new_story.py <world> "<Title>" --age <band>`.
 2. **reading-level-adaptation** — a light age-fit pass so the words don't block the fun;
    optionally spot-check with `uv run python scripts/reading_level.py <story-dir>`.
-3. **interactive-elements** — add varied, genuinely-fun games (winnable, tied to each page).
+3. **interactive-elements** — add varied, genuinely-fun games as OPTIONAL add-ons on top of the
+   finished story: rich-first (on-art / drag / puzzle / music / `custom`), ≥1 rich + ≥3 kinds,
+   winnable, tied to each page — but never changing `page.text` or the art. The book must read
+   as a complete story with every game skipped.
 4. **page-layout** — set `layout` + `image.text_zone` + alt text per page.
 5. Suggest `/illustrate <world>/<story>` next, then `/validate` and `/publish`.
 

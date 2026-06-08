@@ -27,7 +27,7 @@ those once, then route.
 | 2. Characters | `character-design` | `worlds/<world>/characters/*.yaml` (+ reference art) |
 | 3. Story plan & pages | `story-craft` | `worlds/<world>/stories/<story>/story.yaml` |
 | 4. Age-fit pass (light) | `reading-level-adaptation` | lightly age-fit page text (fun intact) |
-| 5. Interactions | `interactive-elements` | `interaction` blocks on pages |
+| 5. Interactions (optional add-ons) | `interactive-elements` | `interaction` blocks on pages — rich-first; never change `page.text` or art |
 | 6. Page layout (text on image) | `page-layout` (inline — no agent) | `layout` + `text_zone` per page |
 | 7. Illustration | `illustration-consistency` | `images/page-*.png` |
 | 8. Validate + grade | `scripts/validate.py` + `scripts/quality_report.py` | green checks + scorecard |

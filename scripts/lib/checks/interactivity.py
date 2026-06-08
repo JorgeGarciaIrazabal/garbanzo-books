@@ -170,15 +170,19 @@ def _check_custom_spec(rep: Report, where: str, pnum: Any, data: dict) -> None:
             zones = [e for e in elements if e.get("kind") in ("dropzone", "target")]
             if not draggables:
                 rep.warn(f"{where} p{pnum} (custom): all-placed win but no draggables to place")
-            for d in draggables:
+
+            def _placeable(d):
                 grp, did = d.get("group"), d.get("id")
-                placeable = any(
+                return any(
                     (not z.get("accepts")) or (grp in (z.get("accepts") or [])) or (did in (z.get("accepts") or []))
                     for z in zones
                 )
-                if not placeable:
-                    rep.fail(f"[interaction] {where} p{pnum} (custom): draggable '{did}' has no "
-                             "dropzone that accepts it — the game can't be won")
+            # Decoys (draggables with no accepting zone) are allowed — the kid must NOT place
+            # them. The win only needs every PLACEABLE draggable placed, so it's reachable as
+            # long as at least one draggable has a home.
+            if draggables and not any(_placeable(d) for d in draggables):
+                rep.fail(f"[interaction] {where} p{pnum} (custom): no draggable has a dropzone "
+                         "that accepts it — the all-placed game can't be won")
 
     check_win(data.get("win"))
 

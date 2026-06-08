@@ -53,8 +53,18 @@
       if (cond.not) return !evalCond(cond.not);
       switch (mode) {
         case "all-placed": {
+          // Every PLACEABLE draggable is placed; unplaceable draggables are decoys (e.g. the
+          // junk you must NOT pack), so they don't block the win.
           var dz = elements.filter(function (e) { return e.kind === "draggable"; });
-          return dz.length > 0 && dz.every(function (e) { return placements[e.id]; });
+          var zonesEl = elements.filter(function (e) { return e.kind === "dropzone" || e.kind === "target"; });
+          var canPlace = function (d) {
+            return zonesEl.some(function (z) {
+              var a = z.accepts;
+              return !a || !a.length || a.indexOf(d.group) >= 0 || a.indexOf(d.id) >= 0;
+            });
+          };
+          var placeable = dz.filter(canPlace);
+          return placeable.length > 0 && placeable.every(function (e) { return placements[e.id]; });
         }
         case "matched-pairs":
           return (cond.pairs || []).every(function (pr) { return placements[pr[0]] === pr[1]; });

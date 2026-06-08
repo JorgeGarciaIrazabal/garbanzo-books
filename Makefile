@@ -18,7 +18,8 @@ help:
 	@echo "  make setup         create .venv from pyproject.toml via uv (uv sync)"
 	@echo "  make validate      QA all worlds/stories (pass/fail gate)"
 	@echo "  make report        grade all books against the 7-gate quality checklist"
-	@echo "  make build         build the static site into site/"
+	@echo "  make build         build the static site into site/  (published only, what GH Pages deploys)"
+	@echo "  make build-publish build the public preview into site_publish/  (what the studio's 'Public preview' tab shows)"
 	@echo "  make serve         build + preview at http://localhost:8008"
 	@echo "  make test          run the toolchain self-test"
 	@echo "  make check-gemini  verify GEMINI_API_KEY is set (image generation)"
@@ -45,6 +46,12 @@ report:
 
 build:
 	$(RUN) scripts/build_site.py
+
+# Build the "what GitHub Pages will see" preview into ./site_publish/ — used by the
+# studio's Public preview tab so the author can confirm exactly what'll go live. This
+# is the SAME content the CI workflow deploys, just rendered locally.
+build-publish:
+	$(RUN) scripts/build_site.py --out site_publish
 
 serve: build
 	$(RUN) -m http.server -d site 8008
@@ -133,4 +140,4 @@ opencode:
 	OLLAMA_HOST=$(OLLAMA_HOST) opencode --model $(OPENCODE_MODEL)
 
 clean:
-	rm -rf site
+	rm -rf site site_publish

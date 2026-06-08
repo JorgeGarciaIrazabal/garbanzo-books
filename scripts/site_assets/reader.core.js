@@ -187,11 +187,26 @@
        Each game gets a fresh card. Helpers: win() celebrates + unlocks Next;
        nope() gives gentle feedback. Every game is winnable and never traps.
        ===================================================================== */
+    // Dismiss the game and return to the story (the play button comes back so it can reopen).
+    function closeGame() {
+      interactionBox.innerHTML = "";
+      reader.classList.remove("has-game");
+      var p = pages[idx];
+      if (p && p.interaction) addPlayButton(p);
+    }
+    // Tapping the dimmed art around the card closes the game.
+    interactionBox.addEventListener("click", function (e) { if (e.target === interactionBox) closeGame(); });
+
     function renderInteraction(it, page) {
       var box = el("div", "interaction");
-      box.appendChild(el("button", "sheet-handle", "▾"));
-      if (it.skill) box.appendChild(el("span", "skill-tag", esc(it.skill)));
-      box.appendChild(el("h4", "game-title", "🎲 " + esc(it.prompt || "Let's play!")));
+      var head = el("div", "game-head");
+      head.appendChild(el("h4", "game-title", "🎲 " + esc(it.prompt || "Let's play!")));
+      var closeBtn = el("button", "game-close", "✕");
+      closeBtn.type = "button";
+      closeBtn.setAttribute("aria-label", "Back to the story");
+      closeBtn.onclick = closeGame;
+      head.appendChild(closeBtn);
+      box.appendChild(head);
 
       var body = el("div", "game-body");
       var fb = el("div", "feedback");
@@ -242,9 +257,7 @@
 
       box.appendChild(body);
       box.appendChild(fb);
-      box.querySelector(".sheet-handle").onclick = function () { reader.classList.toggle("sheet-min"); };
       interactionBox.appendChild(box);
-      reader.classList.remove("sheet-min");
     }
 
     /* =====================================================================

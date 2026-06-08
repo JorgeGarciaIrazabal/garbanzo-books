@@ -82,7 +82,10 @@ interactive early-reader, *Pip and the Lost Star* — proof the whole pipeline r
 Illustrations use Google's **"Nano Banana"** (Gemini `gemini-2.5-flash-image`) by default —
 set a free `GEMINI_API_KEY` from [Google AI Studio](https://aistudio.google.com/apikey) and
 it anchors each page to the character's reference sheet for consistency. With no key set it
-falls back to dependency-free SVG placeholders so everything still runs offline.
+falls back to dependency-free SVG placeholders so everything still runs offline. Every
+render is also QC'd by a local Ollama vision model (best-of-3: regenerate with a varied
+seed if the first frame doesn't meet the bar) so bad spreads don't ship. Pull a vision
+model (`ollama pull gemma3:4b`) and the loop is automatic; pass `--qc-off` to skip.
 
 ---
 *Numbers in the methodology are targets, not laws — break them deliberately, and for the
