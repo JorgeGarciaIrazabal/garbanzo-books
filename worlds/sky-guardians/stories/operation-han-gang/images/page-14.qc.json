@@ -1,0 +1,20 @@
+{
+  "page": 14,
+  "prompt_seed": 1905675027,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration captures the scene well, but Gears' anxious posture and Clara's pose need slight adjustments to better match the tokens.",
+      "flags": [
+        "wrong_characters",
+        "scene_mismatch"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-14-1905675027.png"
+    }
+  ],
+  "winner": "page-14.png"
+}

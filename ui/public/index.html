@@ -4,33 +4,40 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Garbanzo Books — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Nunito+Sans:ital,opsz,wght@0,6..12,400..900;1,6..12,400..900&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<!-- Clothbound spine: the studio's masthead -->
 <header class="topbar">
-  <div class="brand">Garbanzo<span>Books</span> <em>Studio</em></div>
+  <div class="brand">
+    <span class="brand-bean" aria-hidden="true">🫘</span>
+    <span class="brand-name">Garbanzo&nbsp;Books</span>
+    <em class="brand-sub">storybook&nbsp;atelier</em>
+  </div>
   <div class="actions">
-    <button class="btn ghost toggle" id="btn-kids" title="Kids mode — one question at a time, big buttons, talk &amp; listen" aria-pressed="false">🧒 Kids mode</button>
-    <button class="btn ghost toggle" id="btn-tts" title="Read the studio's replies aloud" aria-pressed="false">🔊 Read aloud</button>
-    <button class="btn ghost" id="btn-validate" title="Run QA on all books">✓ Validate</button>
-    <button class="btn ghost" id="btn-quality" title="Grade books against the 7-gate quality checklist">★ Quality</button>
-    <button class="btn ghost" id="btn-build" title="Rebuild the studio preview (includes drafts you can browse here)">🔨 Preview</button>
-    <button class="btn" id="btn-publish" title="Rebuild the public version (published only — what GitHub Pages will see)">🚀 Publish</button>
+    <div class="action-group">
+      <button class="btn ghost toggle" id="btn-kids" title="Kids mode — one question at a time, big buttons, talk &amp; listen" aria-pressed="false">🧒 Kids&nbsp;mode</button>
+      <button class="btn ghost toggle" id="btn-tts" title="Read the studio's replies aloud" aria-pressed="false">🔊 Read&nbsp;aloud</button>
+    </div>
     <span class="status" id="conn"></span>
   </div>
 </header>
 
 <main class="layout">
-  <!-- Left: the studio chat console -->
+  <!-- Left: the writing desk (chat console) -->
   <section class="console">
     <div class="console-head">
-      <h2>Studio console</h2>
-      <p>Pick a guided form below — fill the blanks and the studio does the rest. Prefer to type? Use the box at the bottom anytime.</p>
+      <p class="eyebrow">the writing desk</p>
+      <h2>What shall we make today?</h2>
       <div class="quick" id="form-launchers">
-        <button class="chip-btn" data-form="book">✨ New book</button>
-        <button class="chip-btn" data-form="world">🌍 New world</button>
-        <button class="chip-btn" data-form="character">🧸 New character</button>
-        <button class="chip-btn" data-form="story">📖 New story</button>
+        <button class="chip-btn" data-form="book"><span class="chip-ico">✨</span>New book</button>
+        <button class="chip-btn" data-form="world"><span class="chip-ico">🌍</span>New world</button>
+        <button class="chip-btn" data-form="character"><span class="chip-ico">🧸</span>New character</button>
+        <button class="chip-btn" data-form="story"><span class="chip-ico">📖</span>New story</button>
       </div>
     </div>
 
@@ -57,7 +64,7 @@
 
     <form class="composer" id="composer">
       <div class="composer-input">
-        <textarea id="prompt" rows="2" placeholder="Type anything — e.g. 'a book for ages 7-9 about a robot who plants a moon garden'…"></textarea>
+        <textarea id="prompt" rows="2" placeholder="Type anything — e.g. “a book for ages 7–9 about a robot who plants a moon garden”…"></textarea>
         <button class="micbtn" id="mic" type="button" title="Speak your message" aria-label="Speak your message">🎤</button>
       </div>
       <div class="composer-row">
@@ -67,49 +74,106 @@
             <select id="model-select"></select>
             <span id="stage-chip" class="stage-chip" title="">✨ auto</span>
           </label>
-          <label class="newsess"><input type="checkbox" id="newsess"> new session</label>
-          <button class="btn ghost small clearbtn" id="btn-clear" type="button" title="Clear the chat and start a fresh session">🧹 Clear chat</button>
         </div>
         <div class="composer-send">
+          <button class="btn ghost small clearbtn" id="btn-clear" type="button" title="Clear the chat and start a fresh session">🧹 New&nbsp;chat</button>
           <button class="btn stopbtn hidden" id="stop" type="button" title="Stop the current step so you can redirect">⏹ Stop</button>
-          <button class="btn" id="send" type="submit">Send ▸</button>
+          <button class="btn primary" id="send" type="submit">Send ▸</button>
         </div>
       </div>
     </form>
   </section>
 
-  <!-- Right: library + live previews -->
+  <!-- Right: the workbench (library + live previews + debug) -->
   <section class="panel">
-    <div class="tabs">
-      <button class="tab active" data-tab="library">Library</button>
-      <button class="tab" data-tab="preview">Studio preview</button>
-      <button class="tab" data-tab="public">Public preview</button>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="library" title="Your worlds, bookshelves and cast"><span class="t-ico">📚</span><span class="t-label">Library</span></button>
+      <button class="tab" data-tab="preview" title="Browse your work-in-progress site — drafts included"><span class="t-ico">👀</span><span class="t-label">Preview</span></button>
+      <button class="tab" data-tab="public" title="Run the gates, build the public site, ship to GitHub Pages"><span class="t-ico">🚀</span><span class="t-label">Publish</span></button>
+      <button class="tab" data-tab="debug" title="Full agent conversation + live event log — for debugging"><span class="t-ico">🐞</span><span class="t-label">Debug</span></button>
+      <button class="iconbtn panel-toggle" id="panel-toggle" title="Collapse panel">⟫</button>
     </div>
     <div class="tabview" id="view-library">
-      <button class="btn ghost small" id="btn-refresh">↻ Refresh</button>
+      <div class="library-bar">
+        <span class="library-hint" id="lib-counts">Everything on your shelves — drafts &amp; published.</span>
+        <button class="btn ghost small" id="btn-refresh">↻ Refresh</button>
+      </div>
       <div id="library"></div>
     </div>
     <div class="tabview hidden" id="view-preview">
       <div class="preview-bar">
-        <span>Studio preview — includes drafts <span class="badge draft">studio only</span></span>
-        <a class="btn ghost small" id="open-preview" href="/preview/index.html" target="_blank">Open ↗</a>
+        <span>Your whole site, drafts included <span class="badge draft">studio only — never deployed</span></span>
+        <span class="bar-actions">
+          <button class="btn small" id="btn-build" title="Rebuild this preview from the current worlds/ files">🔨 Rebuild</button>
+          <a class="btn ghost small" id="open-preview" href="/preview/index.html" target="_blank">Open ↗</a>
+        </span>
       </div>
+      <details class="job hidden" id="job-build">
+        <summary><span class="step-status" id="job-build-status"></span> build output</summary>
+        <pre id="job-build-out"></pre>
+      </details>
       <iframe id="preview" src="/preview/index.html" title="studio site preview"></iframe>
     </div>
     <div class="tabview hidden" id="view-public">
+      <div class="ship">
+        <div class="ship-head">
+          <h3>Ship to GitHub Pages</h3>
+          <p>Run the gates, build the public site, push. Only stories marked <code>published</code> go out — drafts stay home.</p>
+        </div>
+        <div class="ship-step">
+          <div class="step-row">
+            <span class="step-num">1</span>
+            <div class="step-info"><strong>Validate</strong><span>schema, consistency &amp; reading-level checks — the publish gate</span></div>
+            <span class="step-status" id="job-validate-status"></span>
+            <button class="btn small" id="btn-validate">Run</button>
+          </div>
+          <details class="job hidden" id="job-validate"><summary>output</summary><pre id="job-validate-out"></pre></details>
+        </div>
+        <div class="ship-step">
+          <div class="step-row">
+            <span class="step-num">2</span>
+            <div class="step-info"><strong>Quality report</strong><span>the 7-gate scorecard — gate one: is it fun?</span></div>
+            <span class="step-status" id="job-quality-status"></span>
+            <button class="btn small" id="btn-quality">Run</button>
+          </div>
+          <details class="job hidden" id="job-quality"><summary>report</summary><pre id="job-quality-out"></pre></details>
+        </div>
+        <div class="ship-step">
+          <div class="step-row">
+            <span class="step-num">3</span>
+            <div class="step-info"><strong>Build the public site</strong><span>published only — <em>exactly</em> what GitHub Pages will deploy <span class="badge pub" id="public-badge">no build yet</span></span></div>
+            <span class="step-status" id="job-publish-status"></span>
+            <button class="btn small" id="btn-publish">🔨 Build</button>
+          </div>
+          <details class="job hidden" id="job-publish"><summary>build output</summary><pre id="job-publish-out"></pre></details>
+        </div>
+        <div class="ship-step">
+          <div class="step-row">
+            <span class="step-num">4</span>
+            <div class="step-info"><strong>Deploy</strong><span>happy with the preview below? Push it — CI rebuilds published-only, so drafts can never leak</span></div>
+          </div>
+          <div class="deploy-cmds">
+            <div class="cmdline"><code id="cmd-push">git add -A &amp;&amp; git commit -m "publish" &amp;&amp; git push</code><button class="btn ghost small copybtn" data-copy="cmd-push" title="Copy">⧉</button></div>
+            <div class="cmdline"><code id="cmd-gh">gh workflow run deploy-pages.yml</code><button class="btn ghost small copybtn" data-copy="cmd-gh" title="Copy">⧉</button></div>
+          </div>
+        </div>
+      </div>
       <div class="preview-bar">
-        <span>Public preview — published only, <em>exactly what GitHub Pages will deploy</em>
-          <span class="badge pub" id="public-badge">no build yet</span></span>
+        <span>Public preview — <em>what readers will see</em></span>
         <a class="btn ghost small" id="open-public" href="/publish-preview/index.html" target="_blank">Open ↗</a>
       </div>
       <iframe id="public-preview" src="/publish-preview/index.html" title="public site preview"></iframe>
-      <div class="deploy-card" id="deploy-card">
-        <strong>Ready to ship?</strong>
-        <p>This preview is the exact shape GitHub Pages will see after you push.</p>
-        <pre id="deploy-cmd">git add -A &amp;&amp; git commit -m "publish" &amp;&amp; git push
-# → .github/workflows/deploy-pages.yml builds &amp; deploys ./site/ to Pages
-# (or:  gh workflow run deploy-pages.yml  to trigger manually)</pre>
+    </div>
+    <div class="tabview hidden" id="view-debug">
+      <div class="debug-bar">
+        <button class="btn ghost small" id="btn-debug-refresh" title="Fetch the complete OpenCode conversation for the current session">↻ Load full conversation</button>
+        <label class="debug-follow"><input type="checkbox" id="debug-autoscroll" checked> follow live events</label>
+        <button class="btn ghost small" id="btn-debug-clear" title="Clear the live event log">🧹 Clear log</button>
       </div>
+      <div class="subhead">Full conversation (what the agent saw &amp; did)</div>
+      <div id="debug-convo"><div class="empty">Click “Load full conversation” to fetch every message — including thinking, tool inputs and outputs.</div></div>
+      <div class="subhead">Live event stream (this browser session)</div>
+      <pre id="debug-events" class="debug-events"></pre>
     </div>
   </section>
 </main>

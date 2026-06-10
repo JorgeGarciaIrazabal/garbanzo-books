@@ -144,6 +144,60 @@ def test_report_passes_FKGL_a_bit_below_target_is_just_a_note(workspace, factori
     assert "FAIL" not in out or "below target" in out
 
 
+# ============================================================================ telegraphic guard
+def _pages_with_text(texts: list[str]) -> list[dict]:
+    pages = [{"number": 0, "kind": "title", "text": "T",
+              "image": {"prompt": "x", "characters_present": [], "alt": "t", "text_zone": "center"}}]
+    for i, t in enumerate(texts, start=1):
+        pages.append({"number": i, "kind": "story", "text": t,
+                      "image": {"prompt": "x", "characters_present": [], "alt": "a",
+                                "text_zone": "lower third"}})
+    return pages
+
+
+def test_report_fails_telegraphic_fragment_prose(workspace, factories, capsys):
+    """Prose chopped into fragment-chains to game the sentence cap must FAIL —
+    this is the 'Seoul at night. Bright lights.' failure mode."""
+    choppy = "Seoul at night. Bright lights. Palaces glow. Best snack spot. A lady watches."
+    story = factories.story(slug="s1", world="ww", age_band="5-7")
+    story["pages"] = _pages_with_text([choppy] * 4)  # 20 sentences, avg ~3 words
+    dump_yaml(story, workspace.worlds / "ww" / "stories" / "s1" / "story.yaml")
+    ok = report(workspace.worlds / "ww" / "stories" / "s1" / "story.yaml")
+    out = capsys.readouterr().out
+    assert ok is False
+    assert "telegraphic" in out.lower()
+
+
+def test_report_passes_flowing_prose_of_same_difficulty(workspace, factories, capsys):
+    """The same content written as short flowing sentences passes the guard."""
+    flowing = ("Seoul glowed below them like a bowl of candy. "
+               "A lady in the night market waved at them. "
+               "She held out one hot bowl and smiled.")
+    story = factories.story(slug="s1", world="ww", age_band="5-7",
+                            reading_level={"target_fk_grade": 1.5, "fk_grade_tolerance": 1.5,
+                                           "max_words_per_page": 60, "max_sentence_words": 14})
+    story["pages"] = _pages_with_text([flowing] * 4)
+    dump_yaml(story, workspace.worlds / "ww" / "stories" / "s1" / "story.yaml")
+    ok = report(workspace.worlds / "ww" / "stories" / "s1" / "story.yaml")
+    out = capsys.readouterr().out
+    assert ok is True, out
+    assert "prose flows" in out.lower()
+
+
+def test_telegraphic_guard_skips_read_aloud_bands(workspace, factories, capsys):
+    """Very short refrain lines are a legitimate style for 0-5 — no telegraphic FAIL."""
+    refrain = "The bus goes beep. The bus goes beep. Beep beep beep."
+    story = factories.story(slug="s1", world="ww", age_band="3-5")
+    story["reading_level"]["max_words_per_page"] = 40
+    story["reading_level"]["max_sentence_words"] = 12
+    story["pages"] = _pages_with_text([refrain] * 5)
+    dump_yaml(story, workspace.worlds / "ww" / "stories" / "s1" / "story.yaml")
+    ok = report(workspace.worlds / "ww" / "stories" / "s1" / "story.yaml")
+    out = capsys.readouterr().out
+    assert ok is True, out
+    assert "telegraphic" not in out.lower()
+
+
 # ============================================================================ decodable mode
 def test_decodable_focus_letters_extracts_phonics_focus():
     letters = decodable_focus_letters("s a t p i n; sight: the,is,a")

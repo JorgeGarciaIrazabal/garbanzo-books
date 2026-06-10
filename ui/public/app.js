@@ -43,8 +43,10 @@ function clearChat() {
   sessionId = null;
   clearSession();
   setText("#conn", "fresh session");
-  // Make the next Send start clean without the user having to remember the checkbox.
+  // sessionId is null now, so the next Send starts a brand-new OpenCode session.
+  // (Legacy checkbox — kept null-safe for older markup.)
   const ns = $("#newsess"); if (ns) ns.checked = true;
+  addMsg("system", "🧹 Fresh page — what shall we make next?", "system");
 }
 function restoreSession() {
   let saved = null;
@@ -61,7 +63,7 @@ function restoreSession() {
       addMsg(m.role, m.text, m.role === "system" ? "system" : undefined);
     }
   }
-  addMsg("system", "↩ Resumed your previous session — keep going, or tick “New session” to start fresh.", "system");
+  addMsg("system", "↩ Resumed your previous session — keep going, or hit “🧹 New chat” to start fresh.", "system");
   if (sessionId) setText("#conn", "resumed " + String(sessionId).slice(0, 8));
   return true;
 }
@@ -522,7 +524,7 @@ function renderMarkdown(src) {
 }
 // Hidden control tag the agent emits to tell the console which model fits the upcoming step
 // (story = creative/DeepSeek, craft = fast/MiniMax). Stripped from what the user sees.
-const STAGE_RE = /\[\[stage:(story|craft|world|character|build|done)\]\]/ig;
+const STAGE_RE = /\[\[stage:(story|craft|world|character|build|validate|research|done)\]\]/ig;
 function detectStage(md) {
   const all = String(md || "").match(STAGE_RE);
   if (!all || !all.length) return null;
@@ -607,6 +609,82 @@ function renderInlineForm(spec) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
+// ---------------------------------------------------- streaming "thinking" (collapsible, live)
+// The agent's reasoning streams in as its own event type. We render each reasoning part as a
+// <details> section: collapsed by default, with the live tail visible in the summary so you can
+// SEE it thinking without expanding — or click to watch the full stream.
+function addThinking() {
+  if (!messagesEl) return null;
+  const d = document.createElement("details");
+  d.className = "msg think";
+  d.innerHTML = '<summary><span class="think-label">💭 Thinking…</span>' +
+    '<span class="think-tail"></span></summary><pre class="think-body"></pre>';
+  d._txt = "";
+  d._t0 = Date.now();
+  messagesEl.appendChild(d);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return d;
+}
+function updateThinking(d, done) {
+  if (!d) return;
+  const body = d.querySelector(".think-body");
+  if (body) {
+    body.textContent = d._txt || "";
+    if (d.open) body.scrollTop = body.scrollHeight; // follow the stream when expanded
+  }
+  const tail = d.querySelector(".think-tail");
+  if (tail && !done) {
+    const t = (d._txt || "").replace(/\s+/g, " ").trim();
+    tail.textContent = t.slice(-90);
+  }
+  if (done) {
+    const lab = d.querySelector(".think-label");
+    const secs = d._t0 ? Math.max(1, Math.round((Date.now() - d._t0) / 1000)) : null;
+    if (lab) lab.textContent = secs ? `💭 Thought for ${secs}s` : "💭 Thought";
+    if (tail) tail.textContent = "";
+    d.classList.add("done");
+  }
+  if (messagesEl && !done) messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+// Called when normal text/tools resume (or the turn ends): close out any live thinking sections.
+function finishThinking(state) {
+  if (!state || !state.thinkEls) return;
+  for (const el of state.thinkEls.values()) {
+    if (el && !el._done) { el._done = true; updateThinking(el, true); }
+  }
+}
+
+// ------------------------------------------------------------ expandable tool rows (input/output)
+// Each agent tool call is a <details> row: the one-line summary you had before, but click it to
+// see the full command/input and (once finished) the tool's output.
+function addToolRow() {
+  if (!messagesEl) return null;
+  const d = document.createElement("details");
+  d.className = "msg tool";
+  d.innerHTML = '<summary class="tool-sum"></summary>' +
+    '<div class="tool-detail"><pre class="tool-in hidden"></pre><pre class="tool-out hidden"></pre></div>';
+  messagesEl.appendChild(d);
+  return d;
+}
+function setToolPre(el, sel, label, text) {
+  const pre = el ? el.querySelector(sel) : null;
+  if (!pre) return;
+  pre.classList.remove("hidden");
+  pre.dataset.label = label;
+  pre.textContent = text;
+}
+// Pretty form of the tool input: bash → the actual command; everything else → compact JSON.
+function toolInputText(ev) {
+  try {
+    const o = JSON.parse(ev.input);
+    if (o && typeof o === "object") {
+      if (o.command) return "$ " + o.command;
+      return JSON.stringify(o, null, 2);
+    }
+  } catch (e) { /* not JSON — show as-is */ }
+  return ev.input;
+}
+
 function addMsg(role, text, cls) {
   if (!messagesEl) return null;
   const el = document.createElement("div");
@@ -614,7 +692,7 @@ function addMsg(role, text, cls) {
   if (role !== "system" && role !== "tool") {
     const r = document.createElement("div");
     r.className = "role";
-    r.textContent = role;
+    r.textContent = role === "user" ? "you" : role === "assistant" ? "🫘 studio" : role;
     el.appendChild(r);
   }
   const body = document.createElement("div");
@@ -712,7 +790,7 @@ async function streamChat(prompt) {
   if ($("#newsess") && $("#newsess").checked) clearSession();
   addMsg("user", prompt);
   pushMsg("user", prompt);
-  const state = { curBubble: null, toolEls: new Map() };
+  const state = { curBubble: null, toolEls: new Map(), thinkEls: new Map() };
   currentAbort = new AbortController();
   try {
     const res = await fetch("/api/chat", {
@@ -739,6 +817,7 @@ async function streamChat(prompt) {
         if (!line) continue;
         let ev;
         try { ev = JSON.parse(line); } catch { continue; }
+        logDebugEvent(ev);
         handleEvent(ev, state);
       }
     }
@@ -751,6 +830,7 @@ async function streamChat(prompt) {
     currentAbort = null;
     setBusy(false);
     stopActivity();
+    finishThinking(state); // close out any still-streaming thinking sections
     const ns = $("#newsess");
     if (ns && ns.checked) ns.checked = false; // continue the session next time
     // If the agent ended its turn with a ```form block, render it as a real form (and hide the
@@ -834,7 +914,24 @@ function handleEvent(ev, state) {
       // busy/idle heartbeat from OpenCode
       if (ev.state === "busy") { if (!activityTimer) startActivity("Thinking…"); }
       break;
+    case "reasoning": {
+      // The agent's chain-of-thought, streamed live. Each reasoning part is its own
+      // collapsible section; the tail also shows in the summary + activity strip.
+      let el = state.thinkEls.get(ev.id);
+      if (!el) {
+        el = addThinking();
+        if (!el) break;
+        state.thinkEls.set(ev.id, el);
+        state.curBubble = null; // text after thinking starts a fresh bubble
+      }
+      el._txt = (el._txt || "") + ev.text;
+      updateThinking(el);
+      const tail = (el._txt || "").replace(/\s+/g, " ").trim().slice(-70);
+      setActivity(tail ? "💭 " + tail : "Thinking…");
+      break;
+    }
     case "assistant": {
+      finishThinking(state); // prose resumed — the thinking section(s) are complete
       if (!state.curBubble) { state.curBubble = addMsg("assistant", ""); if (state.curBubble) state.curBubble._md = ""; }
       if (state.curBubble) { state.curBubble._md = (state.curBubble._md || "") + ev.text; renderAssistant(state.curBubble); }
       if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -842,21 +939,24 @@ function handleEvent(ev, state) {
       break;
     }
     case "tool": {
-      // One compact line per tool call; pending→running→completed update it in place.
+      // One expandable row per tool call; pending→running→completed update it in place.
+      // The summary is the compact line; expand to see the full input and (later) output.
+      finishThinking(state);
       let el = state.toolEls.get(ev.id);
       if (!el) {
-        el = addMsg("tool", "", "tool");
+        el = addToolRow();
         if (!el) break;
         state.toolEls.set(ev.id, el);
         state.curBubble = null; // text after a tool starts a fresh bubble
       }
-      el.textContent = toolLine(ev);
-      const row = el.parentElement;
-      if (row) {
-        row.classList.toggle("running", ev.status === "running" || ev.status === "pending");
-        row.classList.toggle("done", ev.status === "completed");
-        row.classList.toggle("err", ev.status === "error");
-      }
+      const sum = el.querySelector(".tool-sum");
+      if (sum) sum.textContent = toolLine(ev);
+      if (ev.input) setToolPre(el, ".tool-in", "input", toolInputText(ev));
+      if (ev.error) setToolPre(el, ".tool-out", "error", ev.error);
+      else if (ev.output) setToolPre(el, ".tool-out", "output", ev.output);
+      el.classList.toggle("running", ev.status === "running" || ev.status === "pending");
+      el.classList.toggle("done", ev.status === "completed");
+      el.classList.toggle("err", ev.status === "error");
       if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
       // mirror the freshest action into the activity strip
       const verb = TOOL_VERB[ev.tool] || ev.tool;
@@ -1043,6 +1143,91 @@ function submitForm(e) {
   streamChat(prompt);
 }
 
+// ================================================================================== debug tab
+// Two tools for seeing what's really going on:
+//  1) a LIVE event log — every SSE event this browser receives, appended as it arrives;
+//  2) the FULL conversation — fetched from the server (which proxies OpenCode), including
+//     thinking, every tool call's input/output, and the raw JSON of each message.
+const DEBUG_LOG_MAX = 600;
+function logDebugEvent(ev) {
+  const pre = $("#debug-events");
+  if (!pre) return;
+  let line = "";
+  try { line = JSON.stringify(ev); } catch (e) { line = String(ev); }
+  if (line.length > 500) line = line.slice(0, 500) + "…";
+  pre.appendChild(document.createTextNode(line + "\n"));
+  while (pre.childNodes.length > DEBUG_LOG_MAX) pre.removeChild(pre.firstChild);
+  const auto = $("#debug-autoscroll");
+  if (!auto || auto.checked) pre.scrollTop = pre.scrollHeight;
+}
+
+async function loadDebugConvo() {
+  const box = $("#debug-convo");
+  if (!box) return;
+  if (!sessionId) {
+    box.innerHTML = '<div class="empty">No session yet — send a message first.</div>';
+    return;
+  }
+  box.innerHTML = '<div class="empty">Loading…</div>';
+  try {
+    const r = await fetch(`/api/session/${encodeURIComponent(sessionId)}/messages`);
+    const data = await r.json();
+    if (!r.ok) {
+      box.innerHTML = `<div class="empty">⚠ ${escapeHtml((data && data.error) || ("HTTP " + r.status))}</div>`;
+      return;
+    }
+    renderDebugConvo(box, Array.isArray(data) ? data : []);
+  } catch (e) {
+    box.innerHTML = `<div class="empty">⚠ ${escapeHtml(e.message || String(e))}</div>`;
+  }
+}
+
+function renderDebugConvo(box, msgs) {
+  if (!msgs.length) { box.innerHTML = '<div class="empty">No messages in this session.</div>'; return; }
+  box.innerHTML = "";
+  for (const m of msgs) {
+    const info = m.info || m;             // OpenCode returns {info, parts}; tolerate flat too
+    const parts = Array.isArray(m.parts) ? m.parts : [];
+    const d = document.createElement("details");
+    d.className = "dbg-msg " + (info.role === "user" ? "user" : "assistant");
+    const when = info.time && info.time.created ? new Date(info.time.created).toLocaleTimeString() : "";
+    const kinds = parts.map(p => p.type).filter(Boolean).join(" · ");
+    const sum = document.createElement("summary");
+    sum.innerHTML = `<b>${escapeHtml(info.role || "?")}</b> <span class="dbg-when">${escapeHtml(when)}</span> <em>${escapeHtml(kinds)}</em>`;
+    d.appendChild(sum);
+    for (const p of parts) {
+      const pd = document.createElement("details");
+      pd.className = "dbg-part";
+      let label = p.type || "part", body = "";
+      if (p.type === "text" || p.type === "reasoning") {
+        body = p.text || "";
+        if (p.type === "reasoning") label = "reasoning 💭";
+      } else if (p.type === "tool") {
+        const st = p.state || {};
+        label = `tool: ${p.tool || "?"} (${st.status || "?"})`;
+        body = "input:\n" + JSON.stringify(st.input || {}, null, 2) +
+               (st.output ? "\n\noutput:\n" + String(st.output) : "") +
+               (st.error ? "\n\nerror:\n" + String(st.error) : "");
+      } else {
+        body = JSON.stringify(p, null, 2);
+      }
+      pd.innerHTML = `<summary>${escapeHtml(label)}</summary>`;
+      const pre = document.createElement("pre");
+      pre.textContent = body;
+      pd.appendChild(pre);
+      d.appendChild(pd);
+    }
+    const raw = document.createElement("details");
+    raw.className = "dbg-part raw";
+    raw.innerHTML = "<summary>raw json</summary>";
+    const rp = document.createElement("pre");
+    try { rp.textContent = JSON.stringify(m, null, 2); } catch (e) { rp.textContent = String(m); }
+    raw.appendChild(rp);
+    d.appendChild(raw);
+    box.appendChild(d);
+  }
+}
+
 // ================================================================================= library
 async function loadLibrary() {
   try {
@@ -1061,6 +1246,15 @@ function pill(text, cls) { return `<span class="pill ${cls || ""}">${escapeHtml(
 function renderLibrary(worlds, errors) {
   const lib = $("#library");
   if (!lib) return;
+  // Shelf totals in the bar above the list.
+  const counts = $("#lib-counts");
+  if (counts) {
+    const ns = worlds.reduce((a, w) => a + w.stories.length, 0);
+    const np = worlds.reduce((a, w) => a + w.stories.filter(s => s.status === "published").length, 0);
+    counts.textContent = worlds.length
+      ? `${worlds.length} world${worlds.length === 1 ? "" : "s"} · ${ns} ${ns === 1 ? "story" : "stories"} · ${np} published`
+      : "Everything on your shelves — drafts & published.";
+  }
   // A malformed file no longer blanks the library — show the good worlds and warn about bad files.
   const banner = (errors && errors.length)
     ? `<div class="libwarn">⚠ ${errors.length} file(s) couldn't be read and were skipped:<ul>` +
@@ -1071,12 +1265,16 @@ function renderLibrary(worlds, errors) {
     return;
   }
   lib.innerHTML = banner + worlds.map(w => `
-    <div class="world">
-      <h3>${escapeHtml(w.title)}</h3>
+    <article class="world">
+      ${(w.palette||[]).length ? `<div class="swatches">${w.palette.map(p=>`<span class="sw" title="${escapeHtml(p.name)}" style="background:${escapeHtml(p.hex)}"></span>`).join("")}</div>` : ""}
+      <div class="world-head">
+        <h3>${escapeHtml(w.title)}</h3>
+        <span class="world-count">${w.stories.length} ${w.stories.length === 1 ? "story" : "stories"} · ${w.characters.length} cast</span>
+      </div>
       <p class="tagline">${escapeHtml(w.tagline || w.premise || "")}</p>
-      <div class="swatches">${(w.palette||[]).map(p=>`<span class="sw" title="${escapeHtml(p.name)}" style="background:${escapeHtml(p.hex)}"></span>`).join("")}</div>
       <div class="row">${(w.age_bands||[]).map(a=>pill(a,"age")).join("")}${(w.themes||[]).slice(0,4).map(t=>pill(t)).join("")}</div>
-      <div class="subhead">Stories (${w.stories.length})</div>
+      <div class="subhead">Bookshelf</div>
+      <div class="shelf">
       ${w.stories.map(s=>{
         const pub = s.status === "published";
         // A draft only lives in the studio preview build; a published story lives in BOTH the
@@ -1085,22 +1283,103 @@ function renderLibrary(worlds, errors) {
         const readHref = pub
           ? `/publish-preview/story/${w.slug}/${s.slug}/index.html`
           : `/preview/story/${w.slug}/${s.slug}/index.html`;
-        const readLabel = pub ? "Read (public) ↗" : "Read (studio) ↗";
+        // Cover: page-00 art from the studio preview build; falls back to a paper cover.
+        const coverSrc = `/preview/story/${encodeURIComponent(w.slug)}/${encodeURIComponent(s.slug)}/images/page-00.png`;
         return `
-        <div class="story ${pub ? "is-pub" : "is-draft"}">
-          <h4>${escapeHtml(s.title)}</h4>
-          <p>${escapeHtml(s.logline||"")}</p>
-          <div class="row">${pill(s.age_band,"age")}${pill(pub ? "published" : "draft", pub?"pub":"draft")}${pill(s.pages+" pages")}${pill(s.interactions+" games")}</div>
-          <a class="read" href="${readHref}" target="_blank">${readLabel}</a>
-          ${pub ? "" : '<span class="hint">draft — not deployed to GitHub Pages until you mark it <code>published</code></span>'}
-        </div>`;
+        <a class="bookcard ${pub ? "is-pub" : "is-draft"}" href="${readHref}" target="_blank"
+           title="${escapeHtml(s.logline || s.title || "")}${pub ? "" : " (draft — opens the studio preview)"}">
+          <span class="bookcover">
+            <img src="${coverSrc}" alt="" loading="lazy" onerror="this.parentElement.classList.add('noimg')">
+            <span class="ribbon ${pub ? "pub" : "draft"}">${pub ? "published" : "draft"}</span>
+            ${s.logline ? `<span class="caption">${escapeHtml(s.logline)}</span>` : ""}
+            <span class="readhint">Read ↗</span>
+          </span>
+          <span class="booktitle">${escapeHtml(s.title)}</span>
+          <span class="bookmeta">${escapeHtml(s.age_band || "")} · ${s.pages} pages · ${s.interactions} ${s.interactions === 1 ? "game" : "games"}</span>
+        </a>`;
       }).join("") || '<p class="tagline">No stories yet.</p>'}
-      <div class="subhead">Characters (${w.characters.length})</div>
-      ${w.characters.map(c=>`
-        <div class="char"><h4>${escapeHtml(c.name)} ${c.has_reference?"🎨":""}</h4>
-        <p>${escapeHtml(c.one_liner||c.role||"")} ${c.stages&&c.stages.length>1?("· "+c.stages.length+" stages"):""}</p></div>`).join("")
-        || '<p class="tagline">No characters yet.</p>'}
-    </div>`).join("");
+      </div>
+      <div class="subhead">Cast</div>
+      <div class="cast">
+      ${w.characters.map(c=>{
+        // Reference art is copied into the preview build as refs/<slug>-model-sheet.png;
+        // the onerror chain retries .svg, then falls back to a friendly bean.
+        const av = (c.has_reference && c.slug)
+          ? `<img src="/preview/world/${encodeURIComponent(w.slug)}/refs/${encodeURIComponent(c.slug)}-model-sheet.png" alt="" loading="lazy"
+               onerror="if(this.dataset.f){this.closest('.castchip').classList.add('noimg');}else{this.dataset.f=1;this.src=this.src.replace('.png','.svg');}">`
+          : "";
+        return `<button type="button" class="castchip ${av ? "" : "noimg"}" data-w="${escapeHtml(w.slug)}" data-c="${escapeHtml(c.slug || c.name || "")}"
+          title="${escapeHtml(c.one_liner || c.role || "")} — click for the character card">
+          <span class="cast-avatar">${av}</span>
+          <span class="cast-name">${escapeHtml(c.name)}${c.stages && c.stages.length > 1 ? ` <em>· ${c.stages.length} stages</em>` : ""}</span>
+        </button>`;
+      }).join("") || '<p class="tagline">No characters yet.</p>'}
+      </div>
+    </article>`).join("");
+}
+
+// ------------------------------------------------------------ character card (library popup)
+// Clicking a cast chip opens the character's bible as a pop-up card: reference art, who they
+// are, personality, voice, and their evolution track. Pure read-only — closes on ✕, backdrop
+// click, or Escape.
+function closeCharacterCard() {
+  const ov = $("#char-overlay");
+  if (ov) {
+    if (ov._esc) document.removeEventListener("keydown", ov._esc);
+    ov.remove();
+  }
+}
+function openCharacterCard(w, c) {
+  closeCharacterCard();
+  const pillRow = (items, cls) => (items && items.length)
+    ? `<div class="row">${items.map(t => pill(t, cls)).join("")}</div>` : "";
+  const listRows = (items) => (items && items.length)
+    ? `<ul class="cc-list">${items.map(t => `<li>${escapeHtml(t)}</li>`).join("")}</ul>` : "";
+  const section = (label, body) => body ? `<div class="cc-section"><div class="subhead">${label}</div>${body}</div>` : "";
+
+  // Reference art from the studio preview build (refs/<slug>-<filename>); the onerror chain
+  // retries .svg before giving up (some characters only have an svg sheet).
+  const refName = c.reference || "model-sheet.png";
+  const refSrc = `/preview/world/${encodeURIComponent(w.slug)}/refs/${encodeURIComponent((c.slug || "") + "-" + refName)}`;
+  const art = c.has_reference
+    ? `<div class="cc-art"><img src="${refSrc}" alt="${escapeHtml(c.name || "")} reference sheet"
+         onerror="if(this.dataset.f){this.closest('.cc-art').classList.add('noimg');}else{this.dataset.f=1;this.src=this.src.replace(/\\.[a-z]+$/,'.svg');}"></div>`
+    : `<div class="cc-art noimg"></div>`;
+
+  const who = [c.species, c.pronouns, c.role].filter(Boolean).map(escapeHtml).join(" · ");
+  const evo = (c.evolution && c.evolution.length)
+    ? `<ol class="cc-evo">${c.evolution.map(st =>
+        `<li><strong>${escapeHtml(st.stage || "")}</strong>${st.summary ? ` — ${escapeHtml(st.summary)}` : ""}</li>`).join("")}</ol>`
+    : "";
+  const phrases = (c.catchphrases && c.catchphrases.length)
+    ? `<div class="cc-phrases">${c.catchphrases.map(p => `<span class="cc-phrase">“${escapeHtml(p)}”</span>`).join("")}</div>` : "";
+
+  const ov = document.createElement("div");
+  ov.className = "char-overlay";
+  ov.id = "char-overlay";
+  ov.innerHTML = `<div class="char-card" role="dialog" aria-label="${escapeHtml(c.name || "character")}">
+    <button class="kids-x cc-x" title="Close">✕</button>
+    ${art}
+    <div class="cc-body">
+      <div class="cc-head">
+        <h3>${escapeHtml(c.name || "")}</h3>
+        ${who ? `<span class="cc-who">${who}</span>` : ""}
+      </div>
+      ${c.one_liner ? `<p class="cc-oneliner">${escapeHtml(c.one_liner)}</p>` : ""}
+      ${section("Personality", pillRow(c.traits))}
+      ${section("Wants", c.motivation ? `<p class="cc-text">${escapeHtml(c.motivation)}</p>` : "")}
+      ${section("Flaws &amp; quirks", listRows([].concat(c.flaws || [], c.quirks || [])))}
+      ${section("How they talk", (c.speech_style ? `<p class="cc-text">${escapeHtml(c.speech_style)}</p>` : "") + phrases)}
+      ${section("Evolution", evo)}
+      <p class="cc-foot">from <strong>${escapeHtml(w.title || w.slug)}</strong> · <code>characters/${escapeHtml(c.slug || "")}.yaml</code></p>
+    </div>
+  </div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener("click", (e) => { if (e.target === ov) closeCharacterCard(); });
+  const x = ov.querySelector(".cc-x");
+  if (x) x.onclick = closeCharacterCard;
+  ov._esc = (e) => { if (e.key === "Escape") closeCharacterCard(); };
+  document.addEventListener("keydown", ov._esc);
 }
 
 function refreshPreview() {
@@ -1138,17 +1417,40 @@ async function refreshPublishStatus() {
   } catch (e) { /* non-fatal — leave the badge as-is */ }
 }
 
-async function runScript(endpoint, label, opts) {
-  addMsg("system", "▸ " + label + "…", "system");
+// Run a build/validate/quality job and show its status + output IN PLACE (next to the button
+// that launched it) instead of dumping raw output into the chat. Each job has a status chip
+// (#job-<key>-status), a collapsible output panel (#job-<key>) and a <pre> (#job-<key>-out).
+// The panel pops open automatically on failure so problems are never hidden.
+async function runJob(key, endpoint, opts) {
+  opts = opts || {};
+  const btn = $("#btn-" + key);
+  const wrap = $("#job-" + key);
+  const status = $("#job-" + key + "-status");
+  const out = $("#job-" + key + "-out");
+  if (btn) {
+    if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Running…';
+  }
+  if (status) { status.textContent = "running…"; status.className = "step-status running"; }
+  show(wrap);
+  let data = null;
   try {
     const res = await fetch(endpoint, { method: "POST" });
-    const data = await res.json();
-    addMsg("tool", (data.ok ? "✓ " : "✗ ") + label + "\n" + (data.output || ""), "tool out");
-    if (endpoint === "/api/build") refreshPreview();
-    if (endpoint === "/api/build/publish") { refreshPublicPreview(); refreshPublishStatus(); }
-    loadLibrary();
-    if (opts && opts.onDone) opts.onDone(data);
-  } catch (e) { addMsg("system", "⚠ " + e.message, "system"); }
+    data = await res.json();
+  } catch (e) {
+    data = { ok: false, output: "⚠ " + ((e && e.message) || String(e)) };
+  }
+  const ok = !!(data && data.ok);
+  if (status) {
+    status.textContent = ok ? "✓ " + (opts.okLabel || "done") : "✗ " + (opts.failLabel || "failed");
+    status.className = "step-status " + (ok ? "ok" : "fail");
+  }
+  if (out) out.textContent = String((data && data.output) || "").trim() || "(no output)";
+  if (wrap) wrap.open = !ok; // pop the output open on failure; tuck it away on success
+  if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label; }
+  loadLibrary();
+  if (opts.onDone) opts.onDone(data);
 }
 
 // ===================================================================================== wire up
@@ -1164,9 +1466,20 @@ if (composer) composer.addEventListener("submit", (e) => {
   streamChat(p);
 });
 const promptEl = $("#prompt");
-if (promptEl) promptEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { if (composer) composer.requestSubmit(); }
-});
+if (promptEl) {
+  // Enter sends; Shift+Enter makes a new line (Cmd/Ctrl+Enter still works too).
+  promptEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      if (composer) composer.requestSubmit();
+    }
+  });
+  // Grow with the draft (capped) so longer prompts stay visible without manual resizing.
+  promptEl.addEventListener("input", () => {
+    promptEl.style.height = "auto";
+    promptEl.style.height = Math.min(promptEl.scrollHeight + 2, 200) + "px";
+  });
+}
 
 // A chip launches a guided form — in kids mode it runs as the big one-question wizard instead.
 function launchForm(key) {
@@ -1186,41 +1499,76 @@ const guided = $("#guided-form");
 if (guided) guided.addEventListener("submit", submitForm);
 
 const btnStop = $("#stop"); if (btnStop) btnStop.onclick = stopWorkflow;
-// "Preview" = rebuild the studio preview (with drafts), what the in-app /preview/ tab shows.
-const btnBuild = $("#btn-build"); if (btnBuild) btnBuild.onclick = () => runScript("/api/build", "Build studio preview");
-// "Publish" = rebuild the public-only version, what GitHub Pages will deploy. After it
-// succeeds we surface the deploy instructions and switch to the Public preview tab so the
-// author immediately sees what will go live.
-const btnPublish = $("#btn-publish");
-if (btnPublish) btnPublish.onclick = () => runScript("/api/build/publish", "Build public preview", {
-  onDone: (data) => {
-    if (data && data.ok) {
-      addMsg("system",
-        "🚀 Public preview built — open the 'Public preview' tab to confirm. " +
-        "When you're happy, push to main (or `gh workflow run deploy-pages.yml`) to ship it.",
-        "system");
-      // Switch to the public tab so the user lands on the result.
-      const pub = document.querySelector('.tab[data-tab="public"]');
-      if (pub) pub.click();
-    }
-  },
+// Preview tab: rebuild the studio preview (with drafts) and refresh the iframe in place.
+const btnBuild = $("#btn-build");
+if (btnBuild) btnBuild.onclick = () => runJob("build", "/api/build", {
+  okLabel: "built", failLabel: "build failed",
+  onDone: (d) => { if (d && d.ok) refreshPreview(); },
 });
-const btnValidate = $("#btn-validate"); if (btnValidate) btnValidate.onclick = () => runScript("/api/validate", "Validate");
-const btnQuality = $("#btn-quality"); if (btnQuality) btnQuality.onclick = () => runScript("/api/quality", "Quality report");
+// Publish tab, step 3: rebuild the public-only site (what GitHub Pages will deploy) and
+// refresh the public iframe + the "built Nm ago" badge.
+const btnPublish = $("#btn-publish");
+if (btnPublish) btnPublish.onclick = () => runJob("publish", "/api/build/publish", {
+  okLabel: "built", failLabel: "build failed",
+  onDone: (d) => { if (d && d.ok) { refreshPublicPreview(); refreshPublishStatus(); } },
+});
+// Publish tab, steps 1–2: the QA gates.
+const btnValidate = $("#btn-validate");
+if (btnValidate) btnValidate.onclick = () => runJob("validate", "/api/validate", { okLabel: "passed", failLabel: "failing" });
+// quality_report.py always exits 0 (it's a scorecard, not a gate) — label it honestly.
+const btnQuality = $("#btn-quality");
+if (btnQuality) btnQuality.onclick = () => runJob("quality", "/api/quality", { okLabel: "report ready", failLabel: "errored" });
 const btnRefresh = $("#btn-refresh"); if (btnRefresh) btnRefresh.onclick = loadLibrary;
+// Cast chips are re-rendered on every library refresh — delegate so one handler covers them all.
+const libRoot = $("#library");
+if (libRoot) libRoot.addEventListener("click", (e) => {
+  const chip = e.target.closest(".castchip");
+  if (!chip) return;
+  const w = libraryWorlds.find(x => x.slug === chip.dataset.w);
+  const c = w && (w.characters || []).find(x => (x.slug || x.name) === chip.dataset.c);
+  if (w && c) openCharacterCard(w, c);
+});
 const btnClear = $("#btn-clear"); if (btnClear) btnClear.onclick = clearChat;
+// Deploy step: copy-to-clipboard for the ship commands.
+document.querySelectorAll(".copybtn").forEach(b => b.onclick = async () => {
+  const src = document.getElementById(b.dataset.copy || "");
+  const text = src ? src.textContent : "";
+  if (!text) return;
+  try { await navigator.clipboard.writeText(text); } catch (e) { return; }
+  const old = b.textContent;
+  b.textContent = "✓";
+  setTimeout(() => { b.textContent = old; }, 1200);
+});
+
+// Collapse the workbench to a slim icon rail so the writing desk gets the full width.
+// Clicking a rail icon expands the panel again on that tab. Persisted across reloads.
+const panelToggle = $("#panel-toggle");
+function setPanelCollapsed(on) {
+  document.body.classList.toggle("panel-collapsed", on);
+  try { localStorage.setItem("gb_panel", on ? "1" : "0"); } catch (e) { /* non-fatal */ }
+  if (panelToggle) {
+    panelToggle.textContent = on ? "⟪" : "⟫";
+    panelToggle.title = on ? "Expand panel" : "Collapse panel";
+  }
+}
+if (panelToggle) {
+  panelToggle.onclick = () => setPanelCollapsed(!document.body.classList.contains("panel-collapsed"));
+  setPanelCollapsed(localStorage.getItem("gb_panel") === "1");
+}
 
 document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  if (document.body.classList.contains("panel-collapsed")) setPanelCollapsed(false);
   document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
   t.classList.add("active");
-  const lib = $("#view-library"), prev = $("#view-preview"), pub = $("#view-public");
   const tab = t.dataset.tab;
-  if (lib) lib.classList.toggle("hidden", tab !== "library");
-  if (prev) prev.classList.toggle("hidden", tab !== "preview");
-  if (pub) pub.classList.toggle("hidden", tab !== "public");
+  document.querySelectorAll(".tabview").forEach(v => v.classList.toggle("hidden", v.id !== "view-" + tab));
   if (tab === "preview") refreshPreview();
   if (tab === "public") { refreshPublicPreview(); refreshPublishStatus(); }
+  if (tab === "debug") loadDebugConvo();
 });
+const btnDbgRefresh = $("#btn-debug-refresh"); if (btnDbgRefresh) btnDbgRefresh.onclick = loadDebugConvo;
+const btnDbgClear = $("#btn-debug-clear");
+if (btnDbgClear) btnDbgClear.onclick = () => { const pre = $("#debug-events"); if (pre) pre.textContent = ""; };
 
 // ---- voice & kids-mode controls ---------------------------------------------------------------
 // Read-aloud toggle: speak the studio's replies with the local Kokoro voice. The button's
@@ -1274,7 +1622,7 @@ if (micBtn) {
   };
 }
 
-addMsg("system", "Welcome to the studio. Pick a guided form on the left, or just type what you'd like to make.", "system");
+addMsg("system", "Welcome to the studio. Tap a card above to start a book, world, character or story — or just type what you'd like to make.", "system");
 restoreSession(); // replays a prior conversation (and replaces the welcome) if one was saved
 loadModels();
 loadVoiceCaps();

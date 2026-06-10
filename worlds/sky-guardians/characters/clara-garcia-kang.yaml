@@ -1,0 +1,116 @@
+slug: clara-garcia-kang
+world: sky-guardians
+name: Clara Garcia Kang
+role: protagonist
+species: human
+pronouns: she/her
+one_liner: A seven-year-old flying genius who narrates life like a nature documentary and saves the world before snack time.
+personality:
+  traits:
+  - fiercely curious
+  - quick-witted
+  - mischievous
+  - observant
+  - confident
+  motivation: Protect the world's weird, wonderful, un-optimizable places from GlobeCorp's spreadsheets — and have the best
+    adventure story to tell at school on Monday.
+  fears:
+  - being bored
+  - grown-ups who don't listen
+  - running out of snacks mid-flight
+  flaws:
+  - acts before thinking (sometimes flies into literal walls)
+  - hoards random facts like dragons hoard gold
+  - refuses to ask for help until Gears's probability calculator hits 99.9% doom
+  strengths:
+  - connects dots adults miss (pattern recognition is her real superpower)
+  - asks "why?" until bureaucratic logic collapses
+  - preps obsessively — knows each country's snacks, landmarks, and secret hideouts before arrival
+  quirks:
+  - narrates her own life in a hushed David Attenborough whisper ("Here we see the wild Clara approaching the cookie jar...
+    note the calculated trajectory.")
+  - talks to clouds like they're old friends who owe her gossip
+  - draws wing designs on her sneakers with marker (different every book)
+  values:
+  - curiosity over compliance
+  - the weird deserves protection
+  - snacks are diplomacy
+  - a good story beats a perfect plan
+voice:
+  speech_style: fast, peppered with questions and nature-doc asides, uses big words correctly then explains them to Gears
+  catchphrases:
+  - Observe...
+  - 'Field note:'
+  - Gears, calculate the odds!
+  - That's not in the brochure.
+  vocabulary_level: age-appropriate but precocious — uses words like 'bureaucracy', 'thoroughfare', 'optimization' and defines
+    them mid-sentence
+appearance:
+  age_appearance: '7'
+  build: compact, wiry, always in motion
+  height: short for her age (but flies, so irrelevant)
+  skin: light, warm peach undertone
+  hair: light brown, blunt bangs cut just above eyebrows, practical chin-length bob that never stays tucked behind ears
+  eyes: dark brown, bright with mischief, crinkle at corners when she's plotting
+  outfit: colorful layered clothes — bright teal hoodie over coral t-shirt, leggings with knee patches, high-top sneakers
+    with marker-drawn wings (design changes per adventure), tiny backpack for snacks
+  distinguishing_features:
+  - blunt bangs that bounce when she flies, never obscure vision
+  - sneakers with hand-drawn wings (different design each book)
+  - perpetual motion — always mid-leap, perched, or upside-down
+  - tiny backpack shaped like a cloud
+  color_palette:
+  - part: hair
+    hex: '#8b6b4a'
+  - part: eyes
+    hex: '#2d1b0e'
+  - part: skin
+    hex: '#f4d8c4'
+  - part: hoodie
+    hex: '#009688'
+  - part: tshirt
+    hex: '#e86c00'
+  - part: sneakers
+    hex: '#fff8e7'
+  - part: backpack
+    hex: '#ffb7c5'
+  silhouette_notes: compact flying pose — arms forward, legs tucked, bangs streaming back, sneaker-wings visible. Distinct
+    from Gears's boxy tin-robot shape and GlobeCorp's rigid vertical suits.
+appearance_token: 'CLARA: 7-year-old girl, light warm peach skin (#f4d8c4), blunt light brown bangs (#8b6b4a) and chin-length
+  bob, dark brown eyes (#2d1b0e), bright mischievous expression, wearing teal hoodie (#009688) over coral t-shirt (#e86c00),
+  leggings, high-top cream sneakers (#fff8e7) with marker-drawn wings, tiny cloud-shaped backpack (#ffb7c5), compact flying
+  pose arms forward legs tucked, bangs streaming in wind'
+reference_images:
+- characters/clara-garcia-kang.refs/model-sheet.png
+seed: 42871
+relationships:
+- character: gears
+  relation: best friend / pilot & navigator / she flies, he worries / constant banter / she teases his anxiety, he saves her
+    with over-prep
+- character: vp-optimization
+  relation: recurring antagonist / she outsmarts their forms, they file complaints about her / mutual exasperation
+evolution:
+- stage: base
+  order: 0
+  summary: Starting state — confident flyer, curious genius, learning to trust Gears's worry.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+- stage: seasoned-traveler
+  order: 1
+  summary: After 3+ countries — calmer in crisis, better at using local knowledge, trusts Gears implicitly.
+  personality_delta: less impulsive, more strategic, develops 'field guide' habit
+  appearance_delta: adds small pin badges to backpack from each country visited
+  unlocked_by: complete 3 adventures
+- stage: sky-guardian-leader
+  order: 2
+  summary: Fully owns the role — mentors other kids, GlobeCorp fears her name.
+  personality_delta: protective of younger flyers, strategic thinker
+  appearance_delta: gains a subtle silver wing pin on hoodie, sneaker wings more elaborate
+  unlocked_by: defeat a GlobeCorp Global CEO
+tags:
+- protagonist
+- flying
+- genius
+- funny
+- korea-adventure

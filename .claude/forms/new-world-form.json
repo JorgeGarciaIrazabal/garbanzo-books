@@ -1,0 +1,64 @@
+{
+  "title": "Clara's World — Quick Choices",
+  "intro": "Pick options or type your own. These lock in the world bible + art style.",
+  "fields": [
+    {
+      "name": "world_slug",
+      "label": "World folder name (kebab-case)",
+      "type": "text",
+      "placeholder": "clara-sky-guardians"
+    },
+    {
+      "name": "art_style",
+      "label": "Art style vibe",
+      "type": "select",
+      "options": [
+        "soft watercolor storybook",
+        "bold gouache with texture",
+        "Ghibli pastel skies",
+        "flat cute big-eyes",
+        "whimsical ink + watercolor"
+      ]
+    },
+    {
+      "name": "robot_personality",
+      "label": "Robot sidekick personality",
+      "type": "select",
+      "options": [
+        "grumpy but loyal, loves snacks",
+        "hyper chatterbox, facts nonstop",
+        "dramatic worry-wart, over-prepares",
+        "tiny chaos gremlin, breaks things 'accidentally'"
+      ]
+    },
+    {
+      "name": "evil_team_vibe",
+      "label": "Evil team style",
+      "type": "select",
+      "options": [
+        "corporate villains in silly suits",
+        "mad scientists with rival inventions",
+        "ancient secret society, very bureaucratic",
+        "alien tourists who 'collect' landmarks"
+      ]
+    },
+    {
+      "name": "first_country",
+      "label": "First adventure country",
+      "type": "select",
+      "options": [
+        "Japan (neon cities, cherry blossoms)",
+        "Egypt (pyramids, sand, mysteries)",
+        "Brazil (rainforest, carnival colors)",
+        "Italy (canals, leaning towers, gelato)",
+        "Iceland (volcanoes, northern lights)"
+      ]
+    },
+    {
+      "name": "clara_quirk",
+      "label": "Clara's funny quirk",
+      "type": "text",
+      "placeholder": "e.g., narrates life like a nature doc, or talks to clouds"
+    }
+  ]
+}

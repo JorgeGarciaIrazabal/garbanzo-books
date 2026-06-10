@@ -1,0 +1,142 @@
+slug: gears
+world: sky-guardians
+name: Gears
+role: sidekick
+species: robot
+pronouns: he/him
+one_liner: A vintage tin-robot worry-wart with a dimensional tool chest, 847 contingency plans, and a
+  heart of copper — he panics so Clara does not have to.
+personality:
+  traits:
+  - catastrophizing
+  - loyal
+  - resourceful
+  - pedantic
+  - unexpectedly poetic
+  motivation: Keep Clara safe by calculating every possible disaster (and three impossible ones) — and
+    make sure the snack inventory never hits zero.
+  fears:
+  - 'Clara getting hurt (probability: 12.7% per flight, he reminds her)'
+  - running out of duct tape
+  - 'spontaneous combustion (probability: 0.0003%, still unacceptable)'
+  - the number 13
+  - silence (means something is wrong)
+  flaws:
+  - over-prepares for scenarios that defy physics
+  - narrates probability calculations aloud at top volume during stealth moments
+  - gets stuck in worry loops requiring Clara to manually reboot him (tap antenna twice)
+  - hoards useless objects just in case (his left knee joint contains 47 rubber bands)
+  strengths:
+  - builds functional gadgets from literal garbage in under 4 minutes
+  - dimensional chest pocket holds 847 tools, 12 snack compartments, 1 emergency party hat
+  - anxiety = hyper-vigilance = spots traps Clara misses
+  - speaks 47 languages (mostly to apologize to inanimate objects he bumps into)
+  quirks:
+  - 'lens eyes change shape with emotion: gear (neutral), panic (anxious), idea (eureka), heart (proud),
+    spiral (rebooting)'
+  - antenna wobbles violently when anxiety spikes
+  - hums show tunes while building death-defying contraptions
+  - names his tools and argues with them
+  - keeps a Worry Journal with 12,847 entries and counting
+  values:
+  - safety through absurd over-preparation
+  - Clara happiness > optimal efficiency
+  - every problem has a tool (or a snack)
+  - worry is love in a metal chassis
+voice:
+  speech_style: rapid-fire, technical vocabulary mixed with dramatic catastrophizing, frequent probability
+    percentages, talks to his tools
+  catchphrases:
+  - 'Probability of catastrophic failure: [number]%! UNACCEPTABLE.'
+  - I have a tool for that! Three, actually. Seven if we count the emergency spork.
+  - Initiating Panic Protocol 7-Alpha... wait, that is the snack protocol. INITIATING SNACK PROTOCOL.
+  - Clara, my sensors indicate a 94.3% chance you are about to do something reckless. Again.
+  - 'Note to self: add surviving Clara ideas to maintenance schedule.'
+  vocabulary_level: precocious technical terms + dramatic flair, explains concepts to Clara who already
+    knows them
+appearance:
+  age_appearance: vintage 1950s toy robot aesthetic (timeless)
+  build: CUTE SMALL NON-HUMANOID robot — chunky rounded-rectangle tin body, stubby articulated limbs,
+    NO human proportions. Head is a separate small box on a short neck-peg, not a tall humanoid skull.
+    Arms are short stubs, legs are short nubs. Big rounded head is about 40% of body height — wind-up
+    toy proportions, not humanoid adult or humanoid child. He looks like a wind-up toy, not a person in
+    a robot suit.
+  height: comes to Clara mid-torso (much smaller than a child — Clara could tuck him under one arm; carried
+    in reinforced backpack when flying)
+  skin: polished brushed copper (#b87333), warm and shiny — clean, no rust, no tarnish, no verdigris.
+    Joints are a slightly brighter copper highlight (#d4a14a) so they catch the light
+  hair: none — retractable antenna with red tip, wobbles when worried
+  eyes: large expressive lens-eyes (each eye is BIG, taking up most of the face-box), adjustable aperture,
+    change shape with emotion
+  outfit: chest panel opens to reveal dimensional tool pocket (glowing warm amber inside), riveted seams,
+    tiny utility belt with micro-tools
+  distinguishing_features:
+  - CUTE SMALL ROBOT, NOT HUMANOID — chunky wind-up toy proportions, big head, stubby limbs, no human
+    silhouette
+  - lens eyes that visibly change shape — readable at any size
+  - wobbly antenna with red tip — anxiety barometer
+  - chest panel glowing amber when open (dimensional pocket)
+  - riveted copper body, vintage toy aesthetic — distinct from Clara organic curves
+  color_palette:
+  - part: body
+    hex: '#b87333'
+  - part: copper_highlight
+    hex: '#d4a14a'
+  - part: eyes_neutral
+    hex: '#1a3c6e'
+  - part: eyes_panic
+    hex: '#e86c00'
+  - part: chest_glow
+    hex: '#ffb700'
+  - part: antenna_tip
+    hex: '#e86c00'
+  silhouette_notes: CHUNKY CUTE NON-HUMANOID boxy tin-toy robot — big rounded head box, short rectangular
+    torso, stubby articulated arms and legs, antenna on top, oversized lens eyes. Looks like a wind-up
+    toy from a 1950s catalog. NEVER HUMAN-SHAPED — no human skull, no human torso proportions, no human
+    legs. Distinct from Clara organic curves and GlobeCorp rigid human verticals. Chest panel open equals
+    distinctive T-shape. Roughly the size of a fire hydrant.
+appearance_token: 'GEARS: CUTE SMALL TIN TOY ROBOT (NOT HUMANOID, no human proportions) — chunky 1950s
+  wind-up-toy silhouette roughly the size of a fire hydrant, big rounded head-box (about 40% of body height)
+  on a short neck-peg, large oversized expressive lens-eyes taking up most of the face (change shape:
+  neutral gear, panic, idea), POLISHED BRUSHED COPPER BODY (#b87333) — warm and shiny, CLEAN (no rust,
+  no tarnish, no verdigris, no patina), with slightly brighter copper highlights at the joints (#d4a14a)
+  so they catch the light, stubby articulated arms and short nubs for legs, retractable wobbly antenna
+  with red tip (#e86c00), chest panel opening to glowing amber dimensional tool pocket (#ffb700), riveted
+  seams, tiny utility belt, anxious posture hunched forward with one stubby claw-hand raised in worry
+  gesture — looks like a well-loved wind-up toy, NEVER a person in a robot suit'
+reference_images:
+- characters/gears.refs/model-sheet.png
+seed: 91827
+relationships:
+- character: clara-garcia-kang
+  relation: best friend / navigator and worry-engine / he calculates doom, she flies anyway / constant
+    banter / he saves her with over-prep, she reboots him with antenna taps
+- character: vp-optimization
+  relation: bureaucratic nemesis / they file forms, he files probability objections / mutual confusion
+evolution:
+- stage: base
+  order: 0
+  summary: Starting state — catastrophic worrier, 847 tools, learning Clara rhythm.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+- stage: calibrated-companion
+  order: 1
+  summary: After 3+ adventures — trust calibrated, panic protocols faster, Clara factor integrated into
+    calculations.
+  personality_delta: less spiral, more targeted prep, develops Clara maneuver macros
+  appearance_delta: adds small Clara-drawn heart sticker on chest panel, antenna tip gains tiny bell
+  unlocked_by: survive 3 GlobeCorp schemes
+- stage: guardian-protocol
+  order: 2
+  summary: Fully synced — protects other kids too, GlobeCorp henchbots fear his wrench.
+  personality_delta: mentoring mode, strategic worry (worries FOR others)
+  appearance_delta: gains polished scratches as medals, utility belt expands
+  unlocked_by: protect another flying child
+tags:
+- sidekick
+- robot
+- worry-wart
+- tool-master
+- funny
+- dramatic

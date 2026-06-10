@@ -428,3 +428,47 @@ class _FakeVoice:
 
     def warm(self):
         self.warmed = True
+
+
+# ================================================================================== tool SSE event
+def test_tool_event_includes_input_output_and_compact_title():
+    """The studio's expandable tool rows need the full input + output, not just
+    the one-line summary — _tool_event packages all three."""
+    part = {"id": "prt_1", "tool": "bash",
+            "state": {"status": "completed",
+                      "input": {"command": "uv run python scripts/validate.py",
+                                "description": "Validate the workspace"},
+                      "output": "all checks passed\n"}}
+    ev = server._tool_event(part)
+    assert ev["type"] == "tool"
+    assert ev["id"] == "prt_1"
+    assert ev["status"] == "completed"
+    assert ev["title"] == "Validate the workspace"
+    assert "scripts/validate.py" in ev["input"]
+    assert ev["output"] == "all checks passed\n"
+    assert "error" not in ev
+
+
+def test_tool_event_caps_huge_output_and_surfaces_errors():
+    part = {"id": "prt_2", "tool": "bash",
+            "state": {"status": "error", "input": {"command": "boom"},
+                      "output": "x" * 50_000, "error": "exit 1: " + "y" * 5_000}}
+    ev = server._tool_event(part)
+    assert len(ev["output"]) <= 8000
+    assert len(ev["error"]) <= 2000
+    assert ev["status"] == "error"
+
+
+def test_tool_event_omits_empty_input_and_output():
+    ev = server._tool_event({"id": "p", "tool": "read", "state": {"status": "running"}})
+    assert "input" not in ev and "output" not in ev and "error" not in ev
+
+
+# ================================================================================== debug endpoint
+def test_get_session_messages_returns_503_without_opencode(client, monkeypatch):
+    """The Debug tab's full-conversation fetch degrades cleanly when the chat
+    engine isn't running (e.g. opencode failed to start)."""
+    monkeypatch.setattr(server.oc, "base", None)
+    r = client.get("/api/session/ses_123/messages")
+    assert r.status_code == 503
+    assert "opencode" in r.json()["error"]

@@ -1,0 +1,20 @@
+{
+  "page": 2,
+  "prompt_seed": 91827,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely captures the character's appearance and anxious pose, but some minor adjustments are needed.",
+      "flags": [
+        "scene_mismatch",
+        "style_inconsistent"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-02-91827.png"
+    }
+  ],
+  "winner": "page-02.png"
+}

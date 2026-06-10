@@ -33,11 +33,20 @@ language, add games, lay out text, and illustrate.
    - **Deliberate page-turns** — end spreads on a cliff/threat/uh-oh so the turn *must* happen.
    - **Land a laugh or a gasp on most spreads** — slapstick, a twist, a cheeky narrator aside,
      a running gag paying off. Reach for the fun levers in `fun-first.md` on any flat page.
-5. **End on the payoff, not a lesson.** Close on the funniest or most satisfying image and
+5. **Write prose that flows — the read-aloud test.** Page text is a storyteller's voice,
+   not a telegram. Every sentence has a subject and a verb; sentences connect with
+   cause-and-effect words (and, but, so, then, because); shapes vary — a longer rolling
+   sentence, then a short punch. NEVER chop prose into fragment-chains
+   ("Seoul at night. Bright lights. Palaces glow.") to stay inside a word target — that's
+   the **telegraphic trap** (`reading-pedagogy.md`), it's on the fun-first ban list, and
+   `reading_level.py` fails it. A lone fragment for comic timing ("Uh oh.") is a spice,
+   not the house style. Read every page *aloud*: if it doesn't sound like a person telling
+   a great story, rewrite it.
+6. **End on the payoff, not a lesson.** Close on the funniest or most satisfying image and
    *stop*. No character explaining what they learned, no "and that's how…" moral. Let a
    naughty hero get away with it (or earn a funnier comeuppance, never a moral one).
-6. **Front/back matter** — title page (page 0) and an end page; optional dedication.
-7. **Scaffold & save**: `uv run python scripts/new_story.py <world> "<Title>" --age 5-7` then write
+7. **Front/back matter** — title page (page 0) and an end page; optional dedication.
+8. **Scaffold & save**: `uv run python scripts/new_story.py <world> "<Title>" --age 5-7` then write
    the pages into `story.yaml`.
 
 ## Craft checklist
@@ -51,6 +60,8 @@ language, add games, lay out text, and illustrate.
 - [ ] Each `image.prompt` is scene-only with `characters_present` listed.
 - [ ] Characters act from their `personality` (let them be naughty/clever/flawed); nothing
       contradicts world `rules`/`timeline`.
+- [ ] **The prose flows aloud** — real sentences with subjects, verbs, and connective
+      tissue; varied shapes; no telegraphic fragment-chains chasing a readability number.
 - [ ] Words roughly age-fit — a light touch, never traded for a joke or the pace.
 
 ## Output

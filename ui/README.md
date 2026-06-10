@@ -34,12 +34,26 @@ Open **http://localhost:4317** (override with `PORT=…`).
 
 ## What the screen gives you
 - **Studio console (left):** a streaming chat with the agent. It captures the OpenCode
-  `session` id so follow-up messages keep context (untick *new session* to continue). Quick
+  `session` id so follow-up messages keep context (hit *🧹 New chat* to start fresh —
+  Enter sends, Shift+Enter makes a new line). Sticker
   chips seed common requests (new book / world / character / story). Tool runs (bash, edits)
-  stream in as they happen.
-- **Library (right):** every world → its stories and characters, read live from `worlds/`.
-- **Preview (right):** an iframe of the built static site, refreshed after each build.
-- **Validate / Build site** buttons run `scripts/validate.py` and `scripts/build_site.py`.
+  stream in as **expandable rows** — the compact one-liner is the summary; click it to see the
+  full command/input and the tool's output. When the model thinks before answering, its
+  reasoning streams live into a collapsible **💭 Thinking** section (the tail is visible in the
+  summary and the activity strip even while collapsed).
+- **🐞 Debug (right tab):** everything you need to see what really happened — a **live log of
+  every SSE event** this browser received, plus a **full-conversation viewer** that fetches the
+  complete OpenCode session from the server (`/api/session/<id>/messages`): every message,
+  every part (text, reasoning, tool inputs/outputs), with a raw-JSON view per message.
+- **📚 Library (right):** every world as a bookshelf — story covers (page-00 art) with
+  draft/published ribbons that open the right build on click, plus the cast as avatar chips
+  (reference art), read live from `worlds/`.
+- **👀 Preview (right):** the studio build (drafts included) in an iframe, with a *Rebuild*
+  button right in the tab — build output shows in place, popping open only on failure.
+- **🚀 Publish (right):** the ship-it checklist — ① Validate ② Quality report ③ Build the
+  public site (with a "built Nm ago" badge) ④ Deploy (copyable `git push` /
+  `gh workflow run` commands) — with the public preview iframe underneath. Each step runs
+  its script and shows status + collapsible output inline.
 - **Talk & listen (local models, no API key):** a 🎤 mic in the composer records your message and
   transcribes it with **faster-whisper** (`distil-large-v3`, int8) on the server; **🔊 Read aloud**
   speaks the studio's replies with **Kokoro-82M**. Every assistant bubble also gets its own *Read

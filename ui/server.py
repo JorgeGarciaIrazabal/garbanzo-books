@@ -467,6 +467,30 @@ def _remember_stage(sid: str | None, stage: str | None) -> None:
                 LAST_STAGE_BY_SESSION.pop(oldest, None)
 
 
+def _tool_event(part: dict) -> dict:
+    """Build the SSE payload for a tool part: the compact human line (title) PLUS the full
+    input/output so the studio can render the row as an expandable section. Output is capped —
+    it's for eyeballing progress/debugging, not for re-parsing."""
+    state = part.get("state", {}) or {}
+    tool = part.get("tool") or "tool"
+    ev: dict = {"type": "tool", "id": part.get("id"), "tool": tool,
+                "status": state.get("status", ""),
+                "title": str(_tool_detail(tool, state))[:140]}
+    inp = state.get("input") or {}
+    if inp:
+        try:
+            ev["input"] = json.dumps(inp, ensure_ascii=False)[:3000]
+        except Exception:
+            ev["input"] = str(inp)[:3000]
+    out = state.get("output")
+    if isinstance(out, str) and out.strip():
+        ev["output"] = out[:8000]
+    err = state.get("error")
+    if err:
+        ev["error"] = str(err)[:2000]
+    return ev
+
+
 def _tool_detail(tool: str, state: dict) -> str:
     """Turn an OpenCode tool part into a short, human-readable 'what is happening' line.
     The interesting bits live in state.input (e.g. bash → {command, description}; edit/write/read
@@ -573,14 +597,17 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
                             if m:
                                 _remember_stage(sid, m[-1])
                                 yield sse({"type": "stage", "stage": m[-1].lower()})
+                        elif part.get("type") == "reasoning" and part.get("text") and role != "user":
+                            # The model's chain-of-thought, streamed like text but as its own
+                            # event type so the studio can show it in a collapsible section.
+                            full = part["text"]
+                            prev = text_len.get(part.get("id"), 0)
+                            if len(full) > prev:
+                                yield sse({"type": "reasoning", "id": part.get("id"),
+                                           "text": full[prev:]})
+                                text_len[part["id"]] = len(full)
                         elif part.get("type") == "tool":
-                            state = part.get("state", {}) or {}
-                            tool = part.get("tool") or "tool"
-                            detail = _tool_detail(tool, state)
-                            yield sse({"type": "tool", "id": part.get("id"),
-                                       "tool": tool,
-                                       "status": state.get("status", ""),
-                                       "title": str(detail)[:140]})
+                            yield sse(_tool_event(part))
                     elif t == "session.status":
                         # busy/idle heartbeat — lets the UI show "working…" with confidence even
                         # during long silent steps (e.g. image generation).
@@ -596,6 +623,21 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
         except Exception as e:
             yield sse({"type": "error", "text": str(e)[:300]})
     yield sse({"type": "done"})
+
+
+@app.get("/api/session/{sid}/messages")
+async def api_session_messages(sid: str):
+    """Debug view: the FULL OpenCode conversation for a session — every message with all its
+    parts (text, reasoning, tool calls with inputs/outputs, step markers). The studio's Debug
+    tab renders this so the author can inspect exactly what the agent saw and did."""
+    if not oc.base:
+        return JSONResponse({"error": "opencode not running"}, status_code=503)
+    try:
+        async with httpx.AsyncClient(base_url=oc.base, timeout=30) as client:
+            r = await client.get(f"/session/{sid}/message")
+            return JSONResponse(r.json(), status_code=r.status_code)
+    except Exception as e:
+        return JSONResponse({"error": str(e)[:300]}, status_code=500)
 
 
 @app.get("/api/models")

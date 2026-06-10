@@ -1,0 +1,20 @@
+{
+  "page": 6,
+  "prompt_seed": 1118520330,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration captures the scene well, but some minor adjustments are needed to fully align with the character tokens and art style.",
+      "flags": [
+        "scene_mismatch",
+        "style_inconsistent"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-06-1118520330.png"
+    }
+  ],
+  "winner": "page-06.png"
+}

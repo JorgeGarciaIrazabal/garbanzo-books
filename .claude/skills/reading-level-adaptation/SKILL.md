@@ -20,6 +20,13 @@ to hit a readability number.
    - Keep sentences roughly in range and one big idea per page so the picture can carry it.
    - A few giant, ridiculous, delicious stretch words are GOOD — keep them, don't sand them out.
    - Older bands (7–12): let the voice, wordplay, and jokes run; vary sentence shape.
+   - **Simplify by REWRITING, never by amputating.** A too-long sentence becomes two
+     natural sentences — not a chain of fragments ("Seoul at night. Bright lights.").
+     That telegraphic style is the worst failure this pass can produce: it's banned in
+     `fun-first.md`, explained in `reading-pedagogy.md` ("the telegraphic trap"), and
+     `reading_level.py` FAILS it (sentences averaging under the band's floor). Every
+     sentence keeps a subject, a verb, and connective tissue (and/but/so/then/because);
+     a fragment is a once-in-a-while comic beat, never the house style.
 3. **Optional soft check.** `uv run python scripts/reading_level.py worlds/<world>/stories/<slug>`
    reports FKGL, words/page, and longest sentence. Use it only to catch a page that drifted
    *way* too dense — not as a target to optimise toward. If it reads great aloud and a kid that
@@ -30,7 +37,8 @@ to hit a readability number.
 ## Quality bar
 - The words never get in the way of the fun — that's the only one that really matters.
 - Sentences/words-per-page are roughly in band (rough, not strict).
-- It reads great *aloud* for the younger bands.
+- It reads great *aloud* — for every band. If it sounds like a telegram, it fails,
+  whatever the numbers say.
 
 ## Output
 Lightly revised `pages[].text` and a populated `reading_level`. Next: `interactive-elements`.

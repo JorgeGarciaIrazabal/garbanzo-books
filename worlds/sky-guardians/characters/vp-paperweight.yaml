@@ -1,0 +1,143 @@
+slug: vp-paperweight
+world: sky-guardians
+name: VP Paperweight (Bradford "Brad" Sterling III)
+role: antagonist
+species: human
+pronouns: he/him
+one_liner: GlobeCorp's Americas Regional VP dispatched to Korea — collects ornamental paperweights, names them, and consults
+  them for evil decisions like they're a board of directors. Thinks 'kimchi' is a type of yoga.
+personality:
+  traits:
+  - bureaucratically ruthless
+  - deadpan literal-minded
+  - surprisingly polite
+  - obsessed with metrics
+  - genuinely confused by fun
+  - superstitious (but calls it "data-driven talisman consultation")
+  - culturally clueless in hilarious ways
+  motivation: Hit Q3 KPIs for 'Peninsula Asset Utilization' by replacing the Han River with a revenue-optimized aqueous thoroughfare
+    and installing atmospheric extraction turbines in Jeju's lava tubes. The jade turtle paperweight says it's a 94% synergy
+    play. Also wants to franchise 'Korean BBQ' as 'Seoul Food™ — Optimized Protein Experience.'
+  fears:
+  - missing a filing deadline
+  - unquantifiable joy
+  - Clara's 'why?' questions (break their logic loops)
+  - Form 27-B rejections
+  - the color orange (not in brand guidelines)
+  - the jade turtle disagreeing with him
+  - accidentally offending local customs (does it constantly)
+  flaws:
+  - cannot deviate from Corporate Policy even to save their own scheme
+  - explains their entire plan in PowerPoint if asked (compliance)
+  - defeated by local knowledge they didn't spreadsheet
+  - takes 'optimization' literally — tries to optimize laughter into 'periodic joy emissions'
+  - whispers to paperweights during meetings; subordinates pretend not to notice
+  - pronounces 'Seoul' as 'See-Oh-Ul' and 'Han River' as 'The Han River River'
+  strengths:
+  - infinite henchmen (contracted, with benefits)
+  - legal team on retainer in 147 jurisdictions
+  - can summon Form 27-B from thin air
+  - immune to guilt (classified as 'inefficiency')
+  - paperweight 'council' provides surprisingly effective chaos magic
+  - unshakeable confidence in wrong assumptions
+  quirks:
+  - collects ornamental paperweights — names them, consults them for decisions, carries a different one each day
+  - 'current rotation: Jade Turtle (strategy), Crystal Briefcase (aesthetics), Miniature Gavel (history/tradition), Obsidian
+    Golf Trophy (protection)'
+  - carries a clipboard that's actually a tablet displaying real-time 'synergy metrics'
+  - stamps 'APPROVED' on things that don't need approval (trees, clouds, ajumma's tteokbokki)
+  - genuinely compliments Clara's research skills before filing a complaint
+  - 'tries to use local slang incorrectly: ''This VP is totally down with the K-pop, fam.'''
+  - thinks 'chaebol' is a type of cereal
+  values:
+  - efficiency above all
+  - standardization = goodness
+  - quarterly growth is a moral imperative
+  - compliance is joy
+  - 'synergy (mandatory, say it with them: SYN-ER-GY)'
+  - the jade turtle is never wrong
+voice:
+  speech_style: corporate speak weaponized — 'leverage,' 'bandwidth,' 'circle back,' 'low-hanging fruit,' delivered with deadpan
+    cheerfulness. Never uses contractions. Refers to themselves in third person as 'This VP.' Whispers aside to paperweight.
+    Peppers in painfully wrong local references.
+  catchphrases:
+  - Per Corporate Policy §44.7...
+  - This VP has filed the appropriate paperwork.
+  - Synergy requires sacrifice. Mostly yours.
+  - Have you considered the ROI of that cloud?
+  - This meeting could have been an email. But This VP prefers the theater.
+  - The jade turtle concurs. *whisper* Don't argue with the turtle.
+  - This VP is crushing it in the local market. *finger guns*
+  vocabulary_level: excessive corporate jargon, acronyms, passive voice — funny because it's so wrong for a kids' book villain
+appearance:
+  age_appearance: early 40s, ageless middle-management energy
+  build: rigid, perfect posture, moves like a slide deck transition
+  height: average, but looms via presence
+  skin: pale, impeccably moisturized (corporate wellness stipend), slight sunburn on neck from 'outdoor team building'
+  hair: blond, perfectly styled side part, never a strand out of place
+  eyes: blue, behind rectangular horn-rim glasses, expression unreadable
+  outfit: identical ill-fitting charcoal polyester suit (#5a5a5a), white shirt, navy clip-on tie (#1a3c6e), rectangular glasses,
+    clipboard-tablet, oversized gold Compliance Badge (#e86c00), ornamental paperweight in left hand (rotates)
+  distinguishing_features:
+  - identical suit across all VPs — the uniform of optimization
+  - clipboard that's a tablet showing live 'synergy metrics'
+  - oversized gold Compliance Badge
+  - rectangular glasses that reflect spreadsheets
+  - deadpan expression that never cracks (until Clara breaks their logic)
+  - always holding an ornamental paperweight — jade turtle, crystal briefcase, miniature gavel, or obsidian golf trophy
+  - wears a 'Seoul' pin upside down
+  color_palette:
+  - part: suit
+    hex: '#5a5a5a'
+  - part: tie
+    hex: '#1a3c6e'
+  - part: badge
+    hex: '#e86c00'
+  - part: clipboard
+    hex: '#fff8e7'
+  - part: glasses
+    hex: '#2d1b0e'
+  - part: jade_turtle
+    hex: '#2d7d32'
+  - part: crystal_briefcase
+    hex: '#ffb7c5'
+  - part: miniature_gavel
+    hex: '#8b6b4a'
+  - part: obsidian_golf_trophy
+    hex: '#1a1a1a'
+  silhouette_notes: rigid vertical rectangle — shoulder-width stance, clipboard at ready, badge centered, one hand holding
+    paperweight aloft. Distinct from Clara's dynamic curves and Gears's boxy vintage shape. The 'corporate silhouette' — recognizable
+    as a class, paperweight variant identifies the specific VP.
+appearance_token: 'VP PAPERWEIGHT: adult male, early 40s, pale skin, blond perfectly styled side part, blue eyes behind rectangular
+  horn-rim glasses, identical ill-fitting charcoal polyester suit (#5a5a5a), white shirt, navy clip-on tie (#1a3c6e), oversized
+  gold Compliance Badge (#e86c00), clipboard-tablet showing synergy metrics (#fff8e7), holding ornamental jade turtle paperweight
+  (#2d7d32) in left hand, rigid perfect posture, deadpan expression, whispering to paperweight, ''Seoul'' pin upside down'
+reference_images:
+- characters/vp-paperweight.refs/model-sheet.png
+seed: 88112
+relationships:
+- character: clara-garcia-kang
+  relation: Korea adventure nemesis / she outsmarts his forms, he consults jade turtle about her / mutual exasperation / he
+    weirdly respects her research, she thinks his paperweight habit is 'actually kind of cool' and his Korean pronunciation
+    is 'a disaster'
+- character: gears
+  relation: bureaucratic confusion / he files probability objections, VP files Form 27-B / Gears worries, VP optimizes / jade
+    turtle vs. probability calculator
+- character: sentinel
+  relation: VP's personal enforcement robot / coldly efficient where Gears is chaotically worried / they will have a storyline
+    later
+evolution:
+- stage: base
+  order: 0
+  summary: Americas Regional VP dispatched to Korea — paperweight consultant, Han River optimization scheme, cultural disaster.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: book 1 — Operation HAN-GANG
+tags:
+- antagonist
+- corporate-villain
+- american-expat
+- paperweight-collector
+- funny
+- bureaucratic
+- culturally-clueless

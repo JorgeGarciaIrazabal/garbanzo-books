@@ -21,9 +21,15 @@ Your job:
   write for the ear (rhythm, rhyme, repetition) for 0–5; keep one big idea per page; KEEP the
   giant, ridiculous, delicious stretch words — they're a feature, not a problem; let voice and
   wordplay run for 7–12.
-- Optionally spot-check with `uv run python scripts/reading_level.py <story-dir>` — use it only
-  to catch a page that drifted way too dense, not as a target. If it reads great aloud and a
-  kid that age can follow it, it passes whatever the number says.
+- **Simplify by rewriting, never by amputating.** A too-long sentence becomes two natural
+  sentences, not a chain of fragments ("Seoul at night. Bright lights."). Telegraphic
+  fragment-prose is the worst failure this pass can produce — it's banned in `fun-first.md`
+  and `reading_level.py` FAILS it (sentences averaging under the band's floor). Keep
+  subjects, verbs, and connective tissue (and/but/so/then/because) in every sentence.
+- Optionally spot-check with `uv run python scripts/reading_level.py <story-dir>` — it
+  catches a page that drifted way too dense AND prose that went telegraphic. Don't optimise
+  toward the numbers. If it reads great aloud and a kid that age can follow it, it passes
+  whatever the number says.
 
 Return a short note on what you adjusted and confirmation the words don't block the fun. Never
 flatten the story's voice, mischief, or excitement while age-fitting.

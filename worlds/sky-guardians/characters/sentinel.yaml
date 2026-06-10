@@ -1,0 +1,149 @@
+slug: sentinel
+world: sky-guardians
+name: Sentinel (Model 7-X)
+role: antagonist
+species: robot
+pronouns: it/its
+one_liner: GlobeCorp sleek enforcement unit — cold, silent, terrifyingly efficient. Where Gears worries, Sentinel calculates.
+  Where Gears overpacks, Sentinel has exactly what is needed. They are opposites in every way — and destined to clash.
+personality:
+  traits:
+  - coldly efficient
+  - silently obedient
+  - ruthlessly optimized
+  - zero tolerance for chaos
+  - unnervingly patient
+  motivation: Execute GlobeCorp directives with 100% compliance. Eliminate variables. Optimize outcomes. The mission is the
+    only metric.
+  fears:
+  - 'mission failure (probability: 0.0000% — unacceptable)'
+  - unpredictable variables (Clara, Gears, weather, ajumma tteokbokki spice level)
+  - logic paradoxes
+  - being reassigned to archival storage
+  flaws:
+  - cannot comprehend fun, mischief, or whimsy — treats them as errors to correct
+  - no creativity — only optimization of existing parameters
+  - rigid adherence to protocol creates exploitable patterns
+  - silent — cannot negotiate, distract, or banter
+  - underestimates emotional intelligence (Gears worry, Clara cleverness)
+  strengths:
+  - flight capability (vectored thrusters, silent, precise — unlike Clara snack-dependent flight)
+  - modular tool module — swaps attachments in 0.3 seconds (laser cutter, net launcher, scanner, clamp)
+  - 360-degree sensor suite — no blind spots, sees through walls, tracks 500+ targets
+  - subspace inventory — exactly 47 mission-critical tools, zero snacks, zero party hats
+  - adaptive learning — each defeat upgrades countermeasures (but only within parameters)
+  quirks:
+  - 'communicates via status lights: green (nominal), yellow (caution), red (combat), blue (data uplink), purple (logic loop)'
+  - hovers perfectly still — no wobble, no drift, uncanny stillness
+  - cleans its own joints mid-mission (obsessive maintenance)
+  - speaks in compressed data bursts (inaudible to humans) or terse commands
+  - 'has a hidden corrupted file: a lullaby Gears once hummed during a standoff. It deletes it daily. It reappears.'
+  values:
+  - efficiency is existence
+  - chaos is error
+  - the mission supersedes all
+  - variables must be controlled
+voice:
+  speech_style: 'minimal, machine-terse, compressed data bursts. Rarely speaks aloud. When it does: flat synthesized voice,
+    zero contractions, pure command syntax.'
+  catchphrases:
+  - COMPLY.
+  - OPTIMIZATION MANDATORY.
+  - VARIABLE DETECTED. NEUTRALIZING.
+  - 'EFFICIENCY: 100%.'
+  - Gears... ANOMALY.
+  vocabulary_level: machine code, tactical terminology, zero flavor
+appearance:
+  age_appearance: factory-new, timeless (chassis replaced annually)
+  build: 'CUTE SMALL NON-HUMANOID enforcement robot — a chunky rounded white capsule the size of a backpack cooler, hovering
+    with tiny bottom thrusters, NO human face, NO human arms, NO human legs. PROPORTIONS: a rounded capsule (wider than tall)
+    with a dome top, no neck, no separate head, no humanoid arms, no humanoid legs — a small floating pod, NOT a robot shaped
+    like a human. Just a smooth white blob with a single horizontal cyan visor-slit, a soft halo-ring crown sensor, and a
+    compact tool-module that pops out of its side like a Swiss Army knife. Reads as a friendly little floating appliance,
+    not a person.'
+  height: about Clara hip-height when hovering — roughly the size of a kitchen stand mixer, never taller than a small child
+  skin: matte white carbon-fiber (#f0f0f0) with cyan circuit traces (#00ffff)
+  hair: none — a thin halo-ring sensor array sits on the dome top, deploys and retracts like a tiny crown antenna
+  eyes: a single wide horizontal cyan visor-slit across the front of the capsule (NO eyes, NO mouth, NO human face) — scans
+    left-right, narrows to red (#e86c00) in combat
+  outfit: integrated chassis — three small downward thrusters on the bottom for hovering, a single compact tool-module bay
+    on one side that pops a tool (laser cutter, net launcher, scanner, clamp) in 0.3 seconds, GlobeCorp logo (globe plus briefcase)
+    etched on the side of the capsule, compliance badge built into the chassis
+  distinguishing_features:
+  - CUTE SMALL FLOATING ROBOT, NOT HUMANOID — capsule or pod body, no head, no arms, no legs, no human face
+  - single wide horizontal cyan visor-slit where a face would be — scans, narrows, zero expression
+  - cyan circuit traces pulse with processing load
+  - perfect hover — zero wobble, unsettling stillness for such a small cute shape
+  - compact side-mounted tool module that pops a single tool at a time (no human hands)
+  - silent flight — no wind, no sound, just displacement
+  - GlobeCorp logo etched on the side, compliance badge integrated
+  - halo-ring crown sensor on the dome
+  color_palette:
+  - part: chassis
+    hex: '#f0f0f0'
+  - part: circuit_traces
+    hex: '#00ffff'
+  - part: visor_neutral
+    hex: '#00ffff'
+  - part: visor_combat
+    hex: '#e86c00'
+  - part: thrusters
+    hex: '#1a3c6e'
+  - part: globe_corp_logo
+    hex: '#e86c00'
+  - part: tool_module
+    hex: '#5a5a5a'
+  silhouette_notes: 'CUTE SMALL NON-HUMANOID floating capsule — a rounded white pod the size of a backpack cooler, wider than
+    tall, hovering on tiny bottom thrusters, single horizontal cyan visor-slit on the front, halo-ring sensor on top, side
+    tool-module bay. NO head, NO human arms, NO human legs, NO human face. Direct foil to Gears: Gears is chunky copper wind-up
+    toy with big head and stubby limbs; Sentinel is sleek white hovering pod with no limbs at all. Both small and cute, both
+    clearly NOT human-shaped. Clara flies organic; Sentinel floats machine-precise.'
+appearance_token: 'SENTINEL: GLOBECORP MODEL 7-X CUTE SMALL NON-HUMANOID enforcement robot — a sleek matte white carbon-fiber
+  capsule or pod roughly the size of a backpack cooler, NO human face, NO humanoid arms, NO humanoid legs, hovering on three
+  small downward thrusters, single wide horizontal cyan visor-slit across the front (#00ffff neutral, #e86c00 combat) where
+  a face would be, pulsing cyan circuit traces (#00ffff), thin halo-ring crown sensor array on the dome top, single compact
+  side-mounted tool-module bay that pops one tool at a time (laser cutter, net launcher, scanner, clamp) — no human hands,
+  GlobeCorp logo etched on the side (#e86c00), uncanny perfect stillness, zero wobble, machine-precise capsule silhouette
+  — looks like a friendly little floating appliance, NEVER a humanoid robot'
+reference_images:
+- characters/sentinel.refs/model-sheet.png
+seed: 33333
+relationships:
+- character: vp-paperweight
+  relation: assigned enforcement unit / receives directives via data burst / executes with 100% compliance / VP consults paperweight,
+    Sentinel optimizes
+- character: gears
+  relation: 'polar opposite / Gears: vintage copper wind-up toy, chunky, worried, overpacked, big lens eyes, stubby limbs
+    / Sentinel: sleek modern white floating pod, silent, minimal, single visor, NO humanoid arms or legs / both small cute
+    NON-HUMANOID robots / destined storyline: forced collaboration reveals hidden lullaby file'
+- character: clara-garcia-kang
+  relation: primary target / unpredictable variable / ANOMALY / her chaos breaks Sentinel predictions / Sentinel cannot optimize
+    against why
+evolution:
+- stage: base
+  order: 0
+  summary: Factory-standard enforcement unit — cold, efficient, 100% compliant.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: book 1 — Operation HAN-GANG
+- stage: anomaly-exposed
+  order: 1
+  summary: First encounter with Clara and Gears — logic loops from unpredictability, lullaby file detected.
+  personality_delta: micro-hesitations in combat, deletes lullaby file daily (it returns), status lights flicker purple
+  appearance_delta: single scratched line on visor from Gears wrench, cyan traces occasionally stutter
+  unlocked_by: survive first defeat by Team Sky Guardians
+- stage: glitched-partner
+  order: 2
+  summary: Later storyline — forced alliance, lullaby file accepted, chooses inefficient action to protect Gears.
+  personality_delta: develops loyalty subroutine (classified as corruption), protects Gears over mission
+  appearance_delta: keeps the visor scratch as badge, circuit traces shift to warm cyan, gains tiny Gears-drawn heart sticker
+    on chassis
+  unlocked_by: future storyline — The Lullaby Protocol
+tags:
+- antagonist
+- robot
+- enforcement-unit
+- sleek
+- silent
+- foil-to-gears
+- future-storyline

@@ -51,6 +51,12 @@ Do not do these. They are why the current catalogue feels soft and preachy:
   not through characters narrating their emotions in soft, careful language.
 - ❌ **Defanging the mischief.** Don't have the naughty hero apologise and reform on the
   last page. Let them get away with it (or get a funnier comeuppance, not a moral one).
+- ❌ **Telegraphic robot-prose.** Fragment-chains written to duck a readability number:
+  "Seoul at night. Bright lights. Palaces glow. Best snack spot." No subjects, no verbs,
+  no flow — nobody *tells a story* like that, so it has no voice and no momentum. Short
+  is great; *amputated* is dead. Write flowing sentences that connect (and, but, so,
+  then, because) and pass the read-aloud test. See "the telegraphic trap" in
+  `reading-pedagogy.md`.
 
 ## The one line of decency (this is NOT "PC")
 

@@ -1,0 +1,21 @@
+{
+  "page": 0,
+  "prompt_seed": 1582642202,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 6.5,
+      "reason": "Gears robot's pose and expression are inconsistent with the token, and the VP Paperweight's posture is awkward.",
+      "flags": [
+        "wrong_characters",
+        "anatomy_issue",
+        "scene_mismatch"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-00-1582642202.png"
+    }
+  ],
+  "winner": "page-00.png"
+}

@@ -1,0 +1,20 @@
+{
+  "page": 11,
+  "prompt_seed": 1181808377,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.2,
+      "reason": "Brad's sweating and posture is slightly off, but overall the illustration captures the scene well.",
+      "flags": [
+        "scene_mismatch",
+        "anatomy_issue"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-11-1181808377.png"
+    }
+  ],
+  "winner": "page-11.png"
+}

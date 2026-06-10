@@ -323,9 +323,10 @@ describe("FORMS — the guided-form prompt builders", () => {
     expect(p).toContain("7-9");
   });
 
-  it("the story form pins model=M_CREATIVE for the writing stage", () => {
-    // The studio brief: writing the story uses a more creative model.
-    expect(gb.FORMS.story.model).toBe("ollama/deepseek-v4-pro:cloud");
+  it("the story form uses Auto so the server routes story-writing to the creative model", () => {
+    // Forms default to Auto; the server's stage router picks DeepSeek when the
+    // agent flags [[stage:story]] (see STAGE_TO_MODEL in ui/server.py).
+    expect(gb.FORMS.story.model).toBe("auto");
   });
 
   it("every form has a non-empty title + submit button", () => {

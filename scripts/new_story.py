@@ -15,7 +15,10 @@ from lib.model import WORLDS, dump_yaml, slugify  # noqa: E402
 from lib.readability import BANDS  # noqa: E402
 
 # Sensible default FK targets per band (None bands use a soft early-reader target).
-DEFAULT_FK = {"0-3": 0.5, "3-5": 0.8, "5-7": 1.0, "7-9": 2.5, "9-12": 5.0}
+# Deliberately NOT aggressive: FK rewards short sentences, and an over-tight target
+# trains writers to chop prose into telegraphic fragments. The band caps + the
+# anti-telegraphic floor in lib/readability.py do the real guarding.
+DEFAULT_FK = {"0-3": 0.5, "3-5": 0.8, "5-7": 1.5, "7-9": 3.0, "9-12": 5.5}
 
 
 def starter(slug: str, world: str, title: str, age: str) -> dict:
@@ -28,8 +31,10 @@ def starter(slug: str, world: str, title: str, age: str) -> dict:
         "summary": "TODO",
         "age_band": age,
         "reading_level": {
-            "target_fk_grade": DEFAULT_FK.get(age, 1.0),
-            "fk_grade_tolerance": 1.0,
+            "target_fk_grade": DEFAULT_FK.get(age, 1.5),
+            # Wide on purpose: FKGL is noisy on picture-book-sized text, and a tight
+            # tolerance pressures writers into chopping prose to make the number move.
+            "fk_grade_tolerance": 1.5,
             "lexile_range": "",
             "fountas_pinnell": "",
             "max_words_per_page": band["max_words_per_page"],

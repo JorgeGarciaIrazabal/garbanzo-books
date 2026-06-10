@@ -37,6 +37,25 @@ def main() -> int:
                     "one_liner": c.get("one_liner"),
                     "stages": [st.get("stage") for st in c.get("evolution", []) or []],
                     "has_reference": bool(c.get("reference_images")),
+                    # Extra detail for the studio's character popup (all additive).
+                    "species": c.get("species"),
+                    "pronouns": c.get("pronouns"),
+                    "traits": (c.get("personality") or {}).get("traits", []) or [],
+                    "motivation": (c.get("personality") or {}).get("motivation"),
+                    "flaws": (c.get("personality") or {}).get("flaws", []) or [],
+                    "quirks": (c.get("personality") or {}).get("quirks", []) or [],
+                    "speech_style": (c.get("voice") or {}).get("speech_style"),
+                    "catchphrases": (c.get("voice") or {}).get("catchphrases", []) or [],
+                    "evolution": [
+                        {"stage": st.get("stage"), "summary": st.get("summary")}
+                        for st in c.get("evolution", []) or []
+                    ],
+                    # First reference image's filename — the site build copies it to
+                    # world/<wslug>/refs/<cslug>-<filename>, which the UI links to.
+                    "reference": (
+                        Path(str((c.get("reference_images") or [None])[0])).name
+                        if c.get("reference_images") else None
+                    ),
                 }
                 for c in w.characters.values()
             ],

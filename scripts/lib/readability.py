@@ -11,12 +11,17 @@ import re
 from dataclasses import dataclass
 
 # Age band -> targets. fk_grade is None where the formula is unreliable (read-aloud bands).
+# max_sentence_words caps the LONGEST sentence in the book — the average should sit well
+# below it, with varied sentence shapes. min_avg_sentence_words is the anti-telegraphic
+# floor: prose chopped into fragments to game the caps ("Seoul at night. Bright lights.")
+# reads like a robot and fails the read-aloud test. None for the read-aloud bands, where
+# very short rhythmic/refrain lines are a legitimate style.
 BANDS: dict[str, dict] = {
-    "0-3":  {"fk_grade": None, "max_words_per_page": 10,  "max_sentence_words": 6,  "label": "Board book"},
-    "3-5":  {"fk_grade": None, "max_words_per_page": 40,  "max_sentence_words": 10, "label": "Pre-reader"},
-    "5-7":  {"fk_grade": 1.0,  "max_words_per_page": 60,  "max_sentence_words": 8,  "label": "Early reader (K-1)"},
-    "7-9":  {"fk_grade": 2.5,  "max_words_per_page": 150, "max_sentence_words": 14, "label": "Grade 2-3"},
-    "9-12": {"fk_grade": 5.0,  "max_words_per_page": 400, "max_sentence_words": 20, "label": "Middle grade"},
+    "0-3":  {"fk_grade": None, "max_words_per_page": 10,  "max_sentence_words": 8,  "min_avg_sentence_words": None, "label": "Board book"},
+    "3-5":  {"fk_grade": None, "max_words_per_page": 40,  "max_sentence_words": 12, "min_avg_sentence_words": None, "label": "Pre-reader"},
+    "5-7":  {"fk_grade": 1.5,  "max_words_per_page": 60,  "max_sentence_words": 14, "min_avg_sentence_words": 5.0,  "label": "Early reader (K-1)"},
+    "7-9":  {"fk_grade": 3.0,  "max_words_per_page": 150, "max_sentence_words": 18, "min_avg_sentence_words": 7.0,  "label": "Grade 2-3"},
+    "9-12": {"fk_grade": 5.5,  "max_words_per_page": 400, "max_sentence_words": 26, "min_avg_sentence_words": 9.0,  "label": "Middle grade"},
 }
 
 _WORD_RE = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")

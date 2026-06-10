@@ -1,0 +1,20 @@
+{
+  "page": 13,
+  "prompt_seed": 796812422,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely captures the scene and character details, with minor inconsistencies in Brad's pose and a slight palette variation.",
+      "flags": [
+        "style_inconsistent",
+        "wrong_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-13-796812422.png"
+    }
+  ],
+  "winner": "page-13.png"
+}

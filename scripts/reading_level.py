@@ -92,7 +92,9 @@ def report(story_yaml: Path) -> bool:
         lo, hi = target - tol, target + tol
         if m.fk_grade > hi:
             ok = False
-            print(f"  FAIL: FK grade {m.fk_grade} above target {target} (+/-{tol}). Simplify.")
+            print(f"  FAIL: FK grade {m.fk_grade} above target {target} (+/-{tol}). "
+                  "Simplify word choice and untangle long sentences — never by chopping "
+                  "prose into fragments.")
         elif m.fk_grade < lo - 0.5:
             print(f"  note: FK grade {m.fk_grade} a bit below target {target} (fine for confidence).")
         else:
@@ -118,9 +120,36 @@ def report(story_yaml: Path) -> bool:
 
     if longest > max_sent:
         ok = False
-        print(f"  FAIL: longest sentence {longest} words (page {longest_pg}) > cap {max_sent}.")
+        print(f"  FAIL: longest sentence {longest} words (page {longest_pg}) > cap {max_sent}. "
+              "Rewrite it as two natural sentences — do NOT chop it into fragments.")
     else:
         print(f"  PASS: longest sentence within the {max_sent}-word cap.")
+
+    # Anti-telegraphic guard: prose amputated into fragments to duck the caps
+    # ("Seoul at night. Bright lights. Palaces glow.") reads like a robot. Only
+    # meaningful with enough sentences to average over, and only for bands where
+    # short rhythmic refrain lines aren't the natural style.
+    min_avg = rl.get("min_avg_sentence_words", band.get("min_avg_sentence_words"))
+    total_w = total_s = 0
+    for pg in pages:
+        if pg.get("kind") in ("title", "end", "interaction"):
+            continue
+        pm = analyze(pg.get("text") or "")
+        if pm.words:
+            total_w += pm.words
+            total_s += pm.sentences
+    avg = total_w / total_s if total_s else 0.0
+    if min_avg and total_s >= 12:
+        if avg < min_avg:
+            ok = False
+            print(f"  FAIL: telegraphic prose — sentences average {avg:.1f} words "
+                  f"(want >= {min_avg:g} for {band_id}). The fix is NEVER more chopping: "
+                  "join the fragments into flowing sentences (and/but/so/then/because) "
+                  "that read aloud like a person telling a story.")
+        else:
+            print(f"  PASS: prose flows — sentences average {avg:.1f} words.")
+    elif total_s:
+        print(f"  avg sentence: {avg:.1f} words across {total_s} sentences.")
 
     # Decodable check.
     if rl.get("decodable"):

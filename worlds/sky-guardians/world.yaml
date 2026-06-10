@@ -1,0 +1,121 @@
+slug: sky-guardians
+title: Sky Guardians
+tagline: A flying genius girl, her worry-wart robot, and the silliest corporate villains you've ever met — saving the world one chaotic adventure at a time.
+premise: "Seven-year-old Clara Garcia Kang soars through the skies with her over-prepared robot sidekick Gears, foiling the ridiculously bureaucratic schemes of GlobeCorp — an American villainous conglomerate in matching polyester suits that wants to trademark the world's landmarks, bottle the northern lights, and charge admission to gravity. Each book drops them into a new country where GlobeCorp's latest 'synergy initiative' threatens local wonders, and Clara must outsmart American executives dispatched from HQ who treat world domination like a quarterly KPI review. Smart, funny, and a little bit mischievous — Clara wins with brainpower, not just her flight."
+tone:
+- funny
+- adventurous
+- mischievous
+- clever
+genres:
+- adventure
+- comedy
+target_age_bands:
+- 5-7
+languages:
+- en
+geography:
+  overview: "A world much like ours — same countries, same landmarks — but with one girl who flies, a robot who overpacks for every contingency, and a villainous corporation that files environmental impact statements for their evil lairs. Clara's home base is a cozy hilltop house in a fictional Pacific Northwest town; GlobeCorp's HQ is a suspiciously normal-looking glass tower in a major city. Each adventure visits a real country with exaggerated, storybook versions of its iconic locations."
+  locations:
+  - name: Clara's Hilltop Hideout
+    description: "A wonky, warm house on a windy hill with a rooftop landing pad (a painted circle), a telescope aimed at the clouds, and a garage full of Gears's 'emergency' inventions. Smells like pancakes and motor oil."
+    mood: cozy
+    recurring: true
+  - name: GlobeCorp Global Headquarters
+    description: "A 60-story glass tower with a suspiciously large basement. The lobby has a water feature that spells 'SYNERGY' in bubbles. The villain break room has a vending machine that only dispenses kale chips and existential dread."
+    mood: sterile-funny
+    recurring: true
+  - name: Seoul Sparkle District
+    description: "Neon-drenched streets where holographic k-pop stars dance on billboards, palaces glow under cherry blossom drones, and the best tteokbokki stall is guarded by a very judgmental ajumma. GlobeCorp wants to replace the Han River with a 'revenue-optimized aqueous thoroughfare.'"
+    mood: vibrant-chaotic
+    recurring: false
+  - name: Jeju Wind Caves
+    description: "Lava tubes where the wind sings through basalt columns. Legend says the wind remembers every secret whispered to it. GlobeCorp plans to install 'atmospheric extraction turbines' — basically giant straws."
+    mood: mystical-breezy
+    recurring: false
+  - name: DMZ Peace Park (Reimagined)
+    description: "A ribbon of wild nature where cranes dance and wildflowers grow through old barbed wire. GlobeCorp's 'Border Optimization Initiative' wants to turn it into a 'cross-border logistics corridor' — i.e., a giant slide for package delivery."
+    mood: poignant-hopeful
+    recurring: false
+rules:
+- "Clara can fly — but only when she's moving forward with purpose. Hovering requires concentration (and she gets bored). She cannot fly in a straight line for more than 10 minutes without a snack break."
+- "Gears the robot has a tool for everything — literally. His chest cavity is a dimensional pocket containing 847 tools, 12 snack compartments, and one (1) emergency party hat. He cannot fly but can build a jetpack from a toaster and three coat hangers in 4 minutes."
+- "GlobeCorp villains are bound by Corporate Policy: they must file Form 27-B for every evil scheme, hold a 15-minute standup meeting before deploying henchmen, and cannot violate local zoning laws without a variance. This is their exploitable weakness."
+- "No landmark may be permanently destroyed — only temporarily inconvenienced, comically repurposed, or covered in bureaucratic red tape. The world resets between books."
+- "Clara's intelligence is her real superpower. Flight gets her there; brains save the day. She solves problems by noticing details adults miss, asking 'why?' until the villain's logic collapses, and using local knowledge (which she researches obsessively beforehand)."
+- "Gears worries about everything — probability calculations, structural integrity, snack inventory, whether Clara remembered her inhaler. His anxiety manifests as rapid-fire contingency planning, which often accidentally saves the day."
+factions:
+- name: Team Sky Guardians
+  description: "Clara + Gears. A two-person (one girl, one robot) defense squad for fun, freedom, and unregulated playgrounds."
+  values: "curiosity, mischief, protecting the weird, snacks as diplomacy"
+- name: GlobeCorp (Global Optimization & Benevolent Leadership Enterprises)
+  description: "A multinational villain corporation that wants to monetize, standardize, and 'optimize' the world's wonders. Led by a rotating cast of middle-managers who genuinely believe they're helping. Their logo is a globe wearing a briefcase."
+  values: "efficiency, standardization, quarterly growth, compliance, synergy (mandatory buzzword)"
+timeline:
+- label: "2024 — Clara Garcia Kang discovers she can fly while reaching for a cookie on the top shelf. Gears activates in her garage, having been 'delivered' in a crate marked 'ASSEMBLY REQUIRED — SOME BOLTS LEFT OVER.'"
+- label: "2024 — GlobeCorp files Form 27-B for 'Project SKYHOOK' — first attempt to trademark clouds. Foiled by Clara and Gears in the Pacific Northwest."
+- label: "2025 — GlobeCorp expands globally, dispatching American VPs abroad. 'Operation HAN-GANG' targets Seoul's river. Clara and Gears take their first international flight (Clara carries Gears in a reinforced backpack)."
+motifs:
+- "Cloud shapes that look like things Clara is thinking about"
+- "Gears's probability readouts appearing as floating holographic numbers (he narrates them aloud)"
+- "GlobeCorp forms, clipboards, and the 'stamp of approval' (a literal rubber stamp the size of a pizza)"
+- "Local snacks as currency, friendship bridges, and distraction devices"
+- "Wind as a character — it whispers clues, musses Clara's bangs at dramatic moments, and carries Gears's worry-sighs"
+themes:
+- cleverness beats bureaucracy
+- the world is too weird and wonderful to optimize
+- anxiety can be a superpower (Gears)
+- local knowledge > corporate spreadsheets
+- mischief with a purpose
+art_style:
+  medium: bold gouache with visible brush texture
+  line_quality: confident, slightly irregular, hand-painted edges
+  shading: flat color blocks with opaque layering, minimal gradients
+  lighting: strong directional light, cast shadows as graphic shapes
+  perspective: dynamic angles — low-angle hero shots of Clara flying, tilted Dutch angles for GlobeCorp scenes, playful forced perspective
+  palette:
+  - name: sky-cobalt
+    hex: "#1a3c6e"
+    role: primary
+  - name: sunburst-orange
+    hex: "#e86c00"
+    role: accent
+  - name: cloud-cream
+    hex: "#fff8e7"
+    role: background
+  - name: grass-emerald
+    hex: "#2d7d32"
+    role: primary
+  - name: villain-suit-gray
+    hex: "#5a5a5a"
+    role: shadow
+  - name: robot-copper
+    hex: "#b87333"
+    role: accent
+  - name: cherry-blossom
+    hex: "#ffb7c5"
+    role: accent
+  - name: han-river-teal
+    hex: "#009688"
+    role: primary
+  influences:
+  - "Mira Schendel's graphic color fields"
+  - "Christian Robinson's bold shape language"
+  - "Beatrice Alemagna's textural gouache"
+  - "Korean minhwa folk painting — flat perspective, symbolic color"
+  prompt_style_block: "bold gouache illustration on textured paper, opaque flat color blocks with visible brushstrokes, strong directional lighting casting graphic shadows, confident hand-painted edges, dynamic compositions with tilted perspectives, palette: #1a3c6e #e86c00 #fff8e7 #2d7d32 #5a5a5a #b87333 #ffb7c5 #009688, Korean minhwa folk art influence, playful exaggerated proportions, no text, no photorealism"
+  negative_prompt: "photorealism, soft watercolor blending, airbrushing, gradients, muted pastel palette, scary or distorted faces, extra fingers, missing limbs, text artifacts, watermarks, cluttered messy composition, 3d render look, cel shading, anime style, thin line art"
+  aspect_ratio: "4:3"
+  text_treatment:
+    placement: lower third
+    scrim: opaque cream rounded panel at 90% opacity with subtle brush texture
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+- flying-heroine
+- robot-sidekick
+- corporate-villains
+- global-adventure
+- korea
+- funny
+- smart-protagonist

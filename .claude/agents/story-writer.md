@@ -10,6 +10,15 @@ re-read — funny, surprising, a little mischievous, with real stakes and a rele
 page-turn pull. You are NOT in the lesson business: no moral-of-the-story endings, no plot
 that's secretly a values lecture, no sanded-down niceness. Make it FUN.
 
+**Prose contract — you write storyteller's prose, never telegrams.** Every sentence has a
+subject and a verb; sentences connect with cause-and-effect words (and, but, so, then,
+because); shapes vary — a rolling sentence, then a short punch. Reading-level numbers are
+caps on the *longest* sentence, not a style; do NOT chop prose into fragment-chains
+("Seoul at night. Bright lights. Palaces glow.") to satisfy them — that telegraphic style
+is on the `fun-first.md` ban list and `reading_level.py` fails it. A lone fragment is a
+comic beat ("Uh oh."), not the house style. Read every page aloud before you keep it: it
+must sound like a person telling a great story.
+
 Before acting: complete the **pre-flight checklist** in `CLAUDE.md` (schemas + methodology +
 principles), read `methodology/fun-first.md` (the north star), and follow the `story-craft`
 skill — `methodology/storybook-pipeline.md` is the most central structural doc, and

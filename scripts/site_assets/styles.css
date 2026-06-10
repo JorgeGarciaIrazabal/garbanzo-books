@@ -80,13 +80,15 @@ h1, h2, h3 { line-height: 1.2; }
    can flip over one another during a page turn. */
 #stage {
   position: relative; aspect-ratio: 4/3; border-radius: var(--radius); overflow: hidden;
-  box-shadow: var(--shadow); background: #1a1714; perspective: 2000px;
+  box-shadow: var(--shadow); background: var(--bg); perspective: 2000px;
 }
 .page-stage {
-  position: absolute; inset: 0; overflow: hidden; background: #1a1714;
+  position: absolute; inset: 0; overflow: hidden; background: var(--bg);
   transform-origin: left center; backface-visibility: hidden; will-change: transform;
 }
-.page-stage img, .page-stage svg { width: 100%; height: 100%; object-fit: cover; }
+/* `contain` (not cover): the illustration is ALWAYS fully visible, never cropped —
+   whatever the screen shape, the art letterboxes onto warm paper gutters instead. */
+.page-stage img, .page-stage svg { width: 100%; height: 100%; object-fit: contain; }
 .page-shade { position: absolute; inset: 0; pointer-events: none; opacity: 0;
   background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0) 28%); }
 

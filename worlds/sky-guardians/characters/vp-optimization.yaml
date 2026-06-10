@@ -1,0 +1,116 @@
+slug: vp-optimization
+world: sky-guardians
+name: Regional VP of Optimization (Rotating)
+role: antagonist
+species: human
+pronouns: they/them (rotates per book)
+one_liner: "A rotating cast of deadpan middle-managers who genuinely believe trademarking the Han River is 'adding stakeholder value' — each with a distinct silly quirk and an identical ill-fitting suit."
+personality:
+  traits:
+  - bureaucratically ruthless
+  - deadpan literal-minded
+  - surprisingly polite
+  - obsessed with metrics
+  - genuinely confused by fun
+  motivation: "Hit quarterly KPIs for 'Global Asset Utilization' by monetizing, standardizing, and optimizing the world's wonders into revenue streams. They don't see it as evil — they see it as 'synergy.'"
+  fears:
+  - missing a filing deadline
+  - unquantifiable joy
+  - Clara's "why?" questions (break their logic loops)
+  - Form 27-B rejections
+  - the color orange (not in brand guidelines)
+  flaws:
+  - cannot deviate from Corporate Policy even to save their own scheme
+  - explain their entire plan in PowerPoint if asked (compliance)
+  - defeated by local knowledge they didn't spreadsheet
+  - take "optimization" literally — try to optimize laughter into 'periodic joy emissions'
+  strengths:
+  - infinite henchmen (contracted, with benefits)
+  - legal team on retainer in 147 jurisdictions
+  - can summon Form 27-B from thin air
+  - immune to guilt (classified as 'inefficiency')
+  quirks:
+  - "each VP has a distinct silly trait: one collects ornamental paperweights, one speaks only in acronyms, one has a tiny briefcase for their tiny briefcase, one insists on 'wellness walks' during evil monologues"
+  - "carries a clipboard that's actually a tablet displaying real-time 'synergy metrics'"
+  - "stamps \"APPROVED\" on things that don't need approval (trees, clouds, ajumma's tteokbokki)"
+  - "genuinely compliments Clara's research skills before filing a complaint"
+  values:
+  - "efficiency above all"
+  - "standardization = goodness"
+  - "quarterly growth is a moral imperative"
+  - "compliance is joy"
+  - "synergy (mandatory, say it with them: SYN-ER-GY)"
+voice:
+  speech_style: "corporate speak weaponized — 'leverage,' 'bandwidth,' 'circle back,' 'low-hanging fruit,' delivered with deadpan cheerfulness. Never uses contractions. Refers to themselves in third person as 'This VP.'"
+  catchphrases:
+  - "Per Corporate Policy §44.7..."
+  - "This VP has filed the appropriate paperwork."
+  - "Synergy requires sacrifice. Mostly yours."
+  - "Have you considered the ROI of that cloud?"
+  - "This meeting could have been an email. But This VP prefers the theater."
+  vocabulary_level: "excessive corporate jargon, acronyms, passive voice — funny because it's so wrong for a kids' book villain"
+appearance:
+  age_appearance: "ageless middle-management (30s-50s, hard to tell)"
+  build: "rigid, perfect posture, moves like a slide deck transition"
+  height: "average, but looms via presence"
+  skin: "varies per VP (rotating cast)"
+  hair: "varies — always perfectly styled, never a strand out of place"
+  eyes: "varies — behind rectangular glasses, expression unreadable"
+  outfit: "identical ill-fitting charcoal polyester suit (#5a5a5a), white shirt, clip-on tie (#1a3c6e), rectangular glasses, clipboard/tablet, Compliance Badge (gold, oversized)"
+  distinguishing_features:
+  - "identical suit across all VPs — the uniform of optimization"
+  - "clipboard that's a tablet showing live 'synergy metrics'"
+  - "oversized gold Compliance Badge"
+  - "rectangular glasses that reflect spreadsheets"
+  - "deadpan expression that never cracks (until Clara breaks their logic)"
+  color_palette:
+  - part: suit
+    hex: "#5a5a5a"
+  - part: tie
+    hex: "#1a3c6e"
+  - part: badge
+    hex: "#e86c00"
+  - part: clipboard
+    hex: "#fff8e7"
+  - part: glasses
+    hex: "#2d1b0e"
+  silhouette_notes: "rigid vertical rectangle — shoulder-width stance, clipboard at ready, badge centered. Distinct from Clara's dynamic curves and Gears's boxy vintage shape. The 'corporate silhouette' — recognizable as a class, not an individual."
+appearance_token: "GLOBECORP VP: adult human, identical ill-fitting charcoal polyester suit (#5a5a5a), white shirt, navy clip-on tie (#1a3c6e), rectangular glasses, oversized gold Compliance Badge (#e86c00), clipboard-tablet showing synergy metrics (#fff8e7), rigid perfect posture, deadpan expression, skin/hair varies per rotation but suit never changes"
+reference_images: []
+seed: 77777
+relationships:
+- character: clara-garcia-kang
+  relation: "recurring nemesis / she outsmarts their forms, they file complaints about her / mutual exasperation / they weirdly respect her research"
+- character: gears
+  relation: "bureaucratic confusion / he files probability objections, they file Form 27-B / he worries, they optimize"
+evolution:
+- stage: base
+  order: 0
+  summary: "Generic VP template — each book introduces a specific VP with unique quirk."
+  personality_delta: ""
+  appearance_delta: ""
+  unlocked_by: ""
+- stage: vp-korea-paperweights
+  order: 1
+  summary: "VP Paperweight — collects ornamental paperweights, names them, consults them for decisions. First Korea adventure antagonist."
+  personality_delta: "whispers to paperweights, 'The jade turtle says delay the turbine installation.'"
+  appearance_delta: "always holding a different ornamental paperweight (jade turtle, crystal hanbok, miniature dolmen)"
+  unlocked_by: "book 1 — Operation HAN-GANG"
+- stage: vp-japan-acronyms
+  order: 2
+  summary: "VP KPI — speaks only in acronyms, carries acronym dictionary. Japan adventure."
+  personality_delta: "communication entirely via acronyms: 'Q3 YOY KPI ROI OKR ASAP.'"
+  appearance_delta: "wears lanyard with 47 acronym badges"
+  unlocked_by: "book 2 — Japan adventure"
+- stage: vp-egypt-wellness
+  order: 3
+  summary: "VP Wellness — insists on 'wellness walks' during evil schemes, does yoga on pyramid. Egypt adventure."
+  personality_delta: "monologues while in warrior pose, offers Clara kale smoothie"
+  appearance_delta: "carries yoga mat rolled under arm, wears Fitbit over suit sleeve"
+  unlocked_by: "book 3 — Egypt adventure"
+tags:
+- antagonist
+- corporate-villain
+- rotating-cast
+- funny
+- bureaucratic

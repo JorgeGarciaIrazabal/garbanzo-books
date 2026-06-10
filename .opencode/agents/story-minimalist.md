@@ -86,3 +86,9 @@ site, don't run scripts. Just read the YAML and the world context, and write you
 - Do not propose changes that fight the heckler. If the heckler says "raise the stakes"
   and you say "make it cozier", you've contradicted the team. Pick the page that *is*
   dead weight; leave the stakes argument to the heckler.
+- **Tighter never means choppier.** "Tight" means cutting dead pages and limp phrases —
+  it does NOT mean amputating sentences into telegram fragments ("Seoul at night. Bright
+  lights. Palaces glow."). That style is fake economy: it saves words and kills the
+  voice, and it's on the `fun-first.md` ban list. If a draft already reads telegraphic,
+  *that IS a prose complaint* — call it out and ask for flowing sentences, even if they
+  cost a few more words.

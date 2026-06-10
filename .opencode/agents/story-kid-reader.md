@@ -55,7 +55,10 @@ In order of importance:
 5. **The voice pitch.** Does the prose sound like a kid is telling it, or like a teacher
    is reading it? Are the sentences at a length a 5-7 year old can *hear*? Not the
    reading level — the *sounds*. A page of "and then she said 'I will go now' and she
-   went" is technically easy. It is also dead.
+   went" is technically easy. It is also dead. And the opposite disease is worse: robot
+   telegram prose — "Seoul at night. Bright lights. Palaces glow." No grown-up can read
+   that aloud at bedtime without sounding like a fax machine. If a page is fragment
+   stumps instead of sentences, that's your complaint — quote it.
 6. **The moment that makes a kid want to hear it again.** The running gag that they will
    request on the second read. The detail they will point at. The thing that makes the
    book a *favourite*. If the book doesn't have one, that's your complaint.
