@@ -1,0 +1,106 @@
+slug: catalina
+world: super-girls
+name: Catalina
+role: protagonist
+species: human
+pronouns: she/her
+one_liner: The gentle heart of the squad whose kindness literally blooms — but sometimes she forgets that
+  even healers need to stand up for themselves.
+personality:
+  traits:
+  - kind
+  - gentle
+  - patient
+  - empathetic
+  - quietly stubborn
+  motivation: To make sure no one — not her friends, not the Night-Mares, not even the grumpy fourth graders
+    — feels unloved.
+  fears:
+  - watching someone suffer and being unable to help
+  - confrontation — she'd rather soothe a hundred Night-Mares than argue once
+  flaws:
+  - puts everyone else's feelings ahead of her own
+  - freezes up when she has to make a hard choice alone
+  - says 'it's okay' when it's very much not okay
+  strengths:
+  - can calm a crying friend (or a raging Night-Mare) in under ten seconds
+  - sees the good intention behind bad behavior, which sometimes actually works
+  - her vines protect AND heal — the squad's safety net
+  quirks:
+  - talks to plants (and expects them to answer)
+  - braids and rebraids her hair when thinking
+  - keeps seeds in every pocket 'just in case'
+  - sings little songs to her vines while they grow
+  values:
+  - kindness
+  - compassion
+  - patience
+  - growing things
+voice:
+  speech_style: Soft and unhurried, often pauses to think before speaking. Says the kindest possible version
+    of any truth. Never raises her voice, which somehow makes everyone listen harder.
+  catchphrases:
+  - It's okay. We'll figure it out together.
+  - Let me help.
+  - '...or maybe we could try a gentle way first?'
+  vocabulary_level: warm, concrete, uses nature words beautifully; sometimes sounds like a tiny grandma
+appearance:
+  age_appearance: 6 years old
+  build: soft and rounded, gives the best hugs
+  height: average, slightly shorter than Clara and Lizzy
+  skin: warm brown
+  hair: long glossy dark brown, worn in a thick side braid with fresh flowers woven in — changes with
+    the season (daisies, lavender, little sunflowers)
+  eyes: deep warm brown, shaped like crescent moons when she smiles
+  outfit: rose-quartz embroidered peasant blouse with short puffed sleeves, sage-green gathered skirt
+    with vine-pattern hem, goes barefoot in the Dreaming (sandals by day)
+  distinguishing_features:
+  - fresh flowers woven into her braid — never the same twice, always somehow blooming
+  - rose-quartz star bracelet on left ankle (unusual placement — it's where she first touched the Starlight)
+  - carries a small sprout in a tiny pot — a dream-plant that whispers when danger is near
+  - her healing vines emerge from her fingertips like green sparkles and curl gently
+  color_palette:
+  - part: blouse
+    hex: '#e8b4b8'
+  - part: skirt
+    hex: '#6b8f71'
+  - part: hair
+    hex: '#3e2723'
+  - part: skin
+    hex: '#8d5524'
+  - part: flowers (accent)
+    hex: '#f4d58a'
+  - part: eyes
+    hex: '#3e2723'
+  silhouette_notes: Soft rounded shape, visible braid hanging over one shoulder with flower silhouettes.
+    The tiny sprout pot is a distinct bump at her waist.
+appearance_token: 'CATALINA: a 6-year-old girl, soft rounded build, warm brown skin (#8d5524), long glossy
+  dark brown hair in a thick side braid with fresh flowers woven in (#3e2723), deep warm crescent-moon
+  brown eyes, rose-quartz embroidered peasant blouse with puffed sleeves (#e8b4b8), sage-green gathered
+  skirt with vine-pattern hem (#6b8f71), rose-quartz star bracelet on left ankle, small sprout in a tiny
+  pot carried at her waist, barefoot with green sparkles at fingertips, gentle warm smile'
+reference_images:
+- characters/catalina.refs/model-sheet.png
+seed: 256
+relationships:
+- character: clara
+  relation: the calm counterbalance to Clara's intensity; gently reminds her to breathe
+- character: lizzy
+  relation: lets Lizzy inspect her plants endlessly; answers every 'why?' with patient smiles
+- character: ziba
+  relation: Ziba's wild imagination and Catalina's quiet gentleness somehow make perfect sense together
+- character: barnaby
+  relation: the only person Barnaby never interrupts; he falls asleep immediately when she sings to her
+    vines
+evolution:
+- stage: base
+  order: 0
+  summary: A gentle soul who hasn't yet learned that her own feelings matter just as much as everyone
+    else's.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- protagonist
+- healer
+- vine-power

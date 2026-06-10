@@ -1,0 +1,19 @@
+{
+  "page": 21,
+  "prompt_seed": 113092688,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures the scene well, but Lizzy's glasses are slightly off and Barnaby's expression is a bit confused.",
+      "flags": [
+        "duplicate_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-21-113092688.png"
+    }
+  ],
+  "winner": "page-21.png"
+}

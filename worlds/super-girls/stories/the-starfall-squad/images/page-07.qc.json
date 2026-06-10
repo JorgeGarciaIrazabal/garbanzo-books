@@ -1,0 +1,19 @@
+{
+  "page": 7,
+  "prompt_seed": 42,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.0,
+      "reason": "The illustration accurately depicts Clara's reaction to the glowing wrist, matching the page text and art style perfectly.",
+      "flags": [
+        "good"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-07-42.png"
+    }
+  ],
+  "winner": "page-07.png"
+}

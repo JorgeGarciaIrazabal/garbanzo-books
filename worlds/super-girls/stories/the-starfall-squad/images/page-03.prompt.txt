@@ -1,0 +1,10 @@
+PROMPT:
+Catalina in her plant-filled bedroom nook, warm brown skin, long dark brown braid with fresh daisies woven in, sitting among potted plants on a windowsill, holding a tiny pot with a single small green sprout close to her face, whispering to it with a gentle smile, morning sun streaming in, rose-quartz blouse and sage-green skirt visible. Characters: CATALINA: a 6-year-old girl, soft rounded build, warm brown skin (#8d5524), long glossy dark brown hair in a thick side braid with fresh flowers woven in (#3e2723), deep warm crescent-moon brown eyes, rose-quartz embroidered peasant blouse with puffed sleeves (#e8b4b8), sage-green gathered skirt with vine-pattern hem (#6b8f71), rose-quartz star bracelet on left ankle, small sprout in a tiny pot carried at her waist, barefoot with green sparkles at fingertips, gentle warm smile. soft watercolor children's book illustration, warm muted palette with starlight gold accents, rounded friendly shapes, gentle rim lighting, hand-painted paper texture, colored-pencil details, cozy magical storybook mood, no text. palette: cream #f4e1c1, sage #6b8f71, terracotta #d98a5b, dusk-blue #3d5a73, starlight-gold #f4d58a, lavender-mist #b8a8d1, rose-quartz #e8b4b8. character colors: catalina blouse #e8b4b8, catalina skirt #6b8f71, catalina hair #3e2723, catalina skin #8d5524, catalina flowers (accent) #f4d58a, catalina eyes #3e2723. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, neon colors, sharp angular lines, dark gritty atmosphere
+
+SEED: 256
+ASPECT: 4:3
+CHARACTERS: catalina
+REFERENCES: characters/catalina.refs/model-sheet.png

@@ -1,0 +1,17 @@
+{
+  "page": 0,
+  "prompt_seed": 1718674598,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures the characters and their poses well, with a pleasant watercolor style and color palette.",
+      "flags": [],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-00-1718674598.png"
+    }
+  ],
+  "winner": "page-00.png"
+}

@@ -1,0 +1,20 @@
+{
+  "page": 15,
+  "prompt_seed": 1828207356,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures the scene well, but the potato-shield is significantly smaller than specified.",
+      "flags": [
+        "scene_mismatch",
+        "wrong_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-15-1828207356.png"
+    }
+  ],
+  "winner": "page-15.png"
+}

@@ -1,0 +1,10 @@
+PROMPT:
+Clara standing alone in her tidy bedroom with star charts on the wall, feet planted wide and arms crossed in her captain stance, chin lifted, dark brown bob haircut perfectly neat, gold star hair clip visible, giving a determined look at herself in a mirror, morning sunlight, organized desk with a hand-drawn 'plan' on paper. Characters: CLARA: a 6-year-old girl, sturdy athletic build, warm tan skin (#c4956a), sleek dark brown chin-length bob with straight bangs (#4a3728), determined dark brown eyes, gold star hair clip on right side, gold-trimmed cream denim jacket over a cream dress (#f4e1c1) with star-shaped gold clasp at collar, cream sneakers with gold laces (#f4d58a), tiny gold star bracelet on right wrist, stands with feet planted wide and arms crossed, brave steady expression. soft watercolor children's book illustration, warm muted palette with starlight gold accents, rounded friendly shapes, gentle rim lighting, hand-painted paper texture, colored-pencil details, cozy magical storybook mood, no text. palette: cream #f4e1c1, sage #6b8f71, terracotta #d98a5b, dusk-blue #3d5a73, starlight-gold #f4d58a, lavender-mist #b8a8d1, rose-quartz #e8b4b8. character colors: clara jacket trim #f4d58a, clara dress #f4e1c1, clara hair #4a3728, clara skin #c4956a, clara sneakers #f4e1c1. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, neon colors, sharp angular lines, dark gritty atmosphere
+
+SEED: 42
+ASPECT: 4:3
+CHARACTERS: clara
+REFERENCES: characters/clara.refs/model-sheet.png

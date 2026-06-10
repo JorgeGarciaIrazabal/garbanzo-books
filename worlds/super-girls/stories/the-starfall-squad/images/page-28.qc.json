@@ -1,0 +1,17 @@
+{
+  "page": 28,
+  "prompt_seed": 1397783572,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures the scene well with all the characters present and in their specified poses, though Lizzy's hair is a bit messy.",
+      "flags": [],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-28-1397783572.png"
+    }
+  ],
+  "winner": "page-28.png"
+}

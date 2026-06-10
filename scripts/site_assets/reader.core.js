@@ -85,6 +85,54 @@
       return figure;
     }
 
+    // ---------- dynamic text fit ----------
+    // Long passages must never come out huge or swallow the illustration. Two
+    // mechanisms combine so this holds on any screen:
+    //   1. Content-aware start size — a text-heavy page renders at a smaller
+    //      font than a sparse one, REGARDLESS of geometry, so a full page never
+    //      looks huge even on a big monitor where it would technically "fit".
+    //   2. Geometry cap — the box may occupy at most a share of the page; if the
+    //      start size still overflows, shrink further, and scroll as a last resort.
+    function fitText(figure) {
+      if (!figure) return;
+      var overlay = figure.querySelector(".page-text");
+      if (!overlay) return;
+      var box = overlay.firstElementChild; // .scrim, or the plain text div
+      if (!box) return;
+
+      overlay.style.fontSize = "";   // reset so we read the CSS / age-band base
+      box.style.maxHeight = "none";
+      box.style.overflowY = "";
+      var base = parseFloat(getComputedStyle(overlay).fontSize) || 20;
+
+      // 1) Content-aware start size. Scale down from the base as the passage
+      //    grows, from ~one sentence (LO) to a very full page (HI).
+      var chars = (box.textContent || "").trim().length;
+      var LO = 140, HI = 620;
+      var t = Math.max(0, Math.min(1, (chars - LO) / (HI - LO)));
+      var size = base * (1 - 0.40 * t); // down to 60% of base for the fullest pages
+      overlay.style.fontSize = size + "px";
+
+      var stageH = stage.clientHeight;
+      if (!stageH) return; // no layout yet (e.g. SSR/early render): start size is enough
+
+      // 2) Geometry cap. Centered title text gets a little less room than a
+      //    bottom/top caption so it never buries the focal art.
+      var share = overlay.classList.contains("pos-center") ? 0.42 : 0.48;
+      var cap = Math.round(stageH * share);
+      var min = Math.max(12, base * 0.55);
+
+      var guard = 0;
+      while (box.scrollHeight > cap && size > min && guard < 60) {
+        size = Math.max(min, size - 1);
+        overlay.style.fontSize = size + "px";
+        guard++;
+      }
+      // Final safety net: hard-cap the height and scroll if a page is still huge.
+      box.style.maxHeight = cap + "px";
+      box.style.overflowY = box.scrollHeight > cap + 1 ? "auto" : "";
+    }
+
     // ---------- render with page-flip ----------
     function render(dir) {
       var page = pages[idx];
@@ -116,6 +164,9 @@
         turner.addEventListener("animationend", done, { once: true });
         setTimeout(done, 900); // safety net
       }
+
+      fitText(incoming); // shrink long text so the art is never fully covered
+      GB._fitCurrent = function () { fitText(stage.querySelector(".page-stage")); };
 
       renderExtras(page);
       interactionBox.innerHTML = "";
@@ -295,6 +346,14 @@
     // Dyslexia-friendly toggle (shared with site).
     var dys = document.getElementById("dyslexia-toggle");
     if (dys) dys.onclick = function () { document.body.classList.toggle("dyslexia"); };
+
+    // Re-fit the text when the stage changes size (resize / orientation /
+    // boxed↔immersive breakpoint), so the cap tracks the new page height.
+    var fitTimer = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(fitTimer);
+      fitTimer = setTimeout(function () { if (GB._fitCurrent) GB._fitCurrent(); }, 120);
+    }, { passive: true });
 
     render(0);
   };

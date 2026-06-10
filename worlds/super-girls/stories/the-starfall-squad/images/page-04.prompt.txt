@@ -1,0 +1,10 @@
+PROMPT:
+Ziba in her blanket-castle studio bedroom, deep brown skin, big natural hair in two high puffballs with colorful beads, wearing a lavender-mist tunic covered in hand-drawn stars, holding up her sketchbook showing a dramatic drawing in progress, a black marker mustache and a drawn circle 'monocle' around one eye on her face, grinning with theatrical mischief, paint smudge on her nose. Characters: ZIBA: a 6-year-old girl, compact energetic build, deep brown skin (#5c3a24), big natural hair in two high puffballs with colorful lavender and gold beads (#2a1f1a), impossibly wide bright warm brown eyes, lavender-mist tunic with hand-drawn star designs (#b8a8d1), star-print cream leggings (#f4e1c1), one cream sock and one starlight-gold sock mismatched, lavender star bracelet on right ankle, mini sketchbook on a gold ribbon around neck, paint smudge on cheek, theatrical excited expression. soft watercolor children's book illustration, warm muted palette with starlight gold accents, rounded friendly shapes, gentle rim lighting, hand-painted paper texture, colored-pencil details, cozy magical storybook mood, no text. palette: cream #f4e1c1, sage #6b8f71, terracotta #d98a5b, dusk-blue #3d5a73, starlight-gold #f4d58a, lavender-mist #b8a8d1, rose-quartz #e8b4b8. character colors: ziba tunic #b8a8d1, ziba leggings (star print on cream) #f4e1c1, ziba hair #2a1f1a, ziba skin #5c3a24, ziba beads #f4d58a, ziba sketchbook ribbon #f4d58a. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, neon colors, sharp angular lines, dark gritty atmosphere
+
+SEED: 399
+ASPECT: 4:3
+CHARACTERS: ziba
+REFERENCES: characters/ziba.refs/model-sheet.png

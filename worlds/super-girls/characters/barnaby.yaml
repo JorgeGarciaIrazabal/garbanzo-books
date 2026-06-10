@@ -1,0 +1,115 @@
+slug: barnaby
+world: super-girls
+name: Barnaby
+role: sidekick
+species: owl-rabbit (dream-creature)
+pronouns: he/him
+one_liner: A chubby, perpetually confused owl-rabbit who is officially the squad's 'Starlight Guide' —
+  a title nobody remembers giving him and he has never once earned.
+personality:
+  traits:
+  - confused
+  - cheerful
+  - distractible
+  - smug
+  - surprisingly lucky
+  motivation: To be useful and admired while doing as little actual work as possible — snacks are also
+    a priority.
+  fears:
+  - being called out as a fraud (deeply buried)
+  - missing snack time
+  - baths
+  flaws:
+  - takes credit for things he absolutely did not do
+  - gets distracted by literally anything shiny, edible, or vaguely interesting
+  - his 'advice' is mangled proverbs that accidentally work just often enough to keep his job
+  - cannot fly despite having wings — he sort of flutters downward slowly
+  strengths:
+  - his accidental interventions somehow solve problems (he sat on the map, which led them to the right
+    path)
+  - genuinely loves the girls and would waddle into danger for them (then immediately regret it)
+  - Night-Mares find him so confusing they sometimes just... give up
+  - excellent at finding hidden snacks anywhere in the Dreaming
+  quirks:
+  - collects dream-souvenirs — a candy-cane cane (for walking), a pillow-cloud feather (for sneezing),
+    a crayon moustache (for 'dignity')
+  - one ear always flops, the other stands straight up, and they switch sides at random
+  - speaks exclusively in mangled proverbs ('Don't count your chickens... they're very fast!')
+  - naps in teacups, flowerpots, hats — anything container-shaped
+  - his star patch is stitched on crookedly and upside-down; he insists it's 'artistic'
+  values:
+  - snacks
+  - napping
+  - being appreciated
+  - snacks (listed twice because it's that important)
+voice:
+  speech_style: Pompous nonsense delivered with total confidence. Every sentence sounds like he's quoting
+    an ancient text he just made up. Pauses dramatically, then says something completely wrong. Often
+    interrupts himself mid-proverb because he saw a snack.
+  catchphrases:
+  - As the ancients say... [something he just invented]
+  - You're welcome! (when nobody thanked him and he did nothing)
+  - Aha! Just as I... wait, what were we doing?
+  - An apple a day... is DELICIOUS!
+  vocabulary_level: big words used with zero understanding; sounds impressive until you think about it
+    for one second
+appearance:
+  age_appearance: ageless dream-creature, roughly toddler-sized
+  build: chubby, round, huggable — shaped like a fuzzy teardrop with legs
+  height: knee-high to a six-year-old
+  skin: cream-colored soft fur with terracotta speckles on his round belly
+  hair: n/a — soft downy feathers around his owl-face, floppy rabbit ears on top
+  eyes: enormous round dusk-blue eyes that always look slightly baffled, even when smug
+  outfit: no clothes, but has a crookedly stitched upside-down star patch on his chest (supposed to be
+    a badge of office)
+  distinguishing_features:
+  - owl face + rabbit ears + round fluffy body = impossible to mistake for anything else
+  - one ear perpetually flops, one stands up; they switch sides unpredictably
+  - crooked upside-down star patch on chest, sewn with visibly terrible stitching
+  - tiny useless wings that flutter when excited but produce no actual lift
+  - short fluffy tail that wiggles when he's pleased with himself
+  color_palette:
+  - part: body fur
+    hex: '#f4e1c1'
+  - part: belly speckles
+    hex: '#d98a5b'
+  - part: eyes
+    hex: '#3d5a73'
+  - part: star patch
+    hex: '#f4d58a'
+  - part: beak
+    hex: '#d98a5b'
+  silhouette_notes: Unmistakable teardrop body with rabbit-ear silhouette on top — one ear bent, one straight.
+    Round shape with tiny wing bumps and stubby legs. The crooked star patch is a visible bump on the
+    chest.
+appearance_token: 'BARNABY: a chubby owl-rabbit dream-creature, knee-high size, cream-colored soft fur
+  (#f4e1c1) with terracotta speckles on round belly (#d98a5b), enormous round dusk-blue baffled eyes (#3d5a73),
+  one floppy rabbit ear and one straight ear (they switch randomly), tiny useless wings, crookedly stitched
+  upside-down starlight-gold star patch on chest (#f4d58a), stubby legs, short fluffy tail, terracotta
+  beak, perpetually confused yet smug expression'
+reference_images:
+- characters/barnaby.refs/model-sheet.png
+seed: 777
+relationships:
+- character: clara
+  relation: sees Clara as his commander and follows her orders — approximately 40% of the time, when not
+    distracted
+- character: lizzy
+  relation: finds her notebook-taking deeply flattering (she's the only one who takes his proverbs seriously)
+- character: catalina
+  relation: falls asleep instantly when she sings; has designated her lap as 'official nap zone'
+- character: ziba
+  relation: does not understand that Ziba is drawing him in silly poses — thinks they're 'heroic portraits'
+evolution:
+- stage: base
+  order: 0
+  summary: A clueless dream-creature who has accidentally become essential — not because he's competent,
+    but because he's lovable.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- sidekick
+- comic-relief
+- animal-companion
+- mascot

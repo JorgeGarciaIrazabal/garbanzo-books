@@ -22,6 +22,7 @@ the GH Pages output when --include-drafts is off; --out only changes WHERE the b
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import shutil
@@ -57,6 +58,20 @@ READER_SCRIPTS = [
     "reader.boot.js",
 ]
 
+
+def _asset_version() -> str:
+    """Short content hash of the CSS + reader JS, appended as ?v=… to their URLs so
+    a browser never serves a stale reader after we change the layout/runtime."""
+    h = hashlib.sha1()
+    for name in ["styles.css", *READER_SCRIPTS]:
+        p = ASSET_SRC / name
+        if p.exists():
+            h.update(p.read_bytes())
+    return h.hexdigest()[:10]
+
+
+ASSET_VER = _asset_version()
+
 # Image file types copied into the published site (everything else in images/, e.g. the
 # page-NN.prompt.txt audit sidecars, stays internal).
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif", ".avif"}
@@ -73,7 +88,7 @@ def shell(title: str, body: str, root: str, *, extra_head: str = "") -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
-<link rel="stylesheet" href="{root}assets/styles.css">
+<link rel="stylesheet" href="{root}assets/styles.css?v={ASSET_VER}">
 {extra_head}
 </head>
 <body>
@@ -248,7 +263,7 @@ def build_reader(world, story, root="../../../") -> str:
   <div class="chips" style="margin-top:18px">{tags_html}</div>
 </div>
 <script id="story-data" type="application/json">{data_json}</script>
-""" + "".join(f'<script src="{root}assets/{s}"></script>\n' for s in READER_SCRIPTS)
+""" + "".join(f'<script src="{root}assets/{s}?v={ASSET_VER}"></script>\n' for s in READER_SCRIPTS)
     return shell(f"{story.data.get('title')} — read", body, root)
 
 

@@ -482,3 +482,128 @@ describe("rich games + toolkit", () => {
     expect(tray.textContent).toContain("1/1");                      // collected 1 of 1
   });
 });
+
+
+// ---- dynamic text fit: a long passage must never come out huge or bury art --
+//
+// fitText() keeps the page text from dominating the illustration two ways:
+//   1. content-aware start size — a text-heavy page renders at a smaller font
+//      than a sparse one, on ANY screen, even where it would technically fit;
+//   2. a geometry cap — the box may occupy at most a share of the page height
+//      (48% for top/bottom captions, 42% for centered title text), shrinking
+//      further and finally scrolling if it still overflows.
+//
+// jsdom computes no layout, so each test feeds geometry: mockStageHeight pins
+// the stage's pixel height and mockBoxScrollHeight makes the text box report a
+// height. The real fit is then driven through the reader's own resize handler
+// (the same path an orientation change takes) — window.GB isn't reachable from
+// the test realm, but the reader's resize listener is on the shared window.
+describe("dynamic text fit (fitText)", () => {
+  const BASE = 20; // jsdom resolves no stylesheet, so fitText's base falls back to 20px
+
+  function fitStory(text, layout) {
+    return {
+      title: "T",
+      pages: [
+        { number: 0, kind: "title", text: "Title", image: { file: "p0.png", alt: "a" },
+          layout: { text_position: "center", scrim: true }, vocabulary: [], reading_notes: "" },
+        { number: 1, kind: "story", text, image: { file: "p1.png", alt: "b" },
+          layout: layout || { text_position: "lower-third", scrim: true }, vocabulary: [], reading_notes: "" },
+      ],
+    };
+  }
+  const LONG = "word ".repeat(140).trim();   // ~700 chars → fullest-page scaling
+  const MEDIUM = "word ".repeat(50).trim();  // ~250 chars → partial scaling
+  const SHORT = "A short line.";             // well under the scaling threshold
+
+  function mockStageHeight(px) {
+    Object.defineProperty(document.getElementById("stage"), "clientHeight", {
+      configurable: true, get: () => px,
+    });
+  }
+  function mockBoxScrollHeight(fn) {
+    const box = document.querySelector(".page-text").firstElementChild;
+    Object.defineProperty(box, "scrollHeight", { configurable: true, get: fn });
+    return box;
+  }
+  async function triggerFit() {
+    window.dispatchEvent(new Event("resize"));    // the reader re-fits the current page
+    await new Promise((r) => setTimeout(r, 160));  // wait out the 120ms debounce
+  }
+
+  it("never throws when the stage has no measurable height", () => {
+    // Real production guard: during an early/zero-layout render the geometry cap
+    // must be skipped rather than dividing by a 0-height stage. jsdom's default
+    // (every height is 0) reproduces exactly that.
+    expect(() => loadReaderWith(fitStory(LONG))).not.toThrow();
+    expect(document.querySelector(".page-stage")).toBeTruthy(); // still rendered
+  });
+
+  it("scales a text-heavy page down even when it would fit the page height", async () => {
+    // The key cross-screen guarantee: a long passage is never rendered at the
+    // full font size, regardless of how much room it has.
+    loadReaderWith(fitStory(MEDIUM));
+    document.getElementById("next").click();
+    const ov = document.querySelector(".page-text");
+    mockStageHeight(600);
+    mockBoxScrollHeight(() => 100); // comfortably fits — geometry cap won't trigger
+    await triggerFit();
+
+    const after = parseFloat(ov.style.fontSize);
+    expect(after).toBeLessThan(BASE);                 // content scaling shrank it
+    expect(after).toBeGreaterThan(BASE * 0.55);       // …but only partway (not the floor)
+    expect(ov.firstElementChild.style.overflowY).toBe(""); // it fits → no scroll
+  });
+
+  it("keeps a short passage at the full age-band font size", async () => {
+    loadReaderWith(fitStory(SHORT));
+    document.getElementById("next").click();
+    const ov = document.querySelector(".page-text");
+    mockStageHeight(600);
+    mockBoxScrollHeight(() => 100);
+    await triggerFit();
+
+    expect(parseFloat(ov.style.fontSize)).toBe(BASE); // short text isn't scaled down
+    expect(ov.firstElementChild.style.overflowY).toBe("");
+  });
+
+  it("shrinks to the floor and scrolls when even the scaled size overflows", async () => {
+    loadReaderWith(fitStory(LONG));
+    document.getElementById("next").click();
+    const ov = document.querySelector(".page-text");
+    expect(ov.className).toContain("pos-lower-third");
+    mockStageHeight(600);
+    mockBoxScrollHeight(() => 5000); // taller than the cap at every font size
+    await triggerFit();
+
+    const box = ov.firstElementChild;
+    expect(parseFloat(ov.style.fontSize)).toBeLessThanOrEqual(12); // bottomed out at the floor
+    expect(box.style.maxHeight).toBe("288px");  // 48% of the 600px stage
+    expect(box.style.overflowY).toBe("auto");   // scroll fallback for the extreme case
+  });
+
+  it("uses a tighter cap for centered title text than for bottom captions", async () => {
+    loadReaderWith(fitStory(SHORT));        // page 0 is the centered title page
+    const ov = document.querySelector(".page-text");
+    expect(ov.className).toContain("pos-center");
+    mockStageHeight(600);
+    mockBoxScrollHeight(() => 5000);
+    await triggerFit();
+    expect(ov.firstElementChild.style.maxHeight).toBe("252px"); // 42% of the 600px stage
+  });
+
+  it("re-fits the current page when the window is resized", async () => {
+    loadReaderWith(fitStory(SHORT));
+    document.getElementById("next").click();
+    const ov = document.querySelector(".page-text");
+    mockStageHeight(600);
+    let tall = 100;                          // starts fitting → no scroll
+    mockBoxScrollHeight(() => tall);
+    await triggerFit();
+    expect(ov.firstElementChild.style.overflowY).toBe("");
+
+    tall = 5000;                             // text grows (e.g. orientation change)
+    await triggerFit();
+    expect(ov.firstElementChild.style.overflowY).toBe("auto"); // re-fit reacted
+  });
+});

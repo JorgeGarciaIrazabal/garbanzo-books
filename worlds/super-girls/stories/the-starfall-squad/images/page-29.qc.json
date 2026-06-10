@@ -1,0 +1,17 @@
+{
+  "page": 29,
+  "prompt_seed": 1577539147,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.2,
+      "reason": "The illustration accurately depicts the scene and characters with the correct poses, expressions, and details, adhering to the specified art style and character tokens.",
+      "flags": [],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-29-1577539147.png"
+    }
+  ],
+  "winner": "page-29.png"
+}

@@ -1,0 +1,17 @@
+{
+  "page": 19,
+  "prompt_seed": 1388726366,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.2,
+      "reason": "The illustration accurately depicts the scene described in the text, with all characters present and in their specified appearances.",
+      "flags": [],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-19-1388726366.png"
+    }
+  ],
+  "winner": "page-19.png"
+}

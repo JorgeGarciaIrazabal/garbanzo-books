@@ -1,0 +1,10 @@
+PROMPT:
+Lizzy in her chaotic book-fort bedroom, sitting cross-legged on a pile of books, oversized round dusk-blue glasses magnifying her hazel-green eyes, auburn messy bun with a pencil stabbed through it, scribbling furiously in her spiral notebook with one hand while the other hand is holding up a magnifying glass, curious intense expression, pages of notes scattered everywhere. Characters: LIZZY: a 6-year-old girl, slight wiry build, fair skin with freckles across nose and cheeks (#f5dcc3), uncontrollable curly auburn hair in a messy bun with a pencil stuck through it (#b8c38), hazel-green eyes behind oversized round dusk-blue glasses (#3d5a73), lavender-mist cardigan (#b8a8d1) with too-long sleeves over sage-green corduroy overalls (#6b8f71), small spiral notebook in pocket, mismatched socks, small lavender star bracelet on left wrist, curious bright-eyed expression. soft watercolor children's book illustration, warm muted palette with starlight gold accents, rounded friendly shapes, gentle rim lighting, hand-painted paper texture, colored-pencil details, cozy magical storybook mood, no text. palette: cream #f4e1c1, sage #6b8f71, terracotta #d98a5b, dusk-blue #3d5a73, starlight-gold #f4d58a, lavender-mist #b8a8d1, rose-quartz #e8b4b8. character colors: lizzy cardigan #b8a8d1, lizzy overalls #6b8f71, lizzy hair #b85c38, lizzy glasses frames #3d5a73, lizzy skin #f5dcc3. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, neon colors, sharp angular lines, dark gritty atmosphere
+
+SEED: 137
+ASPECT: 4:3
+CHARACTERS: lizzy
+REFERENCES: characters/lizzy.refs/model-sheet.png
