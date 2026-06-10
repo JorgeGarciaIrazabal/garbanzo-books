@@ -1,4 +1,4 @@
-.PHONY: setup validate report build serve clean test test-backend test-frontend test-all lint format type-check coverage quality ci ui opencode help check-gemini
+.PHONY: setup validate report build serve clean test test-backend test-frontend test-all lint format type-check coverage quality ci ui opencode help check-gemini game-lab
 
 # OpenCode + local Ollama settings. The model/provider are defined in opencode.json;
 # override here if you point Ollama elsewhere.
@@ -21,6 +21,7 @@ help:
 	@echo "  make build         build the static site into site/  (published only, what GH Pages deploys)"
 	@echo "  make build-publish build the public preview into site_publish/  (what the studio's 'Public preview' tab shows)"
 	@echo "  make serve         build + preview at http://localhost:8008"
+	@echo "  make game-lab      live game-design playground at http://localhost:8008/game-lab/"
 	@echo "  make test          run the toolchain self-test"
 	@echo "  make check-gemini  verify GEMINI_API_KEY is set (image generation)"
 	@echo "  make test-backend  run the full pytest suite (lib + scripts + server)"
@@ -55,6 +56,11 @@ build-publish:
 
 serve: build
 	$(RUN) -m http.server -d site 8008
+
+# Live playground for designing games (edit interaction YAML ↔ play it instantly,
+# including the arcade games on the real engine). Studio preview only — never published.
+game-lab:
+	$(RUN) scripts/game_lab.py
 
 check-gemini:
 	@# Quick check for the image-gen key. The studio/server load it the same way

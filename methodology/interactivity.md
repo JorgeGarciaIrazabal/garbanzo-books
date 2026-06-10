@@ -46,6 +46,12 @@ Interleave roughly one every 2–4 pages, placed at a natural beat — never mid
 > your idea, **invent one with `custom`** (see "Inventing a game from scratch" below).
 
 ## Choosing the moment & the mechanic
+- **A big ACTION beat? Make it a REAL game** → the `arcade-*` family: real-time games with a
+  game loop (movement, physics, steering) on an embedded game engine, played fullscreen over
+  the page art. Falling/raining? → `arcade-catch`. Flying/soaring? → `arcade-flap`.
+  Chasing/escaping/racing? → `arcade-run`. A sky full of bubbles/sparks/fireflies? →
+  `arcade-pop`. Throwing/feeding-at-a-distance? → `arcade-toss`. Swimming/swooping/zooming
+  around? → `arcade-steer`. See "Arcade games" below.
 - **Play ON the picture?** → `hidden-object` / `find-in-scene` (tap the things in the art),
   `tap-on-art` (tap the one right thing), `hotspot-reveal` (tap sparkles to discover),
   `place-on-scene` (drag items onto the right spots), `spot-the-difference`.
@@ -103,6 +109,9 @@ Interleave roughly one every 2–4 pages, placed at a natural beat — never mid
 | `rhythm-tap` / `song-builder` (music) | | ✓✓ | ✓✓ | ✓ | | rhythm, creativity |
 | `sequence-recall` (Simon) | | ✓ | ✓✓ | ✓✓ | ✓ | working memory |
 | `custom` (invent your own) | | ✓ | ✓✓ | ✓✓ | ✓✓ | anything you imagine |
+| `arcade-catch` / `arcade-pop` (real game, one-touch) | | ✓ | ✓✓ | ✓✓ | ✓✓ | reflexes, joy |
+| `arcade-flap` / `arcade-run` / `arcade-steer` (real game, steering) | | | ✓✓ | ✓✓ | ✓✓ | motor control, persistence |
+| `arcade-toss` (real game, aiming) | | | ✓✓ | ✓✓ | ✓✓ | aim, cause/effect |
 
 Notes:
 - Babies (6mo+): high-contrast art; `tap-to-reveal` / `tap-on-art` land best ~18 months.
@@ -207,6 +216,70 @@ enforced by `scripts/lib/checks/interactivity.py`.)
 
 **Memory**
 - `sequence-recall`: `{ sequence:["red","blue","red","green"] }` (watch it light up, tap it back, Simon-style)
+
+## Arcade games — REAL games on the page (`arcade-*`)
+
+The arcade family runs on an embedded game engine (Kaplay, vendored — sprites, physics,
+collisions, particles): a real game loop the child plays **fullscreen, backdropped by this
+page's own illustration**. Use one when the story hands you an action beat — something falls,
+flies, chases, floats, or gets thrown. **The mechanic is the engine; the story is the skin:**
+every noun in the payload (`player`, `catch`, `avoid`, `target`…) is an emoji or
+`{emoji, label}` chosen from what just happened on the page. Never ship the default skin —
+"catch the stars" is generic, "catch Pip's sneeze-sparks before they singe the grass" is the
+book.
+
+**Built-in guarantees (the runtime provides these — don't design around them):**
+- **Always winnable, no fail states.** Touching an avoid-thing is a funny bonk (wobble +
+  silly sound + your `avoid_line`), never a game-over; progress only goes up; and a
+  rubber-band assist ladder appears on a stall ("🪄 Easier!" slows the game and grows the
+  targets, then "✨ Finish it!" auto-wins) — the arcade version of the hint ladder.
+- **Lazy + graceful.** The ~190KB engine loads only when the child taps ▶ Play. With no
+  WebGL or `prefers-reduced-motion`, the same beat renders as a calm tap-board fallback in
+  the ordinary game sheet — so still design the skin to read at a glance as static emoji.
+- **A goal HUD** (progress pips + count) and a win celebration are automatic.
+
+**Design rules of thumb:**
+- `goal` 4–8 for 5–7s, 8–12 for 7+; a round should land in 20–60 seconds — it's a fun
+  *break*, not a level grind.
+- `speed: gentle` for under-7s (also derived from `interaction.difficulty`); `wild` only 9+.
+- One-touch mechanics (`arcade-catch`, `arcade-pop`) reach down to 4–5; steering and aiming
+  (`flap`, `run`, `steer`, `toss`) want 5+.
+- Write `how` (the intro line) and `avoid_line` in the story's voice — they carry the joke.
+- At most 1–2 arcade games per book, on the *biggest* action beats; keep the other games
+  varied (on-art, drag, music…). An arcade game counts as a rich game for the quality gate.
+
+**Payload shapes** (all nouns are `"🍎"` or `{emoji, label}`; common optional keys:
+`goal`, `speed: gentle|normal|wild`, `how`, `avoid_line`):
+- `arcade-catch` — steer the catcher left/right; catch what falls, dodge the rest:
+  `{ player:"🧺", catch:["✨","🌟"], avoid:["💧"], goal:8, speed:"gentle" }`
+- `arcade-flap` — tap to flap; fly through the gaps: `{ player:"🕊️", obstacle:"☁️", gates:6 }`
+- `arcade-run` — auto-run, tap to jump (double-jump allowed); gather `collect`, and after
+  `goal` of them the `finish` marker arrives: `{ player:"🏃", obstacles:["🪨"], collect:"⭐", goal:7, finish:"🏰" }`
+- `arcade-pop` — things drift up; tap to pop the right ones: `{ pop:["🫧"], avoid:["🐝"], goal:10 }`
+- `arcade-toss` — drag back like a slingshot (aim dots show the arc), release to throw:
+  `{ projectile:"🍎", target:{emoji:"🧺",label:"the basket"}, goal:4 }`
+- `arcade-steer` — drag to steer in 2D; collect things, bounce off drifting baddies:
+  `{ player:"🚀", collect:"⭐", avoid:["🪨","☄️"], goal:8 }`
+
+```yaml
+# Page beat: Pip the dragon sneezes a fountain of sparks over the meadow.
+interaction:
+  type: arcade-catch
+  prompt: Catch Pip's sneeze-sparks before they singe the grass!
+  data:
+    player: { emoji: "🪣", label: "Clara's rain-bucket" }
+    catch: ["✨", "🔥"]
+    avoid: [{ emoji: "🐞", label: "ladybug" }]
+    goal: 8
+    speed: gentle
+    how: Drag the bucket — catch every spark!
+    avoid_line: Not the ladybug! She's helping!
+  feedback: { correct: "The meadow is safe — Pip looks very sorry. 🐉", try_again: "Quick, under the sparks!" }
+  reward: { label: "Spark Catcher", emoji: "✨", id: "spark-catcher" }
+```
+
+Preview any arcade payload instantly in the **Game Lab** (`make game-lab`) — edit the YAML,
+pick a page image as the backdrop, and play it without rebuilding the book.
 
 ## Inventing a game from scratch — `custom`
 When no built-in fits, declare your own game as **data** (no code). List `elements` (the

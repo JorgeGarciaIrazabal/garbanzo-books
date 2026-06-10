@@ -19,15 +19,14 @@ import { resolve, dirname } from "node:path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const APP_JS = resolve(__dirname, "..", "..", "ui", "public", "app.js");
 
-// The reader is split into a toolkit + game registry; load in this exact order (mirrors
-// scripts/build_site.py READER_SCRIPTS). reader.boot.js (last) calls GB.boot().
+// The reader runtime; load in this exact order (mirrors scripts/build_site.py
+// READER_SCRIPTS). reader.boot.js (last) calls GB.boot(). The Kaplay engine is lazy-loaded
+// at runtime and never executes in jsdom (no WebGL), so it is not part of the harness.
 const ASSET_DIR = resolve(__dirname, "..", "..", "scripts", "site_assets");
 export const READER_SCRIPTS = [
-  "reader.core.js", "toolkit.audio.js", "toolkit.juice.js", "toolkit.scene.js",
-  "toolkit.dnd.js", "toolkit.steps.js", "toolkit.reward.js", "toolkit.shared.js",
-  "games.builtin.js", "games.rich.js", "games.custom.js", "reader.boot.js",
+  "reader.js", "gx.core.js", "gx.board.js", "gx.arcade.js", "reader.boot.js",
 ];
-export const READER_JS = resolve(ASSET_DIR, "reader.core.js"); // kept for back-compat imports
+export const READER_JS = resolve(ASSET_DIR, "reader.js"); // kept for back-compat imports
 
 // Strip the bottom side effects. Anchor on the stable English "Welcome" string.
 const APP_SRC = readFileSync(APP_JS, "utf-8");

@@ -76,9 +76,12 @@ ui/             Dynamic UI server (OpenCode + local Ollama, no API key) — the 
    reserved zone with a scrim for legibility. Keep that zone clear in the image prompt.
 6. **Games are optional add-ons — the story is the product.** Interleave interactions as
    *games* that are a delightful few-second break, never a hidden reading drill. Prefer RICH
-   games where the kid *does* something — played on the illustration (hidden-object, tap-on-art),
+   games where the kid *does* something — REAL arcade games on the embedded game engine
+   (`arcade-catch/flap/run/pop/toss/steer`: fullscreen, physics, skinned by the story — give
+   the book's biggest action beat one), played on the illustration (hidden-object, tap-on-art),
    true drag-and-drop (drag-sort, jigsaw, dress-up), drawing, spatial puzzles, music, or a
-   bespoke `custom` game — over plain quizzes. But a game **never changes the story or the art**:
+   bespoke `custom` game — over plain quizzes. Preview any game live in the Game Lab
+   (`make game-lab`). But a game **never changes the story or the art**:
    it must not advance the plot, gate a page, or require editing `page.text` or an `image.prompt`;
    the book must be a complete, satisfying read for a kid who skips every game. Add games on top
    of a finished story + finished art; match the game to the story beat, not to a skill quota.

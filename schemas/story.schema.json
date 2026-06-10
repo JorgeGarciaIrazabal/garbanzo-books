@@ -171,9 +171,10 @@
             "connect-dots", "scratch-reveal", "sliding-puzzle", "balance-scale",
             "word-build", "anagram", "fill-the-blank",
             "rhythm-tap", "song-builder", "sequence-recall",
+            "arcade-catch", "arcade-flap", "arcade-run", "arcade-pop", "arcade-toss", "arcade-steer",
             "custom"
           ],
-          "description": "Interaction type — a short, playable, FUN break that belongs to this page. Reach for RICH games first; quizzes are seasoning. ON THE ART (normalized 0..1 coords over the page image): hidden-object, find-in-scene, tap-on-art, hotspot-reveal, place-on-scene, spot-the-difference. TRUE DRAG-AND-DROP: drag-sort, drag-match, jigsaw, dress-up, feed-the-thing, place-on-scene. DRAW/REVEAL: connect-dots, scratch-reveal, trace-letter, coloring. SPATIAL/LOGIC: maze, sliding-puzzle, balance-scale, sorting, pattern, odd-one-out, counting. WORD/PHONICS: word-build, anagram, fill-the-blank, word-match, sound-hunt, rhyme-complete. MUSIC/RHYTHM: melody, rhythm-tap, song-builder. MEMORY: memory, sequence-recall. COMPREHENSION/BRANCH: comprehension-question, riddle, choice. REVEAL: tap-to-reveal. When no built-in fits, invent one with 'custom' (a declarative game spec — see $defs/customGameSpec). The renderer plays each type fully."
+          "description": "Interaction type — a short, playable, FUN break that belongs to this page. Reach for RICH games first; quizzes are seasoning. ARCADE (real-time games on a game engine, fullscreen over the page art; every noun is skinned from the story — see $defs/arcadeSpec): arcade-catch (steer & catch what falls), arcade-flap (tap to fly through gaps), arcade-run (auto-run & jump, reach the finish), arcade-pop (pop the right drifting things), arcade-toss (slingshot into the target), arcade-steer (drag to steer, collect & dodge). ON THE ART (normalized 0..1 coords over the page image): hidden-object, find-in-scene, tap-on-art, hotspot-reveal, place-on-scene, spot-the-difference. TRUE DRAG-AND-DROP: drag-sort, drag-match, jigsaw, dress-up, feed-the-thing, place-on-scene. DRAW/REVEAL: connect-dots, scratch-reveal, trace-letter, coloring. SPATIAL/LOGIC: maze, sliding-puzzle, balance-scale, sorting, pattern, odd-one-out, counting. WORD/PHONICS: word-build, anagram, fill-the-blank, word-match, sound-hunt, rhyme-complete. MUSIC/RHYTHM: melody, rhythm-tap, song-builder. MEMORY: memory, sequence-recall. COMPREHENSION/BRANCH: comprehension-question, riddle, choice. REVEAL: tap-to-reveal. When no built-in fits, invent one with 'custom' (a declarative game spec — see $defs/customGameSpec). The renderer plays each type fully."
         },
         "prompt": { "type": "string", "description": "The instruction shown to the reader." },
         "skill": { "type": "string", "description": "Optional INTERNAL label only — never shown to the child. Default 'engagement'. If a game happens to exercise a reading skill (phonemic-awareness, phonics, fluency, vocabulary, comprehension) you may tag it, but fun is the point, not skill coverage." },
@@ -220,8 +221,51 @@
         {
           "if": { "properties": { "type": { "const": "custom" } }, "required": ["type"] },
           "then": { "properties": { "data": { "$ref": "#/$defs/customGameSpec" } } }
+        },
+        {
+          "if": { "properties": { "type": { "pattern": "^arcade-" } }, "required": ["type"] },
+          "then": { "properties": { "data": { "$ref": "#/$defs/arcadeSpec" } } }
         }
       ]
+    },
+
+    "arcadeSkin": {
+      "description": "A thing in an arcade game, skinned from the story: an emoji string, or {emoji, label} (label doubles as the accessible name).",
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["emoji"],
+          "properties": {
+            "emoji": { "type": "string", "minLength": 1 },
+            "label": { "type": "string" }
+          }
+        }
+      ]
+    },
+
+    "arcadeSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Payload for the arcade-* games (real-time engine games, fullscreen over the page art). Every noun is an arcadeSkin straight from the story — the mechanic is the engine, the story is the skin. Required keys per type (enforced by scripts/lib/checks/interactivity.py): arcade-catch needs `catch`; arcade-pop needs `pop`; arcade-toss needs `projectile`+`target`; arcade-flap needs `player`; arcade-run needs `player`+`collect`; arcade-steer needs `player`+`collect`. All games are always winnable: no fail states, and the runtime adds a rubber-band assist ladder.",
+      "properties": {
+        "player": { "$ref": "#/$defs/arcadeSkin", "description": "The thing the child controls (usually this page's hero)." },
+        "catch": { "type": "array", "items": { "$ref": "#/$defs/arcadeSkin" }, "description": "(arcade-catch) the falling things to catch." },
+        "pop": { "type": "array", "items": { "$ref": "#/$defs/arcadeSkin" }, "description": "(arcade-pop) the drifting things to pop." },
+        "avoid": { "type": "array", "items": { "$ref": "#/$defs/arcadeSkin" }, "description": "Things to dodge — touching one is a funny bonk, never a penalty." },
+        "obstacles": { "type": "array", "items": { "$ref": "#/$defs/arcadeSkin" }, "description": "(arcade-run) the things to jump over." },
+        "obstacle": { "$ref": "#/$defs/arcadeSkin", "description": "(arcade-flap) what the gap columns are made of (clouds, trees…)." },
+        "collect": { "$ref": "#/$defs/arcadeSkin", "description": "(arcade-run / arcade-steer) the thing to gather." },
+        "projectile": { "$ref": "#/$defs/arcadeSkin", "description": "(arcade-toss) what gets thrown." },
+        "target": { "$ref": "#/$defs/arcadeSkin", "description": "(arcade-toss) what to land it in." },
+        "finish": { "$ref": "#/$defs/arcadeSkin", "description": "(arcade-run) the finish marker (default 🏁)." },
+        "goal": { "type": "integer", "minimum": 1, "maximum": 30, "description": "How many to catch/pop/collect/land to win. Keep it small (4–12): a game is a fun BREAK." },
+        "gates": { "type": "integer", "minimum": 1, "maximum": 20, "description": "(arcade-flap) gaps to fly through to win." },
+        "speed": { "type": "string", "enum": ["gentle", "normal", "wild"], "description": "Pace. Use 'gentle' for under-7s. interaction.difficulty maps onto this too." },
+        "how": { "type": "string", "description": "Optional one-line how-to shown on the intro card, in the story's voice." },
+        "avoid_line": { "type": "string", "description": "Optional funny line shown when the child touches an avoid-thing." }
+      }
     },
 
     "customGameSpec": {

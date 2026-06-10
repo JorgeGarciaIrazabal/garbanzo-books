@@ -484,6 +484,123 @@ describe("rich games + toolkit", () => {
 });
 
 
+// ---- arcade games (gx.arcade.js) --------------------------------------------
+//
+// jsdom has no WebGL, so these tests exercise the graceful-degradation contract:
+// an arcade page always renders an intro card, and pressing ▶ Play must land the
+// reader in the calm DOM fallback — winnable, never a dead end. (The engine path
+// is exercised in a real browser; here we pin the part that must never break.)
+describe("arcade games", () => {
+  function arcadePage(interaction) {
+    return [{
+      number: 3, kind: "story", text: "Go!",
+      image: { file: "images/p3.png", alt: "x" },
+      layout: { text_position: "lower-third", text_align: "center", scrim: true },
+      interaction,
+    }];
+  }
+  function openArcade(interaction) {
+    loadReaderWith(makeStory(arcadePage(interaction)));
+    document.getElementById("next").click();
+    document.getElementById("next").click();
+    document.getElementById("next").click();
+    document.querySelector(".play-game-btn").click();
+  }
+
+  const ARCADE_TYPES = ["arcade-catch", "arcade-flap", "arcade-run", "arcade-pop", "arcade-toss", "arcade-steer"];
+
+  it("registers all six arcade types (each renders an arcade intro)", () => {
+    // window.GB isn't reachable from the test realm, so registration is asserted
+    // through the DOM: only a registered arcade game renders the intro card.
+    ARCADE_TYPES.forEach((type) => {
+      openArcade({ type, prompt: "Go!", data: {} });
+      expect(document.querySelector(".arcade-intro"), type).toBeTruthy();
+    });
+  });
+
+  it("the Play button wears the game's registry icon", () => {
+    loadReaderWith(makeStory(arcadePage({
+      type: "arcade-catch", prompt: "Catch the sparks!",
+      data: { catch: ["✨"], goal: 3 },
+    })));
+    document.getElementById("next").click();
+    document.getElementById("next").click();
+    document.getElementById("next").click();
+    const icon = document.querySelector(".play-game-btn .play-icon");
+    expect(icon.textContent).toBe("🧺"); // arcade-catch's icon, not the generic 🎲
+  });
+
+  it("renders an intro card with a ▶ Play button", () => {
+    openArcade({
+      type: "arcade-catch", prompt: "Catch the sparks!",
+      data: { player: "🧺", catch: ["✨", "🌟"], avoid: ["💧"], goal: 4 },
+    });
+    const introCard = document.querySelector(".arcade-intro");
+    expect(introCard).toBeTruthy();
+    expect(introCard.querySelector(".arcade-play")).toBeTruthy();
+    expect(introCard.textContent).toContain("Play!");
+  });
+
+  it("without WebGL, ▶ Play degrades to the calm tap fallback (never a dead end)", () => {
+    openArcade({
+      type: "arcade-pop", prompt: "Pop the bubbles!",
+      data: { pop: ["🫧"], avoid: ["🐡"], goal: 3 },
+    });
+    document.querySelector(".arcade-play").click();
+    expect(document.querySelector(".arcade-intro")).toBeFalsy();   // intro is gone
+    expect(document.querySelector(".arcade-overlay")).toBeFalsy(); // no engine overlay
+    const cells = document.querySelectorAll(".calm-cell");
+    expect(cells.length).toBeGreaterThanOrEqual(3);                // playable board instead
+  });
+
+  it("the calm fallback is winnable by tapping the targets", () => {
+    openArcade({
+      type: "arcade-catch", prompt: "Catch!",
+      data: { catch: ["✨"], goal: 3 },
+      feedback: { correct: "Caught them all!" },
+    });
+    document.querySelector(".arcade-play").click();
+    // Every cell is a target (no avoid list) — tap them all.
+    document.querySelectorAll(".calm-cell").forEach((b) => b.click());
+    expect(document.querySelector(".continue-btn")).toBeTruthy();
+    expect(document.querySelector(".feedback").textContent).toContain("Caught them all!");
+  });
+
+  it("tapping a decoy in the fallback gives a gentle try-again, not a win", () => {
+    openArcade({
+      type: "arcade-steer", prompt: "Collect the stars!",
+      data: { player: "🚀", collect: "⭐", avoid: ["🪨"], goal: 3 },
+    });
+    document.querySelector(".arcade-play").click();
+    const decoy = Array.from(document.querySelectorAll(".calm-cell"))
+      .find((b) => b.textContent === "🪨");
+    expect(decoy).toBeTruthy();
+    decoy.click();
+    expect(document.querySelector(".continue-btn")).toBeFalsy();
+    expect(document.querySelector(".feedback").className).toContain("try");
+  });
+
+  it("every arcade type renders a playable fallback from a minimal payload", () => {
+    const payloads = {
+      "arcade-catch": { catch: ["✨"], goal: 2 },
+      "arcade-flap": { player: "🕊️", gates: 2 },
+      "arcade-run": { player: "🏃", collect: "⭐", goal: 2 },
+      "arcade-pop": { pop: ["🎈"], goal: 2 },
+      "arcade-toss": { projectile: "🍎", target: "🧺", goal: 2 },
+      "arcade-steer": { player: "🚀", collect: "⭐", goal: 2 },
+    };
+    ARCADE_TYPES.forEach((type) => {
+      openArcade({ type, prompt: "Go!", data: payloads[type] });
+      document.querySelector(".arcade-play").click();
+      const targets = Array.from(document.querySelectorAll(".calm-cell"));
+      expect(targets.length, type).toBeGreaterThan(0);
+      targets.forEach((b) => b.click()); // tapping everything always reaches the win
+      expect(document.querySelector(".continue-btn"), type).toBeTruthy();
+    });
+  });
+});
+
+
 // ---- dynamic text fit: a long passage must never come out huge or bury art --
 //
 // fitText() keeps the page text from dominating the illustration two ways:

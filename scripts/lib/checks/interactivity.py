@@ -59,9 +59,20 @@ INTERACTION_DATA_KEYS: dict[str, list[str]] = {
     "song-builder": ["palette"],
     # --- memory ---
     "sequence-recall": ["sequence"],
+    # --- arcade: real-time engine games, fullscreen over the page art ---
+    "arcade-catch": ["catch"],
+    "arcade-flap": ["player"],
+    "arcade-run": ["player", "collect"],
+    "arcade-pop": ["pop"],
+    "arcade-toss": ["projectile", "target"],
+    "arcade-steer": ["player", "collect"],
     # --- generic declarative game (LLM-authored) ---
     "custom": ["elements", "win"],
 }
+
+# The arcade family (gx.arcade.js): real games with a game loop — movement, physics,
+# steering. Every noun in their payloads is skinned from the story.
+ARCADE_TYPES = {t for t in INTERACTION_DATA_KEYS if t.startswith("arcade-")}
 PILLARS = {"phonemic-awareness", "phonics", "fluency", "vocabulary", "comprehension"}
 
 # Beats that practise a discrete skill (vs. pure discovery / free play) read as flat without
@@ -72,7 +83,7 @@ SKILL_PRACTICE_TYPES = {
     "drag-sort", "drag-match", "jigsaw", "feed-the-thing", "place-on-scene",
     "sliding-puzzle", "balance-scale", "word-build", "anagram", "fill-the-blank",
     "sequence-recall", "find-in-scene", "hidden-object", "connect-dots", "custom",
-}
+} | ARCADE_TYPES  # arcade games have a win moment too — warm feedback makes it land
 
 # "Rich" games — the ones that make a book feel like a toy, not a worksheet: play ON the art,
 # true dragging, drawing, spatial puzzles, music, or an LLM-authored custom game. The quality
@@ -82,7 +93,7 @@ RICH_TYPES = {
     "spot-the-difference", "drag-sort", "drag-match", "jigsaw", "dress-up", "feed-the-thing",
     "connect-dots", "scratch-reveal", "sliding-puzzle", "balance-scale", "maze",
     "rhythm-tap", "song-builder", "sequence-recall", "melody", "trace-letter", "custom",
-}
+} | ARCADE_TYPES  # arcade games are the richest of all — a real game loop
 
 # Types whose `data` carries on-art coordinates that must sit inside the frame.
 _COORD_TYPES = {
@@ -142,7 +153,6 @@ def _check_custom_spec(rep: Report, where: str, pnum: Any, data: dict) -> None:
     if len(set(ids)) != len(ids):
         rep.fail(f"[interaction] {where} p{pnum} (custom): element ids must be unique {ids}")
     id_set = set(ids)
-    by_id = {e["id"]: e for e in elements}
 
     def check_win(win: Any) -> None:
         if not isinstance(win, dict):

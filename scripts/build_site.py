@@ -40,21 +40,17 @@ ASSET_SRC = Path(__file__).resolve().parent / "site_assets"
 # Reader base font size (px) per age band (accessibility.md).
 READER_BASE = {"0-3": 28, "3-5": 24, "5-7": 22, "7-9": 18, "9-12": 16}
 
-# The reader runtime, split into a toolkit + game registry. Order matters: the core defines
-# window.GB and the controller; the toolkit + game files populate it; reader.boot.js (last)
-# calls GB.boot() once everything is registered. (tests/frontend/harness.js mirrors this list.)
+# The reader runtime. Order matters: reader.js defines window.GB + the registry + the
+# controller; gx.core.js adds the game framework; the game libraries register themselves;
+# reader.boot.js (last) calls GB.boot() once everything is registered.
+# (tests/frontend/harness.js mirrors this list.) The Kaplay engine (assets/vendor/kaplay.js)
+# is NOT listed here — gx.arcade.js lazy-loads it the first time a kid taps Play on an
+# arcade page, so story pages without arcade games never pay for it.
 READER_SCRIPTS = [
-    "reader.core.js",
-    "toolkit.audio.js",
-    "toolkit.juice.js",
-    "toolkit.scene.js",
-    "toolkit.dnd.js",
-    "toolkit.steps.js",
-    "toolkit.reward.js",
-    "toolkit.shared.js",
-    "games.builtin.js",
-    "games.rich.js",
-    "games.custom.js",
+    "reader.js",
+    "gx.core.js",
+    "gx.board.js",
+    "gx.arcade.js",
     "reader.boot.js",
 ]
 
@@ -312,6 +308,7 @@ def build(include_drafts: bool, out: Path | None = None) -> dict:
     tag_map: dict[str, list] = defaultdict(list)
     search: list[dict] = []
     urls: list[str] = ["index.html", "tags/index.html"]
+    page_images: list[str] = []  # site-relative page-art paths, for the Game Lab's backdrop picker
 
     # Mark which stories are included.
     for w in worlds:
@@ -347,6 +344,7 @@ def build(include_drafts: bool, out: Path | None = None) -> dict:
                 for img in src_images.iterdir():
                     if img.is_file() and img.suffix.lower() in IMAGE_EXTS:
                         shutil.copy2(img, sdir / "images" / img.name)
+                        page_images.append(f"story/{w.slug}/{s.slug}/images/{img.name}")
             # copy cover if outside images
             cover = (s.data.get("cover") or {}).get("image")
             if cover and not cover.startswith("images/"):
@@ -377,6 +375,12 @@ def build(include_drafts: bool, out: Path | None = None) -> dict:
         tdir.mkdir(parents=True, exist_ok=True)
         (tdir / "index.html").write_text(build_tag_page(tag, entries), encoding="utf-8")
         urls.append(f"tags/{tag}/index.html")
+
+    # The Game Lab (a live game-design playground) ships with STUDIO PREVIEW builds only —
+    # it must never reach the public site, and published-only builds never include it.
+    if include_drafts:
+        import game_lab
+        game_lab.emit(site, page_images)
 
     (site / "search-index.json").write_text(json.dumps(search, ensure_ascii=False, indent=2), encoding="utf-8")
     sitemap = "\n".join(f"  <url><loc>{u}</loc></url>" for u in urls)

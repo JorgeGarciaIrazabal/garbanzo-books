@@ -358,6 +358,33 @@ pages:
     text_position: lower-third
     text_align: center
     scrim: true
+  interaction:
+    type: arcade-steer
+    prompt: Surf the glitter-dust! Steer Clara up to Pip — grab every sparkle!
+    skill: engagement
+    data:
+      player:
+        emoji: "🏄‍♀️"
+        label: Clara on her glitter-dust board
+      collect:
+        emoji: "✨"
+        label: Moxie's glitter-sparks
+      avoid:
+        - emoji: "🕸️"
+          label: falling net bits
+        - emoji: "💨"
+          label: balloon smoke
+      goal: 8
+      speed: gentle
+      how: Drag your finger — Clara follows! Sparkles yes, smoke no!
+      avoid_line: Pffft — smoke! Keep surfing!
+    feedback:
+      correct: BEAUTIFUL AND MINE! Clara surfed up on a whole cloud of sparkles! ✨
+      try_again: Wibble-wobble — steer back to the sparkles!
+    reward:
+      label: Glitter Surfer
+      emoji: "🏄‍♀️"
+      id: glitter-surfer
   vocabulary:
   - sneezed
   - broke

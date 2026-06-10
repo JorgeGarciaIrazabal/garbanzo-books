@@ -25,12 +25,19 @@ main path a complete story.)
 
 ## Mindset: would a kid play this for fun?
 - Think "what would be **fun** here?", never "what reading drill fits?".
+- **The story's biggest action beat deserves a REAL game.** The `arcade-*` family runs on an
+  embedded game engine — fullscreen, real-time, physics, played over the page's own art:
+  `arcade-catch` (things fall), `arcade-flap` (flying), `arcade-run` (chase/escape),
+  `arcade-pop` (a sky full of poppables), `arcade-toss` (throwing/aiming), `arcade-steer`
+  (swoop and collect). Skin EVERY noun from the page (player/catch/avoid/target are emoji
+  from the story); use 1–2 per book, on the biggest beats. See "Arcade games" in
+  interactivity.md for shapes + guarantees (always winnable, assist ladder, calm fallback).
 - **Rich first, quizzes last.** Lead with games where the kid *does* something: plays ON the
   picture (`hidden-object`, `tap-on-art`, `hotspot-reveal`, `place-on-scene`), drags things
   (`drag-sort`, `drag-match`, `jigsaw`, `dress-up`, `feed-the-thing`), rebuilds the art
   (`jigsaw`, `sliding-puzzle`), draws (`connect-dots`, `scratch-reveal`), or makes music
   (`rhythm-tap`, `song-builder`). Reach for a multiple-choice quiz only when nothing richer
-  fits. **Every book needs ≥1 rich game** (the gate checks this).
+  fits. **Every book needs ≥1 rich game** (the gate checks this; arcade games count).
 - **No built-in fits? Invent one with `custom`** — declare `elements` + a `win` condition and
   the engine interprets it (see "Inventing a game from scratch" in interactivity.md). Keep it
   always-winnable (the `custom` model has no fail state by design).
@@ -46,7 +53,10 @@ main path a complete story.)
 ## Procedure
 1. **Find the beat.** Place one interaction every 2–4 pages at a natural pause — never on an
    emotional climax. Note them in `interactions_summary`.
-2. **Pick the mechanic for the moment** (see the table in interactivity.md): on-the-art →
+2. **Pick the mechanic for the moment** (see the table in interactivity.md): action beat →
+   `arcade-catch` / `arcade-flap` / `arcade-run` / `arcade-pop` / `arcade-toss` / `arcade-steer`
+   (a real engine game — match the arcade *verb* to the story's verb: falls→catch, flies→flap,
+   chases→run, floats→pop, throws→toss, swoops→steer); on-the-art →
    `hidden-object` / `find-in-scene` / `tap-on-art` / `hotspot-reveal` / `place-on-scene`;
    drag → `drag-sort` / `drag-match` / `jigsaw` / `dress-up` / `feed-the-thing`; comprehension →
    `comprehension-question` / `drag-order` / `choice`; logic/math → `maze` / `sliding-puzzle` /
@@ -69,13 +79,15 @@ main path a complete story.)
 
 ## Match to the age band
 - **3–5:** one-step games — `tap-on-art`, `hotspot-reveal`, `tap-to-reveal`, `rhyme-complete`,
-  `counting`, simple `hidden-object`, `connect-dots`, `feed-the-thing`, `coloring`, `dress-up`.
+  `counting`, simple `hidden-object`, `connect-dots`, `feed-the-thing`, `coloring`, `dress-up`;
+  from ~4–5, one-touch arcade (`arcade-catch` / `arcade-pop`) at `speed: gentle`, small `goal`.
 - **5–7:** the sweet spot for `hidden-object`, `find-in-scene`, `place-on-scene`, `drag-sort`,
   `drag-match`, `spot-the-difference`, `jigsaw` (small), `sliding-puzzle` (2×2/3×3), `word-build`,
-  `rhythm-tap`, `sequence-recall`, `pattern`, `odd-one-out`, small `maze`, `melody`.
+  `rhythm-tap`, `sequence-recall`, `pattern`, `odd-one-out`, small `maze`, `melody`; all arcade
+  types at `gentle`/`normal` (goal 4–8).
 - **7–12:** layer it — multi-step games via `steps`, bigger `jigsaw`/`sliding-puzzle`, `anagram`,
-  `fill-the-blank`, `balance-scale`, `song-builder`, branching `choice`, and bespoke `custom`
-  games.
+  `fill-the-blank`, `balance-scale`, `song-builder`, branching `choice`, bespoke `custom`
+  games, and arcade at `normal`/`wild` (goal 8–12).
 
 ## Keep the games varied
 Mix the *kinds* of fun across the book — a search, a maze, a music beat, a sorting game, a
@@ -90,12 +102,20 @@ not about ticking skill boxes.
       music / `custom`), not all quizzes.
 - [ ] Each interaction's `data` matches its `type`'s shape (the validator checks required keys);
       on-art coords are `at:{x,y}` inside the frame (0..1) and point at things the art shows.
+- [ ] Every arcade game is **skinned from its page** (no default stars-and-baskets), its `how`
+      and `avoid_line` are in the story's voice, `goal`/`speed` fit the band, and there are at
+      most 1–2 arcade games per book — on the biggest action beats.
 - [ ] Every `custom` `win` references only declared `elements`, and stays always-winnable.
 - [ ] Instruction is short, in the story's voice, readable at the band.
 - [ ] Every branching `goto` resolves to a real page; no dead ends; the main path is a full story.
 - [ ] Interactions sit at natural beats, not emotional peaks.
 
+## Preview while you design — the Game Lab
+`make game-lab` builds the studio preview and opens the **Game Lab**: paste any interaction
+YAML, pick a page image as the backdrop, and play the game instantly — including the arcade
+games on the real engine. Iterate there before writing the block into story.yaml.
+
 ## Output
 `interaction` blocks on the relevant pages + `interactions_summary`. The site reader runtime
-(`publishing`) renders these as playable widgets with animations and celebration. Next:
-`page-layout`.
+(`publishing`) renders these as playable widgets — board games in the play card, arcade games
+fullscreen on the engine — with animations, stickers, and celebration. Next: `page-layout`.

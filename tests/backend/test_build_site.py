@@ -161,8 +161,12 @@ def test_reader_html_embeds_story_data_json(workspace, write_world, factories):
     build(include_drafts=False)
     reader = (workspace.site / "story" / "ww" / "s1" / "index.html").read_text()
     assert '<script id="story-data" type="application/json">' in reader
-    # the runtime depends on the split reader bundle (core controller + last-loaded boot)
-    assert "reader.core.js" in reader
+    # the runtime depends on the split reader bundle (controller + framework + game
+    # libraries + last-loaded boot)
+    assert "reader.js" in reader
+    assert "gx.core.js" in reader
+    assert "gx.board.js" in reader
+    assert "gx.arcade.js" in reader
     assert "reader.boot.js" in reader
 
 
