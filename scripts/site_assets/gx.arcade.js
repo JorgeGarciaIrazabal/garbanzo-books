@@ -1,6 +1,7 @@
-/* gx.arcade — REAL games. Six arcade mechanics (catch, flap, run, pop, toss, steer) built on
-   the vendored Kaplay engine (vendor/kaplay.js, MIT — sprites, game loop, input, particles),
-   wrapped in a story-skinning adapter so each game is ~60 lines of pure mechanic.
+/* gx.arcade — REAL games. Twelve arcade mechanics (catch, flap, run, pop, toss, steer,
+   snake, shoot, maze, build, whack, bounce) built on the vendored Kaplay engine
+   (vendor/kaplay.js, MIT — sprites, game loop, input, particles), wrapped in a
+   story-skinning adapter so each game is ~60–100 lines of pure mechanic.
 
    The contract every arcade game shares:
      * lazy: the ~190KB engine loads only when the kid taps ▶ Play on an arcade page;
@@ -830,6 +831,637 @@
               stage.toast(data.avoid_line || "Wobble! 😵‍💫 Keep going!");
             }
           });
+        });
+      },
+    });
+  } });
+
+  /* ====================================================================
+     SHARED INPUT: swipe + arrow keys → a 4-way direction (snake, maze)
+     ==================================================================== */
+  const DIRS = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] };
+  function dirPad(k, onDir) {
+    ["left", "right", "up", "down"].forEach((key) => k.onKeyPress(key, () => onDir(key)));
+    let start = null;
+    k.onMousePress(() => { start = k.mousePos(); });
+    k.onMouseDown(() => {
+      if (!start) return;
+      const m = k.mousePos();
+      const dx = m.x - start.x, dy = m.y - start.y;
+      if (Math.hypot(dx, dy) < 26) return;
+      onDir(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up"));
+      start = m; // re-arm, so one long curving swipe can steer again and again
+    });
+    k.onMouseRelease(() => { start = null; });
+  }
+
+  // ---------------- arcade-snake: classic snake — slither, gobble, GROW ----------------
+  // data: { player, body, food:[...], avoid:[...], goal, speed }
+  def("arcade-snake", { icon: "🐍", arcade: true, render(ctx) {
+    const data = ctx.data;
+    const player = skin(data.player, "🐍");
+    const body = data.body ? skin(data.body) : null;
+    const foodPool = (data.food || ["🍎"]).map((s) => skin(s));
+    const avoidPool = (data.avoid || []).map((s) => skin(s));
+    const goal = data.goal || 8;
+    intro(ctx, {
+      sprites: [player.emoji, ...foodPool.map((f) => f.emoji)],
+      how: data.how || "Swipe (or use the arrows) to slither — gobble them all and GROW!",
+      fallback: (c) => calmTap(c, { how: "Tap to gobble them all!", targets: foodPool, decoys: avoidPool, goal }),
+      async run(stage) {
+        const k = stage.k, u = stage.u, sf = speedFactor(ctx.it, data);
+        stage.backdrop(ctx.page);
+        stage.goal(goal);
+        const names = await stage.sprites([player.emoji, ...(body ? [body.emoji] : []),
+          ...foodPool.map((f) => f.emoji), ...avoidPool.map((a) => a.emoji)]);
+        if (stage.isClosed()) return;
+
+        const cell = Math.max(40, 52 * u);
+        const cols = Math.max(9, Math.floor((stage.W - 16 * u) / cell));
+        const rows = Math.max(6, Math.floor((stage.H - 100 * u) / cell));
+        const ox = (stage.W - cols * cell) / 2, oy = (stage.H - rows * cell) / 2 + 16 * u;
+        const at = (c, r) => k.vec2(ox + (c + 0.5) * cell, oy + (r + 0.5) * cell);
+
+        const segs = [{ c: 3, r: (rows >> 1) }, { c: 2, r: (rows >> 1) }, { c: 1, r: (rows >> 1) }];
+        let dir = "right", nextDir = "right", grow = 0;
+        dirPad(k, (d) => {
+          const [dx, dy] = DIRS[d], [cx, cy] = DIRS[dir];
+          if (dx === -cx && dy === -cy) return; // no instant U-turn into your own neck
+          nextDir = d;
+        });
+
+        const head = k.add([k.sprite(names[player.emoji]), k.pos(at(segs[0].c, segs[0].r)),
+          k.anchor("center"), k.scale((cell / 96) * 1.25), k.rotate(0), k.z(10)]);
+        const tailObjs = [];
+        function addTail() {
+          const o = body
+            ? k.add([k.sprite(names[body.emoji]), k.pos(head.pos.x, head.pos.y), k.anchor("center"),
+                k.scale((cell / 96) * 0.9), k.z(9)])
+            : k.add([k.circle(cell * 0.32), k.pos(head.pos.x, head.pos.y), k.anchor("center"),
+                k.color(255, 204, 92), k.opacity(0.95), k.z(9)]);
+          tailObjs.push(o);
+        }
+        for (let i = 1; i < segs.length; i++) addTail();
+
+        const taken = (c, r) => segs.some((s) => s.c === c && s.r === r);
+        function freeCell() {
+          for (let i = 0; i < 200; i++) {
+            const c = Math.floor(rand(0, cols)), r = Math.floor(rand(0, rows));
+            if (!taken(c, r) && !(food && food.cell.c === c && food.cell.r === r) &&
+                !decoys.some((d) => d.cell.c === c && d.cell.r === r)) return { c, r };
+          }
+          return { c: 0, r: 0 };
+        }
+        let food = null;
+        const decoys = [];
+        function spawnFood() {
+          const s = pick(foodPool), cl = freeCell();
+          const o = k.add([k.sprite(names[s.emoji]), k.pos(at(cl.c, cl.r)), k.anchor("center"),
+            k.scale(cell / 96), k.z(5), { t: Math.random() * 6 }]);
+          o.onUpdate(() => {
+            o.t += k.dt();
+            const sc = (cell / 96) * (1 + Math.sin(o.t * 4) * 0.1) * stage.tune.size;
+            o.scale = k.vec2(sc, sc);
+          });
+          food = { cell: cl, obj: o, s };
+        }
+        spawnFood();
+        avoidPool.slice(0, 2).forEach((s) => {
+          const cl = freeCell();
+          decoys.push({ cell: cl, s,
+            obj: k.add([k.sprite(names[s.emoji]), k.pos(at(cl.c, cl.r)), k.anchor("center"),
+              k.scale(cell / 96), k.z(5)]) });
+        });
+
+        stage.every(() => 0.26 / (sf * stage.tune.speed), () => {
+          dir = nextDir;
+          const [dx, dy] = DIRS[dir];
+          const nc = (segs[0].c + dx + cols) % cols, nr = (segs[0].r + dy + rows) % rows;
+          if (taken(nc, nr)) {
+            // you ate your own tail — a comic knot, never a game over
+            GB.audio.sfx("bonk");
+            stage.toast("Oops — you tied yourself in a knot! 🪢");
+            while (segs.length > 3) { segs.pop(); const o = tailObjs.pop(); if (o) k.destroy(o); }
+          }
+          segs.unshift({ c: nc, r: nr });
+          if (grow > 0) { grow--; addTail(); } else segs.pop();
+          if (food && food.cell.c === nc && food.cell.r === nr) {
+            stage.burst(at(nc, nr), names[food.s.emoji]);
+            k.destroy(food.obj);
+            food = null;
+            grow++;
+            GB.juice.haptic(10);
+            stage.progress();
+            if (stage.score() < goal) spawnFood();
+          }
+          const hitDecoy = decoys.find((d) => d.cell.c === nc && d.cell.r === nr);
+          if (hitDecoy) {
+            GB.audio.sfx("bonk");
+            stage.toast(data.avoid_line || "Blech — not THAT! 🤢");
+            const cl = freeCell();
+            hitDecoy.cell = cl;
+            hitDecoy.obj.pos = at(cl.c, cl.r); // it scurries somewhere else
+          }
+        });
+
+        k.onUpdate(() => {
+          const ease = Math.min(1, 14 * k.dt());
+          const glide = (o, p) => {
+            // wrapping across an edge snaps (gliding the whole board looks like teleporting)
+            if (Math.hypot(p.x - o.pos.x, p.y - o.pos.y) > cell * 2.2) { o.pos.x = p.x; o.pos.y = p.y; }
+            else { o.pos.x += (p.x - o.pos.x) * ease; o.pos.y += (p.y - o.pos.y) * ease; }
+          };
+          glide(head, at(segs[0].c, segs[0].r));
+          head.angle = Math.sin(k.time() * 6) * 8;
+          tailObjs.forEach((o, i) => {
+            const s = segs[i + 1] || segs[segs.length - 1];
+            glide(o, at(s.c, s.r));
+          });
+        });
+      },
+    });
+  } });
+
+  // ---------------- arcade-shoot: a gentle space shooter — steer & zap ----------------
+  // data: { player, shot, targets:[...], avoid:[...], goal, speed }
+  def("arcade-shoot", { icon: "🛸", arcade: true, render(ctx) {
+    const data = ctx.data;
+    const player = skin(data.player, "🚀");
+    const shot = skin(data.shot, "✨");
+    const targetPool = (data.targets || ["🛸"]).map((s) => skin(s));
+    const avoidPool = (data.avoid || []).map((s) => skin(s));
+    const goal = data.goal || 8;
+    intro(ctx, {
+      sprites: [player.emoji, shot.emoji, ...targetPool.map((t) => t.emoji)],
+      how: data.how || "Drag to steer — you fire all by yourself. Zap them all!",
+      fallback: (c) => calmTap(c, { how: "Tap to zap them all!", targets: targetPool, decoys: avoidPool, goal }),
+      async run(stage) {
+        const k = stage.k, u = stage.u, sf = speedFactor(ctx.it, data);
+        stage.backdrop(ctx.page);
+        stage.goal(goal);
+        const names = await stage.sprites([player.emoji, shot.emoji,
+          ...targetPool.map((t) => t.emoji), ...avoidPool.map((a) => a.emoji)]);
+        if (stage.isClosed()) return;
+        const py = stage.H - 78 * u;
+        const pl = k.add([k.sprite(names[player.emoji]), k.pos(stage.W / 2, py), k.anchor("center"),
+          k.scale(1.15 * u), k.rotate(0), k.z(10)]);
+        const move = stage.steer(pl, { axis: "x", lockY: py });
+        k.onUpdate(() => { move(); pl.angle = Math.sin(k.time() * 3) * 4; });
+
+        const targets = [];
+        function spawnTarget() {
+          if (targets.filter((t) => !t.dead).length >= 7) return;
+          const good = avoidPool.length ? Math.random() < 0.78 : true;
+          const s = good ? pick(targetPool) : pick(avoidPool);
+          const o = k.add([k.sprite(names[s.emoji]), k.pos(rand(60 * u, stage.W - 60 * u), -40 * u),
+            k.anchor("center"), k.scale(0.95 * u), k.rotate(0), k.z(5),
+            { vy: rand(26, 58) * u * sf, sway: rand(30, 90) * u, t: Math.random() * 6 }]);
+          const rec = { obj: o, good, dead: false, sname: names[s.emoji], bonked: 0 };
+          targets.push(rec);
+          o.onUpdate(() => {
+            const dt = k.dt();
+            o.t += dt;
+            o.pos.y += o.vy * stage.tune.speed * dt;
+            o.pos.x += Math.sin(o.t * 1.8) * o.sway * dt;
+            o.angle = Math.sin(o.t * 2.2) * 12;
+            const sc = 0.95 * u * stage.tune.size;
+            o.scale = k.vec2(sc, sc);
+            if (rec.bonked > 0) rec.bonked -= dt;
+            // drifting low just loops back up — never a threat, never a fail
+            if (o.pos.y > stage.H * 0.62) { o.pos.y = -40 * u; o.pos.x = rand(60 * u, stage.W - 60 * u); }
+          });
+        }
+        stage.every(() => rand(0.7, 1.2) / (sf * stage.tune.speed), spawnTarget);
+
+        function fire() {
+          if (stage.isClosed()) return;
+          const b = k.add([k.sprite(names[shot.emoji]), k.pos(pl.pos.x, pl.pos.y - 44 * u),
+            k.anchor("center"), k.scale(0.55 * u), k.rotate(0), k.z(8)]);
+          GB.audio.sfx("whoosh");
+          b.onUpdate(() => {
+            b.pos.y -= 560 * u * k.dt();
+            b.angle += 420 * k.dt();
+            if (b.pos.y < -40 * u) return k.destroy(b);
+            for (const t of targets) {
+              if (t.dead || t.obj.pos.dist(b.pos) > 50 * u * stage.tune.size) continue;
+              k.destroy(b);
+              if (t.good) {
+                t.dead = true;
+                stage.burst(t.obj.pos, t.sname, 8);
+                GB.juice.haptic(10);
+                k.destroy(t.obj);
+                stage.progress();
+              } else if (t.bonked <= 0) {
+                t.bonked = 1;          // it just wobbles indignantly — no penalty
+                GB.audio.sfx("bonk");
+                stage.toast(data.avoid_line || "Hey! Not that one! 🙈");
+                t.obj.angle += 40;
+              }
+              return;
+            }
+          });
+        }
+        stage.every(() => 0.5, fire);          // auto-fire keeps little hands free to steer
+        k.onMousePress(fire);                  // …and every tap adds an extra pew
+        k.onKeyPress("space", fire);
+      },
+    });
+  } });
+
+  // ---------------- arcade-maze: a REAL-TIME maze — swipe to scoot through ----------------
+  // data: { player, exit, collect, size: cozy|normal|big, speed }
+  def("arcade-maze", { icon: "🌀", arcade: true, render(ctx) {
+    const data = ctx.data;
+    const player = skin(data.player, "🐭");
+    const exitS = skin(data.exit, "🏁");
+    const collectS = data.collect ? skin(data.collect) : null;
+    intro(ctx, {
+      sprites: [player.emoji, exitS.emoji],
+      how: data.how || "Swipe to scoot through the maze — find the way out!",
+      fallback: (c) => calmTap(c, {
+        how: "Tap to clear a path to the exit!",
+        targets: collectS ? [collectS, exitS] : [exitS], decoys: [], goal: 5,
+      }),
+      async run(stage) {
+        const k = stage.k, u = stage.u, sf = speedFactor(ctx.it, data);
+        stage.backdrop(ctx.page);
+        const sizes = { cozy: [7, 5], easy: [7, 5], normal: [9, 6], medium: [9, 6], big: [11, 7], hard: [11, 7] };
+        const [cols, rows] = sizes[data.size] || sizes[(ctx.it && ctx.it.difficulty) || ""] || sizes.normal;
+
+        // carve a perfect maze (recursive backtracker)
+        const walls = Array.from({ length: rows }, () =>
+          Array.from({ length: cols }, () => ({ n: 1, e: 1, s: 1, w: 1 })));
+        const seen = Array.from({ length: rows }, () => Array(cols).fill(false));
+        const CARVE = [["n", 0, -1, "s"], ["s", 0, 1, "n"], ["e", 1, 0, "w"], ["w", -1, 0, "e"]];
+        const stack = [[0, 0]];
+        seen[0][0] = true;
+        while (stack.length) {
+          const [c, r] = stack[stack.length - 1];
+          const opts = CARVE.filter(([, dx, dy]) => {
+            const nc = c + dx, nr = r + dy;
+            return nc >= 0 && nc < cols && nr >= 0 && nr < rows && !seen[nr][nc];
+          });
+          if (!opts.length) { stack.pop(); continue; }
+          const [w, dx, dy, ow] = pick(opts);
+          const nc = c + dx, nr = r + dy;
+          walls[r][c][w] = 0;
+          walls[nr][nc][ow] = 0;
+          seen[nr][nc] = true;
+          stack.push([nc, nr]);
+        }
+        // solve it (BFS) so the assist ladder can reveal the trail
+        const key = (c, r) => c + "," + r;
+        const prev = {};
+        const q = [[0, 0]];
+        const vis = { "0,0": true };
+        while (q.length) {
+          const [c, r] = q.shift();
+          if (c === cols - 1 && r === rows - 1) break;
+          for (const [w, dx, dy] of CARVE) {
+            const nc = c + dx, nr = r + dy;
+            if (walls[r][c][w] || vis[key(nc, nr)]) continue;
+            vis[key(nc, nr)] = true;
+            prev[key(nc, nr)] = [c, r];
+            q.push([nc, nr]);
+          }
+        }
+        const path = [];
+        for (let cur = [cols - 1, rows - 1]; cur; cur = prev[key(cur[0], cur[1])]) path.unshift(cur);
+
+        const names = await stage.sprites([player.emoji, exitS.emoji,
+          ...(collectS ? [collectS.emoji] : [])]);
+        if (stage.isClosed()) return;
+
+        const cell = Math.min((stage.W - 36 * u) / cols, (stage.H - 120 * u) / rows);
+        const ox = (stage.W - cols * cell) / 2, oy = (stage.H - rows * cell) / 2 + 12 * u;
+        const center = (c, r) => k.vec2(ox + (c + 0.5) * cell, oy + (r + 0.5) * cell);
+        k.add([k.rect(cols * cell + 24 * u, rows * cell + 24 * u), k.pos(ox - 12 * u, oy - 12 * u),
+          k.color(10, 13, 30), k.opacity(0.6), k.z(0)]);
+        const T = Math.max(3, cell * 0.08);
+        const wallBit = (x, y, w2, h2) =>
+          k.add([k.rect(w2, h2), k.pos(x, y), k.color(132, 160, 226), k.opacity(0.95), k.z(1)]);
+        for (let r = 0; r < rows; r++)
+          for (let c = 0; c < cols; c++) {
+            const x = ox + c * cell, y = oy + r * cell;
+            if (walls[r][c].n) wallBit(x - T / 2, y - T / 2, cell + T, T);
+            if (walls[r][c].w) wallBit(x - T / 2, y - T / 2, T, cell + T);
+            if (r === rows - 1 && walls[r][c].s) wallBit(x - T / 2, y + cell - T / 2, cell + T, T);
+            if (c === cols - 1 && walls[r][c].e) wallBit(x + cell - T / 2, y - T / 2, T, cell + T);
+          }
+
+        // the exit + a few collectibles sprinkled deep in the maze
+        const exit = k.add([k.sprite(names[exitS.emoji]), k.pos(center(cols - 1, rows - 1)),
+          k.anchor("center"), k.scale((cell / 96) * 0.8), k.z(5), { t: 0 }]);
+        exit.onUpdate(() => {
+          exit.t += k.dt();
+          const sc = (cell / 96) * 0.8 * (1 + Math.sin(exit.t * 3) * 0.1);
+          exit.scale = k.vec2(sc, sc);
+        });
+        const pickups = [];
+        if (collectS) {
+          for (let i = 0; i < 200 && pickups.length < 3; i++) {
+            const c = Math.floor(rand(0, cols)), r = Math.floor(rand(0, rows));
+            if ((c < 2 && r < 2) || (c === cols - 1 && r === rows - 1)) continue;
+            if (pickups.some((p) => p.c === c && p.r === r)) continue;
+            pickups.push({ c, r, obj: k.add([k.sprite(names[collectS.emoji]), k.pos(center(c, r)),
+              k.anchor("center"), k.scale((cell / 96) * 0.6), k.z(4)]) });
+          }
+        }
+        stage.goal(pickups.length + 1, { auto: false }); // win = reaching the exit
+
+        const pl = k.add([k.sprite(names[player.emoji]), k.pos(center(0, 0)), k.anchor("center"),
+          k.scale((cell / 96) * 0.78), k.rotate(0), k.z(10)]);
+        let pc = 0, pr = 0, tc = 0, tr = 0, want = null;
+        dirPad(k, (d) => { want = d; });
+        const open = (c, r, d) => !walls[r][c][{ left: "w", right: "e", up: "n", down: "s" }[d]];
+
+        let hinted = false;
+        k.onUpdate(() => {
+          pl.angle = Math.sin(k.time() * 8) * 6;
+          // the assist ladder ("Easier!") reveals the secret trail to the exit
+          if (!hinted && stage.tune.speed < 1) {
+            hinted = true;
+            path.forEach(([c, r], i) => {
+              if (i % 2) return;
+              k.add([k.circle(cell * 0.08), k.pos(center(c, r)), k.anchor("center"),
+                k.color(255, 235, 170), k.opacity(0.55), k.z(2)]);
+            });
+          }
+          const tgt = center(tc, tr);
+          const dx = tgt.x - pl.pos.x, dy = tgt.y - pl.pos.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 2) {
+            if (pc !== tc || pr !== tr) {
+              pc = tc; pr = tr;
+              const got = pickups.find((p) => p.c === pc && p.r === pr && p.obj);
+              if (got) {
+                stage.burst(got.obj.pos, names[collectS.emoji]);
+                k.destroy(got.obj);
+                got.obj = null;
+                stage.progress();
+              }
+              if (pc === cols - 1 && pr === rows - 1) return stage.win();
+            }
+            // keep scooting in the swiped direction until a wall says no
+            if (want && open(pc, pr, want)) {
+              const [mx, my] = DIRS[want];
+              tc = pc + mx;
+              tr = pr + my;
+              GB.audio.sfx("tick");
+            }
+          } else {
+            const step = Math.min(dist, cell * 5.2 * sf * k.dt());
+            pl.pos.x += (dx / dist) * step;
+            pl.pos.y += (dy / dist) * step;
+          }
+        });
+      },
+    });
+  } });
+
+  // ---------------- arcade-build: stack the swinging pieces into a tower ----------------
+  // data: { blocks:[...], goal, speed }
+  def("arcade-build", { icon: "🏗️", arcade: true, render(ctx) {
+    const data = ctx.data;
+    const blockPool = (data.blocks || ["📦"]).map((s) => skin(s));
+    const goal = data.goal || 6;
+    intro(ctx, {
+      sprites: blockPool.map((b) => b.emoji),
+      how: data.how || "Tap to drop each piece — stack the tower all the way up!",
+      fallback: (c) => calmTap(c, { how: "Tap the pieces to stack them all!", targets: blockPool, goal }),
+      async run(stage) {
+        const k = stage.k, u = stage.u, sf = speedFactor(ctx.it, data);
+        stage.backdrop(ctx.page);
+        stage.goal(goal);
+        const names = await stage.sprites(blockPool.map((b) => b.emoji));
+        if (stage.isClosed()) return;
+        const B = 74 * u;
+        const groundY = stage.H - 46 * u;
+        k.add([k.rect(stage.W, 46 * u), k.pos(0, groundY), k.color(34, 40, 64), k.opacity(0.85), k.z(2)]);
+
+        const placed = [];
+        let towerX = stage.W / 2, topY = groundY, swing = null, falling = null, t = 0;
+
+        function newSwing() {
+          if (stage.isClosed()) return;
+          const s = pick(blockPool);
+          swing = k.add([k.sprite(names[s.emoji]), k.pos(stage.W / 2, 64 * u), k.anchor("center"),
+            k.scale(B / 96), k.rotate(0), k.z(8), { sname: names[s.emoji], vy: 0, vx: 0 }]);
+        }
+        newSwing();
+        const drop = () => {
+          if (!swing || falling) return;
+          falling = swing;
+          swing = null;
+          GB.audio.sfx("whoosh");
+        };
+        k.onMousePress(drop);
+        k.onKeyPress("space", drop);
+
+        k.onUpdate(() => {
+          const dt = k.dt();
+          t += dt;
+          if (swing) swing.pos.x = stage.W / 2 + Math.sin(t * 1.7 * sf * stage.tune.speed) * (stage.W / 2 - 90 * u);
+          placed.forEach((o, i) => { o.angle = Math.sin(k.time() * 1.6 + i * 0.7) * 1.6; }); // a living wobble
+          if (!falling) return;
+          falling.vy += 2100 * u * dt;
+          falling.pos.y += falling.vy * dt;
+          falling.pos.x += falling.vx * dt;
+          if (falling.vx) falling.angle += 320 * dt; // a missed piece tumbles off comically
+          if (falling.vx && falling.pos.y > stage.H + 80 * u) { k.destroy(falling); falling = null; newSwing(); return; }
+          if (!falling.vx && falling.pos.y + B / 2 >= topY) {
+            const dx = falling.pos.x - towerX;
+            const wiggleRoom = B * 0.55 * stage.tune.size; // generous, and the assist grows it
+            if (placed.length === 0 || Math.abs(dx) <= wiggleRoom) {
+              falling.pos.y = topY - B / 2;
+              falling.pos.x = placed.length === 0 ? falling.pos.x : towerX + dx * 0.35; // kid-friendly auto-snug
+              falling.vy = 0;
+              towerX = falling.pos.x;
+              topY -= B * 0.92;
+              placed.push(falling);
+              stage.burst(falling.pos, falling.sname, 5);
+              GB.juice.haptic(12);
+              falling = null;
+              stage.progress();
+              // the tower outgrows the screen → everything rides down one storey
+              if (topY < stage.H * 0.4) {
+                placed.forEach((o) => (o.pos.y += B));
+                topY += B;
+              }
+              if (stage.score() < goal) newSwing();
+            } else {
+              GB.audio.sfx("bonk");
+              stage.toast(pick(["Wide! Try the next one! 😅", "Boing — off it goes!", "So close! Again!"]));
+              falling.vx = (dx > 0 ? 1 : -1) * 260 * u;
+              falling.vy = -380 * u;
+            }
+          }
+        });
+      },
+    });
+  } });
+
+  // ---------------- arcade-whack: they pop up — bop them before they duck! ----------------
+  // data: { whack:[...], avoid:[...], goal, speed }
+  def("arcade-whack", { icon: "🔨", arcade: true, render(ctx) {
+    const data = ctx.data;
+    const whackPool = (data.whack || ["🐹"]).map((s) => skin(s));
+    const avoidPool = (data.avoid || []).map((s) => skin(s));
+    const goal = data.goal || 8;
+    intro(ctx, {
+      sprites: whackPool.map((w) => w.emoji),
+      how: data.how || "They pop up and duck back down — tap them before they hide!",
+      fallback: (c) => calmTap(c, { how: "Tap to bop them all!", targets: whackPool, decoys: avoidPool, goal }),
+      async run(stage) {
+        const k = stage.k, u = stage.u, sf = speedFactor(ctx.it, data);
+        stage.backdrop(ctx.page);
+        stage.goal(goal);
+        const names = await stage.sprites([...whackPool.map((w) => w.emoji), ...avoidPool.map((a) => a.emoji)]);
+        if (stage.isClosed()) return;
+        // a 3×3 field of burrows
+        const cols2 = 3, rows2 = 3;
+        const gx = stage.W / (cols2 + 1), gy = (stage.H - 90 * u) / (rows2 + 1);
+        const holes = [];
+        for (let r = 0; r < rows2; r++)
+          for (let c = 0; c < cols2; c++) {
+            const x = gx * (c + 1), y = 70 * u + gy * (r + 1);
+            const lip = k.add([k.circle(34 * u), k.pos(x, y + 26 * u), k.anchor("center"),
+              k.color(8, 10, 24), k.opacity(0.55), k.z(3)]);
+            lip.scale = k.vec2(1.25, 0.45);
+            holes.push({ x, y, busy: false });
+          }
+        function popUp() {
+          const free = holes.filter((hh) => !hh.busy);
+          if (!free.length) return;
+          const hole = pick(free);
+          hole.busy = true;
+          const good = avoidPool.length ? Math.random() < 0.74 : true;
+          const s = good ? pick(whackPool) : pick(avoidPool);
+          const upFor = rand(1.1, 1.7) / (sf * stage.tune.speed);
+          const o = k.add([k.sprite(names[s.emoji]), k.pos(hole.x, hole.y + 30 * u), k.anchor("center"),
+            k.scale(0.01), k.rotate(0), k.area(), k.z(5), good ? "bop" : "nobop",
+            { t: 0, upFor, done: false, sname: names[s.emoji], hole }]);
+          o.onUpdate(() => {
+            o.t += k.dt();
+            const full = 1.0 * u * stage.tune.size;
+            // rise … linger … duck (shrinks back into the burrow)
+            const ph = o.t < 0.18 ? o.t / 0.18 : o.t > o.upFor - 0.22 ? Math.max(0, (o.upFor - o.t) / 0.22) : 1;
+            const sc = Math.max(0.01, full * ph);
+            o.scale = k.vec2(sc, sc);
+            o.pos.y = hole.y + 30 * u - 36 * u * ph;
+            if (o.t >= o.upFor && !o.done) { o.done = true; hole.busy = false; k.destroy(o); }
+          });
+        }
+        stage.every(() => rand(0.45, 0.8) / (sf * stage.tune.speed), popUp);
+        k.onClick("bop", (o) => {
+          if (o.done) return;
+          o.done = true;
+          o.hole.busy = false;
+          stage.burst(o.pos, o.sname, 7);
+          GB.juice.haptic(12);
+          k.destroy(o);
+          stage.progress();
+        });
+        k.onClick("nobop", (o) => {
+          GB.audio.sfx("bonk");
+          stage.toast(data.avoid_line || "Not that one — it's friendly! 🙊");
+          o.angle += 30;
+        });
+      },
+    });
+  } });
+
+  // ---------------- arcade-bounce: breakout — bounce the ball, smash the wall ----------------
+  // data: { player (paddle), ball, bricks:[...], rows, speed }
+  def("arcade-bounce", { icon: "🧱", arcade: true, render(ctx) {
+    const data = ctx.data;
+    const player = skin(data.player, "🏓");
+    const ballS = skin(data.ball, "⭐");
+    const brickPool = (data.bricks || ["🧱"]).map((s) => skin(s));
+    const rows3 = Math.min(3, Math.max(1, data.rows || 2));
+    intro(ctx, {
+      sprites: [player.emoji, ballS.emoji, ...brickPool.map((b) => b.emoji)],
+      how: data.how || "Drag to slide — bounce it up and smash every piece of the wall!",
+      fallback: (c) => calmTap(c, { how: "Tap to smash the wall!", targets: brickPool, decoys: [], goal: 8 }),
+      async run(stage) {
+        const k = stage.k, u = stage.u, sf = speedFactor(ctx.it, data);
+        stage.backdrop(ctx.page);
+        const names = await stage.sprites([player.emoji, ballS.emoji, ...brickPool.map((b) => b.emoji)]);
+        if (stage.isClosed()) return;
+        const cols3 = 6;
+        const bw = (stage.W - 70 * u) / cols3, bh = 56 * u;
+        const bricks = [];
+        for (let r = 0; r < rows3; r++)
+          for (let c = 0; c < cols3; c++) {
+            const s = pick(brickPool);
+            const o = k.add([k.sprite(names[s.emoji]),
+              k.pos(35 * u + (c + 0.5) * bw, 64 * u + (r + 0.5) * bh),
+              k.anchor("center"), k.scale(Math.min(bw, bh) / 96 * 0.92), k.rotate(0), k.z(5)]);
+            bricks.push({ obj: o, alive: true, sname: names[s.emoji] });
+          }
+        stage.goal(bricks.length);
+
+        const py = stage.H - 64 * u;
+        const pl = k.add([k.sprite(names[player.emoji]), k.pos(stage.W / 2, py), k.anchor("center"),
+          k.scale(1.5 * u), k.rotate(0), k.z(10)]);
+        const move = stage.steer(pl, { axis: "x", lockY: py, pad: 60 });
+
+        const ball = k.add([k.sprite(names[ballS.emoji]), k.pos(stage.W / 2, py - 60 * u),
+          k.anchor("center"), k.scale(0.6 * u), k.rotate(0), k.z(9)]);
+        let dx = 0.45, dy = -1; // unit-ish direction; speed is computed live (assist slows it)
+        let lastSave = 0;
+        const renorm = () => {
+          const m = Math.hypot(dx, dy) || 1;
+          dx /= m; dy /= m;
+          if (Math.abs(dy) < 0.4) { dy = (dy < 0 ? -0.4 : 0.4); dx = Math.sign(dx || 1) * Math.sqrt(1 - dy * dy); }
+        };
+        renorm();
+
+        k.onUpdate(() => {
+          const dt = k.dt();
+          move();
+          const ps = 1.5 * u * stage.tune.size; // the assist grows the paddle
+          pl.scale = k.vec2(ps * 1.4, ps);      // a paddle is wider than tall
+          const sp = 380 * u * sf * stage.tune.speed;
+          ball.pos.x += dx * sp * dt;
+          ball.pos.y += dy * sp * dt;
+          ball.angle += 240 * dt;
+          // walls
+          if (ball.pos.x < 26 * u) { ball.pos.x = 26 * u; dx = Math.abs(dx); }
+          if (ball.pos.x > stage.W - 26 * u) { ball.pos.x = stage.W - 26 * u; dx = -Math.abs(dx); }
+          if (ball.pos.y < 26 * u) { ball.pos.y = 26 * u; dy = Math.abs(dy); }
+          // the floor is bouncy too — a miss is a giggle, never a lost ball
+          if (ball.pos.y > stage.H - 22 * u) {
+            ball.pos.y = stage.H - 22 * u;
+            dy = -Math.abs(dy);
+            if (k.time() - lastSave > 3) {
+              lastSave = k.time();
+              GB.audio.sfx("bonk");
+              stage.toast(data.avoid_line || "Boing! The floor bounced it back! 🛟");
+            }
+          }
+          // paddle
+          if (dy > 0 && Math.abs(ball.pos.y - py) < 34 * u && Math.abs(ball.pos.x - pl.pos.x) < 80 * u * stage.tune.size) {
+            dy = -Math.abs(dy);
+            dx += (ball.pos.x - pl.pos.x) / (110 * u); // steer the rebound off the paddle edge
+            renorm();
+            GB.audio.sfx("jump");
+          }
+          // bricks
+          for (const br of bricks) {
+            if (!br.alive) continue;
+            const ddx = ball.pos.x - br.obj.pos.x, ddy = ball.pos.y - br.obj.pos.y;
+            if (Math.abs(ddx) < bw / 2 + 14 * u && Math.abs(ddy) < bh / 2 + 14 * u) {
+              br.alive = false;
+              stage.burst(br.obj.pos, br.sname, 7);
+              GB.juice.haptic(10);
+              k.destroy(br.obj);
+              if (Math.abs(ddx) / (bw / 2) > Math.abs(ddy) / (bh / 2)) dx = ddx > 0 ? Math.abs(dx) : -Math.abs(dx);
+              else dy = ddy > 0 ? Math.abs(dy) : -Math.abs(dy);
+              stage.progress();
+              break;
+            }
+          }
         });
       },
     });

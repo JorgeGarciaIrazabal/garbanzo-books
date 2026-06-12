@@ -21,8 +21,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-# One ready-to-play template per game family (and every arcade type), so an author can
-# start from a working payload instead of a blank box.
+# One ready-to-play template per arcade game (REAL games only — the new-book policy), so
+# an author can start from a working payload instead of a blank box. Legacy minigame types
+# still render in published books, but get no template here: never start a new one.
 TEMPLATES: dict[str, str] = {
     "arcade-catch": """type: arcade-catch
 prompt: Catch Pip's sneeze-sparks before they singe the grass!
@@ -81,53 +82,73 @@ data:
   goal: 8
 feedback: { correct: "The sky is bright again! 🌌" }
 """,
-    "hidden-object (on the art)": """type: hidden-object
-prompt: Find everything Pip dropped!
+    "arcade-snake": """type: arcade-snake
+prompt: Help Nudo the noodle-dragon slurp up every runaway dumpling!
 data:
-  items:
-    - { label: "acorn", at: { x: 0.31, y: 0.62 } }
-    - { label: "snail", at: { x: 0.70, y: 0.40 } }
-feedback: { correct: "Eagle eyes! 🔎" }
+  player: { emoji: "🐉", label: "Nudo the noodle-dragon" }
+  body: "🍜"
+  food: ["🥟", "🥠"]
+  avoid: [{ emoji: "🌶️", label: "the EXTRA-spicy chili" }]
+  goal: 8
+  speed: gentle
+  how: Swipe to slither — every dumpling makes Nudo LONGER!
+  avoid_line: Not the chili! Nudo breathes enough fire already!
+feedback: { correct: "Nudo is one very long, very happy dragon. 🐉", try_again: "Curl back around!" }
 """,
-    "drag-sort": """type: drag-sort
-prompt: Pack the picnic — food in the basket, junk in the bin!
+    "arcade-shoot": """type: arcade-shoot
+prompt: Bubble-blast the space-jellies tickling the ship!
 data:
-  bins: [{ label: "Basket", key: "food" }, { label: "Bin", key: "junk" }]
-  items:
-    - { label: "🍎 apple", bin: "food" }
-    - { label: "🍰 cake", bin: "food" }
-    - { label: "🥾 boot", bin: "junk" }
-feedback: { correct: "Picnic packed! 🧺" }
+  player: { emoji: "🚀", label: "the Bathtub Rocket" }
+  shot: "🫧"
+  targets: ["🪼", "👾"]
+  avoid: [{ emoji: "⭐", label: "baby star" }]
+  goal: 9
+  speed: normal
+  how: Drag to steer — the bubbles fire all by themselves!
+  avoid_line: Not the baby star — she's napping!
+feedback: { correct: "The ship is tickle-free at last! 🚀", try_again: "Line up under a jelly!" }
 """,
-    "jigsaw": """type: jigsaw
-prompt: Put the picture back together!
-data: { rows: 2, cols: 3 }
-""",
-    "maze": """type: maze
-prompt: Help the hero find the way!
+    "arcade-maze": """type: arcade-maze
+prompt: Sneak through the castle cellar to the birthday cake!
 data:
-  grid: |
-    S.#..
-    .#.#.
-    ...#E
-  hero: "🐉"
+  player: { emoji: "🐭", label: "Crumb the mouse" }
+  exit: "🎂"
+  collect: "🧀"
+  size: normal
+  how: Swipe to scurry — grab the cheese on the way!
+feedback: { correct: "The first slice goes to Crumb! 🎂" }
 """,
-    "melody": """type: melody
-prompt: Play the dragon's song back!
-data: { notes: ["C", "E", "G", "C2"] }
-""",
-    "custom (declarative)": """type: custom
-prompt: Pack the basket — only the yummy things!
+    "arcade-build": """type: arcade-build
+prompt: Stack the giant's breakfast — a pancake tower to the sky!
 data:
-  stage: scene
-  elements:
-    - { id: apple, kind: draggable, emoji: "🍎", group: food, at: { x: 0.2, y: 0.8 } }
-    - { id: cake, kind: draggable, emoji: "🍰", group: food, at: { x: 0.35, y: 0.85 } }
-    - { id: boot, kind: draggable, emoji: "🥾", group: junk, at: { x: 0.5, y: 0.82 } }
-    - { id: basket, kind: dropzone, label: Basket, accepts: [food], at: { x: 0.8, y: 0.55 }, r: 0.2 }
-  win: { mode: all-placed }
-  hints: ["Food goes IN the basket.", "The boot is NOT food!"]
-feedback: { correct: "Picnic packed! 🧺", try_again: "Hmm — that's not food!" }
+  blocks: ["🥞", "🧇", "🍓"]
+  goal: 7
+  speed: gentle
+  how: Tap to drop each pancake right on top of the pile!
+feedback: { correct: "Breakfast is SKYSCRAPER tall! 🥞", try_again: "Wait for the swing!" }
+""",
+    "arcade-whack": """type: arcade-whack
+prompt: The popcorn is escaping — bop it back into the pot!
+data:
+  whack: ["🍿"]
+  avoid: [{ emoji: "🐥", label: "the kitchen chick" }]
+  goal: 10
+  speed: normal
+  how: Tap each kernel before it ducks away!
+  avoid_line: That's the chick — she's just watching!
+feedback: { correct: "Movie night is SAVED! 🍿", try_again: "They're quick — keep bopping!" }
+""",
+    "arcade-bounce": """type: arcade-bounce
+prompt: Bounce the meatball — smash the Great Spaghetti Wall!
+data:
+  player: { emoji: "🍴", label: "the trusty fork" }
+  ball: "🧆"
+  bricks: ["🍝", "🥖"]
+  rows: 2
+  speed: normal
+  how: Slide the fork — keep the meatball bouncing!
+  avoid_line: Boing! The plate bounced it back!
+feedback: { correct: "The wall is spaghetti-smithereens! 🍝" }
 """,
 }
 

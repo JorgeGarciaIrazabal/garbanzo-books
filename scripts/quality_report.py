@@ -132,30 +132,35 @@ def _gate_character_art(world, story: dict) -> Gate:
 
 
 def _gate_engagement(story: dict) -> Gate:
-    """Fun & games: the interactions should be VARIED kinds of fun (not the same mechanic),
-    at least one should be RICH (a kid DOES something — plays on the art, drags, solves a
-    puzzle, makes music — not just picks an answer), and every game that can be 'gotten
-    wrong' should respond warmly. We do NOT grade reading-skill coverage — fun is the point,
+    """Fun & games: every game beat should be a REAL game (the arcade-* family — a game
+    loop, movement, physics), the kinds of fun should be VARIED (not the same mechanic
+    twice in a row), and every game should respond warmly on the win. Legacy minigames
+    (drag-and-drop, find-in-picture, tap boards, quizzes) keep playing in published books
+    but count against new ones. We do NOT grade reading-skill coverage — fun is the point,
     not pedagogy."""
     pages = story.get("pages", []) or []
     interactions = [p["interaction"] for p in pages if p.get("interaction")]
     types = {it.get("type") for it in interactions if it.get("type")}
-    rich = types & RICH_TYPES
+    real = types & RICH_TYPES  # = the arcade family
+    legacy = types - RICH_TYPES - {"choice"}
     no_feedback = [p.get("number") for p in pages
                    if p.get("interaction")
                    and p["interaction"].get("type") in SKILL_PRACTICE_TYPES
                    and not (p["interaction"].get("feedback") or {})]
     problems = []
     if len(types) < 3 and len(types) < len(interactions):
-        problems.append(f"games use only {len(types)} kind(s) of fun (<3) — vary them")
-    if len(interactions) >= 2 and not rich:
-        problems.append("every game is a quiz/tap — add at least one rich game "
-                        "(in-scene, drag-and-drop, a puzzle, music, or a custom game)")
+        problems.append(f"games use only {len(types)} kind(s) of fun (<3) — vary the arcade mechanics")
+    if interactions and not real:
+        problems.append("no REAL game — every game beat should be an arcade-* mechanic "
+                        "(snake, shoot, maze, build, whack, bounce, catch, flap, run, pop, toss, steer)")
+    if legacy:
+        problems.append("legacy minigames present (" + ", ".join(sorted(legacy)) +
+                        ") — fine in already-published books, not in new ones")
     if no_feedback:
         problems.append(f"games lacking warm feedback on pages {no_feedback}")
     if not problems:
         return Gate("Fun & games", True,
-                    f"{len(types)} kinds of game ({len(rich)} rich), each gives warm feedback")
+                    f"{len(types)} kinds of game ({len(real)} real arcade), each gives warm feedback")
     return Gate("Fun & games", False, "; ".join(problems))
 
 

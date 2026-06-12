@@ -77,13 +77,15 @@ ui/             Dynamic UI server (OpenCode + local Ollama, no API key) — the 
 5. **Full-page image, text on top.** Pages are full-bleed illustrations; text sits in a
    reserved zone with a scrim for legibility. Keep that zone clear in the image prompt.
 6. **Games are optional add-ons — the story is the product.** Interleave interactions as
-   *games* that are a delightful few-second break, never a hidden reading drill. Prefer RICH
-   games where the kid *does* something — REAL arcade games on the embedded game engine
-   (`arcade-catch/flap/run/pop/toss/steer`: fullscreen, physics, skinned by the story — give
-   the book's biggest action beat one), played on the illustration (hidden-object, tap-on-art),
-   true drag-and-drop (drag-sort, jigsaw, dress-up), drawing, spatial puzzles, music, or a
-   bespoke `custom` game — over plain quizzes. Preview any game live in the Game Lab
-   (`make game-lab`). But a game **never changes the story or the art**:
+   *games* that are a delightful 20–60-second break, never a hidden reading drill. **REAL
+   games only:** every game in a new book is from the `arcade-*` family on the embedded game
+   engine — fullscreen, real-time, physics, skinned by the story — twelve mechanics:
+   `snake`, `shoot`, `maze`, `build`, `whack`, `bounce`, `catch`, `flap`, `run`, `pop`,
+   `toss`, `steer`. Match the game's verb to the page's verb and vary the mechanics (≥3
+   kinds per book). Legacy minigames (drag-and-drop, find-in-picture, tap boards, jigsaws,
+   quizzes, `custom`) survive in already-published books only — never in a new story (the
+   validator warns; the quality gate flags). Preview any game live in the Game Lab
+   (`make game-lab`). And a game **never changes the story or the art**:
    it must not advance the plot, gate a page, or require editing `page.text` or an `image.prompt`;
    the book must be a complete, satisfying read for a kid who skips every game. Add games on top
    of a finished story + finished art; match the game to the story beat, not to a skill quota.

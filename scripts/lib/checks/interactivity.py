@@ -66,13 +66,25 @@ INTERACTION_DATA_KEYS: dict[str, list[str]] = {
     "arcade-pop": ["pop"],
     "arcade-toss": ["projectile", "target"],
     "arcade-steer": ["player", "collect"],
+    "arcade-snake": ["player", "food"],
+    "arcade-shoot": ["player", "targets"],
+    "arcade-maze": ["player"],
+    "arcade-build": ["blocks"],
+    "arcade-whack": ["whack"],
+    "arcade-bounce": ["ball", "bricks"],
     # --- generic declarative game (LLM-authored) ---
     "custom": ["elements", "win"],
 }
 
-# The arcade family (gx.arcade.js): real games with a game loop — movement, physics,
-# steering. Every noun in their payloads is skinned from the story.
+# The arcade family (gx.arcade.js): REAL games with a game loop — movement, physics,
+# steering. Every noun in their payloads is skinned from the story. These are the ONLY
+# game types for new books (plus the branching `choice`, a narrative fork, used rarely).
 ARCADE_TYPES = {t for t in INTERACTION_DATA_KEYS if t.startswith("arcade-")}
+
+# Everything else is LEGACY: kept so previously published books keep playing, but new
+# books must not use them — no drag-and-drop, no find-in-picture, no tap boards, no
+# quizzes. See methodology/interactivity.md ("Real games only").
+LEGACY_TYPES = set(INTERACTION_DATA_KEYS) - ARCADE_TYPES - {"choice"}
 PILLARS = {"phonemic-awareness", "phonics", "fluency", "vocabulary", "comprehension"}
 
 # Beats that practise a discrete skill (vs. pure discovery / free play) read as flat without
@@ -85,15 +97,10 @@ SKILL_PRACTICE_TYPES = {
     "sequence-recall", "find-in-scene", "hidden-object", "connect-dots", "custom",
 } | ARCADE_TYPES  # arcade games have a win moment too — warm feedback makes it land
 
-# "Rich" games — the ones that make a book feel like a toy, not a worksheet: play ON the art,
-# true dragging, drawing, spatial puzzles, music, or an LLM-authored custom game. The quality
-# gate wants at least one of these per book (kids want to DO, not just pick an answer).
-RICH_TYPES = {
-    "hidden-object", "find-in-scene", "tap-on-art", "hotspot-reveal", "place-on-scene",
-    "spot-the-difference", "drag-sort", "drag-match", "jigsaw", "dress-up", "feed-the-thing",
-    "connect-dots", "scratch-reveal", "sliding-puzzle", "balance-scale", "maze",
-    "rhythm-tap", "song-builder", "sequence-recall", "melody", "trace-letter", "custom",
-} | ARCADE_TYPES  # arcade games are the richest of all — a real game loop
+# "Rich" games — the ones that make a book feel like a toy, not a worksheet. Since the
+# real-games policy, only the arcade family qualifies: a REAL game loop with movement,
+# physics, and a win moment. The quality gate wants at least one per book.
+RICH_TYPES = set(ARCADE_TYPES)
 
 # Types whose `data` carries on-art coordinates that must sit inside the frame.
 _COORD_TYPES = {
@@ -208,6 +215,9 @@ def _check_one(rep: Report, where: str, pnum: Any, it: dict, page_nums: set, dep
     missing = [k for k in need if k not in data]
     if missing:
         rep.fail(f"[interaction] {where} p{pnum} ({t}): data missing {missing}")
+    if t in LEGACY_TYPES:
+        rep.warn(f"{where} p{pnum}: '{t}' is a LEGACY minigame — new books use REAL games "
+                 "only (arcade-*). Existing published books may keep it; do not add more.")
     if t in _COORD_TYPES:
         _check_coords(rep, where, pnum, t, data)
     if t == "custom":
@@ -251,10 +261,11 @@ def check_interactivity(rep: Report, world: Any, story: Any) -> None:
         # Fun comes from variety, not skill coverage — nudge if every game is the same kind.
         if len(types_seen) < 3 and len(types_seen) < n_games:
             rep.warn(f"{where}: games use only {len(types_seen)} kind(s) — vary the fun "
-                     "(mix a search, a maze, a music beat, a branch; don't ship all quizzes)")
-        # Kids want to DO, not just pick — nudge if nothing rich (on-art / drag / puzzle / music).
-        if n_games >= 2 and not (types_seen & RICH_TYPES):
-            rep.warn(f"{where}: every game is a quiz/tap — add at least one rich game "
-                     "(in-scene, drag-and-drop, a puzzle, or a custom game)")
+                     "(mix the arcade mechanics: a snake, a maze, a shooter, a stacker…)")
+        # New books play REAL games — flag a book whose games are all legacy minigames.
+        if not (types_seen & ARCADE_TYPES):
+            rep.warn(f"{where}: no REAL game (arcade-*) — every game beat in a new book "
+                     "should be an arcade mechanic (snake, shoot, maze, build, whack, "
+                     "bounce, catch, flap, run, pop, toss, steer)")
     else:
         rep.warn(f"{where}: no interactions yet")
