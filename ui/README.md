@@ -47,13 +47,18 @@ Open **http://localhost:4317** (override with `PORT=…`).
   every part (text, reasoning, tool inputs/outputs), with a raw-JSON view per message.
 - **📚 Library (right):** every world as a bookshelf — story covers (page-00 art) with
   draft/published ribbons that open the right build on click, plus the cast as avatar chips
-  (reference art), read live from `worlds/`.
+  (reference art), read live from `worlds/`. Every card carries its own **🚀 Publish /
+  ⏏ Unpublish** button: publishing runs the full validator gate (`scripts/publish_story.py`)
+  before flipping the status — a failing book stays draft and the gate's output lands in the
+  chat — then both previews rebuild automatically.
 - **👀 Preview (right):** the studio build (drafts included) in an iframe, with a *Rebuild*
   button right in the tab — build output shows in place, popping open only on failure.
-- **🚀 Publish (right):** the ship-it checklist — ① Validate ② Quality report ③ Build the
-  public site (with a "built Nm ago" badge) ④ Deploy (copyable `git push` /
-  `gh workflow run` commands) — with the public preview iframe underneath. Each step runs
-  its script and shows status + collapsible output inline.
+- **🚀 Publish (right):** two steps — ① Build the public site (with a "built Nm ago" badge)
+  ② **Deploy**: one button that commits & pushes from the server so the Pages workflow ships
+  it (it warns if you're not on `main`; manual `git push` / `gh workflow run` commands sit in
+  a fold-out). Validate and the quality scorecard are still there as small check buttons.
+  The public preview iframe sits underneath. Each action shows status + collapsible output
+  inline.
 - **Talk & listen (local models, no API key):** a 🎤 mic in the composer records your message and
   transcribes it with **faster-whisper** (`distil-large-v3`, int8) on the server; **🔊 Read aloud**
   speaks the studio's replies with **Kokoro-82M**. Every assistant bubble also gets its own *Read

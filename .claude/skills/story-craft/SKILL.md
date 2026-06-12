@@ -12,9 +12,16 @@ well-built skeleton with no jokes and no jeopardy is a dead book. Later skills a
 language, add games, lay out text, and illustrate.
 
 ## Procedure
-1. **Pick the world + cast + age band.** Confirm the `age_band` and a target `reading_level`
-   (defer the fine-tuning to `reading-level-adaptation`, but set targets now — they shape
-   sentence length and word choice). Pin each character's `evolution.stage` for this book.
+0. **Load the world in one call**: `uv run python scripts/story_context.py <world>` prints the
+   world bible, full cast (personality/voice/catchphrases/stages), existing story slugs, and
+   the age-band table — faster than reading each yaml separately.
+1. **Pick the world + cast + the two age knobs.** A story has TWO separate targets — never
+   conflate them:
+   - `target_year` — one number: the age the CONTENT is pitched at (humor, stakes, themes).
+   - `age_band` + `reading_level` — who reads the WORDS (sentence length, words/page, word
+     choice; defer fine-tuning to `reading-level-adaptation`, but set targets now).
+   They can diverge (e.g. `target_year: 7` content in `age_band: 5-7` words). Pin each
+   character's `evolution.stage` for this book.
 2. **Hook + why it's fun.** One-sentence `logline` (protagonist + goal + obstacle) AND a
    clear answer to "where are the laughs / stakes / mischief / surprise?". Pressure-test by
    pitching it aloud — if it doesn't make you grin or lean in, fix it before writing pages.
@@ -46,8 +53,19 @@ language, add games, lay out text, and illustrate.
    *stop*. No character explaining what they learned, no "and that's how…" moral. Let a
    naughty hero get away with it (or earn a funnier comeuppance, never a moral one).
 7. **Front/back matter** — title page (page 0) and an end page; optional dedication.
-8. **Scaffold & save**: `uv run python scripts/new_story.py <world> "<Title>" --age 5-7` then write
-   the pages into `story.yaml`.
+8. **Scaffold & save**: `uv run python scripts/new_story.py <world> "<Title>" --age 5-7 --year 6
+   --pages 14` to create every page stub (`--age` = reader band, `--year` = content age), then
+   fill the content with **JSON patches** — never edit the YAML text directly:
+   ```bash
+   uv run python scripts/edit_story.py <world>/<slug> meta <<'JSON'
+   {"logline": "...", "summary": "...", "spine": {...}, "characters": [...]}
+   JSON
+   uv run python scripts/edit_story.py <world>/<slug> pages <<'JSON'
+   [{"number": 1, "text": "...", "image": {"prompt": "...", "characters_present": ["pip"], "alt": "..."}}]
+   JSON
+   ```
+   Pages merge by `number` (send partial objects, 3-4 pages per call); the tool validates the
+   merged document against the schema and refuses to write anything invalid.
 
 ## Craft checklist
 - [ ] **It's FUN** — laughs, stakes, or mischief land on most spreads; a kid would beg for

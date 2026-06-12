@@ -292,6 +292,160 @@ def test_publish_preview_directory_is_distinct_from_studio_preview(client):
     drafts, the public preview does not, and clobbering one with the other would mean the
     author can't see drafts OR the public preview would leak drafts to GitHub Pages."""
     assert server.SITE != server.SITE_PUBLISH
+
+
+def test_get_api_publish_status_reports_git_branch(client, monkeypatch, tmp_path):
+    """The UI warns when you're not on main (the Pages workflow only deploys main),
+    so the status endpoint must surface the current branch."""
+    monkeypatch.setattr(server, "SITE_PUBLISH", tmp_path / "nope")
+
+    async def fake_run_git(args):
+        assert args == ["rev-parse", "--abbrev-ref", "HEAD"]
+        return 0, "feature-branch\n"
+
+    monkeypatch.setattr(server, "run_git", fake_run_git)
+    r = client.get("/api/publish/status")
+    assert r.status_code == 200
+    assert r.json()["branch"] == "feature-branch"
+
+
+# =========================================================== /api/progress
+def test_get_api_progress_inactive_when_no_file(client, monkeypatch, tmp_path):
+    monkeypatch.setattr(server, "ROOT", tmp_path)
+    r = client.get("/api/progress")
+    assert r.status_code == 200
+    assert r.json() == {"active": False}
+
+
+def test_get_api_progress_reports_fresh_payload(client, monkeypatch, tmp_path):
+    """A fresh progress file (written by e.g. generate_images.py mid-run) surfaces as an
+    active task with done/total — that's what the activity strip renders as a live bar."""
+    import time as _time
+    monkeypatch.setattr(server, "ROOT", tmp_path)
+    (tmp_path / ".studio-progress.json").write_text(json.dumps(
+        {"task": "illustrating", "done": 7, "total": 16, "detail": "page 07",
+         "ts": _time.time()}))
+    r = client.get("/api/progress")
+    data = r.json()
+    assert data["active"] is True
+    assert data["task"] == "illustrating"
+    assert (data["done"], data["total"]) == (7, 16)
+    assert data["detail"] == "page 07"
+
+
+def test_get_api_progress_treats_stale_file_as_inactive(client, monkeypatch, tmp_path):
+    """A crashed/killed script can't clean up its file — a stale timestamp must read as
+    inactive so the strip never shows a lying 'still working' banner."""
+    monkeypatch.setattr(server, "ROOT", tmp_path)
+    (tmp_path / ".studio-progress.json").write_text(json.dumps(
+        {"task": "illustrating", "done": 3, "total": 16, "ts": 1000.0}))  # long ago
+    r = client.get("/api/progress")
+    assert r.json() == {"active": False}
+
+
+def test_get_api_progress_survives_corrupt_file(client, monkeypatch, tmp_path):
+    monkeypatch.setattr(server, "ROOT", tmp_path)
+    (tmp_path / ".studio-progress.json").write_text("{not json")
+    r = client.get("/api/progress")
+    assert r.json() == {"active": False}
+
+
+# =========================================================== /api/story/status
+def test_post_api_story_status_publish_runs_gated_script(client, monkeypatch):
+    """Publishing from a library card goes through scripts/publish_story.py — the script
+    that runs the FULL validator gate before flipping the status."""
+    calls = {}
+
+    async def fake_run_tool(cmd):
+        calls["cmd"] = cmd
+        return {"ok": True, "output": "+ ww/s1: draft → published"}
+
+    monkeypatch.setattr(server, "run_tool", fake_run_tool)
+    r = client.post("/api/story/status",
+                    json={"world": "ww", "story": "s1", "status": "published"})
+    assert r.status_code == 200
+    assert r.json()["ok"] is True
+    assert calls["cmd"] == ["scripts/publish_story.py", "ww/s1"]
+
+
+def test_post_api_story_status_draft_passes_draft_flag(client, monkeypatch):
+    calls = {}
+
+    async def fake_run_tool(cmd):
+        calls["cmd"] = cmd
+        return {"ok": True, "output": "+ ww/s1: published → draft"}
+
+    monkeypatch.setattr(server, "run_tool", fake_run_tool)
+    r = client.post("/api/story/status",
+                    json={"world": "ww", "story": "s1", "status": "draft"})
+    assert r.status_code == 200
+    assert calls["cmd"] == ["scripts/publish_story.py", "ww/s1", "--draft"]
+
+
+def test_post_api_story_status_rejects_bad_input(client, monkeypatch):
+    """Missing slugs or an unknown status must 400 before any subprocess runs."""
+    async def fake_run_tool(cmd):  # pragma: no cover - must not be called
+        raise AssertionError("run_tool must not run for invalid input")
+
+    monkeypatch.setattr(server, "run_tool", fake_run_tool)
+    for body in ({"world": "", "story": "s1", "status": "published"},
+                 {"world": "ww", "story": "", "status": "published"},
+                 {"world": "ww", "story": "s1", "status": "shipped"}):
+        r = client.post("/api/story/status", json=body)
+        assert r.status_code == 400
+
+
+# =========================================================== /api/deploy
+def test_post_api_deploy_commits_and_pushes_when_dirty(client, monkeypatch):
+    """With staged changes (diff --cached exits 1), deploy must add → commit → push."""
+    seen = []
+
+    async def fake_run_git(args):
+        seen.append(args[0])
+        if args[0] == "diff":
+            return 1, ""  # staged changes exist
+        return 0, args[0] + " ok"
+
+    monkeypatch.setattr(server, "run_git", fake_run_git)
+    r = client.post("/api/deploy")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["ok"] is True
+    assert seen == ["add", "diff", "commit", "push"]
+    assert "git push" in data["output"]
+
+
+def test_post_api_deploy_skips_commit_when_clean(client, monkeypatch):
+    """Nothing staged (diff --cached exits 0) → skip the commit, still push (there may be
+    local commits waiting to go out)."""
+    seen = []
+
+    async def fake_run_git(args):
+        seen.append(args[0])
+        return 0, ""
+
+    monkeypatch.setattr(server, "run_git", fake_run_git)
+    r = client.post("/api/deploy")
+    assert r.status_code == 200
+    assert r.json()["ok"] is True
+    assert seen == ["add", "diff", "push"]
+    assert "nothing new to commit" in r.json()["output"]
+
+
+def test_post_api_deploy_reports_push_failure(client, monkeypatch):
+    """A failed push (auth, no remote…) must come back ok:false WITH git's output so the
+    author can see why instead of a silent shrug."""
+    async def fake_run_git(args):
+        if args[0] == "push":
+            return 128, "fatal: could not read from remote repository"
+        return (1, "") if args[0] == "diff" else (0, "")
+
+    monkeypatch.setattr(server, "run_git", fake_run_git)
+    r = client.post("/api/deploy")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["ok"] is False
+    assert "could not read from remote" in data["output"]
     assert server.SITE_PUBLISH.name == "site_publish"
 
 

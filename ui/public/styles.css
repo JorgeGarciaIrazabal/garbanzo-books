@@ -332,6 +332,30 @@ details.msg.think.done .think-label{color:var(--muted);font-weight:700}
 .guided .invalid{border-color:var(--persimmon);box-shadow:0 0 0 3px rgba(217,101,64,.16)}
 .form-actions{grid-column:1 / -1;display:flex;justify-content:flex-end;gap:9px;margin-top:2px}
 
+/* "?" badge + popup explaining what a form field is FOR (hover or keyboard focus) */
+.guided .hint{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:15px;height:15px;margin-left:5px;border-radius:50%;
+  background:var(--leaf-soft);border:1px solid var(--line-strong);color:var(--ink-soft);
+  font-size:.68rem;font-weight:800;cursor:help;vertical-align:1px;
+}
+.guided .hint .hint-pop{
+  display:none;position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);
+  width:240px;z-index:30;padding:9px 11px;border-radius:10px;
+  background:var(--ink);color:var(--card);font-weight:500;font-size:.78rem;line-height:1.45;
+  letter-spacing:0;text-transform:none;box-shadow:0 6px 18px rgba(52,38,26,.35);
+}
+.guided .hint .hint-pop::after{
+  content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--ink);
+}
+.guided .hint:hover .hint-pop,.guided .hint:focus .hint-pop{display:block}
+
+/* helper line under a select describing the currently chosen option */
+.guided .opt-desc{
+  color:var(--muted);font-size:.76rem;line-height:1.4;min-height:1em;margin-top:1px;
+}
+
 /* ======================================================= activity strip */
 .activity{
   display:flex;align-items:center;gap:9px;padding:8px 20px;
@@ -346,6 +370,12 @@ details.msg.think.done .think-label{color:var(--muted);font-weight:700}
 }
 .activity #activity-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .activity .elapsed{color:var(--muted);font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:.76rem}
+/* the strip turns alarmed when the stall watchdog says "this looks stuck" */
+.activity.warn{
+  background:linear-gradient(90deg, var(--persimmon-soft), rgba(214,93,62,.06));
+  border-top-color:var(--persimmon);color:var(--ink);
+}
+.activity.warn .dot{background:var(--persimmon);box-shadow:0 0 0 3px rgba(214,93,62,.25)}
 
 /* quick replies */
 .quickreplies{display:flex;flex-wrap:wrap;gap:8px;padding:10px 20px 0;background:transparent}
@@ -622,7 +652,19 @@ details.job pre{
 .badge.pub{background:transparent;border:1.5px dashed var(--muted);color:var(--muted)}
 .badge.pub.ok{background:rgba(232,196,104,.3);border:1.5px solid var(--honey);color:var(--ink)}
 .badge.pub.empty{border-style:dashed}
+.badge.pub.warnish{border:1.5px solid var(--persimmon);color:var(--persimmon)}
 .badge.draft{background:transparent;border:1.5px dashed var(--muted);color:var(--muted)}
+
+/* the demoted QA checks — small ghost buttons under the two real ship steps */
+.qa-row{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:4px 2px 8px;color:var(--muted);font-size:.76rem;
+}
+.qa-label{font-style:italic}
+.btn.tiny{padding:2px 9px;font-size:.7rem;border-width:1.5px;box-shadow:none}
+.deploy-manual{margin:8px 0 0 37px;font-size:.76rem;color:var(--muted)}
+.deploy-manual summary{cursor:pointer;outline:none}
+.deploy-manual .deploy-cmds{margin-left:0}
 
 /* ============================================================== library */
 .library-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
@@ -695,6 +737,19 @@ details.job pre{
 .ribbon.pub{background:var(--foil);color:#3a2c12}
 .ribbon.draft{background:var(--card);color:var(--muted);border-style:dashed}
 .bookcard.is-draft .bookcover{border-style:dashed;opacity:.92}
+/* per-card publish/unpublish — the gate-checked way a story goes live */
+.pubbtn{
+  margin-top:2px;font:inherit;font-size:.68rem;font-weight:800;cursor:pointer;
+  padding:3px 8px;border-radius:999px;border:1.5px solid var(--line-strong);
+  background:transparent;color:var(--ink-soft);
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  transition:border-color .14s ease, background .14s ease, color .14s ease;
+}
+.pubbtn.to-pub{border-color:var(--leaf);color:var(--leaf)}
+.pubbtn.to-pub:hover{background:var(--leaf-soft)}
+.pubbtn.to-draft{border-style:dashed;color:var(--muted)}
+.pubbtn.to-draft:hover{border-color:var(--ink);color:var(--ink)}
+.pubbtn[disabled]{opacity:.65;cursor:default}
 /* hover: the logline slides up over the cover */
 .bookcover .caption{
   position:absolute;left:0;right:0;bottom:0;z-index:2;

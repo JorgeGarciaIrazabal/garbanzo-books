@@ -48,11 +48,14 @@ import os
 import random
 import sys
 import textwrap
+import threading
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.colors import palette_hexes  # noqa: E402
 from lib.model import (ROOT, World, dump_yaml, load_dotenv, load_world, load_yaml)  # noqa: E402
+from lib.progress import finish as _progress_finish  # noqa: E402
+from lib.progress import report as _progress_report  # noqa: E402
 from lib.prompt_assembly import (AssembledPrompt, assemble_character_sheet_prompt,  # noqa: E402
                                  assemble_page_prompt)
 from lib.vision_qc import score_image as _qc_score  # noqa: E402
@@ -417,14 +420,20 @@ def _finalize_winner(winner: Path, images_dir: Path, num: int) -> Path:
 
 def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int | None,
               print_only: bool, *, qc_retries: int, qc_threshold: float,
-              qc_model: str | None, qc_off: bool, verbose: bool = False) -> None:
+              qc_model: str | None, qc_off: bool, verbose: bool = False,
+              jobs: int = 1) -> None:
     world_slug, story_slug = _resolve_story(ref)
     world = load_world(world_slug, with_stories=False)
     spath = ROOT / "worlds" / world_slug / "stories" / story_slug / "story.yaml"
     story = load_yaml(spath)
     images_dir = spath.parent / "images"
-    changed = False
 
+    # Assemble every prompt up front (cheap, deterministic, and the dry-run output stays
+    # ordered), then render. Each page's render is fully self-contained — its own prompt,
+    # its own page-NN-* candidate files, its own page dict and qc sidecar — so pages can
+    # render CONCURRENTLY. A 16-page book at ~30s/page is ~8 min sequential; with --jobs 4
+    # it's ~2 min, which is most of the wall-clock cost of making a book.
+    work: list[tuple[dict, AssembledPrompt, int]] = []
     for page in story.get("pages", []) or []:
         num = page.get("number", 0)
         if only_page is not None and num != only_page:
@@ -433,8 +442,11 @@ def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int
         if seed_override is not None:
             ap.seed = seed_override
         print(f"--- page {num:02d} ---\n{ap.prompt}\nNEGATIVE: {ap.negative}  SEED: {ap.seed}\n")
-        if print_only:
-            continue
+        if not print_only:
+            work.append((page, ap, num))
+
+    def _render_page(item: tuple[dict, AssembledPrompt, int]) -> None:
+        page, ap, num = item
         title = f"{story.get('title','')} — p{num}"
         winner, qc_log = _run_best_of_n(
             ap, images_dir, world, world.dir, story, page, provider, num, title,
@@ -452,9 +464,32 @@ def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int
         page.setdefault("image", {})["file"] = f"images/{canonical.name}"
         if not page["image"].get("alt"):
             page["image"]["alt"] = _auto_alt(page, ap)
-        changed = True
+        print(f"  ✓ page {num:02d} done → {canonical.name}")
+        # Live progress for the studio's activity strip (best-effort side-channel —
+        # stdout from this script only reaches the UI when the whole run finishes).
+        with done_lock:
+            done_count[0] += 1
+            _progress_report("illustrating", done_count[0], len(work), f"page {num:02d}")
 
-    if changed and not print_only:
+    done_lock = threading.Lock()
+    done_count = [0]
+    if work:
+        _progress_report("illustrating", 0, len(work), story.get("title", ""))
+    try:
+        if jobs > 1 and len(work) > 1 and provider != "placeholder":
+            from concurrent.futures import ThreadPoolExecutor
+            print(f"rendering {len(work)} page(s) with {jobs} parallel jobs…")
+            with ThreadPoolExecutor(max_workers=jobs) as ex:
+                # list() drains the iterator so the first worker exception propagates.
+                list(ex.map(_render_page, work))
+        else:
+            for item in work:
+                _render_page(item)
+    finally:
+        if work:
+            _progress_finish()
+
+    if work:
         dump_yaml(story, spath)
         print(f"+ updated {spath.relative_to(ROOT)} with image paths + alt text")
 
@@ -570,6 +605,9 @@ def main() -> int:
                     help="Ollama vision model for QC (default: first vision-capable model pulled)")
     ap.add_argument("--qc-verbose", action="store_true",
                     help="print extra diagnostic info when QC calls fail")
+    ap.add_argument("--jobs", type=int, default=int(os.getenv("IMAGE_JOBS", "4")),
+                    help="render this many pages concurrently (default 4, env IMAGE_JOBS; "
+                         "ignored for the placeholder provider)")
     args = ap.parse_args()
 
     if args.character:
@@ -581,7 +619,8 @@ def main() -> int:
         return verify_story(args.target)
     gen_story(args.target, args.provider, args.page, args.seed, args.print_prompts,
               qc_retries=args.qc_retries, qc_threshold=args.qc_threshold,
-              qc_model=args.qc_model, qc_off=args.qc_off, verbose=args.qc_verbose)
+              qc_model=args.qc_model, qc_off=args.qc_off, verbose=args.qc_verbose,
+              jobs=max(1, args.jobs))
     return 0
 
 

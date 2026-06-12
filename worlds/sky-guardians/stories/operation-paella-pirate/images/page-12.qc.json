@@ -1,0 +1,20 @@
+{
+  "page": 12,
+  "prompt_seed": 1722439727,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures the whimsical scene well, but minor adjustments could improve consistency.",
+      "flags": [
+        "style_inconsistent",
+        "duplicate_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-12-1722439727.png"
+    }
+  ],
+  "winner": "page-12.png"
+}

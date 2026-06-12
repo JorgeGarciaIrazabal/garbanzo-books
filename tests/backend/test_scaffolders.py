@@ -249,3 +249,54 @@ def test_new_story_has_title_and_first_story_page(workspace, monkeypatch):
     kinds = [p.get("kind") for p in data["pages"]]
     assert "title" in kinds
     assert "story" in kinds
+
+
+def test_new_story_target_year_defaults_to_band_midpoint(workspace, monkeypatch):
+    """target_year (CONTENT age, one number) defaults from the reader band so every new
+    story carries both knobs; --year overrides it independently of --age."""
+    _make_world(workspace, monkeypatch)
+    import new_story
+    monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Mid", "--age", "5-7"])
+    new_story.main()
+    data = load_yaml(workspace.worlds / "ww" / "stories" / "mid" / "story.yaml")
+    assert data["target_year"] == 6
+    validate_content("story", data)
+
+
+def test_new_story_year_flag_overrides_default(workspace, monkeypatch):
+    _make_world(workspace, monkeypatch)
+    import new_story
+    monkeypatch.setattr("sys.argv",
+                        ["new_story.py", "ww", "Diverge", "--age", "5-7", "--year", "8"])
+    new_story.main()
+    data = load_yaml(workspace.worlds / "ww" / "stories" / "diverge" / "story.yaml")
+    # content pitched at an 8-year-old, words for a beginning reader — they may diverge
+    assert data["target_year"] == 8
+    assert data["age_band"] == "5-7"
+    validate_content("story", data)
+
+
+def test_new_story_rejects_out_of_range_year(workspace, monkeypatch, capsys):
+    _make_world(workspace, monkeypatch)
+    import new_story
+    monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Bad", "--year", "99"])
+    assert new_story.main() == 1
+    assert "--year" in capsys.readouterr().err
+
+
+def test_new_story_pages_flag_scaffolds_page_stubs(workspace, monkeypatch):
+    """--pages N pre-builds the page boilerplate so the (slow) author model only fills in
+    text + scene prompts. Title page 0 + N consecutive story stubs, each schema-shaped."""
+    _make_world(workspace, monkeypatch)
+    import new_story
+    monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Big", "--pages", "14"])
+    new_story.main()
+    data = load_yaml(workspace.worlds / "ww" / "stories" / "big" / "story.yaml")
+    pages = data["pages"]
+    assert len(pages) == 15  # title + 14 story stubs
+    assert pages[0]["kind"] == "title"
+    assert [p["number"] for p in pages] == list(range(15))
+    for p in pages[1:]:
+        assert p["kind"] == "story"
+        assert p["image"]["text_zone"]      # layout boilerplate pre-filled
+        assert p["layout"]["scrim"] is True

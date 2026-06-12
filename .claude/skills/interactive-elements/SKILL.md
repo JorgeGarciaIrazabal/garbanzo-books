@@ -115,6 +115,16 @@ not about ticking skill boxes.
 YAML, pick a page image as the backdrop, and play the game instantly — including the arcade
 games on the real engine. Iterate there before writing the block into story.yaml.
 
+## Saving a game — JSON patch, never YAML edits
+Write each finished block with `edit_story.py` (it schema-validates the merged story and
+refuses to write anything invalid; `--remove` deletes a game):
+```bash
+uv run python scripts/edit_story.py <world>/<story> interaction <page> <<'JSON'
+{"type": "seek-and-find", "prompt": "...", "data": {...}, "feedback": {...}}
+JSON
+```
+Update `interactions_summary` via `edit_story.py <world>/<story> meta`.
+
 ## Output
 `interaction` blocks on the relevant pages + `interactions_summary`. The site reader runtime
 (`publishing`) renders these as playable widgets — board games in the play card, arcade games

@@ -46,8 +46,10 @@ ui/             Dynamic UI server (OpenCode + local Ollama, no API key) — the 
   visual consistency), `reference_images` + `seed` (image anchors), and an **`evolution`**
   track so a character can grow across a series without losing identity.
 - **Story** (`stories/*/story.yaml`) — one book: the **`spine`** (story structure), the
-  **`reading_level`** targets, the character roster (with each character's evolution
-  `stage` for this book), and **`pages[]`**. Each page = embedded `text` + an `image`
+  **two age knobs** — **`target_year`** (one number: the age the CONTENT is pitched at —
+  humor, stakes, themes) and **`age_band`/`reading_level`** (who reads the WORDS — sentence
+  length, words/page, word choice; they may diverge) — the character roster (with each
+  character's evolution `stage` for this book), and **`pages[]`**. Each page = embedded `text` + an `image`
   (scene-only prompt — style & character tokens are injected automatically) + an optional
   **`interaction`** (puzzle/game/comprehension beat) + target `vocabulary`.
 
@@ -155,6 +157,12 @@ Or run the whole thing from the **dynamic UI** in `ui/` (the Claude-Agent-SDK en
 
 - Slugs are `kebab-case`, unique within their scope. Paths are derived from slugs.
 - YAML for human-authored content (worlds/characters/stories); JSON Schema validates it.
+- **Content YAML is created by the scaffolders and edited via JSON patches — never as raw
+  text.** `scripts/edit_world.py`, `scripts/edit_character.py` and `scripts/edit_story.py`
+  take a small JSON payload on stdin (heredoc) or `--file`, deep-merge it (story pages merge
+  by `number`; JSON `null` deletes a key; other lists replace), validate the merged document
+  against the schema, and write atomically. A bad patch changes nothing and reports every
+  schema error at once — so a broken YAML file on disk is impossible.
 - Never hand-edit files under `site/` or `site_publish/` — they are generated.
 - Image files: `worlds/<world>/stories/<story>/images/page-<NN>.png`,
   character refs: `worlds/<world>/characters/<char>.refs/`.
@@ -171,11 +179,17 @@ There are TWO ways to build the site, and they go to different places — this i
 | **Publish** (public) | published only     | `./site_publish/` | The in-app "Public preview" tab in `ui/`. The EXACT shape GitHub Pages will deploy. |
 | **CI** (deploy-pages workflow) | published only | `./site/`  | What GitHub Pages actually serves. The workflow always builds published-only — drafts can never leak to the public site. |
 
-In the studio UI these are two buttons: **🔨 Preview** (studio preview, includes drafts) and
-**🚀 Publish** (public preview, published only). Both are non-agentic — the buttons call the
-build script directly via the FastAPI server. There's no need to ask the AI to "build the
-site" or "publish"; just click the button. The Public preview tab also surfaces the deploy
-instructions (`git push` or `gh workflow run deploy-pages.yml`).
+In the studio UI the whole flow is button-driven and non-agentic (the buttons call the
+scripts directly via the FastAPI server — no need to ask the AI to "build" or "publish"):
+
+- **🚀 Publish / ⏏ Unpublish on each library card** — flips ONE story between draft and
+  published via `scripts/publish_story.py`, which runs the FULL validator gate first, so a
+  broken book can never be flipped. The studio then rebuilds both previews automatically.
+- **🔨 Rebuild** (Preview tab) — studio preview, drafts included.
+- **🔨 Build** then **🚀 Deploy** (Publish tab) — build the published-only site, then
+  commit & push from the server (`/api/deploy`); the push triggers the deploy-pages
+  workflow. Validate/quality remain available as small check buttons on the same tab, and
+  the manual commands (`git push`, `gh workflow run deploy-pages.yml`) sit in a fold-out.
 
 Library cards in the studio show all stories (drafts + published) with a clear `draft` /
 `published` pill. Drafts link to the studio preview build (`/preview/...`); published stories
@@ -184,6 +198,9 @@ never lands the user on a 404.
 
 CLI equivalents:
 ```bash
+# Publish/unpublish one story (runs the validator gate before publishing)
+uv run python scripts/publish_story.py <world>/<story> [--draft]
+
 # Studio preview — drafts included, into ./site/
 uv run python scripts/build_site.py --include-drafts
 

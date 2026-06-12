@@ -1,0 +1,20 @@
+{
+  "page": 2,
+  "prompt_seed": 1480318754,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.2,
+      "reason": "The illustration largely captures the scene and character details, but some minor adjustments are needed for consistency.",
+      "flags": [
+        "style_inconsistent",
+        "anatomy_issue"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-02-1480318754.png"
+    }
+  ],
+  "winner": "page-02.png"
+}

@@ -9,7 +9,24 @@ python scripts/new_character.py my-world "Hero Name"
 python scripts/new_story.py my-world "Story Title" --age 5-7
 ```
 
-Each writes a starter you then flesh out (look for `TODO` markers). The authoritative shape of
+Each writes a starter you then flesh out (look for `TODO` markers) — with the **JSON-patch edit
+scripts**, never by editing the YAML text (they deep-merge a small JSON payload from stdin,
+validate the merged document, and write atomically, so a broken file is impossible):
+
+```bash
+python scripts/edit_world.py my-world <<'JSON'
+{"tagline": "...", "art_style": {"prompt_style_block": "..."}}
+JSON
+python scripts/edit_character.py my-world/hero-name <<'JSON'
+{"appearance_token": "..."}
+JSON
+python scripts/edit_story.py my-world/story-title pages <<'JSON'
+[{"number": 1, "text": "...", "image": {"prompt": "...", "alt": "..."}}]
+JSON
+```
+
+(`edit_story.py` also has `meta` for top-level fields/spine and `interaction <page>` for games;
+pages merge by `number`, JSON `null` deletes a key.) The authoritative shape of
 every file is the JSON Schema it must satisfy:
 
 - World → [`schemas/world.schema.json`](../schemas/world.schema.json)

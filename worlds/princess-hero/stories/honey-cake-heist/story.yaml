@@ -1,0 +1,530 @@
+slug: honey-cake-heist
+world: princess-hero
+title: The Great Honey-Cake Heist
+logline: "Star-Strider and the Cat plot to steal the Queen's secret honey-cake stash \u2014 but the Queen has a deliciously sneaky plan of her own."
+summary: "By day, Princess Liora endures royal tea parties. By night, Star-Strider and the Cat launch Operation Honey-Cake: infiltrate the Queen's tower, bypass the Advisor's alarms, and claim the legendary secret stash. Their glorious chaos wakes the castle \u2014 but the Queen was never asleep. She catches them red-handed... and serves them cake with a wink. The best heists are the ones you're invited to."
+age_band: 3-5
+reading_level:
+  target_fk_grade: 0.8
+  fk_grade_tolerance: 1.5
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 40
+  max_sentence_words: 12
+  decoding_focus: ''
+  decodable: false
+themes:
+- mischief as heroism
+- secret identity / double life
+- kid competence vs adult cluelessness
+- being seen for who you really are (but only by the right people)
+moral: ''
+characters:
+- slug: liora
+  stage: base
+  role_in_story: protagonist
+- slug: cat
+  stage: base
+  role_in_story: sidekick
+- slug: queen
+  stage: base
+  role_in_story: recurring
+- slug: royal-advisor
+  stage: base
+  role_in_story: recurring
+- slug: guard-captain
+  stage: base
+  role_in_story: recurring
+spine:
+  once_upon_a_time: "Princess Liora wears a crown by day and a bedsheet cape by night. The kingdom sees a perfect princess. The cat sees a hero. The Queen sees both \u2014 and says nothing."
+  every_day: By day, Liora smiles through ribbon-cuttings and curtsy lessons. By night, she and the Cat plot grand adventures from the hollow oak HQ. The Queen signs decrees with one eye on the tower window.
+  until_one_day: "The Town Crier announces the Queen's Legendary Honey-Cakes \u2014 baked once a year, locked in the tower pantry, guarded by \"impenetrable protocols.\" Liora's stomach growls. The Cat's tail twitches. Operation Honey-Cake begins."
+  because_of_that:
+  - "Star-Strider and the Cat scale the castle walls, dodge the Advisor's clipboard tripwires, and outwit Captain Brindle's pastry-baited trap \u2014 but the pantry door is already open."
+  - "Inside, they find not a lock \u2014 a note: \"For the Night Crew. \u2014 Q.\" And a tower of honey-cakes glowing in the moonlight."
+  - The Queen appears in her midnight-blue robe, crown bent, crumbs on her chin. She does not scold. She pours milk.
+  until_finally: Star-Strider and the Cat feast with the Queen on the tower roof, lanterns floating, stars leaning down. The best secret in the kingdom just got bigger.
+  ever_since_then: "The honey-cake stash is never locked again. The Advisor writes a new protocol: 'Emergency Cake Access \u2014 Night Crew Only.' Captain Brindle still doesn't have a medal. But he gets the first slice."
+pages:
+- number: 0
+  kind: title
+  text: The Great Honey-Cake Heist
+  image:
+    prompt: "Castle Luminara at twilight \u2014 warm stone towers glowing in sunset, a single tower window open with a bedsheet cape fluttering, the Cat perched on the sill watching, lanterns beginning to float in the courtyard below"
+    characters_present:
+    - liora
+    - cat
+    alt: Title page showing the castle at twilight with Liora's cape and the Cat watching
+    text_zone: center
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: By day, Princess Liora waves from balconies. She cuts ribbons. She smiles for portraits. Her tiara sits crooked. Her shoes are polished. The kingdom sees a perfect princess.
+  image:
+    prompt: "Market Square at noon \u2014 Liora in lavender dress and crooked tiara waving from a balcony, colorful awnings, Town Crier bellowing with a scroll, the Cat watching from a rooftop with unimpressed stare"
+    characters_present:
+    - liora
+    - cat
+    alt: Princess Liora waving from a balcony during the day
+    text_zone: lower third
+    file: images/page-01.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - balconies
+  - ribbons
+  - portraits
+  - tiara
+  - polished
+  - kingdom
+- number: 2
+  kind: story
+  text: But when the moon rises... Liora slips out her tower window. She pulls on her bedsheet cape. She ties her pillowcase mask. Star-Strider is born!
+  image:
+    prompt: "Night scene \u2014 Liora climbing out her tower window, bedsheet cape billowing, pillowcase mask half-tied, star-gold earring catching moonlight, the Cat already on the roof waiting, lanterns floating up from the courtyard"
+    characters_present:
+    - liora
+    - cat
+    alt: Liora becoming Star-Strider at night
+    text_zone: lower third
+    file: images/page-02.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - moon
+  - slips
+  - tower
+  - bedsheet
+  - pillowcase
+  - mask
+  - born
+- number: 3
+  kind: story
+  text: 'The Town Crier''s voice booms across the square: ''Hear ye! The Queen''s Legendary Honey-Cakes! Baked once a year! Locked in the tower! Guarded by impenetrable protocols!'''
+  image:
+    prompt: "Market Square at dusk \u2014 Town Crier on a podium with scroll, dramatic pose, crowd of townspeople gasping, Captain Brindle polishing his helmet, the Advisor clutching a clipboard labeled \"PROTOCOLS,\" Liora in crowd with wide hero-teal eyes"
+    characters_present:
+    - liora
+    - guard-captain
+    - royal-advisor
+    alt: Town Crier announcing the legendary honey-cakes
+    text_zone: lower third
+    file: images/page-03.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - legendary
+  - honey-cakes
+  - baked
+  - tower
+  - impenetrable
+  - protocols
+- number: 4
+  kind: story
+  text: "Liora's stomach growls. LOUD. The Cat's tail twitches \u2014 *thwip thwip* \u2014 code for: 'Operation Honey-Cake is a go.' They meet at the hollow oak. The password: 'sparkle-boots.'"
+  image:
+    prompt: "Whispering Woods at night \u2014 hollow oak tree with glowing fireflies, Star-Strider and the Cat crouched over a map drawn on bark, star-gold charm on mask glinting, Cat's star-patch glowing, map shows castle with X marks"
+    characters_present:
+    - liora
+    - cat
+    alt: Star-Strider and the Cat planning at the hollow oak HQ
+    text_zone: lower third
+    file: images/page-04.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - growls
+  - twitches
+  - operation
+  - hollow
+  - password
+  - sparkle-boots
+  interaction:
+    type: hidden-object
+    prompt: Find the 3 fireflies hiding in the hollow oak! Tap each one to light it up.
+    data:
+      items:
+      - id: firefly-1
+        at:
+          x: 0.25
+          y: 0.35
+        label: firefly
+      - id: firefly-2
+        at:
+          x: 0.72
+          y: 0.48
+        label: firefly
+      - id: firefly-3
+        at:
+          x: 0.55
+          y: 0.22
+        label: firefly
+    feedback:
+      correct: All fireflies lit! The map glows brighter. *thwip thwip*
+      try_again: One more firefly hiding... keep looking!
+    reward:
+      label: Map Reader
+      emoji: "\U0001F5FA\uFE0F"
+      id: map-reader
+- number: 5
+  kind: story
+  text: They scale the castle wall. *Scritch scratch climb.* The Advisor's clipboard tripwires? Snipped. *Snip snip.* Captain Brindle's pastry-baited trap? The Cat eats the bait. *Nom.* Star-Strider laughs silently.
+  image:
+    prompt: "Castle wall at night \u2014 Star-Strider climbing with sock-gloves, Cat on her shoulder, clipboard tripwires glowing faintly on ground, Captain Brindle below holding a turnover on a string looking confused, lanterns floating"
+    characters_present:
+    - liora
+    - cat
+    - guard-captain
+    - royal-advisor
+    alt: Scaling the castle wall and bypassing traps
+    text_zone: lower third
+    file: images/page-05.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - scale
+  - wall
+  - tripwires
+  - snipped
+  - trap
+  - bait
+  - silently
+  interaction:
+    type: arcade-run
+    prompt: Help Star-Strider race up the castle wall! Tap to jump over tripwires and dodge the Captain's pastry lures.
+    data:
+      player:
+        emoji: "\U0001F9B8\u200D\u2640\uFE0F"
+        label: Star-Strider
+      collect:
+        emoji: "\U0001F3EE"
+        label: lantern
+      avoid:
+      - emoji: "\U0001F4CB"
+        label: clipboard tripwire
+      - emoji: "\U0001F950"
+        label: pastry lure
+      obstacles:
+      - emoji: "\U0001F4CB"
+        label: clipboard tripwire
+      speed: gentle
+      goal: 6
+      how: "Run and jump up the wall \u2014 grab lanterns, dodge tripwires!"
+      avoid_line: Tripwires snag your cape! *snip snip*
+    feedback:
+      correct: Top of the wall! The Cat is already there waiting. *slow blink*
+      try_again: "Almost there \u2014 one more lantern!"
+    reward:
+      label: Wall Climber
+      emoji: "\U0001F9D7"
+      id: wall-climber
+- number: 6
+  kind: story
+  text: "The pantry door looms. Star-Strider reaches for the handle \u2014 it turns. *Creeeak.* The door is already open. No lock. No alarm. Just... moonlight spilling onto a tower of honey-cakes."
+  image:
+    prompt: "Tower pantry interior \u2014 door wide open, moonlight streaming in illuminating shelves of golden honey-cakes stacked in a perfect tower, steam rising, star-gold glaze glistening, Star-Strider and Cat peeking in amazed"
+    characters_present:
+    - liora
+    - cat
+    alt: Open pantry door revealing tower of honey-cakes
+    text_zone: lower third
+    file: images/page-06.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - pantry
+  - looms
+  - handle
+  - creeeak
+  - lock
+  - alarm
+  - tower
+  - glistening
+- number: 7
+  kind: story
+  text: "A note sits on top. Star-Strider reads: 'For the Night Crew. \u2014 Q.' The Cat slow-blinks. *Slow blink.* Translation: 'Told you so.'"
+  image:
+    prompt: Close-up of a honey-cake with a folded parchment note on top, Star-Strider's masked face reading it, Cat perched beside her with half-lidded slow-blink, star-gold charm and star-patch catching light
+    characters_present:
+    - liora
+    - cat
+    alt: Note on the honey-cake from the Queen
+    text_zone: lower third
+    file: images/page-07.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - note
+  - parchment
+  - reads
+  - crew
+  - slow-blink
+  - translation
+- number: 8
+  kind: story
+  text: The Queen steps from the shadows. Midnight-blue robe. Star-gold embroidery. Crown bent at one point. Crumbs on her chin. She does not scold. She pours milk.
+  image:
+    prompt: Queen Amara stepping from pantry shadows in midnight-blue silk robe with star-gold embroidery, bent crown, honey-cake crumbs on chin, warm amber-gold eyes crinkling, pouring milk into a tiny saucer for the Cat, Star-Strider frozen with cake in hand
+    characters_present:
+    - liora
+    - cat
+    - queen
+    alt: The Queen catching them but pouring milk instead of scolding
+    text_zone: lower third
+    file: images/page-08.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - shadows
+  - midnight-blue
+  - embroidery
+  - crown
+  - crumbs
+  - scold
+  - pours
+- number: 9
+  kind: story
+  text: "'Official Princess Business,' Liora whispers. The Queen winks. 'Of course, Star-Strider. The night is yours.' They feast on the tower roof \u2014 cakes, milk, lanterns floating, stars leaning down to watch."
+  image:
+    prompt: "Castle tower roof at night \u2014 Queen, Star-Strider, and Cat sharing honey-cakes and milk, lanterns drifting up around them, stars huge and close in the midnight-blue sky, city lights twinkling below, everyone laughing"
+    characters_present:
+    - liora
+    - cat
+    - queen
+    alt: Feasting on the tower roof with the Queen
+    text_zone: lower third
+    file: images/page-09.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - official
+  - business
+  - whispers
+  - winks
+  - feast
+  - tower
+  - lanterns
+  - leaning
+  interaction:
+    type: drag-sort
+    prompt: Line up the honey-cakes from biggest to smallest for the feast!
+    data:
+      bins:
+      - id: bin-1
+        label: bottom (biggest)
+        order: 1
+      - id: bin-2
+        label: middle
+        order: 2
+      - id: bin-3
+        label: top (smallest)
+        order: 3
+      items:
+      - id: cake-1
+        label: giant honey-cake
+        emoji: "\U0001F370"
+        order: 1
+      - id: cake-2
+        label: medium honey-cake
+        emoji: "\U0001F9C1"
+        order: 2
+      - id: cake-3
+        label: tiny honey-cake
+        emoji: "\U0001F36A"
+        order: 3
+    feedback:
+      correct: Perfect stack! The Queen serves the biggest slice to Star-Strider.
+      try_again: "Almost \u2014 the giant one goes on the bottom!"
+    reward:
+      label: Cake Stacker
+      emoji: "\U0001F370"
+      id: cake-stacker
+- number: 10
+  kind: story
+  text: "Captain Brindle arrives, bellowing: \"HALT! I have surrounded the... oh. Honey-cakes.\" He salutes the Cat. The Cat slow-blinks. The Advisor sighs and writes a new protocol: \"Emergency Cake Access \u2014 Night Crew Only.\""
+  image:
+    prompt: "Tower roof \u2014 Captain Brindle bursting through hatch helmet-askew holding a net, freezing mid-bellow at the feast scene, saluting the Cat, Advisor climbing up behind him scribbling on clipboard, Queen offering Brindle a cake"
+    characters_present:
+    - liora
+    - cat
+    - queen
+    - guard-captain
+    - royal-advisor
+    alt: Captain Brindle and Advisor arriving at the feast
+    text_zone: lower third
+    file: images/page-10.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - arrives
+  - bellowing
+  - surrounded
+  - salutes
+  - sighs
+  - protocol
+  - emergency
+  - access
+- number: 11
+  kind: story
+  text: Dawn paints the sky peach. Star-Strider slips back through her window. The bedsheet cape folds away. The pillowcase mask hides under the bed. Princess Liora yawns. 'Good night, Cat.'
+  image:
+    prompt: "Dawn light through tower window \u2014 Liora climbing back in, bedsheet cape draped over chair, pillowcase mask tucked under bed, Cat curling on windowsill, first peach light hitting the star earring, room messy but cozy"
+    characters_present:
+    - liora
+    - cat
+    alt: Liora returning to her room at dawn
+    text_zone: lower third
+    file: images/page-11.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - dawn
+  - paints
+  - peach
+  - slips
+  - folds
+  - hides
+  - yawns
+- number: 12
+  kind: story
+  text: 'The Town Crier announces: ''The Queen''s Honey-Cakes were stolen! By... the Night Crew! Who are officially authorized! Protocol 47-B!'' The crowd cheers. The Queen smiles. The Advisor faints.'
+  image:
+    prompt: "Market Square at morning \u2014 Town Crier reading from scroll with dramatic flourish, crowd cheering with raised arms, Queen on balcony with bent crown and knowing smile, Advisor fainting into Captain Brindle's arms, Cat on railing slow-blinking"
+    characters_present:
+    - queen
+    - guard-captain
+    - royal-advisor
+    - cat
+    alt: Town Crier announcing the official Night Crew authorization
+    text_zone: lower third
+    file: images/page-12.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - announces
+  - stolen
+  - night
+  - crew
+  - authorized
+  - protocol
+  - cheers
+  - faints
+- number: 13
+  kind: story
+  text: "The honey-cake stash is never locked again. Captain Brindle still has no medal \u2014 but he gets first slice every year. The Cat gets the best fish. And Star-Strider? She's already planning the next heist."
+  image:
+    prompt: 'Split scene - left: pantry door wide open with cakes visible, Brindle happily eating a massive slice, Cat with fish; right: Liora in bed winking at reader, Cat on pillow, map of castle with new X marks, star-gold glint'
+    characters_present:
+    - liora
+    - cat
+    - guard-captain
+    alt: The aftermath - open pantry, happy guards, Liora planning next adventure
+    text_zone: lower third
+    file: images/page-13.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - stash
+  - locked
+  - medal
+  - slice
+  - fish
+  - planning
+  - heist
+  interaction:
+    type: hotspot-reveal
+    prompt: Tap the star on Liora's map to see where the next adventure leads!
+    data:
+      hotspots:
+      - id: star-1
+        at:
+          x: 0.35
+          y: 0.62
+        label: Whispering Woods
+        reveal: "The hollow oak HQ glows \u2014 new mission brewing! \U0001F333"
+      - id: star-2
+        at:
+          x: 0.78
+          y: 0.42
+        label: Glimmering Lake
+        reveal: "Midnight splash? The stars say yes! \U0001F319"
+      - id: star-3
+        at:
+          x: 0.52
+          y: 0.28
+        label: Castle Rooftops
+        reveal: "Captain Brindle's helmet is waiting... \U0001F3A9"
+    feedback:
+      correct: Three new X marks on the map. Capes on. Questions later.
+      try_again: "One more star to tap \u2014 the night's not over yet!"
+    reward:
+      label: Master Planner
+      emoji: "\u2728"
+      id: master-planner
+- number: 14
+  kind: story
+  text: The night belongs to kids. And queens who remember. And cats who allow it. Capes on. Questions later.
+  image:
+    prompt: "Full castle at night \u2014 Luminara valley under stars, lanterns floating from every window, Whispering Woods glowing, Glimmering Lake reflecting stars, tiny Star-Strider silhouette on highest tower, Cat beside her, Queen watching from her tower"
+    characters_present:
+    - liora
+    - cat
+    - queen
+    alt: Wide view of the kingdom at night with Star-Strider on the tower
+    text_zone: lower third
+    file: images/page-14.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - night
+  - belongs
+  - kids
+  - queens
+  - remember
+  - allow
+  - capes
+  - questions
+  - later
+interactions_summary:
+- 'Page 4 (hidden-object): Find 3 fireflies in the hollow oak HQ to light up the mission map.'
+- 'Page 5 (arcade-run): Race Star-Strider up the castle wall, grabbing lanterns and dodging tripwires.'
+- 'Page 9 (drag-sort): Stack honey-cakes from biggest to smallest for the feast.'
+- 'Page 13 (hotspot-reveal): Tap stars on Liora''s map to reveal the next three adventure locations.'
+status: draft
+tags: []
+cover:
+  image: images/page-00.png
+  image_prompt: "Castle Luminara at twilight \u2014 warm stone towers glowing in sunset, a single tower window open with a bedsheet cape fluttering, the Cat perched on the sill watching, lanterns beginning to float in the courtyard below"
+  alt: Title page showing the castle at twilight with Liora's cape and the Cat watching

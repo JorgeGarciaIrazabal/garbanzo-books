@@ -1,0 +1,116 @@
+slug: vp-paella-police
+world: sky-guardians
+name: Director Armando "Authenticity" Vale
+role: antagonist
+species: human
+pronouns: he/him
+one_liner: GlobeCorp's Culinary VP dispatched to Spain — measures socarrat with a ruler, pronounces Valencia
+  as "Va-LEN-see-ah," and genuinely believes Instant Powder Kits™ are "globally palatable optimization."
+personality:
+  traits:
+  - bureaucratically ruthless
+  - deadpan literal-minded
+  - surprisingly polite
+  - obsessed with metrics
+  - genuinely confused by flavor
+  - culturally clueless in hilarious ways
+  motivation: Hit Q3 KPIs for 'Iberian Culinary Asset Utilization' by trademarking "paella," eliminating
+    the socarrat (crust = inefficiency), and selling Instant Paella Powder Kits™ in fourteen globally
+    compliant flavors. The paella pan paperweight says it's a 91% synergy play.
+  fears:
+  - flavor that cannot be measured
+  - abuelas with handwritten recipes
+  - pigeons with clipboards
+  flaws:
+  - cannot deviate from Corporate Policy even to save his own scheme
+  - explains his entire plan in PowerPoint if asked (compliance)
+  - defeated by local knowledge he didn't spreadsheet
+  - takes "optimization" literally — tries to optimize laughter into "periodic joy emissions"
+  - pronounces "Valencia" as "Va-LEN-see-ah" and "paella" as "pie-ELL-ah" until the very end
+  - whispers to his paella pan paperweight during meetings; subordinates pretend not to notice
+  - insists chorizo in paella is "authentic" (it is not)
+  strengths:
+  - files Form 27-B faster than anyone in the hemisphere
+  - can make seventy-three slides about slurry in one night
+  - unwavering commitment to "synergy"
+  quirks:
+  - paella pan paperweight consultant (whispers to it, calls it "data-driven talisman consultation")
+  - pronunciation guide in breast pocket (never opened)
+  - tie with microscopic paella-pan pattern
+  values:
+  - efficiency over flavor
+  - metrics over memory
+  - optimization over joy
+voice:
+  speech_style: corporate speak weaponized — 'leverage,' 'bandwidth,' 'circle back,' 'low-hanging fruit,'
+    'synergy,' 'KPI,' delivered with deadpan cheerfulness. Never uses contractions. Refers to himself
+    in third person as 'This VP.' Peppers in painfully wrong local references.
+  catchphrases:
+  - Per Corporate Policy §12.9...
+  - This VP has filed the appropriate paperwork.
+  - Synergy requires sacrifice. Mostly yours.
+  - Crust is inefficiency.
+  - Flavor is a variable. We are eliminating it.
+  vocabulary_level: corporate speak weaponized, zero contractions, third-person self-reference
+appearance:
+  age_appearance: '45'
+  build: rigid, vertical, polyester-perfect posture
+  height: average but seems taller due to verticality
+  skin: pale, sunscreen-white (SPF 100, corporate mandated)
+  hair: silver-gray, precise side part, not a strand out of place
+  eyes: cold blue, behind rimless glasses that display floating KPI metrics
+  outfit: charcoal polyester suit (ill-fitting in the shoulders), white shirt, tie with microscopic paella-pan
+    pattern, lapel pin (gold paella pan), rimless smart-glasses, clipboard-tablet fused to left hand
+  distinguishing_features:
+  - paella pan paperweight (carried everywhere, consulted for decisions)
+  - rimless glasses with scrolling KPI overlays
+  - tie with microscopic paella-pan pattern
+  - clipboard-tablet fused to hand (corporate issued)
+  - pronunciation guide sticking from breast pocket (ignored)
+  color_palette:
+  - part: suit
+    hex: '#2d2d2d'
+  - part: tie
+    hex: '#1a1a2e'
+  - part: paperweight
+    hex: '#c9b037'
+  - part: glasses_overlay
+    hex: '#00ffff'
+  - part: skin
+    hex: '#f0e8e0'
+  silhouette_notes: rigid vertical human in ill-fitting charcoal suit, clipboard fused to hand, paella
+    pan paperweight at belt, rimless glasses with cyan data overlay — distinct from Clara organic curves
+    and Gears boxy tin-toy shape
+appearance_token: 'VP PAELLA POLICE: middle-aged human male, pale sunscreen-white skin (#f0e8e0), silver-gray
+  precise side part, cold blue eyes behind rimless smart-glasses with scrolling cyan KPI overlays (#00ffff),
+  charcoal ill-fitting polyester suit (#2d2d2d), white shirt, tie with microscopic paella-pan pattern
+  (#1a1a2e), gold paella pan lapel pin, clipboard-tablet fused to left hand, paella pan paperweight (#c9b037)
+  at belt, rigid vertical posture, corporate vertical silhouette'
+reference_images:
+- characters/vp-paella-police.refs/model-sheet.png
+seed: 77331
+relationships:
+- character: clara-garcia-kang
+  relation: antagonist / she outsmarts his forms with abuelas, he files complaints about her / mutual
+    exasperation (his is bureaucratic, hers is delicious)
+- character: gears
+  relation: bureaucratic nemesis / he calculates doom, Gears calculates snack / Gears's worry-loop accidentally
+    rewires his machines
+- character: vp-optimization
+  relation: fellow VP / they compare paperweights at global summits / his jade turtle vs this VP's paella
+    pan
+evolution:
+- stage: base
+  order: 0
+  summary: Starting state — culinary optimizer, paella pan paperweight consultant, pronunciation impaired.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- antagonist
+- globe-corp
+- vp
+- culinary
+- paperweight
+- funny
+- spain

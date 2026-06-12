@@ -1,0 +1,20 @@
+{
+  "page": 14,
+  "prompt_seed": 1975583771,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration captures the key elements and style, but the pigeon's form is slightly off and the overall composition could be more dynamic.",
+      "flags": [
+        "wrong_characters",
+        "scene_mismatch"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-14-1975583771.png"
+    }
+  ],
+  "winner": "page-14.png"
+}

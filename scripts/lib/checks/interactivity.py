@@ -108,7 +108,7 @@ def _coord_ok(c: Any) -> bool:
     if not isinstance(c, dict):
         return False
     try:
-        x, y = float(c.get("x")), float(c.get("y"))
+        x, y = float(c.get("x", "")), float(c.get("y", ""))
     except (TypeError, ValueError):
         return False
     return 0 <= x <= 100 and 0 <= y <= 100
@@ -199,7 +199,7 @@ def _check_custom_spec(rep: Report, where: str, pnum: Any, data: dict) -> None:
 
 def _check_one(rep: Report, where: str, pnum: Any, it: dict, page_nums: set, depth: int = 0) -> None:
     """Validate a single interaction (or a step within one)."""
-    t = it.get("type")
+    t = it.get("type") or ""
     need = INTERACTION_DATA_KEYS.get(t)
     if need is None:
         rep.fail(f"[interaction] {where} p{pnum}: unknown type '{t}'")

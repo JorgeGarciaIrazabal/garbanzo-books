@@ -43,9 +43,11 @@ ${helpers}
 function __get() {
   return {
     escapeHtml, mdInline, renderMarkdown, mdToSpeech,
-    extractForm, detectStage, fieldOptions, guessEmoji,
+    extractForm, detectStage, fieldOptions, guessEmoji, progressLine,
+    stallNotice, STALL_WARN_SECS,
     STAGE_RE, FORMS, EMOJI_KEYWORDS, EMOJI_FALLBACK,
     AGE_BANDS, TONES, ART,
+    TARGET_YEARS, READING_LEVELS, YEAR_HINT, READING_HINT, fieldHtml,
   };
 }
 function __set(key, value) {

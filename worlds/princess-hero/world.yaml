@@ -1,0 +1,123 @@
+slug: princess-hero
+title: Princess Hero
+tagline: By day she wears a crown; by night she wears a cape — and the kingdom never suspects they're the same girl.
+premise: Princess Liora of Luminara is the picture of royal perfection by day — tea parties, ribbon-cutting, waving from balconies. But when the moon rises, she slips out her tower window, pulls on her homemade mask, and becomes Star-Strider, the kingdom's most mischievous mystery hero. She foils pie-thieves, rescues cats from gargoyles, and turns the grumpy Royal Guard's helmets into flower pots — all before breakfast. The Queen suspects. The cat knows. The readers are in on the secret.
+tone:
+- adventurous
+- mischievous
+- funny
+- bold
+genres:
+- adventure
+- superhero
+- comedy
+target_age_bands:
+- 3-5
+languages:
+- en
+geography:
+  overview: The kingdom of Luminara sits in a valley where the sun lingers late and the stars come out early — perfect for a princess who needs both. Castle Luminara towers above cobblestone streets, a bustling market square, the Whispering Woods, and the Glimmering Lake. By day it's all bunting and brass bands; by night it's rooftops, lantern-light, and secret passages.
+  locations:
+  - name: Castle Luminara
+    description: A warm stone castle with too many towers, a slide hidden behind a tapestry, and a royal bedroom with a window that opens onto the best rooftop runway in the kingdom.
+    mood: grand but playful
+    recurring: true
+  - name: Market Square
+    description: Cobblestones, colorful awnings, the smell of honey-cakes, and the Town Crier who narrates everything like a sportscaster — even pigeon disputes.
+    mood: bustling and bright
+    recurring: true
+  - name: Whispering Woods
+    description: 'Trees that hum lullabies, fireflies that act like spotlights, and a hollow oak that makes a perfect hero headquarters (password: "sparkle-boots").'
+    mood: magical and hushed
+    recurring: true
+  - name: Glimmering Lake
+    description: Mirror-still by day, star-sparkled by night. The best place for a midnight splash or a dramatic hero pose on a lily pad.
+    mood: serene then spectacular
+    recurring: true
+rules:
+- id: dual-identity
+  text: Liora is Princess by day and Star-Strider by night. No one in the kingdom (except the cat) knows they are the same person. The secret is the engine of every story.
+- id: night-magic
+  text: The kingdom's mild magic wakes at sundown — lanterns float, shadows stretch helpfully, and the stars lean down to watch. Daylight resets everything to ordinary.
+- id: no-grownup-solves-it
+  text: The Queen, the Guard, and the Royal Advisor are well-meaning but spectacularly useless at actual problems. Only a kid (or a kid in a mask) can save the day.
+- id: mischief-rewarded
+  text: Star-Strider's pranks and rule-breaking are funny and heroic, never punished. The world bends to delight, not discipline.
+factions:
+- name: The Royal Court
+  description: The Queen (sharp-eyed, secretly proud), the Royal Advisor (clipboard, worried), the Captain of the Guard (loud, helmet-askew).
+  values: Order, protocol, very long meetings
+- name: The Night Crew
+  description: A stray cat (Liora's sidekick, judges everything), the lantern-lighter (grumbles but helps), the baker's apprentice (saves pastries for the hero).
+  values: Fun, snacks, looking the other way
+timeline:
+- label: The Night Liora First Climbed Out
+  description: Age six, a stolen bedsheet cape, a rescued kitten from the highest turret — the legend begins.
+- label: The Great Pie Heist
+  description: Star-Strider foiled the Pie Phantom (it was a raccoon), earning the kingdom's gratitude and the baker's eternal confusion.
+- label: The Moon Festival Mix-Up
+  description: The Queen scheduled the festival for noon. Star-Strider moved the moon. (Okay, she just rearranged the lanterns. It looked like the moon moved.)
+motifs:
+- A single star-shaped earring (Liora's) / star charm on the mask (Star-Strider's) — the visual link
+- Bedsheet capes, pillowcase masks, sock-gloves — DIY hero gear
+- The cat's unimpressed stare
+- Lanterns that float when no one's looking
+- Ribbons that become ropes, tiaras that become grappling hooks
+- The Town Crier's absurdly dramatic announcements
+themes:
+- secret identity / double life
+- mischief as heroism
+- kid competence vs adult cluelessness
+- night as a playground
+- being seen for who you really are (but only by the right people)
+art_style:
+  medium: soft watercolor with colored-pencil texture
+  line_quality: gentle, rounded, hand-drawn with energetic sketch lines for action
+  shading: soft, low-contrast by day; richer jewel tones with glowing accents by night
+  lighting: warm golden-hour glow for day scenes; cool moonlight with warm lantern pools and star-glitter for night
+  perspective: eye-level, character-centered; dynamic low angles for hero moments
+  palette:
+  - name: dawn-cream
+    hex: '#fdf6e3'
+    role: background
+  - name: sunlit-peach
+    hex: '#ffb88c'
+    role: primary
+  - name: royal-lavender
+    hex: '#b8a0d6'
+    role: primary
+  - name: hero-teal
+    hex: '#4ecdc4'
+    role: accent
+  - name: star-gold
+    hex: '#ffd93d'
+    role: accent
+  - name: midnight-blue
+    hex: '#1a2a4a'
+    role: shadow
+  - name: rose-blush
+    hex: '#ff8fa3'
+    role: accent
+  - name: sage-mint
+    hex: '#a8e6cf'
+    role: background
+  influences:
+  - Beatrice Alemagna (expressive characters, mixed media warmth)
+  - Isabelle Arsenault (night magic, pencil texture)
+  - Tomi Ungerer (mischief, bold composition)
+  - Oliver Jeffers (simple shapes, big heart)
+  prompt_style_block: soft watercolor children's book illustration, warm dawn palette (#fdf6e3 cream, #ffb88c peach, #b8a0d6 lavender) by day; rich night palette (#1a2a4a midnight, #4ecdc4 teal, #ffd93d star-gold, #ff8fa3 rose) by night, rounded expressive characters, colored-pencil texture, gentle rim lighting, hand-painted paper grain, dynamic composition for action beats, cozy storybook mood, no text
+  negative_prompt: photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, muddy colors, stiff poses, generic superhero tropes
+  aspect_ratio: '4:3'
+  text_treatment:
+    placement: lower third
+    scrim: soft cream rounded panel at 85% opacity with subtle watercolor bleed edges
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+- princess
+- superhero
+- secret-identity
+- night-adventure
+- mischief
+- ages-3-5

@@ -1,0 +1,20 @@
+{
+  "page": 12,
+  "prompt_seed": 1456383829,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures the scene well, but the advisor's fainting is slightly exaggerated and the cat's placement is a little awkward.",
+      "flags": [
+        "scene_mismatch",
+        "wrong_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-12-1456383829.png"
+    }
+  ],
+  "winner": "page-12.png"
+}

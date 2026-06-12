@@ -14,7 +14,18 @@
     "summary": { "type": "string" },
     "dedication": { "type": "string" },
 
-    "age_band": { "type": "string", "enum": ["0-3", "3-5", "5-7", "7-9", "9-12"] },
+    "age_band": {
+      "type": "string",
+      "enum": ["0-3", "3-5", "5-7", "7-9", "9-12"],
+      "description": "READER ability band: who will read (or be read) the words. Drives reading_level defaults — sentence length, words per page, word choice. Distinct from target_year (what the story is about)."
+    },
+
+    "target_year": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 14,
+      "description": "CONTENT age: the single age (in years) the story itself is pitched at — interest level, humor, stakes, themes. One number, not a range. A book can have target_year 7 (a seven-year-old's jokes and jeopardy) at age_band 5-7 reading ability."
+    },
 
     "reading_level": {
       "type": "object",

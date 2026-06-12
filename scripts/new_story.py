@@ -20,8 +20,31 @@ from lib.readability import BANDS  # noqa: E402
 # anti-telegraphic floor in lib/readability.py do the real guarding.
 DEFAULT_FK = {"0-3": 0.5, "3-5": 0.8, "5-7": 1.5, "7-9": 3.0, "9-12": 5.5}
 
+# Default CONTENT age (target_year) per reader band — the band midpoint. target_year is the
+# single age the story's humor/stakes/themes are pitched at; the band is reading ABILITY.
+# They usually match (a six-year-old reading 5-7 words wants six-year-old jokes) but --year
+# lets them diverge, e.g. an older kid who reads below their interest level.
+DEFAULT_YEAR = {"0-3": 2, "3-5": 4, "5-7": 6, "7-9": 8, "9-12": 10}
 
-def starter(slug: str, world: str, title: str, age: str) -> dict:
+
+def _story_page_stub(number: int) -> dict:
+    return {
+        "number": number,
+        "kind": "story",
+        "text": "TODO: page text within the word cap.",
+        "image": {
+            "prompt": "TODO: scene only — who/where/action/emotion.",
+            "characters_present": [],
+            "alt": "TODO",
+            "text_zone": "lower third",
+        },
+        "layout": {"text_position": "lower-third", "text_align": "center", "scrim": True},
+        "vocabulary": [],
+    }
+
+
+def starter(slug: str, world: str, title: str, age: str, n_pages: int = 1,
+            year: int | None = None) -> dict:
     band = BANDS.get(age, BANDS["5-7"])
     return {
         "slug": slug,
@@ -30,6 +53,7 @@ def starter(slug: str, world: str, title: str, age: str) -> dict:
         "logline": "TODO: protagonist + goal + obstacle, in one sentence.",
         "summary": "TODO",
         "age_band": age,
+        "target_year": year if year is not None else DEFAULT_YEAR.get(age, 6),
         "reading_level": {
             "target_fk_grade": DEFAULT_FK.get(age, 1.5),
             # Wide on purpose: FKGL is noisy on picture-book-sized text, and a tight
@@ -68,19 +92,7 @@ def starter(slug: str, world: str, title: str, age: str) -> dict:
                 },
                 "layout": {"text_position": "center", "text_align": "center", "scrim": True},
             },
-            {
-                "number": 1,
-                "kind": "story",
-                "text": "TODO: page text within the word cap.",
-                "image": {
-                    "prompt": "TODO: scene only — who/where/action/emotion.",
-                    "characters_present": [],
-                    "alt": "TODO",
-                    "text_zone": "lower third",
-                },
-                "layout": {"text_position": "lower-third", "text_align": "center", "scrim": True},
-                "vocabulary": [],
-            },
+            *[_story_page_stub(n) for n in range(1, max(1, n_pages) + 1)],
         ],
         "interactions_summary": [],
         "status": "draft",
@@ -93,8 +105,16 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Scaffold a new story.")
     ap.add_argument("world", help="world slug")
     ap.add_argument("title", help="story title")
-    ap.add_argument("--age", default="5-7", choices=list(BANDS), help="target age band")
+    ap.add_argument("--age", default="5-7", choices=list(BANDS),
+                    help="READER ability band — who reads the words (drives reading_level)")
+    ap.add_argument("--year", type=int, metavar="N",
+                    help="CONTENT age — the single age (in years) the story's humor/stakes/"
+                         "themes are pitched at (default: the band midpoint)")
     ap.add_argument("--slug", help="override the slug")
+    ap.add_argument("--pages", type=int, default=1, metavar="N",
+                    help="scaffold N story-page stubs (plus the title page) so the author "
+                         "only fills in text + scene prompts instead of generating all the "
+                         "page boilerplate — e.g. --pages 14 for a standard picture book")
     args = ap.parse_args()
 
     wdir = WORLDS / args.world
@@ -108,9 +128,14 @@ def main() -> int:
         print(f"! story '{slug}' already exists at {sdir}", file=sys.stderr)
         return 1
 
-    dump_yaml(starter(slug, args.world, args.title, args.age), sdir / "story.yaml")
+    if args.year is not None and not (1 <= args.year <= 14):
+        print(f"! --year must be 1-14 (got {args.year})", file=sys.stderr)
+        return 1
+    data = starter(slug, args.world, args.title, args.age, n_pages=args.pages, year=args.year)
+    dump_yaml(data, sdir / "story.yaml")
     (sdir / "images").mkdir(parents=True, exist_ok=True)
-    print(f"+ created story '{slug}' ({args.age}) at {sdir}")
+    print(f"+ created story '{slug}' (readers {args.age}, content age {data['target_year']}) "
+          f"at {sdir}")
     print("  next: write the spine + pages (story-craft), then reading-level-adaptation")
     return 0
 

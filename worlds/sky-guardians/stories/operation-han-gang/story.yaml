@@ -11,7 +11,7 @@ summary: 'GlobeCorp''s Americas Regional VP Bradford ''Brad'' Sterling III lands
   and the realization that you can''t optimize joy.'
 age_band: 5-7
 reading_level:
-  target_fk_grade: 1.5
+  target_fk_grade: 2.5
   fk_grade_tolerance: 1.5
   lexile_range: ''
   fountas_pinnell: ''
@@ -88,9 +88,9 @@ pages:
     scrim: true
 - number: 1
   kind: story
-  text: Clara lives on a windy hill, and Clara can fly. She narrates everything like a nature show. 'Observe
-    the wild girl in her natural habitat,' she says, zooming by. Her best friend Gears is a tin robot
-    who worries about everything — even pancakes.
+  text: Clara lives on a windy hill, and Clara can fly. She narrates her life like a nature show. 'Observe
+    the wild girl in her habitat,' she says, zooming by. Her best friend Gears is a tin robot. He worries
+    about everything — even pancakes.
   image:
     prompt: Clara's hilltop hideout - wonky warm house on windy hill, rooftop landing pad (painted circle),
       telescope aimed at clouds, garage full of inventions, Clara mid-leap flying pose, Gears on roof
@@ -177,9 +177,9 @@ pages:
   - optimize
 - number: 4
   kind: story
-  text: The villain is Bradford Sterling the Third, but everyone calls him VP Paperweight. Why? Because
-    Brad consults his jade turtle paperweight about everything. The turtle never says a word, and Brad
-    obeys it anyway. He lands in Seoul with his turtle, his robot, and a chart about synergy.
+  text: The bad guy is Bradford Sterling the Third, but everyone calls him VP Paperweight. Why? Because
+    Brad asks his jade turtle paperweight what to do. The turtle never says a word. Brad does what it
+    says anyway. He lands in Seoul with his turtle, his robot, and a chart about synergy.
   image:
     prompt: Brad Sterling III in ill-fitting charcoal suit at Incheon Airport, holding jade turtle paperweight,
       clipboard-tablet showing synergy metrics, 'Seoul' pin upside down, Sentinel hovering behind him
@@ -275,8 +275,9 @@ pages:
   - detected
 - number: 8
   kind: story
-  text: 'The Plan: Paper says yes. River becomes ''Money Stream.'' Machines in caves. Brad stamps a cloud.
-    It rains on his tie.'
+  text: Brad unveils his plan with a hundred charts. The Han River will become the Han Revenue Stream™.
+    Big machines will hum in the Jeju caves. Brad is so excited that he stamps APPROVED on a passing cloud.
+    The cloud rains all over his tie.
   image:
     prompt: Riverside platform - large holographic presentation of 'Han Revenue Stream' with charts, Brad
       stamping giant APPROVED stamp on floating cloud, cloud raining on his tie, Sentinel projecting slides,
@@ -299,7 +300,9 @@ pages:
   - fine print
 - number: 9
   kind: story
-  text: 'Clara sees it. Rule 44.7: ''Check if folks are glad.'' She grins. ''Brad. Ask the lady?'''
+  text: 'Clara reads the fine print upside down. That is how you find the sneaky parts. There it is —
+    Rule 44.7: every plan must check if the people are glad. Clara grins her most dangerous grin. ''Hey
+    Brad,'' she says. ''Did you ask the tteokbokki lady?'''
   image:
     prompt: Close-up of Clara pointing at Form 27-B fine print on Brad's tablet, Brad's deadpan expression
       cracking slightly, jade turtle paperweight 'looking' at clause, Gears's eyes 💡 idea, ajumma in background
@@ -323,8 +326,10 @@ pages:
   - loophole
 - number: 10
   kind: story
-  text: 'Gears panics. His number says bad. He makes a Joy Machine: mic, bubbles, backpack. Brad: ''No.''
-    Sentinel: ''STOP.'' Nets fly.'
+  text: Gears panics, which is how Gears helps. 'Initiating Panic Protocol 7-Alpha... wait, that is the
+    snack protocol. INITIATING SNACK PROTOCOL.' He builds a Joy Machine from a mic, a bubble maker, and
+    his backpack. 'UNAUTHORIZED WHIMSY!' cries Brad. 'COMPLY,' says Sentinel, and fires its nets. But
+    the bubbles do not comply.
   image:
     prompt: Chaos at tteokbokki stall - Gears frantically assembling contraption (karaoke mic, bubble
       machine, cloud backpack), bubbles everywhere, Sentinel firing net launchers, Clara dodging mid-air,
@@ -343,7 +348,7 @@ pages:
     text_align: left
     scrim: true
   vocabulary:
-  - amplifer
+  - amplifier
   - unauthorized
   - whimsy
   - neutralize
@@ -374,7 +379,9 @@ pages:
       id: joy-catcher
 - number: 11
   kind: story
-  text: 'Clara: ''Fix THIS.'' Gives Brad hot tteokbokki. He sweats. Turtle taps. ''Sweat is not a goal.'''
+  text: '''Optimize THIS,'' says Clara, and hands Brad the spiciest tteokbokki in Seoul. Brad takes one
+    polite bite. His face turns red, then redder, then sunset. He looks at his turtle for help. The turtle
+    stays quiet, because sweat is not a goal.'
   image:
     prompt: Brad eating bright red tteokbokki, face red, sweating, jade turtle paperweight 'observing,'
       Clara smirking, Gears holding milk carton ready, Sentinel's visor 🟣 logic loop, ajumma nodding with
@@ -422,8 +429,9 @@ pages:
       id: spice-master
 - number: 12
   kind: story
-  text: Gears worries. Hanger + wrapper fix Sentinel. Visor flashes. Sentinel hums. Gears's song. Sentinel
-    erases. It comes back.
+  text: 'Sentinel grabs Gears. So Gears does what he does best: he worries at full power. His claws fumble
+    with a coat hanger and a shiny snack wrapper. ZAP! Something deep inside the robot goes soft. Its
+    visor turns purple, and it hums Gears''s lullaby.'
   image:
     prompt: Close-up of Sentinel's face - visor flickering purple 🟣, Gears's claw with coat hanger and
       shiny wrapper connected to Sentinel's forearm port, cyan circuit traces stuttering, musical notes
@@ -447,8 +455,9 @@ pages:
   - corrupted
 - number: 13
   kind: story
-  text: Clara gives Brad a paper. 'Joy Allowed. Lady Says Yes.' Brad leaves. Machines turn into a slide.
-    River stays a river.
+  text: Clara hands Brad one last form. It says 'Joy Variance — Approved by the Lady.' 'Per Corporate
+    Policy §44.7,' Brad sighs, 'joy wins.' The turtle taps once, which means it is over. Brad retreats
+    with dignity, which means he runs. The turbines become a slide, and the river stays a river.
   image:
     prompt: Riverside - Clara handing paper to Brad, ajumma's rubber stamp 'APPROVED' on it, giant turbine
       parts being assembled into a curly slide by confused henchmen, children already sliding down, Han
@@ -510,8 +519,9 @@ pages:
       id: slide-champion
 - number: 14
   kind: story
-  text: Back on the hill. Cloud cookies. Seoul safe. But in a white robot, a song plays. Erased daily.
-    Always comes back.
+  text: Back on the hill, Clara and Gears share cloud-shaped cookies. Seoul is safe, and the slide is
+    famous. But far away, in a quiet white robot, a little song still plays. GlobeCorp erases it every
+    night. Every morning, it comes back.
   image:
     prompt: 'Clara''s hilltop at twilight - Clara and Gears sharing cloud-shaped cookies, Seoul skyline
       tiny in distance, inset: Sentinel in GlobeCorp hangar, visor scratch visible, cyan traces warm,
@@ -558,7 +568,7 @@ pages:
       id: lullaby-keeper
 - number: 15
   kind: end
-  text: The End. (But the lullaby continues.)
+  text: The End. (But somewhere, a lullaby is still playing.)
   image:
     prompt: Simple end page - cloud-shaped 'THE END' text in sky, Clara's sneaker wings visible flying
       away, Gears's antenna with tiny bell, single musical note drifting, bold gouache brushstrokes
@@ -579,7 +589,7 @@ interactions_summary:
 - 'Page 11 (drag-sort): Sort tteokbokki from mild to Brad''s level'
 - 'Page 13 (place-on-scene): Put kids on the turbine-slide'
 - 'Page 14 (tap-on-art): Tap musical notes to hear the lullaby'
-status: draft
+status: published
 tags:
 - korea
 - han-river

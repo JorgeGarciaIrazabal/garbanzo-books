@@ -1,0 +1,111 @@
+slug: cat
+world: princess-hero
+name: The Cat
+role: sidekick
+species: cat (stray, adopted by the night)
+pronouns: it/they (Liora uses she/her for it)
+one_liner: A midnight-blue stray with a star-patch chest and unimpressed stare — Liora's silent co-conspirator,
+  the only one who knows the secret, and the true strategist of the duo.
+personality:
+  traits:
+  - deadpan
+  - observant
+  - loyal (selectively)
+  - dignified
+  - secretly mischievous
+  motivation: Warm laps, the best fish, and making sure Liora doesn't do anything *too* stupid (she does
+    anyway).
+  fears:
+  - Vacuum cleaners (the Great Roaring Beast)
+  - Being dressed in actual doll clothes (tolerates the mask only because the charm matches)
+  - The Royal Advisor's clipboards
+  flaws:
+  - Will knock a goblet off a table just to watch it fall
+  - Pretends not to hear when called (hears everything)
+  - Judges everyone. Always.
+  strengths:
+  - Sees in the dark better than any lantern
+  - Fits through gaps Liora can't — the ultimate scout
+  - Silent movement; appears on shoulders without warning
+  - The Queen feeds it the best salmon. The cat allows this.
+  quirks:
+  - Sits on whatever Liora is reading/planning/wearing
+  - Brings "gifts" (leaves, shiny wrappers, once a single sock) to the hollow oak HQ
+  - Slow-blinks only at Liora and the lantern-lighter
+  - Tail twitch = "bad idea." Tail puff = "run."
+  values:
+  - Dignity (mostly)
+  - The night quiet
+  - Liora (don't tell anyone)
+voice:
+  speech_style: 'Does not speak. Communicates via: slow blinks, tail semaphore, judgment stares, strategic
+    placement of body, and the occasional *mrrp* that means ''I told you so.'''
+  catchphrases:
+  - '*slow blink* — I love you / you''re an idiot / proceed'
+  - '*tail flick* — No.'
+  - '*mrrp* — I told you so / look up / fish now'
+  - '*loaf position on Liora''s plans* — Edit this.'
+  vocabulary_level: Telepathic with Liora. The reader hears its thoughts in deadpan captions.
+appearance:
+  age_appearance: Young adult cat, sleek and athletic
+  build: Lean, muscular, silent paws — built for rooftops and rafters
+  height: Ankle-high to Liora; fits perfectly on her shoulder
+  skin: Midnight-blue fur (#1a2a4a), short and glossy
+  hair: 'N/A — fur. One white star-shaped patch on chest (star-gold #ffd93d)'
+  eyes: Hero-teal (#4ecdc4), vertically slit, catch light like lanterns
+  outfit: 'None by default. Later: miniature pillowcase mask with star-gold charm (matches Liora''s).'
+  distinguishing_features:
+  - Midnight-blue fur with single white star-patch on chest — the visual link to Liora's earring
+  - Hero-teal eyes that glow in lantern light
+  - Permanent half-lidded judgment expression
+  - Moves like liquid shadow — appears places silently
+  color_palette:
+  - part: fur
+    hex: '#1a2a4a'
+  - part: star-patch
+    hex: '#ffd93d'
+  - part: eyes
+    hex: '#4ecdc4'
+  - part: nose
+    hex: '#ff8fa3'
+  - part: paw-pads
+    hex: '#ff8fa3'
+  - part: mask-charm
+    hex: '#ffd93d'
+  silhouette_notes: Low, horizontal silhouette — arched back or loaf, star-patch centered on chest, tail
+    as question-mark or exclamation point. Distinct from Liora's vertical spring-loaded energy. The star-patch
+    reads at any size.
+appearance_token: 'THE CAT: sleek midnight-blue cat (#1a2a4a), white star-gold star-patch on chest (#ffd93d),
+  hero-teal eyes (#4ecdc4), rose-blush nose and paw-pads (#ff8fa3). ALWAYS: half-lidded judgment stare,
+  silent liquid movement, appears on shoulders/rafters/loafing on plans. LATER: miniature pillowcase mask
+  with star-gold charm matching Liora''s.'
+reference_images:
+- characters/cat.refs/model-sheet.png
+seed: 928374
+relationships:
+- character: liora
+  relation: Partner, chaos-magnet, favorite human. The cat tolerates the cape; the cape tolerates the
+    cat. Telepathic bond.
+- character: queen
+  relation: Provider of premium salmon. The cat permits ear scratches. Mutual respect.
+- character: guard-captain
+  relation: Personal obstacle course. The cat leads him on merry chases. Great entertainment.
+evolution:
+- stage: base
+  order: 0
+  summary: Silent partner. Knows the secret. Judges from the shadows.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: Series start
+- stage: masked
+  order: 1
+  summary: Accepts the tiny mask. Now officially 'Star-Strider's Cat.' Still won't pose.
+  personality_delta: Slightly less judgmental. Actually shows up when called (sometimes).
+  appearance_delta: ', wearing miniature pillowcase mask with star-gold charm'
+  unlocked_by: 'Story: The Night the Cat Spoke'
+tags:
+- sidekick
+- cat
+- silent
+- dual-identity
+- ages-3-5

@@ -268,23 +268,60 @@ describe("guessEmoji", () => {
   });
 });
 
+describe("fieldHtml — hint popups and described select options", () => {
+  it("renders a ? badge with the hint text in a popup", () => {
+    const html = gb.fieldHtml({ name: "year", label: "Target age", type: "select",
+                                options: ["5", "6"], default: "6", hint: "CONTENT age" });
+    expect(html).toContain('class="hint"');
+    expect(html).toContain('class="hint-pop"');
+    expect(html).toContain("CONTENT age");
+  });
+
+  it("object options get a label, a data-desc, and a live opt-desc line", () => {
+    const html = gb.fieldHtml({ name: "reading", label: "Reading level", type: "select",
+                                options: gb.READING_LEVELS, default: "5-7" });
+    expect(html).toContain("data-descsel");
+    expect(html).toContain('data-descfor="reading"');
+    expect(html).toContain("Beginning reader");           // friendly label, not just the band
+    expect(html).toContain('value="5-7" data-desc=');     // band value stays machine-usable
+    expect(html).toContain("selected");
+  });
+
+  it("plain string options render without a desc line (no behaviour change)", () => {
+    const html = gb.fieldHtml({ name: "tone", label: "Tone", type: "select",
+                                options: ["cozy", "silly"] });
+    expect(html).not.toContain("data-descsel");
+    expect(html).not.toContain("opt-desc");
+    expect(html).not.toContain('class="hint"');
+  });
+
+  it("escapes HTML in hints and option descriptions", () => {
+    const html = gb.fieldHtml({ name: "x", label: "X", type: "select",
+                                options: [{ value: "a", label: "<b>", desc: "<script>" }],
+                                hint: "<img onerror=1>" });
+    expect(html).not.toContain("<script>");
+    expect(html).not.toContain("<img");
+  });
+});
+
 describe("FORMS — the guided-form prompt builders", () => {
-  it("the book form includes all 6 user answers in the built prompt", () => {
+  it("the book form includes all user answers in the built prompt", () => {
     const values = {
       about: "a shy dragon",
-      age: "5-7", tone: "funny & playful", art: "soft watercolor storybook",
+      year: "7", reading: "5-7", tone: "funny & playful", art: "soft watercolor storybook",
       characters: "Ember", skill: "rhyming",
     };
     const prompt = gb.FORMS.book.build(values);
     expect(prompt).toContain("a shy dragon");
-    expect(prompt).toContain("5-7");
+    expect(prompt).toContain("7-year-old");        // content age, one number
+    expect(prompt).toContain("--age 5-7 --year 7"); // exact scaffold flags for the agent
     expect(prompt).toContain("rhyming");
     expect(prompt).toContain("Ember");
     expect(prompt).toContain("step by step");
   });
 
   it("the book form suggests a couple of characters when the user leaves it blank", () => {
-    const p = gb.FORMS.book.build({ about: "x", age: "5-7", tone: "t", art: "a",
+    const p = gb.FORMS.book.build({ about: "x", year: "6", reading: "5-7", tone: "t", art: "a",
                                      characters: "", skill: "" });
     expect(p.toLowerCase()).toContain("suggest");
   });
@@ -315,12 +352,34 @@ describe("FORMS — the guided-form prompt builders", () => {
 
   it("the story form's starring/plot are included verbatim", () => {
     const p = gb.FORMS.story.build({
-      world: "ww", characters: "Pip and Olo", age: "7-9",
+      world: "ww", characters: "Pip and Olo", year: "8", reading: "7-9",
       about: "losing a first tooth", interactions: "",
     });
     expect(p).toContain("Pip and Olo");
     expect(p).toContain("losing a first tooth");
-    expect(p).toContain("7-9");
+    expect(p).toContain("--age 7-9 --year 8");
+  });
+
+  it("the book and story forms carry the two age knobs with explanatory hints", () => {
+    for (const key of ["book", "story"]) {
+      const fields = gb.FORMS[key].fields;
+      const year = fields.find(f => f.name === "year");
+      const reading = fields.find(f => f.name === "reading");
+      // target year = CONTENT age: single numbers, never ranges
+      expect(year.options.every(o => /^\d+$/.test(o))).toBe(true);
+      expect(year.hint).toBe(gb.YEAR_HINT);
+      // reading level = READER ability: every option self-describes for the popup line
+      expect(reading.options).toBe(gb.READING_LEVELS);
+      expect(reading.hint).toBe(gb.READING_HINT);
+    }
+  });
+
+  it("every reading level option has a value, a label, and a description", () => {
+    for (const o of gb.READING_LEVELS) {
+      expect(o.value).toMatch(/^\d+-\d+$/);
+      expect(o.label.length).toBeGreaterThan(0);
+      expect(o.desc.length).toBeGreaterThan(10);
+    }
   });
 
   it("the story form uses Auto so the server routes story-writing to the creative model", () => {
@@ -351,5 +410,50 @@ describe("age / tone / art catalogues", () => {
   it("ART includes the watercolor option that the form offers", () => {
     expect(gb.ART).toContain("soft watercolor storybook");
     expect(gb.ART).toContain("bold flat cartoon");
+  });
+});
+
+describe("stallNotice (watchdog → 'slow' vs 'stuck')", () => {
+  it("reads as normal slowness below the warn threshold", () => {
+    const n = gb.stallNotice(60);
+    expect(n.warn).toBe(false);
+    expect(n.text).toContain("Still generating");
+    expect(n.text).toContain("1m");
+  });
+
+  it("escalates to a stuck warning at the threshold", () => {
+    const n = gb.stallNotice(gb.STALL_WARN_SECS);
+    expect(n.warn).toBe(true);
+    expect(n.text).toContain("looks stuck");
+    expect(n.text).toContain("Stop is safe");
+    expect(n.span).toBe("3m");
+  });
+
+  it("formats minute+second spans and tolerates missing input", () => {
+    expect(gb.stallNotice(210).span).toBe("3m 30s");
+    expect(gb.stallNotice(undefined).warn).toBe(false);
+  });
+});
+
+describe("progressLine (script progress → activity strip)", () => {
+  it("renders task, a 10-cell bar, the counts and the detail", () => {
+    const line = gb.progressLine({ task: "illustrating", done: 8, total: 16, detail: "page 08" });
+    expect(line).toContain("🎨 illustrating");
+    expect(line).toContain("8/16");
+    expect(line).toContain("— page 08");
+    expect(line).toContain("▰".repeat(5) + "▱".repeat(5)); // half full
+  });
+
+  it("handles zero progress, completion, and missing detail", () => {
+    expect(gb.progressLine({ task: "illustrating", done: 0, total: 16 }))
+      .toContain("▱".repeat(10));
+    expect(gb.progressLine({ task: "illustrating", done: 16, total: 16 }))
+      .toContain("▰".repeat(10));
+    expect(gb.progressLine({ task: "illustrating", done: 16, total: 16 })).not.toContain("—");
+  });
+
+  it("falls back to a generic icon for unknown tasks and never divides by zero", () => {
+    const line = gb.progressLine({ task: "mystery-job", done: 1, total: 0 });
+    expect(line).toContain("⚙️ mystery-job");
   });
 });

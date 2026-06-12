@@ -159,9 +159,9 @@ def textwrap_dedent(s: str) -> str:
     lines = s.splitlines()
     if not lines:
         return s
-    indents = [len(l) - len(l.lstrip(" ")) for l in lines if l.strip()]
+    indents = [len(ln) - len(ln.lstrip(" ")) for ln in lines if ln.strip()]
     pad = min(indents) if indents else 0
-    return "\n".join(l[pad:] if len(l) >= pad else l for l in lines)
+    return "\n".join(ln[pad:] if len(ln) >= pad else ln for ln in lines)
 
 
 def _parse_model_json(text: str) -> dict[str, Any] | None:

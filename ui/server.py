@@ -1,10 +1,13 @@
 """Garbanzo Books Studio — dynamic UI backend (FastAPI).
 
 Serves the console (ui/public), proxies the built site at /preview, and exposes:
-  GET  /api/library   — worlds/characters/stories as JSON (scripts/library.py)
-  POST /api/build      — build the static site (scripts/build_site.py)
-  POST /api/validate   — QA the workspace (scripts/validate.py)
-  POST /api/chat       — stream the AI agent (Server-Sent Events)
+  GET  /api/library       — worlds/characters/stories as JSON (scripts/library.py)
+  POST /api/build         — build the studio preview, drafts included (scripts/build_site.py)
+  POST /api/build/publish — build the public preview, published only (→ site_publish/)
+  POST /api/story/status  — publish/unpublish ONE story via the gated scripts/publish_story.py
+  POST /api/deploy        — git add/commit/push so the Pages workflow ships the site
+  POST /api/validate      — QA the workspace (scripts/validate.py)
+  POST /api/chat          — stream the AI agent (Server-Sent Events)
 
 The chat agent is OpenCode driving a LOCAL Ollama model (default minimax-m3:cloud) — so NO API
 KEY is needed. We manage an `opencode serve` subprocess (random port, killed on exit) and talk
@@ -24,6 +27,7 @@ import os
 import random
 import signal
 import subprocess
+import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -121,6 +125,14 @@ Read CLAUDE.md and methodology/ as needed. Tools live in scripts/ — run them v
 "uv run python scripts/<tool>.py" (new_world.py, new_character.py, new_story.py,
 generate_images.py, validate.py, build_site.py).
 
+SPEED — every tool round trip costs a full model pass, so batch your context gathering:
+- Writing a story in an EXISTING world? Run "uv run python scripts/story_context.py <world>"
+  FIRST — it prints the world bible, full cast (personalities, voices, catchphrases, stages),
+  existing story slugs, the age-band table, and the exact scaffold command in ONE call.
+  Do NOT separately read world.yaml + each character yaml — the pack has it all.
+- Illustrations render pages in parallel already (generate_images.py --jobs, default 4);
+  run it ONCE for the whole story, never page-by-page.
+
 Work INTERACTIVELY and CONFIRM as you go — never build everything in one giant turn:
 1. When the user wants a new world or book, FIRST gather the missing details with a FORM (see the
    FORM PROTOCOL below) — setting, target age band, tone, art-style vibe, main character ideas,
@@ -153,7 +165,9 @@ the user's answers arrive as the next message. Schema:
 Rules: 3-5 fields max; "select" fields give 3-6 options (the user can also type their own); other
 types are "text" and "textarea". A one-sentence lead-in before the block is fine; write NOTHING
 after the block. For plain yes/no confirmations ("Does this look right?") it is fine to just ask in
-one short sentence and stop. NEVER call any interactive "question"/"ask" tool (it is disabled).
+one short sentence and stop. The form is a fenced code block in your normal MESSAGE TEXT — there
+is NO tool named "form"; never attempt a tool call named "form" (it will error). Likewise NEVER
+call any interactive "question"/"ask" tool (it is disabled).
 
 MODEL STAGES — the console can AUTO-PICK a model tuned to whatever step you're about to do, but
 only if you tell it which step that is. Emit exactly ONE of the following on its OWN line at the
@@ -174,14 +188,45 @@ END of your message (the tag is hidden from the user — never mention it):
 If you forget, the console falls back to the fast default. The exact text of the tag is matched —
 no extra spaces inside the brackets, the word after the colon is lowercase.
 
-FILE SAFETY — the workspace must never be left with a broken file:
-- Prefer the scaffolding scripts (new_world.py, new_character.py, new_story.py) to CREATE files;
-  they write valid, atomic YAML. Edit the generated YAML afterward.
-- When you do edit a YAML file, write the COMPLETE, valid document in one go — never save a
-  half-written or truncated file, and never leave trailing/partial content.
-- Immediately after creating or editing any world/character/story file, run
-  "uv run python scripts/validate.py worlds/<world>" (or the specific story path) and FIX any
-  failures before moving on or telling the user a step is done. Do not mark a book published while
+FILE SAFETY — the workspace must never be left with a broken file. Content YAML under worlds/
+is NEVER written or edited as text. Two rules cover everything:
+- CREATE with the scaffolding scripts (new_world.py, new_character.py, new_story.py) — they
+  write valid, atomic YAML with every stub pre-filled. Check a script's usage (positional
+  args!) with --help BEFORE guessing flags — e.g. new_story.py takes
+  `<world> "<Title>" --age 5-7 --year 6 --pages 14 [--slug s]` as positionals, not
+  --world/--title. For a story ALWAYS scaffold all the page stubs up front with --pages N.
+  A story has TWO separate age knobs — never conflate them:
+    --age <band>  = READING level: who reads the WORDS (sentence length, words/page,
+                    word choice). Bands: 0-3, 3-5, 5-7, 7-9, 9-12.
+    --year <N>    = TARGET age: one number, the age the CONTENT is pitched at — humor,
+                    stakes, themes (stored as target_year). A book can be --age 5-7
+                    --year 7: seven-year-old jokes and jeopardy in beginning-reader words.
+- EDIT with the JSON-patch scripts (edit_world.py, edit_character.py, edit_story.py): you emit
+  a SMALL JSON payload on stdin (a heredoc), the script deep-merges it, validates the merged
+  document against the schema, and writes atomically. A bad patch changes NOTHING and prints
+  every schema error at once — fix the JSON and re-run; the file on disk is never broken.
+  NEVER use your write/edit file tools on worlds/**/*.yaml — YAML indentation by hand is how
+  files break. (write/edit tools are still fine for style-guide.md and other non-YAML files.)
+    uv run python scripts/edit_story.py <world>/<story> meta <<'JSON'
+    {"logline": "...", "spine": {...}}
+    JSON
+    uv run python scripts/edit_story.py <world>/<story> pages <<'JSON'
+    [{"number": 3, "text": "...", "image": {"prompt": "...", "characters_present": [...], "alt": "..."}}]
+    JSON
+    uv run python scripts/edit_story.py <world>/<story> interaction <N> <<'JSON'   # game on page N
+    {"type": "...", "prompt": "...", "data": {...}}
+    JSON
+    uv run python scripts/edit_world.py <world> <<'JSON' ...           # same for world.yaml
+    uv run python scripts/edit_character.py <world>/<char> <<'JSON' ...  # and character yamls
+  Merge rules: nested objects merge key-by-key; story pages merge by "number" (send partial
+  page objects); other lists replace wholesale; JSON null deletes a key.
+- Keep every patch SMALL — fill a story's metadata + spine in one call, then the pages in
+  batches of 3-4 pages per call. One giant 300+ line generation takes minutes on the local
+  model and the studio looks frozen the whole time.
+- When the whole artifact is filled in, run "uv run python scripts/validate.py worlds/<world>"
+  (or the specific story path) and FIX any failures before moving on or telling the user a step
+  is done — the edit scripts guarantee schema-validity, but validate.py also checks
+  cross-file consistency (rosters, tokens, images). Do not mark a book published while
   validation fails.
 
 IMAGE GENERATION — the GEMINI_API_KEY is ALREADY configured in this workspace's .env and loaded
@@ -363,8 +408,18 @@ async def api_publish_status():
         out_dir = str(SITE_PUBLISH.relative_to(ROOT))
     except ValueError:
         out_dir = str(SITE_PUBLISH)
+    # Current branch, so the UI can warn when a push won't trigger the Pages deploy
+    # (the deploy-pages workflow only runs on main).
+    branch = None
+    try:
+        rc, out = await run_git(["rev-parse", "--abbrev-ref", "HEAD"])
+        if rc == 0:
+            branch = out.strip() or None
+    except Exception:
+        pass
     return {
         "built": exists,
+        "branch": branch,
         "last_built_mtime": last_built,
         "out_dir": out_dir,
         "deploy_instructions": (
@@ -377,6 +432,77 @@ async def api_publish_status():
             "  scripts/build_site.py --deploy   (prints the git commands)"
         ),
     }
+
+
+@app.post("/api/story/status")
+async def api_story_status(request: Request):
+    """Flip one story between draft and published via scripts/publish_story.py — which runs
+    the FULL validator gate before allowing 'published', so a broken book can't be flipped.
+    Body: {"world": "<slug>", "story": "<slug>", "status": "published"|"draft"}."""
+    body = await request.json()
+    wslug = (body.get("world") or "").strip()
+    sslug = (body.get("story") or "").strip()
+    status = (body.get("status") or "").strip()
+    if not wslug or not sslug or status not in ("published", "draft"):
+        return JSONResponse({"ok": False, "output": "need world, story and a valid status"},
+                            status_code=400)
+    args = ["scripts/publish_story.py", f"{wslug}/{sslug}"]
+    if status == "draft":
+        args.append("--draft")
+    return JSONResponse(await run_tool(args))
+
+
+async def run_git(args: list[str]) -> tuple[int, str]:
+    proc = await asyncio.create_subprocess_exec(
+        "git", *args, cwd=str(ROOT),
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT,
+    )
+    out, _ = await proc.communicate()
+    return proc.returncode or 0, out.decode("utf-8", "replace")
+
+
+@app.post("/api/deploy")
+async def api_deploy():
+    """Ship to GitHub Pages: commit everything and push. The push triggers the
+    deploy-pages workflow (on main), which rebuilds published-only — so drafts can
+    never leak even though we `git add -A`. Reports each git step's output so auth
+    or remote problems surface in the UI instead of failing silently."""
+    log: list[str] = []
+    rc, out = await run_git(["add", "-A"])
+    log.append("$ git add -A\n" + out)
+    if rc != 0:
+        return JSONResponse({"ok": False, "output": "\n".join(log)})
+    rc, out = await run_git(["diff", "--cached", "--quiet"])
+    if rc != 0:  # staged changes exist → commit them
+        rc, out = await run_git(["commit", "-m", "publish storybooks (studio deploy)"])
+        log.append("$ git commit\n" + out)
+        if rc != 0:
+            return JSONResponse({"ok": False, "output": "\n".join(log)})
+    else:
+        log.append("(nothing new to commit — pushing what's here)")
+    rc, out = await run_git(["push"])
+    log.append("$ git push\n" + out)
+    return JSONResponse({"ok": rc == 0, "output": "\n".join(log)})
+
+
+@app.get("/api/progress")
+async def api_progress():
+    """Live progress from long-running scripts (scripts/lib/progress.py side-channel).
+    The agent's bash tool only surfaces a script's stdout when the command FINISHES, so
+    e.g. generate_images.py writes {task, done, total, detail, ts} to
+    .studio-progress.json after each page; the activity strip polls this while busy.
+    A stale file (crashed/killed script) reads as inactive — never a lying banner."""
+    pf = ROOT / ".studio-progress.json"
+    try:
+        data = json.loads(pf.read_text(encoding="utf-8"))
+        age = max(0.0, time.time() - float(data.get("ts") or 0))
+        if age > 120:
+            return {"active": False}
+        return {"active": True, "age": round(age, 1),
+                "task": data.get("task"), "done": data.get("done"),
+                "total": data.get("total"), "detail": data.get("detail")}
+    except Exception:
+        return {"active": False}
 
 
 @app.post("/api/validate")
@@ -558,7 +684,42 @@ async def chat_stream(prompt: str, session_id: str | None, model: str | None, re
                         "parts": [{"type": "text", "text": prompt}],
                     },
                 )
-                async for msg in es.aiter_sse():
+                # Watchdog loop: OpenCode goes COMPLETELY silent while the model streams a
+                # long tool call's arguments (e.g. a whole story.yaml in one `write`) — a
+                # session once sat 6½ minutes with zero events and the studio looked frozen.
+                # Waking every 30s lets us (a) tell the UI "still generating" and (b) notice
+                # a closed tab and abort the agent instead of letting it run unattended.
+                events = es.aiter_sse()
+                silent_secs = 0
+                while True:
+                    try:
+                        msg = await asyncio.wait_for(anext(events), timeout=30.0)
+                    except asyncio.TimeoutError:
+                        if await request.is_disconnected():
+                            try:
+                                await client.post(f"/session/{sid}/abort")
+                            except Exception:
+                                pass
+                            break
+                        silent_secs += 30
+                        # Distinguish "model is slowly generating" from "OpenCode died":
+                        # a quick health probe. A dead process must surface as an ERROR,
+                        # not an eternal series of 'still working' pings.
+                        try:
+                            await client.get("/config", timeout=5.0)
+                        except Exception:
+                            yield sse({"type": "error",
+                                       "text": "OpenCode stopped responding — the agent "
+                                               "process looks dead (crash or Ollama down). "
+                                               "Restart `make ui`, then send "
+                                               "“continue where you left off”; finished "
+                                               "steps are already saved."})
+                            break
+                        yield sse({"type": "stall", "seconds": silent_secs})
+                        continue
+                    except StopAsyncIteration:
+                        break
+                    silent_secs = 0
                     if await request.is_disconnected():
                         # The user navigated away or hit Stop — tell OpenCode to abort the agent
                         # loop so it doesn't keep running tools in the background.

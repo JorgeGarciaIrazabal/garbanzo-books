@@ -1,0 +1,139 @@
+slug: liora
+world: princess-hero
+name: Princess Liora / Star-Strider
+role: protagonist
+species: human child
+pronouns: she/her
+one_liner: A six-year-old princess who sneaks out at night in a bedsheet cape to be the kingdom's most
+  mischievous hero — and the only one who actually gets things done.
+personality:
+  traits:
+  - mischievous
+  - clever
+  - adventurous
+  - warm-hearted
+  - quietly rebellious
+  motivation: To have real adventures and actually help people — not just wave from balconies.
+  fears:
+  - Being caught and forced to be "proper" all the time
+  - The cat judging her (the cat always judges)
+  - Running out of bedsheets for capes
+  flaws:
+  - Impulsive — acts before thinking, creates glorious messes
+  - Terrible at royal etiquette (curtsies become cartwheels)
+  - Hoards shiny things (acorns, buttons, foil wrappers) in her pockets
+  strengths:
+  - Sees solutions adults miss — thinks sideways, climbs up
+  - Fearless at night; the dark is her playground
+  - Makes friends everywhere (baker's apprentice, lantern-lighter, stray cats)
+  quirks:
+  - Talks to the cat like a co-conspirator (the cat understands)
+  - Practices hero landings off the castle stairs — scraped knees are badges
+  - Gives everyone secret hero names (the Advisor is "Sir Clips-a-Lot")
+  - Can't resist a "do not touch" sign
+  values:
+  - Fun over protocol
+  - Helping > impressing
+  - The night belongs to kids
+voice:
+  speech_style: Bright, direct, peppered with dramatic declarations and whispered conspiracies. Uses 'we'
+    for her and the cat. Asks 'what if?' constantly.
+  catchphrases:
+  - The night is ours.
+  - Capes on. Questions later.
+  - 'The cat approves. (narrator: the cat never approves)'
+  - 'Official Princess Business. (code for: chaos)'
+  vocabulary_level: Age 5-6 — simple sentences, big imagination words (magnificent, catastrophe, triumph),
+    sound effects as dialogue (WHOOSH, THWIP, *pounce*)
+appearance:
+  age_appearance: 6 years old, small for age but carries herself large
+  build: Compact, sturdy, always in motion — climbs, crouches, launches
+  height: Knee-high to the Royal Advisor; reaches the Queen's elbow on tiptoes
+  skin: Warm peach with rose-blush cheeks (#ff8fa3), perpetually faintly scraped knees
+  hair: Dark chestnut curls (#3d2b1f), springy and escape-prone — tiara perpetually askew by day, wild
+    halo by night
+  eyes: Large, expressive hero-teal (#4ecdc4), catch light like stars
+  outfit: 'DAY: Lavender princess dress (#b8a0d6) with peach sash (#ffb88c), hidden deep pockets, practical
+    Mary Janes. NIGHT: Same clothes underneath + bedsheet cape (hero-teal #4ecdc4 lined with star-gold
+    #ffd93d), pillowcase mask with star charm, mismatched sock-gloves (one lavender, one peach), bare
+    feet or soft boots.'
+  distinguishing_features:
+  - 'Single star-shaped earring (star-gold #ffd93d) — left ear only, the visual anchor'
+  - Tiara worn crooked (day) / pillowcase mask with star charm (night) — same star motif
+  - 'Perpetual motion pose: crouched, mid-leap, or hanging upside down'
+  - The cat (midnight-blue, star-patch chest) always nearby — on shoulder, head, or judging from a windowsill
+  color_palette:
+  - part: hair
+    hex: '#3d2b1f'
+  - part: eyes
+    hex: '#4ecdc4'
+  - part: skin
+    hex: '#ffdab9'
+  - part: cheeks
+    hex: '#ff8fa3'
+  - part: day-dress
+    hex: '#b8a0d6'
+  - part: day-sash
+    hex: '#ffb88c'
+  - part: star-earring
+    hex: '#ffd93d'
+  - part: night-cape
+    hex: '#4ecdc4'
+  - part: night-cape-lining
+    hex: '#ffd93d'
+  - part: mask-charm
+    hex: '#ffd93d'
+  - part: sock-glove-1
+    hex: '#b8a0d6'
+  - part: sock-glove-2
+    hex: '#ffb88c'
+  silhouette_notes: Small, spring-loaded silhouette — wild curls, cape or dress flared mid-motion, star
+    earring glint at ear level. Instantly distinct from adults (tall, stiff) and the cat (low, horizontal).
+    The star earring/charm is the readable-at-any-size anchor.
+appearance_token: 'LIORA: 6-year-old girl, small compact build, dark chestnut springy curls (#3d2b1f),
+  large hero-teal eyes (#4ecdc4), warm peach skin with rose-blush cheeks (#ff8fa3), single star-gold earring
+  (#ffd93d) left ear. DAY: lavender princess dress (#b8a0d6) with peach sash (#ffb88c), crooked tiara,
+  Mary Janes. NIGHT: bedsheet cape hero-teal (#4ecdc4) lined star-gold (#ffd93d), pillowcase mask with
+  star-gold charm, mismatched sock-gloves (lavender #b8a0d6 / peach #ffb88c), bare feet. ALWAYS: mid-motion
+  pose (crouch/leap/climb), expressive determined-joy face, midnight-blue cat with star-patch chest nearby.'
+reference_images:
+- characters/liora.refs/model-sheet.png
+seed: 847291
+relationships:
+- character: cat
+  relation: Sidekick, co-conspirator, only one who knows the secret. She talks; it judges. Perfect team.
+- character: queen
+  relation: Mother. Sharp-eyed, secretly proud, pretends not to notice mud on the royal sheets.
+- character: royal-advisor
+  relation: Opposite. He clips; she cartwheels. He worries; she solves. Unspoken respect.
+- character: guard-captain
+  relation: Loud foil. She outruns, outclimbs, outsmarts. He never catches her — only her cape (once).
+evolution:
+- stage: base
+  order: 0
+  summary: Established dual life. Confident in both identities. The secret is her superpower.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: Series start
+- stage: cape-upgrade
+  order: 1
+  summary: Gets a *real* cape (gift from baker's apprentice, sewn by lantern-lighter) — still DIY spirit,
+    better flight.
+  personality_delta: Tiny bit more deliberate; plans the leap, not just the landing.
+  appearance_delta: ', cape now patched quilt-fabric (hero-teal/star-gold/rose-blush) with actual ties
+    instead of safety pins'
+  unlocked_by: 'Story: The Great Cape Rescue'
+- stage: sidekick-official
+  order: 2
+  summary: The cat gets a tiny mask. They're a recognized duo (even if officially 'the hero and... that
+    cat').
+  personality_delta: Leans into partnership; narrates plans to the cat out loud.
+  appearance_delta: ', cat now wears miniature pillowcase mask (star-gold charm matches hers)'
+  unlocked_by: 'Story: The Night the Cat Spoke (it didn''t, but it wore the mask)'
+tags:
+- protagonist
+- dual-identity
+- princess
+- superhero
+- mischief
+- ages-3-5

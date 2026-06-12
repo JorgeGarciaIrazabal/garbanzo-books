@@ -34,8 +34,15 @@ grow. Read `methodology/consistency.md` (character toolkit) first.
 6. **Create reference art** (strongly recommended): illustrate a character sheet
    (`/illustrate --character <slug>`) and save it to `reference_images`; set a stable `seed`.
    These anchor every future render.
-7. **Scaffold & validate**: `uv run python scripts/new_character.py <world> "<Name>"` then
-   `uv run python scripts/validate.py worlds/<world>`.
+7. **Scaffold & save**: `uv run python scripts/new_character.py <world> "<Name>"`, then fill the
+   bible with a **JSON patch** — never edit the YAML text directly:
+   ```bash
+   uv run python scripts/edit_character.py <world>/<slug> <<'JSON'
+   {"appearance_token": "...", "personality": {...}, "appearance": {...}, "evolution": [...]}
+   JSON
+   ```
+   (Nested objects merge; lists replace wholesale; the tool schema-validates before writing.)
+   Then `uv run python scripts/validate.py worlds/<world>`.
 
 ## Quality bar
 - Silhouette test: black out the figure — still recognisable? Distinct from castmates?

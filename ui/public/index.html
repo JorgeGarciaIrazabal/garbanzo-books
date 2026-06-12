@@ -118,29 +118,11 @@
       <div class="ship">
         <div class="ship-head">
           <h3>Ship to GitHub Pages</h3>
-          <p>Run the gates, build the public site, push. Only stories marked <code>published</code> go out — drafts stay home.</p>
+          <p>Publish stories from their <strong>Library cards</strong> (the gate validates them for you), build, then deploy. Drafts always stay home.</p>
         </div>
         <div class="ship-step">
           <div class="step-row">
             <span class="step-num">1</span>
-            <div class="step-info"><strong>Validate</strong><span>schema, consistency &amp; reading-level checks — the publish gate</span></div>
-            <span class="step-status" id="job-validate-status"></span>
-            <button class="btn small" id="btn-validate">Run</button>
-          </div>
-          <details class="job hidden" id="job-validate"><summary>output</summary><pre id="job-validate-out"></pre></details>
-        </div>
-        <div class="ship-step">
-          <div class="step-row">
-            <span class="step-num">2</span>
-            <div class="step-info"><strong>Quality report</strong><span>the 7-gate scorecard — gate one: is it fun?</span></div>
-            <span class="step-status" id="job-quality-status"></span>
-            <button class="btn small" id="btn-quality">Run</button>
-          </div>
-          <details class="job hidden" id="job-quality"><summary>report</summary><pre id="job-quality-out"></pre></details>
-        </div>
-        <div class="ship-step">
-          <div class="step-row">
-            <span class="step-num">3</span>
             <div class="step-info"><strong>Build the public site</strong><span>published only — <em>exactly</em> what GitHub Pages will deploy <span class="badge pub" id="public-badge">no build yet</span></span></div>
             <span class="step-status" id="job-publish-status"></span>
             <button class="btn small" id="btn-publish">🔨 Build</button>
@@ -149,14 +131,29 @@
         </div>
         <div class="ship-step">
           <div class="step-row">
-            <span class="step-num">4</span>
-            <div class="step-info"><strong>Deploy</strong><span>happy with the preview below? Push it — CI rebuilds published-only, so drafts can never leak</span></div>
+            <span class="step-num">2</span>
+            <div class="step-info"><strong>Deploy</strong><span>commit &amp; push — CI rebuilds published-only, so drafts can never leak <span class="badge pub hidden" id="branch-warn"></span></span></div>
+            <span class="step-status" id="job-deploy-status"></span>
+            <button class="btn small primary" id="btn-deploy">🚀 Deploy</button>
           </div>
-          <div class="deploy-cmds">
-            <div class="cmdline"><code id="cmd-push">git add -A &amp;&amp; git commit -m "publish" &amp;&amp; git push</code><button class="btn ghost small copybtn" data-copy="cmd-push" title="Copy">⧉</button></div>
-            <div class="cmdline"><code id="cmd-gh">gh workflow run deploy-pages.yml</code><button class="btn ghost small copybtn" data-copy="cmd-gh" title="Copy">⧉</button></div>
-          </div>
+          <details class="job hidden" id="job-deploy"><summary>deploy output</summary><pre id="job-deploy-out"></pre></details>
+          <details class="deploy-manual">
+            <summary>prefer to push by hand?</summary>
+            <div class="deploy-cmds">
+              <div class="cmdline"><code id="cmd-push">git add -A &amp;&amp; git commit -m "publish" &amp;&amp; git push</code><button class="btn ghost small copybtn" data-copy="cmd-push" title="Copy">⧉</button></div>
+              <div class="cmdline"><code id="cmd-gh">gh workflow run deploy-pages.yml</code><button class="btn ghost small copybtn" data-copy="cmd-gh" title="Copy">⧉</button></div>
+            </div>
+          </details>
         </div>
+        <div class="qa-row">
+          <span class="qa-label">checks:</span>
+          <button class="btn ghost tiny" id="btn-validate" title="Schema, consistency &amp; reading-level checks — the same gate the Publish button runs per story">✓ validate</button>
+          <span class="step-status" id="job-validate-status"></span>
+          <button class="btn ghost tiny" id="btn-quality" title="The 7-gate quality scorecard — gate one: is it fun?">★ quality</button>
+          <span class="step-status" id="job-quality-status"></span>
+        </div>
+        <details class="job hidden" id="job-validate"><summary>validate output</summary><pre id="job-validate-out"></pre></details>
+        <details class="job hidden" id="job-quality"><summary>quality report</summary><pre id="job-quality-out"></pre></details>
       </div>
       <div class="preview-bar">
         <span>Public preview — <em>what readers will see</em></span>

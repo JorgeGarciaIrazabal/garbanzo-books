@@ -1,0 +1,20 @@
+{
+  "page": 9,
+  "prompt_seed": 917248220,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely captures the scene and character details effectively, with minor inconsistencies.",
+      "flags": [
+        "scene_mismatch",
+        "style_inconsistent"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-09-917248220.png"
+    }
+  ],
+  "winner": "page-09.png"
+}

@@ -31,9 +31,15 @@ stories can live in it coherently. Read `methodology/consistency.md` (world bibl
      extra fingers, harsh shadows).
    - `aspect_ratio` (default 4:3) and `text_treatment` (placement, scrim, font,
      dyslexia_friendly).
-4. **Scaffold the files** — run `uv run python scripts/new_world.py "<Title>"` (or write the YAML
-   following `schemas/world.schema.json`; see `templates/README.md`). Then flesh out
-   `style-guide.md` as the human-readable art
+4. **Scaffold the files** — run `uv run python scripts/new_world.py "<Title>"`, then fill the
+   bible with a **JSON patch** — never edit the YAML text directly:
+   ```bash
+   uv run python scripts/edit_world.py <slug> <<'JSON'
+   {"premise": "...", "rules": [...], "art_style": {"prompt_style_block": "...", "palette": [...]}}
+   JSON
+   ```
+   (Nested objects merge; lists replace wholesale; the tool schema-validates before writing.)
+   Then flesh out `style-guide.md` as the human-readable art
    direction (with the palette swatches and 2–3 do/don't examples).
 5. **Validate**: `uv run python scripts/validate.py worlds/<slug>` (schema check).
 

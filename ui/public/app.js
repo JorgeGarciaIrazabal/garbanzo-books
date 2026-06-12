@@ -742,6 +742,7 @@ function startActivity(text) {
   show($("#activity"));
   if (!activityTimer) activityTimer = setInterval(tickElapsed, 1000);
   tickElapsed();
+  startProgressPoll();
 }
 function tickElapsed() {
   const s = Math.round((Date.now() - activityStart) / 1000);
@@ -750,7 +751,54 @@ function tickElapsed() {
 function setActivity(text) { if (text) setText("#activity-text", text); }
 function stopActivity() {
   if (activityTimer) { clearInterval(activityTimer); activityTimer = null; }
+  stopProgressPoll();
   hide($("#activity"));
+}
+
+// Script-level progress: long scripts (image generation…) run inside the agent's bash
+// tool, whose output only reaches us when the command FINISHES. They publish per-unit
+// progress to a side-channel file instead; while the activity strip is up we poll
+// /api/progress and show "🎨 illustrating 7/16 — page 07" with a live bar. The endpoint
+// reports inactive when no script is publishing, so normal chat activity is untouched.
+let progressPollTimer = null;
+const TASK_ICON = { illustrating: "🎨", building: "🔨", validating: "✓" };
+function progressLine(p) {
+  const ico = TASK_ICON[p.task] || "⚙️";
+  const total = Math.max(1, p.total || 1);
+  const filled = Math.round(10 * (p.done || 0) / total);
+  const bar = "▰".repeat(filled) + "▱".repeat(10 - filled);
+  return `${ico} ${p.task} ${bar} ${p.done}/${p.total}${p.detail ? " — " + p.detail : ""}`;
+}
+function startProgressPoll() {
+  if (progressPollTimer) return;
+  progressPollTimer = setInterval(async () => {
+    try {
+      const r = await fetch("/api/progress");
+      const p = await r.json();
+      if (p && p.active && p.total) setActivity(progressLine(p));
+    } catch (e) { /* non-fatal — the strip just keeps its last text */ }
+  }, 2000);
+}
+function stopProgressPoll() {
+  if (progressPollTimer) { clearInterval(progressPollTimer); progressPollTimer = null; }
+}
+
+// How to phrase "no events for N seconds". Under 3 minutes this is normal local-model
+// slowness; past it the odds shift toward genuinely stuck (a hung Ollama stream), so the
+// tone escalates and `warn` styles the strip. Pure → unit-tested.
+const STALL_WARN_SECS = 180;
+function stallNotice(seconds) {
+  const s = seconds || 0;
+  const mins = Math.floor(s / 60), rem = s % 60;
+  const span = mins ? mins + "m" + (rem ? " " + rem + "s" : "") : rem + "s";
+  if (s >= STALL_WARN_SECS) {
+    return { warn: true, span,
+      text: "🛑 No progress for " + span + " — the model looks stuck. ⏹ Stop is safe: " +
+            "finished steps are already saved on disk." };
+  }
+  return { warn: false, span,
+    text: "⏳ Still generating — " + span + " without news (long writes are slow on " +
+          "local models). ⏹ Stop to redirect." };
 }
 
 // --------------------------------------------------------------------------------- quick replies
@@ -892,6 +940,13 @@ function toolLine(ev) {
 }
 
 function handleEvent(ev, state) {
+  // Any substantive event means the agent is alive again — clear the stuck warning so a
+  // LATER stall episode in the same turn can alert once more.
+  if (ev.type !== "stall" && ev.type !== "status") {
+    state.stallWarned = false;
+    const act = $("#activity");
+    if (act) act.classList.remove("warn");
+  }
   switch (ev.type) {
     case "session":
       sessionId = ev.sessionId;
@@ -914,6 +969,26 @@ function handleEvent(ev, state) {
       // busy/idle heartbeat from OpenCode
       if (ev.state === "busy") { if (!activityTimer) startActivity("Thinking…"); }
       break;
+    case "stall": {
+      // The server's watchdog: no OpenCode events for ev.seconds — usually the model
+      // streaming one long generation (a big page batch, a long reply), past 3 minutes
+      // more likely genuinely stuck. The strip escalates; the first time a turn crosses
+      // the line we also drop ONE chat notice so it can't be missed.
+      if (!activityTimer) startActivity("Working…");
+      const n = stallNotice(ev.seconds);
+      setActivity(n.text);
+      const act = $("#activity");
+      if (act) act.classList.toggle("warn", n.warn);
+      if (n.warn && !state.stallWarned) {
+        state.stallWarned = true;
+        addMsg("system",
+          "⚠️ The agent hasn't produced anything for **" + n.span + "** — it may be stuck " +
+          "(a hung model stream, or one very large generation). It's safe to ⏹ **Stop** and " +
+          "send *“continue where you left off”* — every completed step is already saved to disk.",
+          "system");
+      }
+      break;
+    }
     case "reasoning": {
       // The agent's chain-of-thought, streamed live. Each reasoning part is its own
       // collapsible section; the tail also shows in the summary + activity strip.
@@ -971,6 +1046,23 @@ function handleEvent(ev, state) {
 
 // ================================================================================ guided forms
 const AGE_BANDS = ["0-3", "3-5", "5-7", "7-9"];
+
+// Two separate knobs for a story (see schemas/story.schema.json):
+//  • target_year — what the story is ABOUT: one age (in years) the humor/stakes/themes are
+//    pitched at. CONTENT, not word difficulty.
+//  • reading level — who READS the words: the ability band that drives sentence length,
+//    words per page, and word choice.
+const TARGET_YEARS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+const YEAR_HINT = "What the story is ABOUT: humor, stakes and themes pitched at a kid this many years old. One number, not a range. It does NOT change how hard the words are — that's the reading level.";
+const READING_LEVELS = [
+  { value: "0-3", label: "0–3 · Lap baby", desc: "A grown-up reads aloud; the child listens and points. Very few words, lots of rhythm and repetition." },
+  { value: "3-5", label: "3–5 · Pre-reader", desc: "Read-aloud for preschoolers. Simple words they can echo and predict; short, musical sentences." },
+  { value: "5-7", label: "5–7 · Beginning reader", desc: "They read it themselves (or nearly). Short sentences, easy decodable words, generous repetition." },
+  { value: "7-9", label: "7–9 · Confident reader", desc: "Reads independently. Longer sentences, richer vocabulary, a few stretch words." },
+  { value: "9-12", label: "9–12 · Independent reader", desc: "Near chapter-book language: complex sentences and ambitious vocabulary." },
+];
+const READING_HINT = "Who will READ the words: sets sentence length, words per page and word choice. For a bedtime read-aloud pick the listener's level, not the grown-up's.";
+
 const TONES = ["gentle & cozy", "funny & playful", "adventurous", "magical & dreamy", "reassuring (bedtime)", "silly & energetic"];
 const ART = ["soft watercolor storybook", "bold flat cartoon", "dreamy pastel", "cut-paper collage", "crayon / hand-drawn", "retro mid-century"];
 
@@ -981,7 +1073,8 @@ const FORMS = {
     model: M_AUTO,
     fields: [
       { name: "about", label: "What's it about?", type: "textarea", required: true, placeholder: "a shy dragon who learns to share" },
-      { name: "age", label: "Age band", type: "select", options: AGE_BANDS, default: "5-7" },
+      { name: "year", label: "Target age (years)", type: "select", options: TARGET_YEARS, default: "6", hint: YEAR_HINT },
+      { name: "reading", label: "Reading level", type: "select", options: READING_LEVELS, default: "5-7", hint: READING_HINT },
       { name: "tone", label: "Tone", type: "select", options: TONES },
       { name: "art", label: "Art-style vibe", type: "select", options: ART },
       { name: "characters", label: "Main character(s)", type: "text", placeholder: "e.g. Ember the dragon (or leave blank)" },
@@ -990,7 +1083,8 @@ const FORMS = {
     build: (v) => [
       "I'd like a brand-new interactive storybook. Here are the details:",
       `• About: ${v.about}`,
-      `• Age band: ${v.age}`,
+      `• Target age (CONTENT): ${v.year} — pitch the humor, stakes and themes at a ${v.year}-year-old`,
+      `• Reading level (WORDS): ${v.reading} band — scaffold the story with --age ${v.reading} --year ${v.year}`,
       `• Tone: ${v.tone}`,
       `• Art-style vibe: ${v.art}`,
       `• Main character(s): ${v.characters || "you suggest a couple"}`,
@@ -1053,14 +1147,16 @@ const FORMS = {
     fields: [
       { name: "world", label: "World", type: "world", required: true },
       { name: "characters", label: "Starring", type: "text", required: true, placeholder: "Pip and Olo" },
-      { name: "age", label: "Age band", type: "select", options: AGE_BANDS, default: "5-7" },
+      { name: "year", label: "Target age (years)", type: "select", options: TARGET_YEARS, default: "6", hint: YEAR_HINT },
+      { name: "reading", label: "Reading level", type: "select", options: READING_LEVELS, default: "5-7", hint: READING_HINT },
       { name: "about", label: "Plot / theme", type: "textarea", required: true, placeholder: "losing a first tooth" },
       { name: "interactions", label: "Interaction focus (optional)", type: "text", placeholder: "rhyme, seek-and-find, a choice" },
     ],
     build: (v) => [
       `Write a new STORY in the world "${v.world}":`,
       `• Starring: ${v.characters}`,
-      `• Age band: ${v.age}`,
+      `• Target age (CONTENT): ${v.year} — pitch the humor, stakes and themes at a ${v.year}-year-old`,
+      `• Reading level (WORDS): ${v.reading} band — scaffold the story with --age ${v.reading} --year ${v.year}`,
       `• Plot / theme: ${v.about}`,
       `• Interaction focus: ${v.interactions || "a good mix for the age"}`,
       "",
@@ -1079,13 +1175,19 @@ function worldOptionsHtml() {
 function fieldHtml(f) {
   const id = "f_" + f.name;
   const req = f.required ? "required" : "";
+  // Options may be plain strings or {value, label, desc}: desc shows under the select for
+  // whichever option is chosen (wired up in openForm).
+  const norm = (o) => (typeof o === "object" && o !== null) ? o : { value: o, label: o };
   let input;
   if (f.type === "textarea") {
     input = `<textarea id="${id}" name="${f.name}" rows="2" placeholder="${escapeHtml(f.placeholder || "")}" ${req}></textarea>`;
   } else if (f.type === "select") {
-    input = `<select id="${id}" name="${f.name}">` +
-      f.options.map(o => `<option value="${escapeHtml(o)}" ${o === f.default ? "selected" : ""}>${escapeHtml(o)}</option>`).join("") +
-      `</select>`;
+    const opts = f.options.map(norm);
+    const hasDesc = opts.some(o => o.desc);
+    input = `<select id="${id}" name="${f.name}"${hasDesc ? ' data-descsel' : ''}>` +
+      opts.map(o => `<option value="${escapeHtml(o.value)}" data-desc="${escapeHtml(o.desc || "")}" ${o.value === f.default ? "selected" : ""}>${escapeHtml(o.label)}</option>`).join("") +
+      `</select>` +
+      (hasDesc ? `<div class="opt-desc" data-descfor="${escapeHtml(f.name)}"></div>` : "");
   } else if (f.type === "world") {
     const opts = worldOptionsHtml();
     input = opts
@@ -1094,7 +1196,12 @@ function fieldHtml(f) {
   } else {
     input = `<input id="${id}" name="${f.name}" type="text" placeholder="${escapeHtml(f.placeholder || "")}" ${req}>`;
   }
-  return `<label class="field"><span>${escapeHtml(f.label)}</span>${input}</label>`;
+  // An optional `hint` renders a little ? badge whose popup explains what the field is FOR
+  // (pure CSS on hover/focus — see .hint/.hint-pop in styles.css).
+  const hint = f.hint
+    ? ` <span class="hint" tabindex="0" role="note" aria-label="${escapeHtml(f.hint)}">?<span class="hint-pop">${escapeHtml(f.hint)}</span></span>`
+    : "";
+  return `<label class="field"><span>${escapeHtml(f.label)}${hint}</span>${input}</label>`;
 }
 
 function openForm(key) {
@@ -1112,6 +1219,16 @@ function openForm(key) {
        </div>`;
     const cancel = $("#form-cancel");
     if (cancel) cancel.onclick = closeForm;
+    // Keep each described select's helper line in sync with the chosen option.
+    form.querySelectorAll("select[data-descsel]").forEach(sel => {
+      const line = form.querySelector(`.opt-desc[data-descfor="${sel.name}"]`);
+      const sync = () => {
+        const o = sel.options[sel.selectedIndex];
+        if (line) line.textContent = (o && o.dataset.desc) || "";
+      };
+      sel.addEventListener("change", sync);
+      sync();
+    });
   }
   show($("#formwrap"));
   hideQuickReplies();
@@ -1296,6 +1413,10 @@ function renderLibrary(worlds, errors) {
           </span>
           <span class="booktitle">${escapeHtml(s.title)}</span>
           <span class="bookmeta">${escapeHtml(s.age_band || "")} · ${s.pages} pages · ${s.interactions} ${s.interactions === 1 ? "game" : "games"}</span>
+          <button type="button" class="pubbtn ${pub ? "to-draft" : "to-pub"}"
+            data-w="${escapeHtml(w.slug)}" data-s="${escapeHtml(s.slug)}" data-next="${pub ? "draft" : "published"}"
+            title="${pub ? "Take this story off the public site (back to draft)" : "Run the publish gate and put this story on the public site"}">
+            ${pub ? "⏏ Unpublish" : "🚀 Publish"}</button>
         </a>`;
       }).join("") || '<p class="tagline">No stories yet.</p>'}
       </div>
@@ -1414,7 +1535,57 @@ async function refreshPublishStatus() {
       // the result the moment they rebuild.
       frame.dataset.built = s.built ? "1" : "0";
     }
+    // The Pages workflow only deploys pushes to main — warn when Deploy would push
+    // somewhere it won't auto-ship from.
+    const bw = $("#branch-warn");
+    if (bw) {
+      const off = s.branch && s.branch !== "main" && s.branch !== "HEAD";
+      bw.textContent = off ? `on '${s.branch}' — Pages auto-deploys from main` : "";
+      bw.classList.toggle("hidden", !off);
+      bw.classList.toggle("warnish", !!off);
+    }
   } catch (e) { /* non-fatal — leave the badge as-is */ }
+}
+
+// Publish / unpublish ONE story from its library card. publish_story.py runs the full
+// validator gate before allowing "published", so this button IS the publish gate — when it
+// fails, the gate's output lands in the chat so the author sees exactly what to fix.
+// On success the studio quietly rebuilds both previews so every link/ribbon stays true.
+async function setStoryStatus(btn) {
+  const wslug = btn.dataset.w, sslug = btn.dataset.s, next = btn.dataset.next;
+  if (!wslug || !sslug || btn.disabled) return;
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>' + (next === "published" ? "Checking gate…" : "Working…");
+  let data = null;
+  try {
+    const res = await fetch("/api/story/status", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ world: wslug, story: sslug, status: next }),
+    });
+    data = await res.json();
+  } catch (e) {
+    data = { ok: false, output: String((e && e.message) || e) };
+  }
+  if (!data.ok) {
+    btn.disabled = false;
+    btn.textContent = label;
+    addMsg("system", "🚧 **" + sslug + "** wasn't " + (next === "published" ? "published" : "set to draft") +
+      ":\n\n```\n" + String(data.output || "").trim() + "\n```", "system");
+    return;
+  }
+  btn.innerHTML = '<span class="spinner"></span>Rebuilding…';
+  // Both builds: studio preview (ribbons/links) + public preview (the real shape).
+  try { await fetch("/api/build", { method: "POST" }); } catch (e) { /* non-fatal */ }
+  try { await fetch("/api/build/publish", { method: "POST" }); } catch (e) { /* non-fatal */ }
+  loadLibrary();
+  refreshPreview();
+  refreshPublicPreview();
+  refreshPublishStatus();
+  if (next === "published") {
+    addMsg("system", "🚀 **" + sslug + "** passed the gate and is published. " +
+      "It's in the public build — hit **Deploy** on the Publish tab to ship it to GitHub Pages.", "system");
+  }
 }
 
 // Run a build/validate/quality job and show its status + output IN PLACE (next to the button
@@ -1518,10 +1689,23 @@ if (btnValidate) btnValidate.onclick = () => runJob("validate", "/api/validate",
 // quality_report.py always exits 0 (it's a scorecard, not a gate) — label it honestly.
 const btnQuality = $("#btn-quality");
 if (btnQuality) btnQuality.onclick = () => runJob("quality", "/api/quality", { okLabel: "report ready", failLabel: "errored" });
+// Deploy: commit & push from the server — the push triggers the Pages workflow.
+const btnDeploy = $("#btn-deploy");
+if (btnDeploy) btnDeploy.onclick = () => runJob("deploy", "/api/deploy", {
+  okLabel: "pushed — Pages is deploying", failLabel: "push failed",
+});
 const btnRefresh = $("#btn-refresh"); if (btnRefresh) btnRefresh.onclick = loadLibrary;
 // Cast chips are re-rendered on every library refresh — delegate so one handler covers them all.
 const libRoot = $("#library");
 if (libRoot) libRoot.addEventListener("click", (e) => {
+  // Publish/unpublish lives INSIDE the card link — swallow the navigation.
+  const pub = e.target.closest(".pubbtn");
+  if (pub) {
+    e.preventDefault();
+    e.stopPropagation();
+    setStoryStatus(pub);
+    return;
+  }
   const chip = e.target.closest(".castchip");
   if (!chip) return;
   const w = libraryWorlds.find(x => x.slug === chip.dataset.w);
