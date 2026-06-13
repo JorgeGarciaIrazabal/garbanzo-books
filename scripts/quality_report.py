@@ -33,7 +33,7 @@ from lib.readability import BANDS, words  # noqa: E402
 
 # Generous upper bounds on total word count per band (sprawl guard, from the
 # storybook-pipeline manuscript table). Short is fine for kids' books; bloat isn't.
-MAX_TOTAL_WORDS = {"0-3": 150, "3-5": 600, "5-7": 1500, "7-9": 3500, "9-12": 9000}
+MAX_TOTAL_WORDS = {"0-3": 150, "3-5": 600, "5-7": 1500, "7-9": 3500, "9-12": 9000, "grown-up": 20000}
 SPINE_BEATS = ["once_upon_a_time", "every_day", "until_one_day", "until_finally", "ever_since_then"]
 
 

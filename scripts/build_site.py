@@ -38,7 +38,7 @@ SITE = ROOT / "site"  # default output dir; `build(out=...)` may override per ca
 ASSET_SRC = Path(__file__).resolve().parent / "site_assets"
 
 # Reader base font size (px) per age band (accessibility.md).
-READER_BASE = {"0-3": 28, "3-5": 24, "5-7": 22, "7-9": 18, "9-12": 16}
+READER_BASE = {"0-3": 28, "3-5": 24, "5-7": 22, "7-9": 18, "9-12": 16, "grown-up": 14}
 
 # The reader runtime. Order matters: reader.js defines window.GB + the registry + the
 # controller; gx.core.js adds the game framework; the game libraries register themselves;

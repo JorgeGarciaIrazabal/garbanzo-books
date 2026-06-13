@@ -1,0 +1,103 @@
+slug: bram
+world: strongest-wizard
+name: Bram
+role: sidekick
+species: human
+pronouns: he/him
+one_liner: Aria's cautious best friend who calculates every spell — and still gets surprised when they
+  work.
+personality:
+  traits:
+  - analytical
+  - loyal
+  - nervous
+  - resourceful
+  - dry-witted
+  motivation: Keep Aria from blowing herself up (and learn enough magic to help)
+  fears:
+  - uncontrolled magic
+  - heights
+  - disappointing Aria
+  - monsters with teeth
+  flaws:
+  - overthinks until the moment passes
+  - freezes under pressure
+  - hoards spell components 'just in case'
+  strengths:
+  - spell theory expert
+  - sees patterns Aria misses
+  - impeccable preparation
+  - calm voice in chaos
+  quirks:
+  - counts on fingers before casting
+  - carries 47 'emergency' items in pockets
+  - whispers spells like they're secrets
+  values:
+  - friendship
+  - safety
+  - knowledge
+  - doing things properly
+voice:
+  speech_style: warm, simple, lots of questions
+  catchphrases: []
+  vocabulary_level: age-appropriate, concrete
+appearance:
+  age_appearance: 8 years old
+  build: tall and lanky, all elbows and knees
+  height: tallest in the friend group
+  skin: pale olive, burns easily
+  hair: floppy dark brown curls (#3e2723) that fall in his eyes
+  eyes: wide, warm brown (#6d4c41), always scanning
+  outfit: mint-green tunic (#a8e6cf) with too many pockets, cream trousers (#fdf6e3), oversized lavender
+    scarf (#c7b8ea) tied tight, round wire glasses
+  distinguishing_features:
+  - glasses perpetually sliding down nose
+  - pockets visibly bulging with jars, chalk, string
+  - scarf ends drag on ground when he runs
+  - one sleeve always rolled up higher than the other
+  color_palette:
+  - part: tunic
+    hex: '#a8e6cf'
+  - part: trousers
+    hex: '#fdf6e3'
+  - part: scarf
+    hex: '#c7b8ea'
+  - part: hair
+    hex: '#3e2723'
+  - part: eyes
+    hex: '#6d4c41'
+  - part: glasses
+    hex: '#d7ccc8'
+  - part: pocket_items
+    hex: '#ffd93d'
+  silhouette_notes: Tall gangly frame, floppy curls, glasses glint, scarf trailing, pockets bulging asymmetrically
+    — distinct from Aria's round smallness
+appearance_token: 'BRAM: human boy 8, tall lanky build, pale olive skin, floppy dark brown curls (#3e2723),
+  wide warm brown eyes (#6d4c41) behind round wire glasses (#d7ccc8), mint-green pocket-covered tunic
+  (#a8e6cf), cream trousers (#fdf6e3), oversized lavender scarf (#c7b8ea) dragging, pockets bulging with
+  jars/chalk/string, one sleeve rolled higher, nervous concentrated expression counting on fingers'
+reference_images:
+- characters/bram.refs/model-sheet.svg
+seed: 552918
+relationships: []
+evolution:
+- stage: base
+  order: 0
+  summary: Nervous planner — calculates, hesitates, supports from behind
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: beginning of series
+- stage: quick-thinker
+  order: 1
+  summary: Faster on his feet — theory meets instinct
+  personality_delta: Trusts gut more, acts before overthinking, still prepared but flexible
+  appearance_delta: scarf tied shorter (less tripping), glasses stay put, one pocket organized for quick-draw
+    components
+  unlocked_by: improvises a spell that saves the day
+- stage: strategist
+  order: 2
+  summary: Battle tactician — sees the whole board
+  personality_delta: Calm authority, directs friends mid-fight, Aria listens to him
+  appearance_delta: custom tunic with component bandolier, faint tactical glow in glasses, confident posture
+  unlocked_by: leads friends through a real magical crisis
+tags: []

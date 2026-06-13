@@ -1,0 +1,20 @@
+{
+  "page": 10,
+  "prompt_seed": 811121831,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration captures a whimsical mood and the general scene, but needs refinement to fully align with the brief.",
+      "flags": [
+        "scene_mismatch",
+        "style_inconsistent"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-10-811121831.png"
+    }
+  ],
+  "winner": "page-10.png"
+}

@@ -12,7 +12,8 @@
           "name": "Nemotron-3-Ultra (via local Ollama, no API key) — fast, default craft model"
         },
         "deepseek-v4-pro:cloud": {
-          "name": "DeepSeek-V4-Pro (via local Ollama, no API key) — more creative, used for story writing"
+          "name": "DeepSeek-V4-Pro (via local Ollama, no API key) — more creative, used for story writing",
+          "options": { "reasoningEffort": "high" }
         },
         "minimax-m3:cloud": {
           "name": "MiniMax-M3 (via local Ollama, no API key) — used for information gathering / research"
@@ -23,7 +24,7 @@
       }
     }
   },
-  "model": "ollama/nemotron-3-ultra:cloud",
+  "model": "ollama/deepseek-v4-pro:cloud",
   "instructions": ["CLAUDE.md"],
   "permission": {
     "edit": "allow",

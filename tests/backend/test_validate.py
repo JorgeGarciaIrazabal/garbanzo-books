@@ -255,8 +255,8 @@ def test_check_story_warns_when_no_interactions_at_all(write_world, factories):
 
 
 def test_check_story_warns_when_every_game_is_a_quiz(write_world, factories):
-    """Fun-first: if every game is a pick-an-answer quiz, nudge the author to add a rich
-    game a kid actually DOES (in-scene, drag, puzzle, music, custom)."""
+    """Fun-first: if every game is a pick-an-answer quiz (legacy), nudge the author to add a REAL
+    arcade game a kid actually DOES."""
     rep = _ok_report()
     w = _world_obj(write_world, factories)
     for n in (1, 2):
@@ -265,7 +265,7 @@ def test_check_story_warns_when_every_game_is_a_quiz(write_world, factories):
             "data": {"question": "?"},
         }
     check_story(rep, w, w.stories[0])
-    assert any("rich" in warn.lower() for warn in rep.warns)
+    assert any("REAL game" in warn for warn in rep.warns)
 
 
 def test_check_story_no_variety_warning_when_games_vary_and_include_rich(write_world, factories):

@@ -25,13 +25,12 @@ def _gate(gates, name):
 
 def _full_story(factories):
     """A story rich enough to pass every gate, for one-failure-at-a-time tests.
-    Fun-first: the games are VARIED kinds of fun and include rich (non-quiz) ones."""
+    Fun-first: the games are VARIED kinds of fun and include REAL arcade games."""
     pages = [{"number": 0, "kind": "title", "text": "T", "image": {"prompt": "t", "alt": "t", "file": "images/p0.png"}}]
     games = {
-        3: {"type": "rhyme-complete", "data": {"answer": "x"}},
-        7: {"type": "drag-sort", "data": {"bins": [{"label": "In", "key": "in"}],
-                                          "items": [{"label": "sock", "bin": "in"}]}},
-        11: {"type": "sequence-recall", "data": {"sequence": ["A", "B", "C"]}},
+        3: {"type": "arcade-catch", "data": {"catch": "🍎", "player": "🦸", "goal": 5, "speed": "gentle"}},
+        7: {"type": "arcade-run", "data": {"player": "🦸", "collect": "💎", "obstacles": "🌵", "goal": 5, "speed": "gentle"}},
+        11: {"type": "arcade-pop", "data": {"pop": "🎈", "player": "🦸", "goal": 5, "speed": "gentle"}},
     }
     for i in range(1, 13):
         page = {

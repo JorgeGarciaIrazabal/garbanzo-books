@@ -17,11 +17,12 @@ from dataclasses import dataclass
 # reads like a robot and fails the read-aloud test. None for the read-aloud bands, where
 # very short rhythmic/refrain lines are a legitimate style.
 BANDS: dict[str, dict] = {
-    "0-3":  {"fk_grade": None, "max_words_per_page": 10,  "max_sentence_words": 8,  "min_avg_sentence_words": None, "label": "Board book"},
-    "3-5":  {"fk_grade": None, "max_words_per_page": 40,  "max_sentence_words": 12, "min_avg_sentence_words": None, "label": "Pre-reader"},
-    "5-7":  {"fk_grade": 1.5,  "max_words_per_page": 60,  "max_sentence_words": 14, "min_avg_sentence_words": 5.0,  "label": "Early reader (K-1)"},
-    "7-9":  {"fk_grade": 3.0,  "max_words_per_page": 150, "max_sentence_words": 18, "min_avg_sentence_words": 7.0,  "label": "Grade 2-3"},
-    "9-12": {"fk_grade": 5.5,  "max_words_per_page": 400, "max_sentence_words": 26, "min_avg_sentence_words": 9.0,  "label": "Middle grade"},
+    "0-3":      {"fk_grade": None, "max_words_per_page": 10,  "max_sentence_words": 8,  "min_avg_sentence_words": None, "label": "Board book"},
+    "3-5":      {"fk_grade": None, "max_words_per_page": 40,  "max_sentence_words": 12, "min_avg_sentence_words": None, "label": "Pre-reader"},
+    "5-7":      {"fk_grade": 1.5,  "max_words_per_page": 60,  "max_sentence_words": 14, "min_avg_sentence_words": 5.0,  "label": "Early reader (K-1)"},
+    "7-9":      {"fk_grade": 3.0,  "max_words_per_page": 150, "max_sentence_words": 18, "min_avg_sentence_words": 7.0,  "label": "Grade 2-3"},
+    "9-12":     {"fk_grade": 5.5,  "max_words_per_page": 400, "max_sentence_words": 26, "min_avg_sentence_words": 9.0,  "label": "Middle grade"},
+    "grown-up": {"fk_grade": 10.0, "max_words_per_page": 800, "max_sentence_words": 40, "min_avg_sentence_words": 12.0, "label": "Adult reader"},
 }
 
 _WORD_RE = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")

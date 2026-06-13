@@ -128,7 +128,7 @@ def test_metrics_sentence_minimum_one_avoids_divide_by_zero():
 
 # =============================================================================== BANDS table
 def test_bands_table_includes_every_supported_age_band():
-    assert set(BANDS) == {"0-3", "3-5", "5-7", "7-9", "9-12"}
+    assert set(BANDS) == {"0-3", "3-5", "5-7", "7-9", "9-12", "grown-up"}
 
 
 def test_bands_word_caps_increase_with_age():

@@ -1,0 +1,102 @@
+slug: sylfie
+world: strongest-wizard
+name: Sylfie
+role: rival-friend
+species: human
+pronouns: she/her
+one_liner: Aria's cheerful rival-friend — magic comes easy to her, but she secretly envies Aria's heart.
+personality:
+  traits:
+  - charismatic
+  - naturally-gifted
+  - competitive
+  - lonely
+  - genuinely-kind
+  motivation: Be acknowledged as the best — but also, weirdly, wants Aria's approval
+  fears:
+  - being ordinary
+  - not being truly seen
+  - Aria surpassing her for real
+  flaws:
+  - coasts on talent, doesn't know how to struggle
+  - hides insecurity behind bravado
+  - accidentally makes things look too easy
+  strengths:
+  - intuitive spellcraft
+  - quick improvisation
+  - radiant confidence
+  - secretly studies Aria's notes
+  quirks:
+  - twirls wand like a baton
+  - humming makes her spells stronger
+  - leaves glitter wherever she goes
+  values:
+  - excellence
+  - recognition
+  - friendship (reluctantly admitted)
+  - beauty in magic
+voice:
+  speech_style: warm, simple, lots of questions
+  catchphrases: []
+  vocabulary_level: age-appropriate, concrete
+appearance:
+  age_appearance: 7-8 years old
+  build: graceful, slight, moves like dance
+  height: between Aria and Bram
+  skin: pale peach, faint shimmer in sunlight
+  hair: long silver-blonde waves (#f5f0e1) with lavender tips (#c7b8ea), floats slightly
+  eyes: violet-blue (#9c88ff), sparkle with mischief
+  outfit: lavender dress-robe (#c7b8ea) with golden trim, sheer mint-green overskirt (#a8e6cf), delicate
+    golden slippers, floating ribbon hair ties
+  distinguishing_features:
+  - hair floats as if underwater (constant low-level magic)
+  - golden sparkles trail her fingertips
+  - never has a smudge on her — ever
+  - ribbons in hair move with her mood
+  color_palette:
+  - part: robe
+    hex: '#c7b8ea'
+  - part: overskirt
+    hex: '#a8e6cf'
+  - part: gold_trim
+    hex: '#ffd93d'
+  - part: hair
+    hex: '#f5f0e1'
+  - part: hair_tips
+    hex: '#c7b8ea'
+  - part: eyes
+    hex: '#9c88ff'
+  - part: slippers
+    hex: '#ffd93d'
+  silhouette_notes: Ethereal floating silhouette — hair and ribbons drift, dress flows, sparkles at fingertips,
+    graceful S-curve posture distinct from Aria's determined lean and Bram's gangly slouch
+appearance_token: 'SYLFIE: human girl 7-8, graceful slight build, pale peach shimmering skin, long silver-blonde
+  waves (#f5f0e1) with lavender tips (#c7b8ea) floating weightlessly, violet-blue sparkling eyes (#9c88ff),
+  lavender dress-robe (#c7b8ea) with gold trim (#ffd93d), sheer mint-green overskirt (#a8e6cf), golden
+  slippers, floating ribbon hair ties, golden sparkles trailing fingertips, ribbons moving with mood,
+  serene confident smile with mischievous glint'
+reference_images:
+- characters/sylfie.refs/model-sheet.svg
+seed: 339147
+relationships: []
+evolution:
+- stage: base
+  order: 0
+  summary: Natural prodigy — effortless, confident, secretly lonely
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: beginning of series
+- stage: true-rival
+  order: 1
+  summary: Respects Aria's grind — starts training for real
+  personality_delta: Admits Aria's way has value, practices deliberately, shows vulnerability
+  appearance_delta: slight scuff on slippers, one ribbon slightly frayed, determined glint alongside sparkle
+  unlocked_by: witnesses Aria push past a limit Sylfie couldn't
+- stage: partner
+  order: 2
+  summary: Equal partners — different strengths, same heart
+  personality_delta: Genuine warmth, asks for help, celebrates Aria's wins as her own
+  appearance_delta: friendship bracelet matching Aria's, robe has practical pockets now, floating hair
+    settles into gentle waves
+  unlocked_by: fights side-by-side with Aria and Bram as true equals
+tags: []

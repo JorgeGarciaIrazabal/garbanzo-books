@@ -25,6 +25,7 @@ shapes: a long rolling sentence, then a short punch. That contrast IS the rhythm
 | **5–7** | 5–7 | average 6–9 words, longest up to ~14 | 20–60 | mostly simple words a new reader can sound out; sprinkle a few exciting big ones |
 | **7–9** | 7–9 | average 8–14 words, vary it | 50–150 | richer vocabulary, wordplay, the occasional delicious tricky word |
 | **9–12** | 9–12 | 12–20 words, varied | full prose | full range — figurative language, voice, jokes that reward a sharp reader |
+| **grown-up** | adult | 15–40 words, fully varied | 500+ | full literary range — sophisticated vocabulary, complex sentences, literary voice, humor that rewards an adult reader |
 
 ## The telegraphic trap (the #1 way books here have gone wrong)
 

@@ -16,8 +16,8 @@
 
     "age_band": {
       "type": "string",
-      "enum": ["0-3", "3-5", "5-7", "7-9", "9-12"],
-      "description": "READER ability band: who will read (or be read) the words. Drives reading_level defaults — sentence length, words per page, word choice. Distinct from target_year (what the story is about)."
+      "enum": ["0-3", "3-5", "5-7", "7-9", "9-12", "grown-up"],
+      "description": "READER ability band: who will read (or be read) the words. Drives reading_level defaults — sentence length, words per page, word choice. Distinct from target_year (what the story is about). 'grown-up' means the story is written for an adult reader (rich vocabulary, full prose, no word caps)."
     },
 
     "target_year": {

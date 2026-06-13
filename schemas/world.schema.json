@@ -119,8 +119,8 @@
   "$defs": {
     "ageBand": {
       "type": "string",
-      "enum": ["0-3", "3-5", "5-7", "7-9", "9-12"],
-      "description": "0-3 board book, 3-5 pre-reader, 5-7 early reader (K-1), 7-9 (grade 2-3), 9-12 middle grade."
+      "enum": ["0-3", "3-5", "5-7", "7-9", "9-12", "grown-up"],
+      "description": "0-3 board book, 3-5 pre-reader, 5-7 early reader (K-1), 7-9 (grade 2-3), 9-12 middle grade, grown-up (adult reader)."
     },
     "artStyle": {
       "type": "object",

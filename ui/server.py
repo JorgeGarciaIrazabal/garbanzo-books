@@ -74,9 +74,9 @@ ALLOWED_MODELS = {m["id"] for m in MODELS}
 # the next user reply is the natural place to swap.) The "craft" stages all share the fast default
 # because they're tool-heavy; "story" is the only creative stage; "research" routes to MiniMax.
 STAGE_TO_MODEL = {
-    "craft":     "ollama/nemotron-3-ultra:cloud",
-    "world":     "ollama/nemotron-3-ultra:cloud",
-    "character": "ollama/nemotron-3-ultra:cloud",
+    "craft":     "ollama/deepseek-v4-pro:cloud",
+    "world":     "ollama/deepseek-v4-pro:cloud",
+    "character": "ollama/deepseek-v4-pro:cloud",
     "build":     "ollama/nemotron-3-ultra:cloud",
     "validate":  "ollama/nemotron-3-ultra:cloud",
     "done":      "ollama/nemotron-3-ultra:cloud",

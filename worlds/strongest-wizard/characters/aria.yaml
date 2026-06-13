@@ -1,0 +1,103 @@
+slug: aria
+world: strongest-wizard
+name: Aria
+role: protagonist
+species: human
+pronouns: she/her
+one_liner: A determined girl wizard who practices tirelessly to become the strongest and protect her friends.
+personality:
+  traits:
+  - determined
+  - observant
+  - loyal
+  - messy
+  - curious
+  motivation: Become the strongest wizard so no friend ever gets hurt on her watch
+  fears:
+  - letting her friends down
+  - not being strong enough
+  - losing control of her magic
+  flaws:
+  - pushes herself to exhaustion
+  - refuses help even when drowning
+  - copies spells without fully understanding them first
+  strengths:
+  - incredible work ethic
+  - learns by watching once
+  - creative spell combinations
+  - never gives up
+  quirks:
+  - talks to her spellbook like it's a person
+  - falls asleep mid-incantation
+  - collects cool rocks she thinks are magical
+  values:
+  - friendship
+  - perseverance
+  - protecting others
+  - honest effort
+voice:
+  speech_style: warm, simple, lots of questions
+  catchphrases: []
+  vocabulary_level: age-appropriate, concrete
+appearance:
+  age_appearance: 7-8 years old
+  build: small, slightly stocky from climbing trees and hauling spellbooks
+  height: shortest in her friend group
+  skin: warm beige with faint freckles across nose
+  hair: messy chin-length bob, warm chestnut brown (#5d4037), always escaping a hair tie
+  eyes: large, bright amber-gold (#ffb300), reflect spell light
+  outfit: oversized blush-pink wizard robe (#f4c2c2) with rolled-up sleeves, mint-green satchel (#a8e6cf),
+    scuffed brown boots, friendship bracelets on both wrists
+  distinguishing_features:
+  - single lavender streak in hair (from a spell gone wonderfully wrong)
+  - always has ink/smudges on fingers and nose
+  - robe hem singed/frozen/flowered from practice mishaps
+  - tiny star-shaped scar on chin from first spell backfire
+  color_palette:
+  - part: robe
+    hex: '#f4c2c2'
+  - part: satchel
+    hex: '#a8e6cf'
+  - part: hair
+    hex: '#5d4037'
+  - part: hair_streak
+    hex: '#c7b8ea'
+  - part: eyes
+    hex: '#ffb300'
+  - part: boots
+    hex: '#4e342e'
+  - part: bracelets
+    hex: '#ffd93d'
+  silhouette_notes: Small round silhouette with oversized robe pooling at feet, messy bob + lavender streak,
+    satchel bump at hip, distinctive chin-length hair outline
+appearance_token: 'ARIA: human girl 7-8, small stocky build, warm beige skin with nose freckles, messy
+  chin-length chestnut bob (#5d4037) with single lavender streak (#c7b8ea), large bright amber-gold eyes
+  (#ffb300), oversized blush-pink wizard robe (#f4c2c2) rolled sleeves, mint-green satchel (#a8e6cf),
+  scuffed brown boots (#4e342e), golden friendship bracelets (#ffd93d) both wrists, ink-smudged fingers,
+  singed robe hem, tiny star scar on chin, determined concentrated expression with tongue peeking out'
+reference_images:
+- characters/aria.refs/model-sheet.svg
+seed: 884721
+relationships: []
+evolution:
+- stage: base
+  order: 0
+  summary: Starting apprentice — messy, determined, learning basics
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: beginning of series
+- stage: spell-weaver
+  order: 1
+  summary: Gaining control — spells more reliable, confidence growing
+  personality_delta: More patient, starts teaching friends, still overworks but recognizes it
+  appearance_delta: robe fits better, fewer singe marks, hair tie actually holds, faint glow around hands
+    when casting
+  unlocked_by: masters first 5 spells cleanly
+- stage: guardian
+  order: 2
+  summary: Protector — strong, centered, friends rely on her
+  personality_delta: Calm under pressure, strategic, accepts help, still determined but not desperate
+  appearance_delta: custom-fit robe with protective sigils embroidered in gold, lavender streak now glows
+    softly, floating motes follow her, confident posture
+  unlocked_by: successfully shields friends from real danger
+tags: []

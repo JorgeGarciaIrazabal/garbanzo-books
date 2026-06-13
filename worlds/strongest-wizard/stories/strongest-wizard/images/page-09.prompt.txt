@@ -1,0 +1,10 @@
+PROMPT:
+Whisper Village at twilight — a ward stone at the border fading from gentle pulse to dark stone. Mist creeping from Wild Woods beyond. One ward stone dark, others glowing warm. Silhouette of something large and wobbling at tree line. Ominous but not terrifying — dreamy pastel tension. dreamy pastel children's book illustration, soft blush and mint palette, whisper-thin rounded lines, golden-hour glow with floating magic motes, ethereal gradients, hand-painted paper texture, cozy whimsical mood, no text. palette: cream #fdf6e3, blush-pink #f4c2c2, mint-green #a8e6cf, lavender #c7b8ea, golden-hour #ffd93d, dusk-lavender #6b5b95. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
+
+SEED: 1661696494
+ASPECT: 4:3
+CHARACTERS: —
+REFERENCES: —
