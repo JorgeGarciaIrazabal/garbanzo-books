@@ -4,7 +4,7 @@ Grumblebeast gently floating away over Practice Meadow, tangled in beautiful glo
 NEGATIVE:
 photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
 
-SEED: 550208604
+SEED: 65223581
 ASPECT: 4:3
 CHARACTERS: aria, bram, sylfie
 REFERENCES: characters/aria.refs/model-sheet.svg, characters/bram.refs/model-sheet.svg, characters/sylfie.refs/model-sheet.svg

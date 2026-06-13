@@ -4,7 +4,7 @@ Practice Meadow wide shot at sunset: practice dummies — one charred black, one
 NEGATIVE:
 photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
 
-SEED: 1199045707
+SEED: 38300497
 ASPECT: 4:3
 CHARACTERS: aria, bram, sylfie
 REFERENCES: characters/aria.refs/model-sheet.svg, characters/bram.refs/model-sheet.svg, characters/sylfie.refs/model-sheet.svg

@@ -5,10 +5,10 @@
   "attempts": [
     {
       "ok": true,
-      "score": 9.0,
-      "reason": "The illustration perfectly captures the character and scene described in the text, adhering to all style and token specifications.",
+      "score": 9.2,
+      "reason": "The illustration closely matches the character description and art style, with only minor inconsistencies.",
       "flags": [
-        "good"
+        "style_inconsistent"
       ],
       "model": "gemma3:4b",
       "attempt": 0,

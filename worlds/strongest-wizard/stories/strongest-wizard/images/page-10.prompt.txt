@@ -4,7 +4,7 @@ A Grumblebeast — large, clumsy, round creature with wobbling legs, shaggy fur 
 NEGATIVE:
 photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
 
-SEED: 811121831
+SEED: 798506788
 ASPECT: 4:3
 CHARACTERS: —
 REFERENCES: —

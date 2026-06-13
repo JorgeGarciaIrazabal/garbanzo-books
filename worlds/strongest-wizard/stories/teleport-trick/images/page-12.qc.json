@@ -1,0 +1,20 @@
+{
+  "page": 12,
+  "prompt_seed": 734488763,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures the scene and character details well, with minor inconsistencies in shading and a slight variation in the scarf's color.",
+      "flags": [
+        "style_inconsistent",
+        "duplicate_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-12-734488763.png"
+    }
+  ],
+  "winner": "page-12.png"
+}

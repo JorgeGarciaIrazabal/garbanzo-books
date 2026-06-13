@@ -1,0 +1,20 @@
+{
+  "page": 2,
+  "prompt_seed": 1081304151,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration mostly meets the specifications, but Aria's robe and hair need slight adjustments to match the token.",
+      "flags": [
+        "style_inconsistent",
+        "wrong_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-02-1081304151.png"
+    }
+  ],
+  "winner": "page-02.png"
+}

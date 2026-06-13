@@ -4,7 +4,7 @@ Whisper Village at twilight — a ward stone at the border fading from gentle pu
 NEGATIVE:
 photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
 
-SEED: 1661696494
+SEED: 1593444034
 ASPECT: 4:3
 CHARACTERS: —
 REFERENCES: —

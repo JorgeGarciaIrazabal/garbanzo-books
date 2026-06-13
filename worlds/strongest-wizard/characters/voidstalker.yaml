@@ -1,0 +1,88 @@
+slug: voidstalker
+world: strongest-wizard
+name: Voidstalker
+role: antagonist
+species: shadow monster
+pronouns: it/its
+one_liner: A cunning shadow monster that hunts ward stones and teleports through darkness.
+personality:
+  traits:
+  - cunning
+  - patient
+  - territorial
+  - arrogant
+  - strategic
+  motivation: Destroy the ward stones to claim Whisper Village as its hunting ground
+  fears:
+  - ward stones at full power
+  - wizards who improvise
+  - being trapped in one place
+  flaws:
+  - underestimates opponents who practice
+  - obsessed with perfect plans
+  - cannot resist gloating
+  strengths:
+  - shadow teleportation
+  - reads magic patterns
+  - immensely patient
+  quirks:
+  - speaks in a whisper that echoes
+  - counts seconds aloud before striking
+  - collects broken wizard staves
+  values:
+  - control
+  - dominance
+  - the hunt
+voice:
+  speech_style: slow, deliberate, whispers that carry unnaturally far
+  catchphrases:
+  - Tick. Tock. Your time runs thin.
+  - A clever trick. Once.
+  - I have all the time in the world.
+  vocabulary_level: sophisticated but accessible
+appearance:
+  age_appearance: ancient, timeless
+  build: tall and impossibly thin, like a shadow stretched too far
+  height: towers over Aria by two heads
+  skin: deep void-black, faintly shimmering like oil on water
+  hair: none — tendrils of darkness drift where hair would be
+  eyes: two pinpricks of cold white light, no pupils
+  outfit: tattered cloak of stitched-together shadows, frayed at the hem
+  distinguishing_features:
+  - limbs that bend at wrong angles when moving
+  - leaves no footprints — only momentary scorch marks
+  - voice seems to come from everywhere at once
+  color_palette:
+  - part: body
+    hex: '#0a0a0f'
+  - part: eyes
+    hex: '#ffffff'
+  - part: cloak
+    hex: '#1a1a2e'
+  - part: scorch_marks
+    hex: '#ff3300'
+  silhouette_notes: impossibly tall and thin with elongated, jointed limbs; cloak trails like smoke; recognizable
+    even in pure darkness
+appearance_token: 'VOIDSTALKER: tall impossibly thin shadow-creature, void-black skin shimmering like
+  oil, no hair only drifting darkness tendrils, two pinprick cold white eyes no pupils, tattered stitched-shadow
+  cloak frayed hem, limbs bend at wrong angles, leaves momentary scorch marks not footprints, voice echoes
+  from everywhere, menacing patient predator'
+reference_images:
+- characters/voidstalker.refs/model-sheet.png
+seed: 1234
+relationships: []
+evolution:
+- stage: base
+  order: 1
+  summary: First appearance — a new smart monster hunting the ward stones
+  personality_delta: Initial introduction as a cunning, patient predator hunting ward stones
+  appearance_delta: ''
+  unlocked_by: initial introduction
+- stage: scarred
+  order: 2
+  summary: After Aria's teleport spell wounds it — now bears a glowing crack, hunts with cold fury
+  personality_delta: Gains vengeful trait; blinded by hatred for Aria; still cunning but now reckless
+    in pursuit
+  appearance_delta: ', jagged glowing crack across chest leaking white light'
+  unlocked_by: survives first encounter with Aria's new spell
+tags: []

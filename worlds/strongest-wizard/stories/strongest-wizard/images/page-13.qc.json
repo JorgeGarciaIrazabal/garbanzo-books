@@ -1,6 +1,6 @@
 {
   "page": 13,
-  "prompt_seed": 1883689126,
+  "prompt_seed": 537830561,
   "threshold": 7.0,
   "attempts": [
     {
@@ -13,7 +13,7 @@
       ],
       "model": "gemma3:4b",
       "attempt": 0,
-      "path": "page-13-1883689126.png"
+      "path": "page-13-537830561.png"
     }
   ],
   "winner": "page-13.png"

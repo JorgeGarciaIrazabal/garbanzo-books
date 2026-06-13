@@ -1,0 +1,20 @@
+{
+  "page": 1,
+  "prompt_seed": 884721,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration captures the key elements of the scene, but some details are slightly off and the overall composition could be improved.",
+      "flags": [
+        "style_inconsistent",
+        "wrong_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-01-884721.png"
+    }
+  ],
+  "winner": "page-01.png"
+}

@@ -5,8 +5,8 @@
   "attempts": [
     {
       "ok": true,
-      "score": 9.2,
-      "reason": "The illustration closely matches the page text and character tokens, with only minor inconsistencies.",
+      "score": 8.5,
+      "reason": "The illustration largely captures the scene and character details, but some minor adjustments are needed for consistency.",
       "flags": [
         "style_inconsistent",
         "too_dark"

@@ -1,6 +1,6 @@
 {
   "page": 15,
-  "prompt_seed": 1168513425,
+  "prompt_seed": 1097073376,
   "threshold": 7.0,
   "attempts": [
     {
@@ -9,11 +9,11 @@
       "reason": "The illustration largely captures the scene and character details effectively, with minor inconsistencies.",
       "flags": [
         "style_inconsistent",
-        "too_dark"
+        "too_blurry"
       ],
       "model": "gemma3:4b",
       "attempt": 0,
-      "path": "page-15-1168513425.png"
+      "path": "page-15-1097073376.png"
     }
   ],
   "winner": "page-15.png"

@@ -1,19 +1,43 @@
 {
   "page": 10,
-  "prompt_seed": 811121831,
+  "prompt_seed": 1050672657,
   "threshold": 7.0,
   "attempts": [
     {
-      "ok": true,
-      "score": 7.5,
-      "reason": "The illustration captures a whimsical mood and the general scene, but needs refinement to fully align with the brief.",
+      "ok": false,
+      "score": 6.5,
+      "reason": "The illustration doesn't quite match the page text description of a 'Grumblebeast' with many teeth.",
       "flags": [
         "scene_mismatch",
-        "style_inconsistent"
+        "wrong_characters"
       ],
       "model": "gemma3:4b",
       "attempt": 0,
-      "path": "page-10-811121831.png"
+      "path": "page-10-798506788.png"
+    },
+    {
+      "ok": false,
+      "score": 6.0,
+      "reason": "The illustration doesn't depict a Grumblebeast and the scene doesn't match the page text.",
+      "flags": [
+        "scene_mismatch",
+        "wrong_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 1,
+      "path": "page-10-1563529759.png"
+    },
+    {
+      "ok": false,
+      "score": 6.5,
+      "reason": "The illustration doesn't quite match the page text description of a 'Grumblebeast' with many teeth and a hungry appearance.",
+      "flags": [
+        "scene_mismatch",
+        "wrong_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 2,
+      "path": "page-10-1050672657.png"
     }
   ],
   "winner": "page-10.png"

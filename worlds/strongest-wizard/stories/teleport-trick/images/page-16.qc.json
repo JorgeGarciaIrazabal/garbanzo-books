@@ -1,0 +1,20 @@
+{
+  "page": 16,
+  "prompt_seed": 1318753819,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration captures the essence of the scene, but some minor adjustments could improve consistency and detail.",
+      "flags": [
+        "style_inconsistent",
+        "too_blurry"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-16-1318753819.png"
+    }
+  ],
+  "winner": "page-16.png"
+}

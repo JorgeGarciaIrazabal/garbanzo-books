@@ -1,0 +1,659 @@
+slug: teleport-trick
+world: strongest-wizard
+title: The Teleport Trick
+logline: Aria masters a finicky teleport spell just in time to out-blink a shadow monster dismantling
+  the village's ward monolith — but the monster escapes, swearing revenge.
+summary: 'Aria''s new teleport spell only moves her a few feet at a time — into bushes, up trees, once
+  into Bram''s soup. But when the cunning Voidstalker appears at the ancient Ward Monolith and starts
+  unraveling the village''s defenses, Aria''s clumsy short-range blinks become the only thing fast enough
+  to catch a monster that walks through shadows. She out-maneuvers it, drives it off, but it vanishes
+  with a promise: "I have all the time in the world."'
+age_band: 9-12
+target_year: 5
+reading_level:
+  target_fk_grade: 5.5
+  fk_grade_tolerance: 1.5
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 400
+  max_sentence_words: 26
+  decoding_focus: ''
+  decodable: false
+themes:
+- friendship
+- courage
+- persistence
+- cleverness over power
+moral: 'TODO: shown, not told.'
+characters:
+- slug: aria
+  stage: spell-weaver
+  role_in_story: protagonist
+- slug: bram
+  stage: quick-thinker
+  role_in_story: sidekick
+- slug: sylfie
+  stage: true-rival
+  role_in_story: rival-friend
+- slug: voidstalker
+  stage: base
+  role_in_story: antagonist
+spine:
+  once_upon_a_time: Aria found a teleport spell in the library's restricted shelf — it promised to let
+    a wizard blink anywhere they could see. The catch? It only worked for three feet. Sometimes two. Once,
+    negative one.
+  every_day: 'She drilled it in Practice Meadow: blink to the dummy, blink to the oak, blink to Bram''s
+    sandwich (he noticed). Most attempts landed her in a thorn bush, upside down in a tree, or knee-deep
+    in the creek. Sylfie mastered it in an afternoon. Aria just kept blinking.'
+  until_one_day: A cold whisper echoed from the village center — the ancient Ward Monolith, the source
+    of every ward stone. Voidstalker, a tall shadow-monster with white pinprick eyes, had its claws in
+    the monolith's core, unraveling the magic thread by thread. The ward stones across Whisper Village
+    flickered. The Wild Woods pressed close.
+  because_of_that:
+  - Adult wizards rushed the monolith, but Voidstalker didn't fight — it *blinked*. Shadow-teleporting
+    behind them, beside them, above them. Their spells hit empty air. The monolith groaned, another ward
+    stone died.
+  - Aria, Bram, and Sylfie watched from the meadow. Sylfie's perfect long-range teleports couldn't track
+    Voidstalker's shadow-steps. Bram's calculations dissolved into static. Aria's clumsy three-foot blink?
+    It worked on the *same logic*.
+  until_finally: 'Aria didn''t blink away. She blinked *through* — behind Voidstalker, inside its guard,
+    her wand tapping the monolith''s core and flooding it with raw, messy, practiced magic. The shadow
+    monster shrieked, cracked, and fled into the darkness — but not before hissing: "Tick. Tock. We''re
+    not done."'
+  ever_since_then: 'Aria''s teleport still lands her in bushes. But now she knows: the strongest spell
+    isn''t the one that goes farthest. It''s the one that puts you exactly where the monster doesn''t
+    expect you.'
+pages:
+- number: 0
+  kind: title
+  text: The Teleport Trick
+  image:
+    prompt: 'Aria mid-blink — shimmering outline caught between two spots, oversized blush-pink robe,
+      messy chestnut bob with lavender streak, determined grin, mint satchel. Practice Meadow behind her:
+      dummies charred and flowered, Bram with clipboard, Sylfie floating with sparkles. Ward Monolith
+      glowing tall in village center behind them.'
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Aria the wizard girl mid-teleport blink on Practice Meadow with friends Bram and Sylfie, Ward
+      Monolith glowing in background
+    text_zone: center
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: 'The spellbook page smelled like ozone and old socks. Aria traced the diagram with an ink-stained
+    finger. "Blink," she whispered. "Anywhere you can see. Range: three feet."'
+  image:
+    prompt: 'Close-up of Aria''s hands on an ancient spellbook page — diagram of a wizard blinking short
+      distances, margins crowded with Aria''s messy notes: ''TOO SHORT'', ''landed in creek'', ''Bram''s
+      sandwich incident''. Aria''s ink-smudged fingers, lavender hair streak falling across page.'
+    characters_present:
+    - aria
+    alt: Aria's hands on spellbook showing teleport spell diagram with her messy notes about failed attempts
+    text_zone: lower third
+    file: images/page-01.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - ozone
+  - diagram
+  - whispered
+  - range
+  - attempts
+- number: 2
+  kind: story
+  text: 'First try: blink to the practice dummy. *Pop.* She landed face-first in a thorn bush. "Ow," said
+    the bush. "Sorry!" said Aria, picking thorns from her nose.'
+  image:
+    prompt: Aria sprawled in a thorn bush, blush-pink robe snagged, lavender streak askew, thorns in hair
+      and nose. Practice dummy three feet away, unharmed. Bram in background consulting clipboard, one
+      eyebrow raised. Sylfie floating nearby, covering a smile.
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Aria stuck in thorn bush after failed teleport, practice dummy nearby, Bram with clipboard, Sylfie
+      floating and smiling
+    text_zone: lower third
+    file: images/page-02.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - sprawled
+  - snagged
+  - askew
+  - consulting
+  - eyebrow
+- number: 3
+  kind: story
+  text: 'Second try: blink to the oak tree. *Pop.* She landed upside down, robe over her head, dangling
+    from a branch by her knees. A squirrel investigated her satchel. "Not yours," Aria told it, blood
+    rushing to her face.'
+  image:
+    prompt: Aria hanging upside down from oak tree branch by her knees, blush-pink robe draped over her
+      head revealing mint satchel, lavender streak pointing down. Squirrel perched on satchel investigating.
+      Bram below shielding eyes, Sylfie floating at branch level with sparkles, taking mental notes.
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Aria hanging upside down from tree branch by knees, squirrel on her satchel, Bram and Sylfie
+      watching below
+    text_zone: lower third
+    file: images/page-03.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - investigated
+  - satchel
+  - rushing
+  - mental notes
+  - perched
+- number: 4
+  kind: story
+  text: 'Third try: blink to Bram''s lunch. *Pop.* She materialized spoon-first in his tomato soup. Bram
+    didn''t flinch. "You owe me a sandwich," he said, offering a cracker. "And a napkin."'
+  image:
+    prompt: Aria's head and shoulders emerging from Bram's soup bowl, wooden spoon in hair, soup dripping
+      from lavender streak. Bram tall and lanky, deadpan, glasses glinting, offering a cracker from bulging
+      pocket. Sylfie floating behind, shaking head with fond exasperation. Practice Meadow golden hour.
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Aria's head in Bram's soup bowl with spoon in hair, Bram offering cracker deadpan, Sylfie floating
+      and shaking head
+    text_zone: lower third
+    file: images/page-04.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - materialized
+  - deadpan
+  - flinch
+  - exasperation
+  - golden hour
+  interaction:
+    type: arcade-pop
+    prompt: Pop the magic bubbles from Aria's soup landing!
+    data:
+      player:
+        emoji: 🧙‍♀️
+        label: Aria
+      pop:
+      - emoji: 🫧
+        label: Magic Bubble
+      avoid:
+      - emoji: 🍅
+        label: Tomato
+      goal: 10
+      speed: gentle
+      how: Tap bubbles to pop them! Don't pop the tomatoes — they're for eating!
+      avoid_line: Tomatoes make soup, not magic!
+    feedback:
+      correct: Pop! Magic bubbles burst!
+      try_again: Watch out for tomatoes!
+- number: 5
+  kind: story
+  text: Sylfie tried once. *Whoosh.* She blinked clean across the meadow, landed on one foot, didn't spill
+    a drop of her tea. "It's about confidence," she said. Aria's confidence was currently soaking in tomato
+    soup.
+  image:
+    prompt: 'Sylfie landing gracefully on one foot after perfect long-range teleport — silver-blonde hair
+      floating, violet-blue eyes calm, lavender dress-robe pristine, teacup steady. Aria in background
+      wiping soup from face, robe dripping. Bram handing Aria a napkin. Contrast: Sylfie''s perfection
+      vs Aria''s glorious mess.'
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Sylfie landing perfect teleport with tea, Aria covered in soup, Bram handing napkin - contrast
+      of perfection and mess
+    text_zone: lower third
+    file: images/page-05.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - gracefully
+  - pristine
+  - confidence
+  - contrast
+  - glorious
+- number: 6
+  kind: story
+  text: '"Confidence," Aria muttered, wringing her sleeve. "Right. I''ll just be *confident* into the
+    dummy tomorrow." She wrote in her book: *Blink logic: same as monster shadow-step. Short. Sharp. Predictable.*'
+  image:
+    prompt: 'Aria''s spellbook open — new page: ''BLINK LOGIC'' in messy handwriting, diagrams connecting
+      her short teleport to monster shadow movement. Ink smudges, pressed thorn from bush, soup stain.
+      Aria''s fingers writing fast. Bram''s shadow falling across page, Sylfie''s sparkles lighting the
+      margin.'
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Aria's spellbook with BLINK LOGIC notes connecting her teleport to monster shadow-step, thorn
+      and soup stains on page
+    text_zone: lower third
+    file: images/page-06.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - wringing
+  - muttered
+  - predictable
+  - diagrams
+  - connecting
+  - margin
+- number: 7
+  kind: interaction
+  text: ''
+  image:
+    prompt: 'Game screen: Practice Meadow at sunset. Aria (player) blinks short distances to catch floating
+      spell-sparklies before they fade. Three-foot blink range shown as ghostly circle around her. Bram
+      and Sylfie cheer from sidelines. Dreamy pastel palette.'
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Arcade game - Aria blinking short distances to catch sparklies in Practice Meadow
+    text_zone: lower third
+    file: images/page-07.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary: []
+  interaction:
+    type: arcade-flap
+    prompt: Blink with Aria! Tap to teleport and catch the magic sparklies before they fade!
+    data:
+      player:
+        emoji: 🧙‍♀️
+        label: Aria
+      collect:
+        emoji: ✨
+        label: Sparkly
+      obstacles:
+      - emoji: 🌿
+        label: Bush
+      - emoji: 🌳
+        label: Tree
+      goal: 8
+      speed: gentle
+      how: Tap where you want Aria to blink — three feet max! Catch sparklies, avoid bushes and trees.
+      avoid_line: Blink into a bush and you'll lose a sparkly!
+    feedback:
+      correct: Perfect blink! Sparkly caught!
+      try_again: Three feet only! Tap closer!
+- number: 8
+  kind: story
+  text: That night, the Ward Monolith in the village square let out a sound like a cello string snapping.
+    *Twang.* The ward stones around Whisper Village flickered — once, twice — then held.
+  image:
+    prompt: Whisper Village square at night — ancient Ward Monolith tall and crystalline, pulsing with
+      golden light. Sudden dark crack spiderwebbing across its surface. Ward stones at village borders
+      flickering in sync. Mist rising from Wild Woods beyond. Dreamy pastel tension — beautiful but wrong.
+    characters_present: []
+    alt: Ward Monolith in village square with dark crack spreading, ward stones flickering, mist from
+      Wild Woods
+    text_zone: lower third
+    file: images/page-08.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - monolith
+  - crystalline
+  - spiderwebbing
+  - flickering
+  - sync
+  - tension
+- number: 9
+  kind: story
+  text: Aria, Bram, and Sylfie ran from the meadow. The monolith's base had been *opened* — not broken,
+    *unraveled*. And there, claws-deep in the magic threads, stood something tall and wrong.
+  image:
+    prompt: 'Base of Ward Monolith — golden magic threads exposed, being pulled loose by long shadow-fingers.
+      Voidstalker: impossibly tall, void-black skin shimmering like oil, white pinprick eyes, tattered
+      shadow cloak, limbs at wrong angles. No footprints — only momentary scorch marks on stone. Aria,
+      Bram, Sylfie arriving, faces pale in monolith light.'
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    - voidstalker
+    alt: Voidstalker at Ward Monolith base unraveling magic threads with shadow claws, Aria Bram Sylfie
+      arriving horrified
+    text_zone: lower third
+    file: images/page-09.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - unraveled
+  - exposed
+  - impossibly
+  - shimmering
+  - pinprick
+  - momentary
+- number: 10
+  kind: story
+  text: '"Tick. Tock," whispered a voice from everywhere. "Your walls come down. Your magic unspools.
+    I have all the time in the world." Voidstalker didn''t turn. It just kept pulling.'
+  image:
+    prompt: Voidstalker's back to camera, long shadow-fingers delicately plucking golden magic threads
+      from monolith core. Threads dissolving into darkness. Aria stepping forward, wand raised. Bram calculating
+      furiously, fingers flying. Sylfie's sparkles flaring, ready to teleport. Cold white pinprick eyes
+      glancing sideways over too-thin shoulder.
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    - voidstalker
+    alt: Voidstalker pulling magic threads from monolith, Aria stepping forward with wand, Bram calculating,
+      Sylfie ready to teleport
+    text_zone: lower third
+    file: images/page-10.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - unspools
+  - plucking
+  - dissolving
+  - delicately
+  - glancing
+- number: 11
+  kind: story
+  text: Adult wizards surged forward. "Shield!" "Bind!" "Hold!" *Pop.* Voidstalker wasn't there. *Pop.*
+    Behind them. *Pop.* Above them. Every spell hit empty air. Another ward stone died. The Wild Woods
+    cheered.
+  image:
+    prompt: 'Adult village wizards casting spells at empty air — shields, bindings, holds all missing.
+      Voidstalker shadow-teleporting: one moment here, next there, above, behind. Blur of void-black and
+      white eyes. Ward stone at village edge fading to dark. Mist creatures from Wild Woods pressing closer,
+      gleeful. Aria watching, realization dawning.'
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    - voidstalker
+    alt: Adult wizards missing spells as Voidstalker shadow-teleports everywhere, ward stone dying, Wild
+      Woods creatures approaching
+    text_zone: lower third
+    file: images/page-11.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - surged
+  - binding
+  - empty air
+  - blur
+  - realization
+  - gleeful
+  interaction:
+    type: arcade-whack
+    prompt: Bop Voidstalker's shadow clones as they teleport!
+    data:
+      player:
+        emoji: 🪄
+        label: Wizard Wand
+      whack:
+      - emoji: 👁️
+        label: Voidstalker Clone
+      avoid:
+      - emoji: 🧙‍♂️
+        label: Village Wizard
+      goal: 6
+      speed: normal
+      how: Tap the shadow clones as they appear! Don't hit the village wizards!
+      avoid_line: Real wizards only — shadows are the target!
+    feedback:
+      correct: Whack! Shadow clone banished!
+      try_again: Too slow! They blink fast!
+- number: 12
+  kind: story
+  text: '"They''re blinking long," Aria said, heart hammering. "It blinks *short*. Like me. Three feet.
+    Two. Sharp." Bram''s eyes widened. "You''ve been *practicing* for this."'
+  image:
+    prompt: Aria's face fierce-concentrated, amber-gold eyes blazing, lavender streak glowing, ink-smudged
+      nose. Bram beside her, glasses glinting with realization, clipboard forgotten. Sylfie floating,
+      sparkles dimming as she understands. Voidstalker in background at monolith, white eyes locking onto
+      Aria.
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    - voidstalker
+    alt: Aria realizing her short blinks match Voidstalker's shadow-steps, Bram realizing, Sylfie understanding,
+      Voidstalker noticing Aria
+    text_zone: lower third
+    file: images/page-12.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - fierce-concentrated
+  - blazing
+  - realization
+  - forgotten
+  - locking onto
+- number: 13
+  kind: story
+  text: '"Cover me," Aria said. She didn''t blink away. She blinked *through* — *pop* behind Voidstalker''s
+    guard, *pop* inside its reach, *pop* wand-tip to monolith core.'
+  image:
+    prompt: 'Aria mid-combat-blink sequence — three ghostly Aria-afterimages showing blink path: 1) behind
+      Voidstalker''s elbow, 2) under its raised claw, 3) wand tip touching monolith''s golden core. Voidstalker
+      twisting impossibly, white eyes wide — first time surprised. Raw messy magic (pink flowers, blue
+      ice, gold light, ink ribbons) flooding from Aria''s wand into monolith.'
+    characters_present:
+    - aria
+    - voidstalker
+    alt: Aria blinking three times in rapid combat sequence to reach monolith core, Voidstalker surprised,
+      messy magic flooding monolith
+    text_zone: lower third
+    file: images/page-13.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - sequence
+  - ghostly
+  - afterimages
+  - impossibly
+  - flooding
+  - core
+- number: 14
+  kind: interaction
+  text: ''
+  image:
+    prompt: 'Game screen: Ward Monolith chamber. Player guides Aria through rapid three-foot blinks to
+      reach the core before Voidstalker catches her. Blink path preview shows range. Voidstalker''s shadow-steps
+      shown as dark ripples. Dreamy pastel with sharp contrast.'
+    characters_present:
+    - aria
+    - voidstalker
+    alt: Arcade game - guide Aria through rapid blinks to monolith core while avoiding Voidstalker
+    text_zone: lower third
+    file: images/page-14.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary: []
+  interaction:
+    type: arcade-steer
+    prompt: Guide Aria's rapid blinks to the monolith core! Tap to steer her three-foot teleports — dodge
+      Voidstalker's shadow claws!
+    data:
+      player:
+        emoji: 🧙‍♀️
+        label: Aria
+      target:
+        emoji: 💎
+        label: Monolith Core
+      collect:
+        emoji: ✨
+        label: Magic Thread
+      obstacles:
+      - emoji: 👁️
+        label: Voidstalker Claw
+      - emoji: 🌑
+        label: Shadow Step
+      goal: 1
+      speed: normal
+      how: Tap to steer Aria's three-foot blinks. Collect magic threads, reach the core before Voidstalker
+        catches you!
+      avoid_line: Voidstalker's shadow claws are fast — but predictable!
+    feedback:
+      correct: Core reached! Magic restored!
+      try_again: Three feet at a time. Watch the pattern!
+- number: 15
+  kind: story
+  text: The monolith *sang*. Golden light erupted — not gentle, *furious* — and Voidstalker shrieked like
+    tearing canvas. A jagged crack split its chest, leaking white light. It didn't stay to fight.
+  image:
+    prompt: Ward Monolith blazing with restored golden magic — light beams shooting skyward, all ward
+      stones pulsing bright in unison. Voidstalker recoiling, jagged glowing crack across its void-black
+      chest leaking white light. Shadow-cloak shredding at edges. White pinprick eyes burning with hate
+      and surprise. Aria lowering wand, singed, smoking, beaming.
+    characters_present:
+    - aria
+    - voidstalker
+    alt: Monolith blazing with restored magic, Voidstalker with glowing chest crack retreating, Aria lowering
+      wand exhausted but triumphant
+    text_zone: lower third
+    file: images/page-15.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - erupted
+  - furious
+  - shrieked
+  - canvas
+  - jagged
+  - recoiling
+  - shredding
+- number: 16
+  kind: story
+  text: '"A clever trick," it hissed, dissolving into shadows that *ran* instead of blinked. "Once. Tick.
+    Tock. We''re not done." The darkness swallowed it. The ward stones held.'
+  image:
+    prompt: Voidstalker dissolving into streaming shadows — not teleporting, *running* — dark tendrils
+      fleeing toward Wild Woods. Glowing chest crack pulsing with each heartbeat. Aria's messy magic (flowers,
+      ice, light, ink) still swirling around monolith. Ward stones around village blazing steady. Bram
+      and Sylfie arriving, Bram's clipboard smoking, Sylfie's teacup miraculously intact.
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    - voidstalker
+    alt: Voidstalker dissolving into shadows fleeing to Wild Woods, glowing chest crack, monolith restored,
+      Bram and Sylfie arriving
+    text_zone: lower third
+    file: images/page-16.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - dissolving
+  - streaming
+  - tendrils
+  - fleeing
+  - miraculously
+  - intact
+  - blazing
+- number: 17
+  kind: story
+  text: Aria's knees gave out. Bram caught her with a grunt. "Three feet," he said. "That was barely three
+    feet each time." "Three feet," Aria agreed, grinning through exhaustion. "But *exactly* the right
+    three feet."
+  image:
+    prompt: Aria collapsing against Bram, oversized robe singed at hem, lavender streak messy, amber-gold
+      eyes bright with tired triumph. Bram supporting her, lanky arms trembling slightly, glasses crooked,
+      one pocket smoking. Sylfie landing beside them — no tea this time, sparkles gentle, violet-blue
+      eyes warm with something like respect. Monolith glowing steady behind them.
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Aria collapsing against Bram exhausted but grinning, Sylfie landing with respect in her eyes,
+      monolith glowing steady behind them
+    text_zone: lower third
+    file: images/page-17.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - collapsing
+  - supporting
+  - trembling
+  - triumph
+  - steady
+  - exhaustion
+- number: 18
+  kind: end
+  text: 'Aria''s teleport still lands her in thorn bushes. Sometimes in trees. Once in the mayor''s hat.
+    But now she knows: the strongest spell isn''t the one that goes farthest. It''s the one that puts
+    you exactly where the monster doesn''t expect you. And somewhere in the Wild Woods, a shadow with
+    a glowing crack counts seconds. Tick. Tock.'
+  image:
+    prompt: 'Practice Meadow next morning — Aria blinking into a thorn bush (again), thorns in hair, grinning.
+      Bram handing her a thorn-proof hat from his pocket. Sylfie floating, teacup steaming, hiding a smile.
+      Ward Monolith visible in village center, glowing steady. Far in Wild Woods mist: a pair of white
+      pinprick eyes watching. Counting. Waiting.'
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Aria in thorn bush again, Bram with thorn-proof hat, Sylfie smiling, monolith glowing steady,
+      white eyes watching from Wild Woods mist
+    text_zone: lower third
+    file: images/page-18.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - thorn-proof
+  - steady
+  - pinprick
+  - counting
+  - expect
+interactions_summary: []
+status: draft
+tags: []
+cover:
+  image: ''
+  image_prompt: ''
+  alt: ''

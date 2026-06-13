@@ -4,7 +4,7 @@ Aria casting fireball spell — instead of flames, a joyful explosion of pink fl
 NEGATIVE:
 photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
 
-SEED: 401441239
+SEED: 350313984
 ASPECT: 4:3
 CHARACTERS: aria, bram, sylfie
 REFERENCES: characters/aria.refs/model-sheet.svg, characters/bram.refs/model-sheet.svg, characters/sylfie.refs/model-sheet.svg

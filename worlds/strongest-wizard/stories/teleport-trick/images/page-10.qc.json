@@ -1,0 +1,20 @@
+{
+  "page": 10,
+  "prompt_seed": 744050401,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures the scene and character details well, with minor inconsistencies in shading and a slight variation in Aria's robe color.",
+      "flags": [
+        "style_inconsistent",
+        "too_dark"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-10-744050401.png"
+    }
+  ],
+  "winner": "page-10.png"
+}

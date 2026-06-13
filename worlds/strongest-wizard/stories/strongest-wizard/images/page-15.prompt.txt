@@ -4,7 +4,7 @@ Peaceful Practice Meadow at golden hour — Grumblebeast sitting contentedly eat
 NEGATIVE:
 photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
 
-SEED: 1168513425
+SEED: 1097073376
 ASPECT: 4:3
 CHARACTERS: aria, bram, sylfie
 REFERENCES: characters/aria.refs/model-sheet.svg, characters/bram.refs/model-sheet.svg, characters/sylfie.refs/model-sheet.svg

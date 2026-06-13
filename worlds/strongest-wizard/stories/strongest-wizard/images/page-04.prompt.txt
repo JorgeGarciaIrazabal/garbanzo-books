@@ -4,7 +4,7 @@ Aria's feet frozen in clear ice blocks on grass, looking down sheepish. Bram tal
 NEGATIVE:
 photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
 
-SEED: 533430068
+SEED: 731163448
 ASPECT: 4:3
 CHARACTERS: aria, bram, sylfie
 REFERENCES: characters/aria.refs/model-sheet.svg, characters/bram.refs/model-sheet.svg, characters/sylfie.refs/model-sheet.svg

@@ -1,0 +1,20 @@
+{
+  "page": 14,
+  "prompt_seed": 296849322,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely meets the specifications, with minor inconsistencies in character details.",
+      "flags": [
+        "style_inconsistent",
+        "anatomy_issue"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-14-296849322.png"
+    }
+  ],
+  "winner": "page-14.png"
+}
