@@ -18,8 +18,8 @@ always legible. Read `methodology/accessibility.md` first.
    the text for contrast).
 3. **Honour the type rules** (the site CSS enforces most, but design for them):
    - Sans-serif, open counters; offer a dyslexia-friendly toggle.
-   - Font size scales with age band (board 20–30pt → MG 11–12pt; web base ≥16px, larger for
-     young bands).
+   - Font size scales with the reader's age (toddler 20–30pt → middle-grade 11–12pt; web base
+     ≥16px, larger for younger readers).
    - Line length ~45–60 chars (fewer for young readers — often one phrase per line).
    - Generous letter+word spacing and line height (≥1.5).
    - Contrast ≥4.5:1; off-white/cream over busy art via the scrim, not pure black-on-white.
@@ -30,7 +30,7 @@ always legible. Read `methodology/accessibility.md` first.
 - [ ] Text never sits on busy art without a negative-space zone or scrim.
 - [ ] `image.text_zone` set and matches `layout.text_position`.
 - [ ] Body text left-aligned; line length within range; contrast adequate.
-- [ ] Font size appropriate to age band; dyslexia-friendly option available.
+- [ ] Font size appropriate to the reader's age; dyslexia-friendly option available.
 - [ ] Every image has alt text.
 
 ## Output

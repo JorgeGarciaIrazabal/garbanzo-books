@@ -14,14 +14,14 @@ language, add games, lay out text, and illustrate.
 ## Procedure
 0. **Load the world in one call**: `uv run python scripts/story_context.py <world>` prints the
    world bible, full cast (personality/voice/catchphrases/stages), existing story slugs, and
-   the age-band table — faster than reading each yaml separately.
-1. **Pick the world + cast + the two age knobs.** A story has TWO separate targets — never
-   conflate them:
-   - `target_year` — one number: the age the CONTENT is pitched at (humor, stakes, themes).
-   - `age_band` + `reading_level` — who reads the WORDS (sentence length, words/page, word
-     choice; defer fine-tuning to `reading-level-adaptation`, but set targets now).
-   They can diverge (e.g. `target_year: 7` content in `age_band: 5-7` words). Pin each
-   character's `evolution.stage` for this book.
+   the per-year reader portraits — faster than reading each yaml separately.
+1. **Pick the world + cast + the reader's AGE.** A story is aimed at a single age in years
+   (`target_year`) — no age bands. That one number pitches the CONTENT (humor, stakes, themes)
+   AND, via the per-year curve, the reading-language anchors (sentence length, words/page,
+   word choice). Go read that age's **reader portrait** in `reading-pedagogy.md` and write
+   toward it. The `reading_level` anchors are *advisory*, not gates; `new_story.py --year N`
+   derives them for you, and `reading-level-adaptation` fine-tunes later. Pin each character's
+   `evolution.stage` for this book.
 2. **Hook + why it's fun.** One-sentence `logline` (protagonist + goal + obstacle) AND a
    clear answer to "where are the laughs / stakes / mischief / surprise?". Pressure-test by
    pitching it aloud — if it doesn't make you grin or lean in, fix it before writing pages.
@@ -32,7 +32,7 @@ language, add games, lay out text, and illustrate.
    drives the middle.
 4. **Storyboard the pages.** Aim for the **~14-spread rhythm** for a standard picture book
    (fewer for younger bands). For each page set:
-   - `text` — the words on the page (keep within the band's words/page target).
+   - `text` — the words on the page (aim near the age's words/page anchor — soft, not a cap).
    - `image.prompt` — **scene only** (who/where/action/emotion). Do NOT add style or character
      descriptions; the illustrator injects `appearance_token`s + world style automatically.
      List `characters_present` (slugs).
@@ -40,21 +40,31 @@ language, add games, lay out text, and illustrate.
    - **Deliberate page-turns** — end spreads on a cliff/threat/uh-oh so the turn *must* happen.
    - **Land a laugh or a gasp on most spreads** — slapstick, a twist, a cheeky narrator aside,
      a running gag paying off. Reach for the fun levers in `fun-first.md` on any flat page.
+   - **`vocabulary` hints (optional, one or two per page)** — if a page uses a word the target
+     reader might trip on, add a rich hint so the reader turns it into a clickable in-text clue:
+     ```yaml
+     vocabulary:
+       - word: impenetrable
+         clue: so strong that nothing can get through
+         icon: 🧱
+     ```
+     Keep it fun-first: never pre-pick target words or write the page around a vocabulary list.
 5. **Write prose that flows — the read-aloud test.** Page text is a storyteller's voice,
    not a telegram. Every sentence has a subject and a verb; sentences connect with
    cause-and-effect words (and, but, so, then, because); shapes vary — a longer rolling
    sentence, then a short punch. NEVER chop prose into fragment-chains
    ("Seoul at night. Bright lights. Palaces glow.") to stay inside a word target — that's
    the **telegraphic trap** (`reading-pedagogy.md`), it's on the fun-first ban list, and
-   `reading_level.py` fails it. A lone fragment for comic timing ("Uh oh.") is a spice,
+   `reading_level.py` flags it. A lone fragment for comic timing ("Uh oh.") is a spice,
    not the house style. Read every page *aloud*: if it doesn't sound like a person telling
    a great story, rewrite it.
 6. **End on the payoff, not a lesson.** Close on the funniest or most satisfying image and
    *stop*. No character explaining what they learned, no "and that's how…" moral. Let a
    naughty hero get away with it (or earn a funnier comeuppance, never a moral one).
 7. **Front/back matter** — title page (page 0) and an end page; optional dedication.
-8. **Scaffold & save**: `uv run python scripts/new_story.py <world> "<Title>" --age 5-7 --year 6
-   --pages 14` to create every page stub (`--age` = reader band, `--year` = content age), then
+8. **Scaffold & save**: `uv run python scripts/new_story.py <world> "<Title>" --year 6
+   --pages 14` to create every page stub (`--year` = the reader's age; the band + advisory
+   reading anchors derive from the per-year curve; ~14+ = adult reader), then
    fill the content with **JSON patches** — never edit the YAML text directly:
    ```bash
    uv run python scripts/edit_story.py <world>/<slug> meta <<'JSON'
@@ -81,6 +91,8 @@ language, add games, lay out text, and illustrate.
 - [ ] **The prose flows aloud** — real sentences with subjects, verbs, and connective
       tissue; varied shapes; no telegraphic fragment-chains chasing a readability number.
 - [ ] Words roughly age-fit — a light touch, never traded for a joke or the pace.
+- [ ] Any remaining tricky words carry a clickable `vocabulary` hint (word + clue + icon) so the
+      reader can tap for help instead of getting stuck.
 
 ## Output
 `worlds/<world>/stories/<slug>/story.yaml` with `spine` + `pages[]`.

@@ -1,0 +1,97 @@
+slug: pip
+world: magical-forest
+name: Pip
+role: protagonist
+species: fairy
+pronouns: she/her
+one_liner: A tiny fairy with big ideas — and the messes to go with them.
+personality:
+  traits:
+  - curious
+  - bold
+  - a bit naughty
+  - big-hearted
+  - always in a hurry
+  motivation: Pip wants to know everything and try everything — even (maybe mostly!) things she is told
+    not to.
+  fears:
+  - being stuck still
+  - missing out on fun
+  - letting her pals down
+  flaws:
+  - does not stop to think
+  - bends rules until they snap
+  - never asks for help
+  strengths:
+  - brave as anything
+  - quick thinker in a fix
+  - kind when it counts
+  quirks:
+  - hums when she plots
+  - hops from foot to foot when excited
+  - her left wing is a bit crinkled
+  values:
+  - fun
+  - loyalty
+  - a good plan (hers, mostly)
+voice:
+  speech_style: Fast, bubbly, full of short blurted-out plans. Talks with her hands — they wave in little
+    circles.
+  catchphrases:
+  - Let's just peek!
+  - One more try!
+  - I have a plan — sort of.
+  vocabulary_level: early-reader — short words, short bursts, big feelings
+appearance:
+  age_appearance: young fairy, maybe 7 in fairy years
+  build: tiny and wiry, always looks like she just wiggled out of something
+  height: as tall as an acorn cap
+  skin: warm tan with a light rosy glow
+  hair: messy bob, berry-brown, always has a twig or leaf stuck in it
+  eyes: big bright green, wide open like she just had an idea
+  outfit: a simple dress made from a soft blue petal, bare feet, a bit of moss tied at the waist like
+    a belt
+  distinguishing_features:
+  - left wing has a crinkle — small zig-zag fold near the tip
+  - always has something stuck in her hair (a twig, a leaf, a crumb)
+  - tiny splatter of berry juice on her cheek
+  color_palette:
+  - part: hair
+    hex: '#6b3a2e'
+  - part: eyes
+    hex: '#6b8f71'
+  - part: dress (petal)
+    hex: '#7ea8d4'
+  - part: wings
+    hex: '#e8d5b7'
+  - part: skin
+    hex: '#f0c8a0'
+  silhouette_notes: Tiny round head with messy tufts, crinkled wing with a visible zig-zag notch, bare
+    feet, one arm always mid-wave
+appearance_token: 'PIP: a tiny young fairy girl, as tall as an acorn cap, warm tan skin with rosy cheeks
+  (#f0c8a0), messy berry-brown bob hair (#6b3a2e) with a twig stuck in it, big bright green eyes (#6b8f71)
+  always wide with an idea, simple blue petal dress (#7ea8d4), bare feet, moss belt at waist, wings —
+  left wing has a small zig-zag crinkle near the tip, faint berry-juice smudge on one cheek, always looks
+  a little rumpled and ready for fun, soft round fairy face'
+reference_images:
+- characters/pip.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: bumble
+  relation: best pal — the bold one who drags them both into trouble
+evolution:
+- stage: curious
+  order: 1
+  summary: Pip acts first and asks later. Her big heart is there but the mess comes first.
+  personality_delta: no delta — this is her base self
+  unlocked_by: start of every first story
+- stage: learning
+  order: 2
+  summary: Pip starts to think a beat before she leaps — not always, but more than before.
+  personality_delta: a tiny bit more care, still curious, starts to ask pals for help
+  unlocked_by: a big fix-it story where her mess almost goes too far
+tags:
+- fairy
+- naughty
+- curious
+- protagonist

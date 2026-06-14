@@ -1,6 +1,6 @@
 ---
 name: interactive-elements
-description: Design REAL arcade games that give kids an OPTIONAL fun break — real-time engine games (snake, space shooter, maze, tower builder, whack-a-mole, breakout, catch, flap, run, pop, toss, steer) skinned from the story, plus rare branching choices — matched to the age band. Games are add-ons that NEVER change the story text or art. Use when adding interactivity to a finished story. Writes interaction blocks onto pages per schemas/story.schema.json.
+description: Design REAL arcade games that give kids an OPTIONAL fun break — real-time engine games (snake, space shooter, maze, tower builder, whack-a-mole, breakout, catch, flap, run, pop, toss, steer) skinned from the story, plus rare branching choices — matched to the reader's age. Games are add-ons that NEVER change the story text or art. Use when adding interactivity to a finished story. Writes interaction blocks onto pages per schemas/story.schema.json.
 ---
 
 # Interactive elements
@@ -61,8 +61,11 @@ main path a complete story.)
 
 ## Procedure
 
-1. **Find the beat.** Place one game every 2–4 pages at a natural pause — never on an
-   emotional climax. Note them in `interactions_summary`.
+1. **Find the beat.** Add a game ONLY where a page's beat genuinely invites one — there is no
+   cadence to hit (the quality gate no longer counts games-per-page). A few well-placed games
+   beat a game every other page. Put the game on the **story page it belongs to**, never on a
+   blank-text page that breaks the read; never on an emotional climax. Note them in
+   `interactions_summary`.
 2. **Pick the arcade verb that matches the page's verb** (table above; full payload shapes
    and skin ideas per game in interactivity.md). A genuine plot fork (rare) → `choice`.
 3. **Skin it from *this* page.** Player, targets, decoys, blocks — all emoji from what the
@@ -78,14 +81,14 @@ main path a complete story.)
    20–60 seconds.
 6. **Co-reader prompts.** For read-aloud bands, set page `reading_notes` with a question to ask.
 
-## Match to the age band
+## Match to the reader's age (`target_year`)
 
-- **3–5 (from ~4):** one-touch only — `arcade-catch`, `arcade-pop`, `arcade-whack`,
+- **~4:** one-touch only — `arcade-catch`, `arcade-pop`, `arcade-whack`,
   `arcade-build` — at `speed: gentle`, small `goal` (4–6).
-- **5–7:** all one-touch games shine; add steering (`arcade-flap`, `arcade-run`,
+- **~5–7:** all one-touch games shine; add steering (`arcade-flap`, `arcade-run`,
   `arcade-steer`), aiming (`arcade-toss`), and gentle swipe games (`arcade-snake`,
   `arcade-maze` at `size: cozy`), `gentle`/`normal`, goal 4–8.
-- **7–12:** everything — `arcade-shoot`, `arcade-bounce` (`rows` up to 3), `arcade-maze`
+- **~7–12:** everything — `arcade-shoot`, `arcade-bounce` (`rows` up to 3), `arcade-maze`
   at `normal`/`big`, branching `choice` — at `normal` (or `wild` for 9+), goal 8–12.
 
 ## Quality bar
@@ -97,7 +100,7 @@ main path a complete story.)
 - [ ] Each game's **verb matches its page's verb**, and every noun is **skinned from the
       page** (no default stars-and-baskets); `how` and `avoid_line` are in the story's voice.
 - [ ] Mechanics are **varied** — ≥3 different arcade kinds across the book.
-- [ ] `goal`/`speed`/`size`/`rows` fit the age band; each round lands in 20–60 seconds.
+- [ ] `goal`/`speed`/`size`/`rows` fit the reader's age; each round lands in 20–60 seconds.
 - [ ] Each `data` payload matches its `type`'s shape (the validator checks required keys).
 - [ ] Warm `feedback.correct` / `try_again` in the story's voice — the win is the story's
       victory lap.

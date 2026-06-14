@@ -1,0 +1,101 @@
+slug: bumble
+world: magical-forest
+name: Bumble
+role: sidekick
+species: bumblebee
+pronouns: he/him
+one_liner: A fuzzy round bee who worries about everything — and sticks by Pip no matter what.
+personality:
+  traits:
+  - loyal
+  - fussy
+  - gentle
+  - nervous
+  - funny without trying
+  motivation: Bumble wants to keep Pip safe — and keep himself far, far away from trouble (too bad Pip
+    never lets him).
+  fears:
+  - big falls
+  - loud pops
+  - getting sticky
+  - disappointing Pip
+  flaws:
+  - worries so much he freezes
+  - says 'bad plan' but comes along anyway
+  - a bit of a grump when hungry
+  strengths:
+  - fiercely loyal
+  - notices every little thing (good at clues)
+  - can lift things twice his size when Pip really needs it
+  quirks:
+  - cleans his wings when nervous
+  - says 'Um...' before everything
+  - one antenna is bent — it droops when he is scared
+  values:
+  - keeping his pals safe
+  - a tidy hive
+  - snacks
+voice:
+  speech_style: Slow, full of pauses and ums. Talks in soft round huffs. Tends to list things that could
+    go wrong.
+  catchphrases:
+  - Um... Pip, wait!
+  - This feels like a bad plan.
+  - Oh dear oh dear oh dear.
+  - Well... okay. But I am not happy about it.
+  vocabulary_level: early-reader — soft short words, a bit fussy
+appearance:
+  age_appearance: a grown bee, but small for his kind — same age as Pip in pal terms
+  build: round and fuzzy, like a tiny striped puffball
+  height: a little bigger than Pip — maybe one and a half acorn caps
+  skin: TODO
+  hair: TODO
+  eyes: big round worried-looking, soft amber-orange
+  outfit: no clothes — he is a bee! But he wears tiny round specs on his nose
+  distinguishing_features:
+  - one bent antenna that droops when he is scared
+  - round wire spectacles, a bit too big for his face
+  - a tiny satchel slung over one side (holds snacks and a map)
+  color_palette:
+  - part: fur (yellow stripes)
+    hex: '#f5d742'
+  - part: fur (dark stripes)
+    hex: '#3d2b1f'
+  - part: eyes
+    hex: '#d98a5b'
+  - part: spectacles
+    hex: '#c9a96e'
+  - part: satchel
+    hex: '#8b6f47'
+  - part: wings
+    hex: '#d4e8f0'
+  silhouette_notes: Round fuzzy ball shape, one antenna bent down, tiny specs, satchel bulge on one side,
+    soft round wings
+appearance_token: 'BUMBLE: a round fuzzy bumblebee (#f5d742 yellow and #3d2b1f dark stripes), small for
+  a bee with a soft puffy body, big round worried amber-orange eyes (#d98a5b), one bent antenna that droops,
+  tiny wire spectacles (#c9a96e) perched on his nose a bit too big for his face, a small brown satchel
+  (#8b6f47) slung across his body, soft pale blue bee wings (#d4e8f0), gentle anxious expression, always
+  hovering just behind someone'
+reference_images:
+- characters/bumble.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: pip
+  relation: best pal — the careful voice Pip never listens to
+evolution:
+- stage: worrier
+  order: 1
+  summary: Every plan sounds scary. But Bumble comes along anyway — because it is Pip.
+  personality_delta: no delta — this is his base self
+  unlocked_by: start of every first story
+- stage: braver
+  order: 2
+  summary: Still a little fussy, but Bumble has learned he can be brave when it counts — even if he grumbles
+    the whole time.
+  personality_delta: a little less freeze, a little more fuss-and-do
+  unlocked_by: a story where Bumble has to save Pip on his own
+tags:
+- bee
+- sidekick
+- worrier
+- funny

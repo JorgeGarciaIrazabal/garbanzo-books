@@ -2,7 +2,7 @@
 """Scaffold a new story: worlds/<world>/stories/<slug>/story.yaml + images/ dir.
 
 Usage:
-    uv run python scripts/new_story.py whispering-woods "Pip and the Lost Star" --age 5-7
+    uv run python scripts/new_story.py whispering-woods "Pip and the Lost Star" --year 6
 """
 from __future__ import annotations
 
@@ -12,19 +12,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.model import WORLDS, dump_yaml, slugify  # noqa: E402
-from lib.readability import BANDS  # noqa: E402
+from lib.readability import band_for_year, story_targets  # noqa: E402
 
-# Sensible default FK targets per band (None bands use a soft early-reader target).
-# Deliberately NOT aggressive: FK rewards short sentences, and an over-tight target
-# trains writers to chop prose into telegraphic fragments. The band caps + the
-# anti-telegraphic floor in lib/readability.py do the real guarding.
-DEFAULT_FK = {"0-3": 0.5, "3-5": 0.8, "5-7": 1.5, "7-9": 3.0, "9-12": 5.5}
-
-# Default CONTENT age (target_year) per reader band — the band midpoint. target_year is the
-# single age the story's humor/stakes/themes are pitched at; the band is reading ABILITY.
-# They usually match (a six-year-old reading 5-7 words wants six-year-old jokes) but --year
-# lets them diverge, e.g. an older kid who reads below their interest level.
-DEFAULT_YEAR = {"0-3": 2, "3-5": 4, "5-7": 6, "7-9": 8, "9-12": 10}
+DEFAULT_YEAR = 6  # a safe early-reader when no --year is given
 
 
 def _story_page_stub(number: int) -> dict:
@@ -39,30 +29,34 @@ def _story_page_stub(number: int) -> dict:
             "text_zone": "lower third",
         },
         "layout": {"text_position": "lower-third", "text_align": "center", "scrim": True},
-        "vocabulary": [],
+        # NOTE: no `vocabulary` field on purpose. It used to seed an empty list per page,
+        # which trained authors to pre-pick "target words" and then write fancy prose to
+        # contain them — the opposite of fun-first. The field still exists in the schema as
+        # an OPTIONAL, passive glossary byproduct, but it is never an authoring target.
     }
 
 
-def starter(slug: str, world: str, title: str, age: str, n_pages: int = 1,
-            year: int | None = None) -> dict:
-    band = BANDS.get(age, BANDS["5-7"])
+def starter(slug: str, world: str, title: str, band_id: str, year: int,
+            n_pages: int = 1) -> dict:
+    # Reading targets are selected by AGE (the per-year curve), with the band as the
+    # 'grown-up' authority. These are ADVISORY anchors the author writes toward — not gates;
+    # the validator only WARNs on drift. See methodology/reading-pedagogy.md.
+    t = story_targets({"age_band": band_id, "target_year": year})
     return {
         "slug": slug,
         "world": world,
         "title": title,
         "logline": "TODO: protagonist + goal + obstacle, in one sentence.",
         "summary": "TODO",
-        "age_band": age,
-        "target_year": year if year is not None else DEFAULT_YEAR.get(age, 6),
+        "age_band": band_id,
+        "target_year": year,
         "reading_level": {
-            "target_fk_grade": DEFAULT_FK.get(age, 1.5),
-            # Wide on purpose: FKGL is noisy on picture-book-sized text, and a tight
-            # tolerance pressures writers into chopping prose to make the number move.
-            "fk_grade_tolerance": 1.5,
+            "target_fk_grade": t["fk_target"] if t["fk_target"] is not None else 0.5,
+            "fk_grade_tolerance": t["fk_tol"],
             "lexile_range": "",
             "fountas_pinnell": "",
-            "max_words_per_page": band["max_words_per_page"],
-            "max_sentence_words": band["max_sentence_words"],
+            "max_words_per_page": t["max_words_per_page"],
+            "max_sentence_words": t["max_sentence_words"],
             "decoding_focus": "",
             "decodable": False,
         },
@@ -105,11 +99,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Scaffold a new story.")
     ap.add_argument("world", help="world slug")
     ap.add_argument("title", help="story title")
-    ap.add_argument("--age", default="5-7", choices=list(BANDS),
-                    help="READER ability band — who reads the words (drives reading_level)")
-    ap.add_argument("--year", type=int, metavar="N",
-                    help="CONTENT age — the single age (in years) the story's humor/stakes/"
-                         "themes are pitched at (default: the band midpoint)")
+    ap.add_argument("--year", type=int, default=DEFAULT_YEAR, metavar="N",
+                    help="the reader's AGE in years (1-18) — the single age knob for the book. "
+                         "Sets target_year and derives the advisory reading anchors from the "
+                         f"per-year curve. ~14+ = adult reader. Default {DEFAULT_YEAR}.")
     ap.add_argument("--slug", help="override the slug")
     ap.add_argument("--pages", type=int, default=1, metavar="N",
                     help="scaffold N story-page stubs (plus the title page) so the author "
@@ -128,14 +121,17 @@ def main() -> int:
         print(f"! story '{slug}' already exists at {sdir}", file=sys.stderr)
         return 1
 
-    if args.year is not None and not (1 <= args.year <= 14):
-        print(f"! --year must be 1-14 (got {args.year})", file=sys.stderr)
+    if not (1 <= args.year <= 18):
+        print(f"! --year must be 1-18 (got {args.year})", file=sys.stderr)
         return 1
-    data = starter(slug, args.world, args.title, args.age, n_pages=args.pages, year=args.year)
+    # Year is the single knob; the legacy age_band is derived from it (display/back-compat).
+    year = args.year
+    band_id = band_for_year(year)
+
+    data = starter(slug, args.world, args.title, band_id, year, n_pages=args.pages)
     dump_yaml(data, sdir / "story.yaml")
     (sdir / "images").mkdir(parents=True, exist_ok=True)
-    print(f"+ created story '{slug}' (readers {args.age}, content age {data['target_year']}) "
-          f"at {sdir}")
+    print(f"+ created story '{slug}' (age {year}) at {sdir}")
     print("  next: write the spine + pages (story-craft), then reading-level-adaptation")
     return 0
 

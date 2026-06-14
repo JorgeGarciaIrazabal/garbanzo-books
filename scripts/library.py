@@ -11,6 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.model import load_all_worlds  # noqa: E402
+from lib.readability import story_age_label, world_age_label  # noqa: E402
 
 
 def main() -> int:
@@ -23,7 +24,8 @@ def main() -> int:
             "title": w.data.get("title"),
             "tagline": w.data.get("tagline"),
             "premise": w.data.get("premise"),
-            "age_bands": w.data.get("target_age_bands", []),
+            "years": w.data.get("target_years", []),
+            "audience": world_age_label(w.data),
             "themes": w.data.get("themes", []),
             "palette": [
                 {"name": s.get("name"), "hex": "#" + str(s.get("hex", "")).lstrip("#")}
@@ -64,7 +66,8 @@ def main() -> int:
                     "slug": s.slug,
                     "title": s.data.get("title"),
                     "logline": s.data.get("logline"),
-                    "age_band": s.data.get("age_band"),
+                    "target_year": s.data.get("target_year"),
+                    "age": story_age_label(s.data),
                     "status": s.data.get("status", "draft"),
                     "tags": s.data.get("tags", []),
                     "pages": len(s.data.get("pages", []) or []),

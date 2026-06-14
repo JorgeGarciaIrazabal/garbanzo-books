@@ -1,0 +1,10 @@
+PROMPT:
+A title page — a tiny pot of golden honey glowing on a mossy tree stump, with a small fairy footprint in a drip of honey next to it, warm sunlight through leaves. soft watercolor children's book illustration with delicate ink outlines, warm muted palette (#f4e1c1 cream, #7a9f7e sage, #b8a9c9 lavender, #e8b96d honey-gold, #3d5a73 dusk-blue, #d4808c berry-pink), dappled golden-hour sunlight filtering through leaves, rounded friendly shapes with slight hand-drawn wobble, watercolor washes bleeding softly at the edges, low child's-eye perspective making the world feel big and wonderful, hand-painted paper texture, cozy gentle storybook mood, no text. palette: cream #f4e1c1, sage #7a9f7e, lavender #b8a9c9, honey-gold #e8b96d, dusk-blue #3d5a73, berry-pink #d4808c. leave the center as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, sharp edges, cold blue lighting, CGI, flat digital art
+
+SEED: 204745398
+ASPECT: 4:3
+CHARACTERS: —
+REFERENCES: —

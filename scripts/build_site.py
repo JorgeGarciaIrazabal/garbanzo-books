@@ -33,12 +33,24 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.colors import norm_hex  # noqa: E402
 from lib.model import ROOT, load_all_worlds, normalize_rules  # noqa: E402
+from lib.readability import (band_for_year, story_age_label,  # noqa: E402
+                            world_age_label)
 
 SITE = ROOT / "site"  # default output dir; `build(out=...)` may override per call
 ASSET_SRC = Path(__file__).resolve().parent / "site_assets"
 
-# Reader base font size (px) per age band (accessibility.md).
+# Reader base font size (px) per derived age band (accessibility.md).
 READER_BASE = {"0-3": 28, "3-5": 24, "5-7": 22, "7-9": 18, "9-12": 16, "grown-up": 14}
+
+
+def reader_font_base(story: dict) -> int:
+    """Reader font size from the story's age (via the derived band) — bands aren't shown to
+    users, just used for the size lookup."""
+    band = story.get("age_band")
+    if not band:
+        y = story.get("target_year")
+        band = band_for_year(y) if isinstance(y, int) else "5-7"
+    return READER_BASE.get(band, 20)
 
 # The reader runtime. Order matters: reader.js defines window.GB + the registry + the
 # controller; gx.core.js adds the game framework; the game libraries register themselves;
@@ -153,7 +165,7 @@ def build_index(worlds, root="") -> str:
   <div class="body">
     <h3>{esc(w.data.get('title'))}</h3>
     <p>{esc(w.data.get('tagline') or w.data.get('premise',''))}</p>
-    <div class="chips">{chips(w.data.get('target_age_bands'), 'chip age')}{chips(w.data.get('themes'))}</div>
+    <div class="chips"><span class="chip age">{esc(world_age_label(w.data))}</span>{chips(w.data.get('themes'))}</div>
   </div>
 </a>"""
     body = f"""<section class="hero">
@@ -197,7 +209,7 @@ def build_world(world, root="../../") -> str:
   <div class="thumb">{th}</div>
   <div class="body"><h3>{esc(s.data.get('title'))}</h3>
   <p>{esc(s.data.get('logline',''))}</p>
-  <div class="chips"><span class="chip age">{esc(s.data.get('age_band'))}</span>{chips(s.data.get('tags'))}</div></div>
+  <div class="chips"><span class="chip age">{esc(story_age_label(s.data))}</span>{chips(s.data.get('tags'))}</div></div>
 </a>"""
     body = f"""<div class="wrap">
   <div class="breadcrumb"><a href="{root}index.html">Worlds</a> › {esc(world.data.get('title'))}</div>
@@ -205,7 +217,7 @@ def build_world(world, root="../../") -> str:
     <h1>{esc(world.data.get('title'))}</h1>
     <p style="margin:0">{esc(world.data.get('premise',''))}</p>
     <div class="swatches">{palette_swatches(world)}</div>
-    <div class="chips">{chips(world.data.get('target_age_bands'),'chip age')}{chips(world.data.get('themes'))}{chips(world.data.get('genres'))}</div>
+    <div class="chips"><span class="chip age">{esc(world_age_label(world.data))}</span>{chips(world.data.get('themes'))}{chips(world.data.get('genres'))}</div>
   </section>
   <h2 class="section-title">Stories</h2>
   <div class="grid">{story_cards or '<p>No stories yet.</p>'}</div>
@@ -234,7 +246,7 @@ def build_reader(world, story, root="../../../") -> str:
             for p in story.data.get("pages", []) or []
         ],
     }
-    base = READER_BASE.get(story.data.get("age_band", "5-7"), 20)
+    base = reader_font_base(story.data)
     data_json = json.dumps(payload, ensure_ascii=False)
     tags_html = "".join(
         f'<a class="chip" href="{root}tags/{esc(t)}/index.html">{esc(t)}</a>'
@@ -282,7 +294,7 @@ def build_tag_page(tag, entries, root="../../") -> str:
   <div class="thumb">{th}</div>
   <div class="body"><h3>{esc(s.data.get('title'))}</h3>
   <p>{esc(world.data.get('title'))} · {esc(s.data.get('logline',''))}</p>
-  <div class="chips"><span class="chip age">{esc(s.data.get('age_band'))}</span></div></div></a>"""
+  <div class="chips"><span class="chip age">{esc(story_age_label(s.data))}</span></div></div></a>"""
     body = f"""<div class="wrap"><div class="breadcrumb"><a href="{root}index.html">Worlds</a> ›
     <a href="{root}tags/index.html">Tags</a> › {esc(tag)}</div>
     <h1>#{esc(tag)}</h1><div class="grid">{cards}</div></div>"""
@@ -361,7 +373,7 @@ def build(include_drafts: bool, out: Path | None = None) -> dict:
                 "world": w.data.get("title"),
                 "world_slug": w.slug,
                 "slug": s.slug,
-                "age_band": s.data.get("age_band"),
+                "age": story_age_label(s.data),
                 "logline": s.data.get("logline", ""),
                 "tags": s.data.get("tags", []),
                 "url": f"story/{w.slug}/{s.slug}/index.html",

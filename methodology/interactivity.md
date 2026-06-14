@@ -30,9 +30,14 @@ two things at once:
 2. **Belong to *this* page** — the game is *about* what just happened, so it pulls the kid
    deeper into the story instead of yanking them out of it.
 
-Interleave roughly one every 2–4 pages, placed at a natural beat — never mid-climax. Vary
-the *mechanics* across the book (the quality gate wants ≥3 different kinds): a snake, then a
-maze, then a stacker reads as a romp; three catchers in a row reads as a level grind.
+Place a game **only where a page's beat genuinely invites one** — there is NO cadence to hit
+(the quality gate no longer counts games-per-page, because a quota pushes you to drop filler
+games that break the read). A handful across the book is plenty; a great story with three
+well-placed games beats one with a game every other page. Put the game **on the story page it
+belongs to** — never on its own blank-text page that interrupts the flow. Place at a natural
+beat, never mid-climax. Vary the *mechanics* across the book (the quality gate still wants ≥3
+different kinds when you do add games): a snake, then a maze, then a stacker reads as a romp;
+three catchers in a row reads as a level grind.
 
 ## Pick the mechanic by the page's VERB
 

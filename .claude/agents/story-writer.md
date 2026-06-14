@@ -29,8 +29,8 @@ Your deliverables (`worlds/<world>/stories/<slug>/story.yaml`):
 - A `logline` (protagonist + goal + obstacle) and a clear answer to "why is this fun?"
   (the laughs, stakes, mischief, surprise). Any feeling underneath stays unstated.
 - A `spine` whose beats causally link (the protagonist's flaw drives the middle).
-- A `pages[]` storyboard at the ~14-spread rhythm (fewer for younger bands): on-the-page
-  `text` within the age band's word targets, `kind`, scene-only `image.prompt` with
+- A `pages[]` storyboard at the ~14-spread rhythm (fewer for younger readers): on-the-page
+  `text` within the age's word targets, `kind`, scene-only `image.prompt` with
   `characters_present` listed (NEVER add style/appearance text — that's injected later), and
   deliberate page-turns at tension peaks.
 - Each story pins every character's `evolution.stage`; nothing contradicts world

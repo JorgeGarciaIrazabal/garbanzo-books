@@ -9,7 +9,7 @@
   --accent-2: #d98a5b;
   --shadow: 0 6px 24px rgba(45, 42, 38, 0.12);
   --radius: 18px;
-  --reader-base: 20px; /* overridden per age band */
+  --reader-base: 20px; /* overridden per reader age */
   --font: "Andika", "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
 }
 * { box-sizing: border-box; }
@@ -145,6 +145,104 @@ h1, h2, h3 { line-height: 1.2; }
 }
 .reader-controls .progress { color: var(--muted); font-weight: 600; }
 .reader-controls .pageno { min-width: 90px; text-align: center; }
+
+/* ---- clickable in-text vocabulary hints ---- */
+.word-clue {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 2px dotted var(--accent-2);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: inherit;
+  text-decoration: none;
+  transition: background .12s, border-bottom-style .12s;
+}
+.word-clue:hover, .word-clue:focus-visible {
+  background: rgba(255, 253, 247, 0.45);
+  border-bottom-style: solid;
+}
+.word-clue:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.word-icon {
+  display: inline-block;
+  margin-left: 0.15em;
+  font-size: 0.82em;
+  vertical-align: super;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* vocabulary clue popup */
+.word-clue-popup {
+  position: fixed;
+  z-index: 55;
+  min-width: 180px;
+  max-width: min(320px, 86vw);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+.word-clue-popup.open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.word-clue-close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+}
+.word-clue-head {
+  font-weight: 800;
+  font-size: 1.15em;
+  margin-right: 22px;
+}
+.popup-icon {
+  margin-right: 0.15em;
+}
+.word-clue-body {
+  margin-top: 6px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.4;
+}
+.word-clue-speak {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.word-clue-speak:hover { transform: translateY(-1px); }
+.word-clue-speak:disabled { background: #cdd6ce; cursor: default; transform: none; }
 
 /* extras: glossary + grown-up tip, kept off the art */
 .extras:empty { display: none; }

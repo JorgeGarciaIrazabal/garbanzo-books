@@ -1,0 +1,10 @@
+PROMPT:
+A frost-covered spellbook lying open on a wooden desk, frost curling up from the pages in spirals, a single amber lamp glowing beside it, tiny ice crystals floating in the warm light. dreamy pastel children's book illustration, soft blush and mint palette, whisper-thin rounded lines, golden-hour glow with floating magic motes, ethereal gradients, hand-painted paper texture, cozy whimsical mood, no text. palette: cream #fdf6e3, blush-pink #f4c2c2, mint-green #a8e6cf, lavender #c7b8ea, golden-hour #ffd93d, dusk-lavender #6b5b95. leave the center as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
+
+SEED: 518738573
+ASPECT: 4:3
+CHARACTERS: —
+REFERENCES: —

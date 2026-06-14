@@ -5,7 +5,7 @@
   "description": "A persistent fictional universe (a 'world bible') in which many stories take place. Captures everything professional studios put in a series bible plus the locked art-style guide that guarantees visual consistency across every illustration.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["slug", "title", "premise", "tone", "art_style", "target_age_bands"],
+  "required": ["slug", "title", "premise", "tone", "art_style"],
   "properties": {
     "slug": {
       "type": "string",
@@ -21,11 +21,17 @@
       "description": "Emotional register. Lean bold and fun, e.g. ['madcap','adventurous','mischievous','a-little-spooky'] or ['witty','high-stakes','laugh-out-loud']. Cozy/gentle is fine as ONE colour in the mix, not the whole palette."
     },
     "genres": { "type": "array", "items": { "type": "string" } },
+    "target_years": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "integer", "minimum": 1, "maximum": 18 },
+      "description": "Reader AGES (in years) this world is designed to serve, e.g. [5,6,7]. The primary audience knob. Individual stories pick one age (story.target_year)."
+    },
     "target_age_bands": {
       "type": "array",
       "minItems": 1,
       "items": { "$ref": "#/$defs/ageBand" },
-      "description": "Age bands this world is designed to serve. Individual stories pick one."
+      "description": "DEPRECATED — legacy coarse age bands, kept only so existing worlds stay valid. Use target_years instead; the scaffolder may still derive this for display."
     },
     "languages": {
       "type": "array",

@@ -1,6 +1,6 @@
 ---
 name: reading-specialist
-description: Lightly age-fits story language so the words never get in the way of the fun — roughly right sentence length, words-per-page, and word choice for the age band. A light touch, NOT a reading curriculum. Use to set/check a story's age fit, simplify it, or make easier/harder variants.
+description: Lightly age-fits story language so the words never get in the way of the fun — roughly right sentence length, words-per-page, and word choice for the reader's age (in years). A light touch, NOT a reading curriculum. Use to set/check a story's age fit, simplify it, or make easier/harder variants.
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 

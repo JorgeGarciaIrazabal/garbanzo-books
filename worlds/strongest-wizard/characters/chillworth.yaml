@@ -1,0 +1,84 @@
+slug: chillworth
+world: strongest-wizard
+name: Professor Chillworth
+role: mentor
+species: human
+pronouns: he/him
+one_liner: A squat, riddling ice-wizard who waddles like a penguin, speaks in mysteries, and sees the
+  heart beneath every puddle.
+personality:
+  traits:
+  - eccentric
+  - warm
+  - riddle-tongued
+  - patient
+  - inscrutable
+  motivation: Find the one student whose warm heart can do what cold talent never will — and pour them
+    tea.
+  fears:
+  - TODO
+  flaws:
+  - speaks in riddles so layered nobody knows if he's teaching or just hungry
+  - never gives a straight answer
+  - waddles too slowly to catch anything faster than a teapot
+  strengths:
+  - sees potential where others see failure
+  - deeply understands the heart-behind-the-magic
+  - makes the best tea in the world
+  quirks:
+  - always carries a steaming teapot
+  - waddles instead of walks
+  - his mustache curls differently depending on his mood
+  values:
+  - warm hearts over cold talent
+  - tea
+  - practice
+voice:
+  speech_style: cryptic, cozy, always circles back to tea or cold things unexpectedly becoming warm
+  catchphrases: []
+  vocabulary_level: age-appropriate, concrete
+appearance:
+  age_appearance: impossible to guess — somehow young and ancient at once
+  build: squat, round, penguin-shaped
+  height: knee-high to a grown wizard
+  skin: pink-cheeked from constant hot tea
+  hair: silver mustache that curls into frosty spirals
+  eyes: twinkling pale blue behind round wire spectacles
+  outfit: tiny tweed vest stretched over belly, wool scarf, fuzzy slippers
+  distinguishing_features:
+  - penguin-shaped silhouette
+  - steaming teapot always in one hand
+  - silver spiral mustache
+  - frost patterns that appear on his vest when he laughs
+  color_palette:
+  - part: vest
+    hex: '#8b7355'
+  - part: scarf
+    hex: '#a8dadc'
+  - part: teapot
+    hex: '#e8d5b7'
+  - part: mustache
+    hex: '#c0c0c0'
+  - part: eyes
+    hex: '#a8d8ea'
+  - part: slippers
+    hex: '#f4a460'
+  silhouette_notes: Wide round pear shape with tiny legs, teapot bump at one side, spiral mustache tips
+    visible in profile
+appearance_token: 'CHILLWORTH: a squat round wizard shaped like a friendly penguin, tiny tweed vest (#8b7355)
+  stretched over round belly, pale blue wool scarf (#a8dadc), round wire spectacles, silver mustache curled
+  into frosty spirals (#c0c0c0), twinkling pale blue eyes (#a8d8ea), pink cheeks from hot tea, steaming
+  ceramic teapot (#e8d5b7) always in one hand, fuzzy orange slippers (#f4a460), frost patterns bloom on
+  his vest when he laughs, waddles cheerfully'
+reference_images:
+- characters/chillworth.refs/model-sheet.png
+seed: 7843291
+relationships: []
+evolution:
+- stage: base
+  order: 0
+  summary: The riddling ice-wizard as first encountered — waddles in, pours tea, speaks in frozen riddles.
+tags:
+- ice
+- master
+- tea

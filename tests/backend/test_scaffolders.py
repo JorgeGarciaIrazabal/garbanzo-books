@@ -78,20 +78,23 @@ def test_new_world_creates_companion_dirs(workspace, monkeypatch):
     assert (wdir / "assets").is_dir()
 
 
-def test_new_world_default_age_band_is_5_7(workspace, monkeypatch):
+def test_new_world_default_year_is_6(workspace, monkeypatch):
     import new_world
     monkeypatch.setattr("sys.argv", ["new_world.py", "Foo"])
     new_world.main()
     data = load_yaml(workspace.worlds / "foo" / "world.yaml")
-    assert data["target_age_bands"] == ["5-7"]
+    assert data["target_years"] == [6]
+    assert data["target_age_bands"] == ["5-7"]  # legacy band derived for back-compat
 
 
-def test_new_world_accepts_multiple_age_flags(workspace, monkeypatch):
+def test_new_world_accepts_multiple_year_flags(workspace, monkeypatch):
     import new_world
     monkeypatch.setattr("sys.argv",
-                        ["new_world.py", "Multi", "--age", "3-5", "--age", "5-7"])
+                        ["new_world.py", "Multi", "--year", "4", "--year", "6"])
     new_world.main()
     data = load_yaml(workspace.worlds / "multi" / "world.yaml")
+    assert data["target_years"] == [4, 6]
+    # legacy bands derived & de-duped for back-compat (4 -> 3-5, 6 -> 5-7)
     assert data["target_age_bands"] == ["3-5", "5-7"]
 
 
@@ -175,49 +178,38 @@ def test_new_story_creates_story_yaml_with_images_dir(workspace, monkeypatch):
     assert (out.parent / "images").is_dir()
 
 
-def test_new_story_default_age_band_is_5_7(workspace, monkeypatch):
+def test_new_story_default_year_is_6(workspace, monkeypatch):
     _make_world(workspace, monkeypatch)
     import new_story
     monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Test"])
     new_story.main()
     data = load_yaml(workspace.worlds / "ww" / "stories" / "test" / "story.yaml")
-    assert data["age_band"] == "5-7"
+    assert data["target_year"] == 6
+    assert data["age_band"] == "5-7"  # legacy band derived from the year
 
 
-def test_new_story_age_band_sets_fk_target_and_word_caps(workspace, monkeypatch):
-    """The per-band defaults must follow methodology — bigger kids get a higher
-    FK target and a higher words-per-page cap."""
-    from lib.readability import BANDS
+def test_new_story_year_sets_fk_target_and_word_caps(workspace, monkeypatch):
+    """The per-YEAR curve must follow methodology — older readers get a higher FK target and a
+    higher words-per-page cap. Selection is by year, not band."""
+    from lib.readability import targets_for_year
     _make_world(workspace, monkeypatch)
     import new_story
 
-    # 5-7 story
     monkeypatch.setattr("sys.argv",
-                        ["new_story.py", "ww", "Early", "--slug", "early", "--age", "5-7"])
+                        ["new_story.py", "ww", "Early", "--slug", "early", "--year", "5"])
     new_story.main()
     early = load_yaml(workspace.worlds / "ww" / "stories" / "early" / "story.yaml")
 
-    # 7-9 story
     monkeypatch.setattr("sys.argv",
-                        ["new_story.py", "ww", "Older", "--slug", "older", "--age", "7-9"])
+                        ["new_story.py", "ww", "Older", "--slug", "older", "--year", "9"])
     new_story.main()
     older = load_yaml(workspace.worlds / "ww" / "stories" / "older" / "story.yaml")
 
-    # FK target rises with band
+    # FK target rises with age
     assert older["reading_level"]["target_fk_grade"] > early["reading_level"]["target_fk_grade"]
-    # Word-per-page cap matches the band table
-    assert early["reading_level"]["max_words_per_page"] == BANDS["5-7"]["max_words_per_page"]
-    assert older["reading_level"]["max_words_per_page"] == BANDS["7-9"]["max_words_per_page"]
-
-
-def test_new_story_rejects_unknown_age_band(workspace, monkeypatch):
-    _make_world(workspace, monkeypatch)
-    import new_story
-    monkeypatch.setattr("sys.argv",
-                        ["new_story.py", "ww", "Test", "--age", "99-100"])
-    # argparse choices=[…] enforces this — script exits with SystemExit(2)
-    with pytest.raises(SystemExit):
-        new_story.main()
+    # Word-per-page cap matches the per-year curve
+    assert early["reading_level"]["max_words_per_page"] == targets_for_year(5)["max_words_per_page"]
+    assert older["reading_level"]["max_words_per_page"] == targets_for_year(9)["max_words_per_page"]
 
 
 def test_new_story_fails_when_already_exists(workspace, monkeypatch):
@@ -251,28 +243,28 @@ def test_new_story_has_title_and_first_story_page(workspace, monkeypatch):
     assert "story" in kinds
 
 
-def test_new_story_target_year_defaults_to_band_midpoint(workspace, monkeypatch):
-    """target_year (CONTENT age, one number) defaults from the reader band so every new
-    story carries both knobs; --year overrides it independently of --age."""
-    _make_world(workspace, monkeypatch)
-    import new_story
-    monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Mid", "--age", "5-7"])
-    new_story.main()
-    data = load_yaml(workspace.worlds / "ww" / "stories" / "mid" / "story.yaml")
-    assert data["target_year"] == 6
-    validate_content("story", data)
-
-
-def test_new_story_year_flag_overrides_default(workspace, monkeypatch):
+def test_new_story_year_flag_sets_year_and_derives_band(workspace, monkeypatch):
+    """The single --year knob sets target_year and derives the legacy age_band from it."""
     _make_world(workspace, monkeypatch)
     import new_story
     monkeypatch.setattr("sys.argv",
-                        ["new_story.py", "ww", "Diverge", "--age", "5-7", "--year", "8"])
+                        ["new_story.py", "ww", "Diverge", "--year", "8"])
     new_story.main()
     data = load_yaml(workspace.worlds / "ww" / "stories" / "diverge" / "story.yaml")
-    # content pitched at an 8-year-old, words for a beginning reader — they may diverge
     assert data["target_year"] == 8
-    assert data["age_band"] == "5-7"
+    assert data["age_band"] == "7-9"  # derived from year 8
+    validate_content("story", data)
+
+
+def test_new_story_adult_year_derives_grownup_band(workspace, monkeypatch):
+    """~14+ means an adult reader -> the derived band is 'grown-up'."""
+    _make_world(workspace, monkeypatch)
+    import new_story
+    monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Grown", "--year", "16"])
+    new_story.main()
+    data = load_yaml(workspace.worlds / "ww" / "stories" / "grown" / "story.yaml")
+    assert data["target_year"] == 16
+    assert data["age_band"] == "grown-up"
     validate_content("story", data)
 
 

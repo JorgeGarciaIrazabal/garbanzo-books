@@ -1,0 +1,148 @@
+slug: the-magical-forest
+title: The Magical Forest
+tagline: 'TODO: one memorable sentence that sells this world.'
+premise: A hidden fairy civilization thriving beneath the roots of ancient trees, where acorn-cap lanterns
+  glow at dusk, dew-slide transportation connects mushroom villages, and every fairy has a 'spark' — a
+  tiny, personal magic tied to their personality (not their usefulness). Fairies borrow human lost things
+  (single socks, shiny buttons, forgotten marbles) to build their world, and the forest's 'rules' are
+  really just polite suggestions the fairies cheerfully bend.
+tone:
+- gentle
+- cozy
+- mischievous
+- wonderous
+genres:
+- adventure
+target_age_bands:
+- 5-7
+languages:
+- en
+geography:
+  overview: 'A two-layer forest world: cozy root-hollow villages beneath ancient trees, and breezy canopy
+    playgrounds in the branches above, connected by dew slides and mushroom stairs.'
+  locations:
+  - name: Root Hollow Village
+    description: Cozy fairy homes carved into tree roots, connected by glowing mushroom paths and dew-drop
+      elevators. Smells of pine needle tea and fresh rain.
+    mood: warm, bustling, safe
+    recurring: true
+  - name: The Canopy Playground
+    description: Breezy treetop clearings with spider-silk swings, leaf gliders, and cloud-watching perches.
+      Where fairies race dandelion seeds.
+    mood: airy, adventurous, giggly
+    recurring: true
+  - name: The Lost Things Market
+    description: A weekly market where fairies trade human lost treasures — buttons become shields, bottle
+      caps become sleds, a single earring becomes a chandelier.
+    mood: chaotic, wonderous, bargaining
+    recurring: true
+  - name: Whispering Glade
+    description: Ancient clearing where the oldest trees share forest secrets. Fairies come here for riddles,
+      warnings, and the best hiding spots.
+    mood: mysterious, hushed, important
+    recurring: false
+rules:
+- Every fairy has a Spark — a tiny personal magic that reflects their personality (e.g., a giggly fairy
+  makes bubbles that pop with tiny laughs; a grumpy fairy grows instant moss wherever they stomp). Sparks
+  cannot be taught, traded, or taken.
+- Human lost things belong to the finder — but only if the human has truly forgotten them. A sock lost
+  yesterday is not yours. A button lost three winters ago? Fair game.
+- The forest has no king or queen — only the Elder Council (five oldest fairies) who give advice that
+  everyone politely ignores when it's inconvenient.
+- Dew is currency. One perfect dewdrop = one small favor. Fairy debt is tracked in dew-ledgers kept by
+  the meticulous (and slightly bossy) Dew Keeper.
+- No fairy may deliberately scare a human child. Mild confusion? Delightful. Nightmares? Forbidden — the
+  forest protects its reputation.
+- Seasons dictate the rhythm. Winter is for storytelling and repair; spring for planting sparks; summer
+  for adventures; autumn for the Great Harvest Festival.
+factions:
+- name: Spark Seekers
+  description: Young fairies on a quest to discover their Spark. They form temporary bands, swap theories,
+    and cause glorious messes.
+  values: curiosity, friendship, showing off
+- name: The Dew Keepers
+  description: Meticulous fairies who manage the dew-ledgers, negotiate trades, and insist on proper paperwork
+    for borrowed human things.
+  values: order, fairness, record-keeping
+- name: The Borrowers' Guild
+  description: Expert finders of human lost things. They know every garden, playground, and laundry line
+    within three miles. Competitive, proud, slightly smug.
+  values: resourcefulness, bragging rights, the perfect find
+- name: Canopy Racers
+  description: Speed-obsessed fairies who race on leaf gliders, dandelion parachutes, and spider-silk
+    ziplines. They map the fastest routes through the upper branches.
+  values: speed, daring, the best shortcut
+timeline:
+- label: The Great Planting
+  description: The first fairies sprouted from the oldest oak's acorns. They learned to walk, talk, and
+    borrow.
+- label: The First Human Winter
+  description: Fairies discovered human lost things when a child's mitten became a community hall. The
+    Borrowers' Guild was founded.
+- label: The Dew Standard
+  description: Dew became official currency after the Great Button Inflation Crisis. Ledgers began.
+- label: Now — The Spark Season
+  description: A new generation of fairies is discovering their Sparks. The forest hums with possibility
+    (and mischief).
+motifs:
+- Borrowed human treasures repurposed as fairy infrastructure (thimble water tower, paperclip bridge,
+  button shield)
+- Dew drops as currency and light — dew lanterns, dew slides, dew-ledgers
+- 'Two-layer world: cozy root hollows below, breezy canopy playgrounds above'
+- Seasonal festivals anchoring each story (Petal Parade, Spore Symphony, Frost-Feather Feast)
+- Sparks as personality-made-visible — magic that's funny, personal, and slightly useless
+themes:
+- mischief
+- discovery
+- friendship
+- resourcefulness
+- wonder
+art_style:
+  medium: wet-on-wet watercolor with pencil linework
+  line_quality: loose, energetic, slightly wobbly — hand-drawn warmth
+  shading: soft, translucent layers; no hard edges
+  lighting: dappled golden-hour glow; backlit leaves; firefly points
+  perspective: slightly flattened storybook view — fairy-scale intimacy
+  palette:
+  - name: sage
+    hex: '#7A9E7E'
+    role: primary
+  - name: warm-cream
+    hex: '#F5F0E1'
+    role: primary
+  - name: blush-pink
+    hex: '#E8B4B9'
+    role: accent
+  - name: honey-gold
+    hex: '#D4A843'
+    role: accent
+  - name: twilight-lavender
+    hex: '#A89CCE'
+    role: accent
+  - name: moss-shadow
+    hex: '#3D4F3D'
+    role: shadow
+  - name: berry
+    hex: '#C44569'
+    role: accent
+  influences: []
+  prompt_style_block: 'wet-on-wet watercolor illustration, loose energetic pencil linework, soft translucent
+    layers, dappled golden-hour lighting, fairy-scale intimate perspective, palette: sage #7A9E7E, warm
+    cream #F5F0E1, blush pink #E8B4B9, honey gold #D4A843, twilight lavender #A89CCE, moss shadow #3D4F3D,
+    berry accent #C44569, hand-drawn storybook warmth, slightly wobbly lines, cozy magical atmosphere'
+  negative_prompt: photorealism, hard edges, digital sheen, saturated primaries, harsh shadows, scary
+    faces, text artifacts, extra limbs, anatomical errors, clean vector lines, corporate art style, flat
+    design, 3d render, octane render, unreal engine
+  aspect_ratio: '4:3'
+  text_treatment:
+    placement: bottom-third with soft scrim
+    scrim: 'warm cream #F5F0E1 at 70% opacity, rounded corners'
+    font_family: rounded serif, dyslexia-friendly, slightly irregular baseline
+    dyslexia_friendly: true
+tags:
+- fairies
+- forest
+- cozy
+- mischief
+- borrowed-things
+- sparks

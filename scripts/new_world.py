@@ -2,7 +2,7 @@
 """Scaffold a new world: worlds/<slug>/world.yaml + style-guide.md + dirs.
 
 Usage:
-    uv run python scripts/new_world.py "The Whispering Woods" [--age 5-7 --age 3-5]
+    uv run python scripts/new_world.py "The Whispering Woods" [--year 5 --year 6 --year 7]
 
 Creates a schema-valid starter you then flesh out (see the world-building skill).
 """
@@ -14,9 +14,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.model import WORLDS, dump_yaml, slugify  # noqa: E402
+from lib.readability import band_for_year  # noqa: E402
 
 
-def starter(slug: str, title: str, age_bands: list[str]) -> dict:
+def starter(slug: str, title: str, years: list[int]) -> dict:
     return {
         "slug": slug,
         "title": title,
@@ -24,7 +25,9 @@ def starter(slug: str, title: str, age_bands: list[str]) -> dict:
         "premise": "TODO: 2-4 sentences — the central idea and the kind of stories it produces.",
         "tone": ["cozy", "whimsical"],
         "genres": ["adventure"],
-        "target_age_bands": age_bands,
+        # Reader AGES are the audience knob; the coarse bands are derived for back-compat/display.
+        "target_years": years,
+        "target_age_bands": sorted({band_for_year(y) for y in years}),
         "languages": ["en"],
         "geography": {
             "overview": "TODO: the shape of the world.",
@@ -102,10 +105,15 @@ STYLE_GUIDE = """# {title} — Style Guide
 def main() -> int:
     ap = argparse.ArgumentParser(description="Scaffold a new world.")
     ap.add_argument("title")
-    ap.add_argument("--age", action="append", dest="ages", default=[],
-                    help="target age band (repeatable): 0-3 3-5 5-7 7-9 9-12")
+    ap.add_argument("--year", action="append", dest="years", type=int, default=[],
+                    metavar="N", help="target reader AGE in years (repeatable), e.g. --year 5 "
+                                      "--year 6 --year 7. Default 6.")
     ap.add_argument("--slug", help="override the slug")
     args = ap.parse_args()
+
+    if any(not (1 <= y <= 18) for y in args.years):
+        print("! each --year must be 1-18", file=sys.stderr)
+        return 1
 
     slug = args.slug or slugify(args.title)
     wdir = WORLDS / slug
@@ -113,8 +121,8 @@ def main() -> int:
         print(f"! world '{slug}' already exists at {wdir}", file=sys.stderr)
         return 1
 
-    ages = args.ages or ["5-7"]
-    data = starter(slug, args.title, ages)
+    years = sorted(set(args.years)) or [6]
+    data = starter(slug, args.title, years)
     dump_yaml(data, wdir / "world.yaml")
     (wdir / "characters").mkdir(parents=True, exist_ok=True)
     (wdir / "stories").mkdir(parents=True, exist_ok=True)

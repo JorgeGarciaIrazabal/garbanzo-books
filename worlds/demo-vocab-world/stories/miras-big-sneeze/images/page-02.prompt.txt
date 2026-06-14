@@ -1,0 +1,10 @@
+PROMPT:
+Mira the fox sitting in a daisy patch with her book, touching her twitching nose, worried expression, soft watercolor. Characters: MIRA: a small young orange fox cub (#e67e22) with a white chest tuft (#f5f5f0), big amber eyes, fluffy tail, pink button nose (#f1948a), wearing a tiny red scarf (#c0392b), friendly worried expression. soft watercolor children's book illustration, warm muted palette, rounded friendly shapes, gentle rim lighting, hand-painted paper texture, cozy storybook mood, no text. palette: cream #f4e1c1, sage #6b8f71, terracotta #d98a5b, dusk-blue #3d5a73. character colors: mira fur #e67e22, mira chest tuft #f5f5f0, mira scarf #c0392b, mira nose #f1948a. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition
+
+SEED: 5555
+ASPECT: 4:3
+CHARACTERS: mira
+REFERENCES: —

@@ -52,7 +52,7 @@ def test_full_story_scores_all_gates(factories):
     w = _world(factories, characters=[char])
     gates = qr.score_story(w, _full_story(factories))
     passed, total, label = qr.grade(gates)
-    assert passed == total == 7
+    assert passed == total == 8
     assert label == "excellent"
 
 

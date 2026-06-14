@@ -3,7 +3,7 @@ payload, branching ``choice`` targets resolve to real pages, the book varies its
 *kinds* of fun (not all the same mechanic), and games give the child warm feedback.
 
 Fun is the point, not reading-skill coverage — see ``methodology/fun-first.md`` and
-``methodology/interactivity.md`` for the type catalogue and age-band fit.
+``methodology/interactivity.md`` for the type catalogue and age fit.
 """
 from __future__ import annotations
 

@@ -1,0 +1,20 @@
+{
+  "page": 10,
+  "prompt_seed": 276971611,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.2,
+      "reason": "The illustration largely fulfills the brief, with excellent character design and a suitable art style, though minor adjustments could improve consistency.",
+      "flags": [
+        "style_inconsistent",
+        "too_dark"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-10-276971611.png"
+    }
+  ],
+  "winner": "page-10.png"
+}

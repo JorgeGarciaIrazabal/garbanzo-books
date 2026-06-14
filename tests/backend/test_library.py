@@ -60,9 +60,12 @@ def test_library_lists_world_with_required_fields(workspace, write_world, factor
     assert len(data["worlds"]) == 1
     w = data["worlds"][0]
     # The UI relies on EVERY one of these keys — guard them.
-    for k in ("slug", "title", "tagline", "premise", "age_bands", "themes",
+    for k in ("slug", "title", "tagline", "premise", "years", "audience", "themes",
               "palette", "characters", "stories"):
         assert k in w, f"library output missing {k}"
+    # Stories are keyed by reader age (years), not bands.
+    for k in ("target_year", "age"):
+        assert k in w["stories"][0], f"library story missing {k}"
 
 
 def test_library_palette_hex_is_hash_prefixed(workspace, write_world, factories):

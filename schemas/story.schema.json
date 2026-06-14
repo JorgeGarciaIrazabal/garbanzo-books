@@ -5,7 +5,7 @@
   "description": "A single interactive storybook set in a world. Holds the narrative spine, the page-by-page spreads (full-page image + embedded text), the interactive elements, and the reading-level targets used to age-adapt the language.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["slug", "world", "title", "logline", "age_band", "reading_level", "characters", "pages"],
+  "required": ["slug", "world", "title", "logline", "reading_level", "characters", "pages"],
   "properties": {
     "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
     "world": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
@@ -14,17 +14,17 @@
     "summary": { "type": "string" },
     "dedication": { "type": "string" },
 
-    "age_band": {
-      "type": "string",
-      "enum": ["0-3", "3-5", "5-7", "7-9", "9-12", "grown-up"],
-      "description": "READER ability band: who will read (or be read) the words. Drives reading_level defaults — sentence length, words per page, word choice. Distinct from target_year (what the story is about). 'grown-up' means the story is written for an adult reader (rich vocabulary, full prose, no word caps)."
-    },
-
     "target_year": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 14,
-      "description": "CONTENT age: the single age (in years) the story itself is pitched at — interest level, humor, stakes, themes. One number, not a range. A book can have target_year 7 (a seven-year-old's jokes and jeopardy) at age_band 5-7 reading ability."
+      "maximum": 18,
+      "description": "The reader's AGE in years — the single primary age knob for a story (interest level, humor, stakes, themes AND the reading-language anchors, via the per-year curve in scripts/lib/readability.py). One number, not a range. Books are selected by year, not by band. ~14+ means an adult reader (full prose, no word caps)."
+    },
+
+    "age_band": {
+      "type": "string",
+      "enum": ["0-3", "3-5", "5-7", "7-9", "9-12", "grown-up"],
+      "description": "DEPRECATED — legacy coarse reader band, kept only so existing stories stay valid and for display fallback. Use target_year instead; the scaffolder derives this automatically from the year."
     },
 
     "reading_level": {
@@ -156,8 +156,38 @@
         "interaction": { "$ref": "#/$defs/interaction" },
         "vocabulary": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Target/new words introduced on this page (for the glossary & pedagogy checks)."
+          "description": "OPTIONAL — words on this page that might trip a young reader. Keep it fun-first: write the page, then mark the one or two tricky words. Plain strings stay backward-compatible; rich objects add a kid-friendly clue, an optional icon/emoji, and a read-aloud label for text-to-speech. The reader turns these into clickable in-text hints.",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "A tricky word as it appears in the page text. The reader will make it clickable and offer read-aloud."
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["word", "clue"],
+                "properties": {
+                  "word": {
+                    "type": "string",
+                    "description": "The exact word as it appears in the page text."
+                  },
+                  "clue": {
+                    "type": "string",
+                    "description": "A short, kid-friendly definition or context hint — what the word means in this story."
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "Optional emoji or small icon shown next to the word (e.g. 🍯 for 'honey-cakes')."
+                  },
+                  "read_aloud": {
+                    "type": "string",
+                    "description": "Optional text the browser should speak if different from 'word' (e.g. a longer phrase or pronunciation)."
+                  }
+                }
+              }
+            ]
+          }
         },
         "reading_notes": { "type": "string", "description": "Tips for the adult co-reader (question to ask, sound to emphasise)." }
       }

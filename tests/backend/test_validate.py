@@ -112,14 +112,17 @@ def test_check_story_accepts_base_stage_even_if_not_in_evolution_list(write_worl
 
 
 # ================================================================================== reading-level
-def test_check_story_fails_when_page_exceeds_word_cap(write_world, factories):
+def test_check_story_warns_when_page_exceeds_word_cap(write_world, factories):
+    """Reading level is advisory: an over-dense page is a WARNING (will it fit the page with
+    the art?), never a publish-blocking failure."""
     rep = _ok_report()
     w = _world_obj(write_world, factories)
     long_text = " ".join(["word"] * 100)
     w.stories[0].data["pages"][1]["text"] = long_text
     w.stories[0].data["reading_level"]["max_words_per_page"] = 20
     check_story(rep, w, w.stories[0])
-    assert any("word cap" in f for f in rep.fails)
+    assert any("denser than typical" in m for m in rep.warns)
+    assert not any("denser than typical" in f or "word cap" in f for f in rep.fails)
 
 
 def test_check_story_passes_when_words_within_cap(write_world, factories):
@@ -142,9 +145,9 @@ def test_check_story_skips_word_cap_for_title_and_interaction_pages(write_world,
     assert not any("word cap" in f for f in rep.fails)
 
 
-def test_check_story_fails_when_fk_grade_far_above_target(write_world, factories):
-    """Very long, polysyllabic sentences push FK grade up; with a tiny target +
-    tolerance, that must trigger the failure."""
+def test_check_story_warns_when_fk_grade_far_above_target(write_world, factories):
+    """Very long, polysyllabic sentences push FK grade up; at an age where FKGL is reliable
+    (~7+) that triggers an advisory WARNING — never a publish-blocking failure."""
     rep = _ok_report()
     text = (
         "Subsequently, the interconnectedness of philosophical postulates "
@@ -152,12 +155,13 @@ def test_check_story_fails_when_fk_grade_far_above_target(write_world, factories
         "assumptions."
     )
     w = _world_obj(write_world, factories)
-    w.stories[0].data["age_band"] = "5-7"
+    w.stories[0].data["target_year"] = 8  # FK is only used as a signal at ~age 7+
     w.stories[0].data["reading_level"]["target_fk_grade"] = 1.0
     w.stories[0].data["reading_level"]["fk_grade_tolerance"] = 0.5
     w.stories[0].data["pages"][1]["text"] = text
     check_story(rep, w, w.stories[0])
-    assert any("FK grade" in f for f in rep.fails)
+    assert any("FK grade" in m for m in rep.warns)
+    assert not any("FK grade" in f for f in rep.fails)
 
 
 def test_check_story_does_not_check_fk_for_read_aloud_bands(write_world, factories):

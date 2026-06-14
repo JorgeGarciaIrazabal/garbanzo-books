@@ -8,6 +8,10 @@
         "baseURL": "http://localhost:11434/v1"
       },
       "models": {
+        "kimi-k2.7-code:cloud": {
+          "name": "kimi-k2.7 code (via local Ollama, no API key) — fast, good for coding",
+          "options": { "reasoningEffort": "high" }
+        },
         "nemotron-3-ultra:cloud": {
           "name": "Nemotron-3-Ultra (via local Ollama, no API key) — fast, default craft model"
         },

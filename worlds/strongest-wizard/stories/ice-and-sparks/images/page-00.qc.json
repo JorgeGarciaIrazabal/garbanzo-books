@@ -1,0 +1,19 @@
+{
+  "page": 0,
+  "prompt_seed": 518738573,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration captures a dreamy, pastel aesthetic and a cozy whimsical mood, closely aligning with the requested style.",
+      "flags": [
+        "too_blurry"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-00-518738573.png"
+    }
+  ],
+  "winner": "page-00.png"
+}

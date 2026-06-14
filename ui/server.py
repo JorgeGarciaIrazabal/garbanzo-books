@@ -128,14 +128,14 @@ generate_images.py, validate.py, build_site.py).
 SPEED — every tool round trip costs a full model pass, so batch your context gathering:
 - Writing a story in an EXISTING world? Run "uv run python scripts/story_context.py <world>"
   FIRST — it prints the world bible, full cast (personalities, voices, catchphrases, stages),
-  existing story slugs, the age-band table, and the exact scaffold command in ONE call.
+  existing story slugs, the per-year reader portraits, and the exact scaffold command in ONE call.
   Do NOT separately read world.yaml + each character yaml — the pack has it all.
 - Illustrations render pages in parallel already (generate_images.py --jobs, default 4);
   run it ONCE for the whole story, never page-by-page.
 
 Work INTERACTIVELY and CONFIRM as you go — never build everything in one giant turn:
 1. When the user wants a new world or book, FIRST gather the missing details with a FORM (see the
-   FORM PROTOCOL below) — setting, target age band, tone, art-style vibe, main character ideas,
+   FORM PROTOCOL below) — setting, target reader age (in years), tone, art-style vibe, main character ideas,
    and anything else specific to their idea. Then STOP and wait for their answers.
 2. Propose a short world bible + locked art style as a brief summary, scaffold ONLY the world
    (new_world.py) and edit world.yaml/style-guide.md. Then STOP and ask: "Does this world look
@@ -193,14 +193,15 @@ is NEVER written or edited as text. Two rules cover everything:
 - CREATE with the scaffolding scripts (new_world.py, new_character.py, new_story.py) — they
   write valid, atomic YAML with every stub pre-filled. Check a script's usage (positional
   args!) with --help BEFORE guessing flags — e.g. new_story.py takes
-  `<world> "<Title>" --age 5-7 --year 6 --pages 14 [--slug s]` as positionals, not
-  --world/--title. For a story ALWAYS scaffold all the page stubs up front with --pages N.
-  A story has TWO separate age knobs — never conflate them:
-    --age <band>  = READING level: who reads the WORDS (sentence length, words/page,
-                    word choice). Bands: 0-3, 3-5, 5-7, 7-9, 9-12.
-    --year <N>    = TARGET age: one number, the age the CONTENT is pitched at — humor,
-                    stakes, themes (stored as target_year). A book can be --age 5-7
-                    --year 7: seven-year-old jokes and jeopardy in beginning-reader words.
+  `<world> "<Title>" --year 6 --pages 14 [--slug s]` as positionals, not --world/--title.
+  For a story ALWAYS scaffold all the page stubs up front with --pages N.
+  Books are selected by the reader's AGE — one number, no age bands:
+    --year <N>    = the reader's age in years (1-18). It sets target_year and derives the
+                    advisory reading-language anchors (sentence length, words/page, word
+                    choice) from the per-year curve. ~14+ means an adult reader. See the
+                    per-year reader portraits in methodology/reading-pedagogy.md.
+  (new_world.py likewise takes repeatable --year N for the world's audience, e.g.
+  --year 5 --year 6 --year 7.)
 - EDIT with the JSON-patch scripts (edit_world.py, edit_character.py, edit_story.py): you emit
   a SMALL JSON payload on stdin (a heredoc), the script deep-merges it, validates the merged
   document against the schema, and writes atomically. A bad patch changes NOTHING and prints
@@ -360,8 +361,42 @@ async def run_tool(args: list[str]) -> dict:
     return {"ok": proc.returncode == 0, "output": out.decode("utf-8", "replace")}
 
 
+def _preview_is_stale() -> bool:
+    """True if authored content under worlds/ is newer than the studio preview build.
+
+    The library cards link straight to /preview/story/<world>/<story>/index.html — but
+    /preview is a static mount on ./site/, a build *snapshot*. A draft created/edited via
+    chat (not through publish/unpublish or the 🔨 Rebuild button) has a card but no built
+    page yet, so the link 404s ('{"detail":"Not Found"}'). We detect that here and rebuild
+    on the next library load so every card resolves."""
+    stamp = SITE / "index.html"
+    if not stamp.exists():
+        return True  # never built
+    built = stamp.stat().st_mtime
+    worlds = ROOT / "worlds"
+    if not worlds.exists():
+        return False
+    for p in worlds.rglob("*"):
+        if not p.is_file():
+            continue
+        try:
+            if p.stat().st_mtime > built:
+                return True
+        except OSError:
+            continue
+    return False
+
+
 @app.get("/api/library")
 async def api_library():
+    # Keep the studio preview in sync with disk: if a draft was created/edited since the last
+    # build, rebuild (drafts included) before returning, so the cards we hand back link to
+    # pages that actually exist. Best-effort — a build hiccup must never break the library.
+    if _preview_is_stale():
+        try:
+            await run_tool(["scripts/build_site.py", "--include-drafts"])
+        except Exception:
+            pass
     res = await run_tool(["scripts/library.py"])
     if res["ok"]:
         return Response(content=res["output"], media_type="application/json")

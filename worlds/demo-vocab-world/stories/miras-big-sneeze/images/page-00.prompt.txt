@@ -1,0 +1,10 @@
+PROMPT:
+TODO: a warm establishing scene for the cover/title. soft watercolor children's book illustration, warm muted palette, rounded friendly shapes, gentle rim lighting, hand-painted paper texture, cozy storybook mood, no text. palette: cream #f4e1c1, sage #6b8f71, terracotta #d98a5b, dusk-blue #3d5a73. leave the center as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition
+
+SEED: None
+ASPECT: 4:3
+CHARACTERS: —
+REFERENCES: —

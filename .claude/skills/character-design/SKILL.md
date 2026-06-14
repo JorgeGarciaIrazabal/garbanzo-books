@@ -9,7 +9,7 @@ Characters carry the series. Build them so they always *act* and *look* the same
 grow. Read `methodology/consistency.md` (character toolkit) first.
 
 ## Procedure
-1. **Anchor to a world** — every character has `world: <slug>`. Inherit its tone & age band.
+1. **Anchor to a world** — every character has `world: <slug>`. Inherit its tone & target reader ages.
 2. **Personality first** (drives behaviour & dialogue consistency):
    - `traits` (3–5), `motivation` (what they want most), `flaws` (the growth edges that fuel
      arcs), `strengths`, `fears`, `quirks`, `values`.

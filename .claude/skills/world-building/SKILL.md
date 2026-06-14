@@ -12,7 +12,7 @@ stories can live in it coherently. Read `methodology/consistency.md` (world bibl
 ## Procedure
 1. **Interview** the user for the creative core (offer options if they're unsure):
    - Premise / hook (what makes this world special) and **tone** (cozy? adventurous? silly?).
-   - Target **age band(s)** — this constrains tone, complexity, and palette.
+   - Target **reader age(s) in years** (e.g. 5–7) — this constrains tone, complexity, and palette.
    - The kind of stories it should produce; recurring **themes** (courage, friendship…).
 2. **Design the bible** — fill each `world.yaml` field deliberately:
    - `geography.locations` — 3–6 evocative places, each with a `mood`; mark `recurring: true`
@@ -48,7 +48,7 @@ stories can live in it coherently. Read `methodology/consistency.md` (world bibl
   on-brand art? If not, it's underspecified.
 - Are the `rules` specific enough to generate conflict and prevent contradictions?
 - Does the palette have enough range for varied scenes while staying recognisable?
-- Is the world age-appropriate in tone for every band in `target_age_bands`?
+- Is the world age-appropriate in tone for every age in `target_years`?
 
 ## Output
 - `worlds/<slug>/world.yaml` (valid against `schemas/world.schema.json`)

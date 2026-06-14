@@ -1,0 +1,140 @@
+slug: magical-forest
+title: The Magical Forest
+tagline: Tiny fairies, enormous adventures — all before teatime.
+premise: Deep in an old forest lives a busy fairy folk. Mushroom caps are snug homes and every dew drop
+  holds a tiny spell. The fairies are small but their troubles feel big — a lost key, a grumpy toad next
+  door, a pie bake-off gone wrong. Stories follow the fun, gentle adventures of fairy folk fixing little
+  problems with wits, a pinch of magic, and help from their pals.
+tone:
+- cozy
+- whimsical
+- gentle
+- a-little-mischievous
+genres:
+- slice-of-life
+- gentle-adventure
+target_age_bands:
+- 5-7
+languages:
+- en
+geography:
+  overview: A big old forest at fairy size — ferns are like tall roofs, puddles are lakes, and a fallen
+    nut is a rock. Everything feels very big and full of wonder.
+  locations:
+  - name: Pond Place
+    description: The village green where fireflies float like tiny lamps over lily pads. Where fairies
+      meet for news, big days, and chatter.
+    mood: warm, busy, safe
+    recurring: true
+  - name: Berry Homes
+    description: Snug homes tucked inside berry bushes, each with a puff of sweet smoke from its top.
+      Doors are cut from nuts.
+    mood: snug, homey
+    recurring: true
+  - name: The Old Trees
+    description: A ring of big old oak trees. Their leaves hum old tunes. A place for hush-hush and quiet
+      — but the trees hum back.
+    mood: a bit spooky, a bit fun
+    recurring: true
+  - name: Sunny Field
+    description: A bright open spot where tiny bell flowers ring in the wind. The place for fairy races,
+      pie days, and starlight dances.
+    mood: bright, joyful
+    recurring: true
+  - name: The Log Shops
+    description: A big hollow log full of tiny shops — a hat maker, a pie seller, a lost-and-found run
+      by a silly bug.
+    mood: cheerful chaos
+    recurring: true
+rules:
+- id: fairy-size
+  text: Fairies can make themselves tiny to slip through a keyhole or big to ride a bee — but only for
+    a little bit. Then they get dizzy and pop back to their real size.
+- id: one-gift
+  text: Each fairy is born with one tiny gift — like lighting a lamp, making a flower pop open, or fixing
+    a torn leaf. No fairy can do it all, so they help each other.
+- id: magic-tired
+  text: Magic makes you sleepy. Push too hard and you fall into a deep nap, snoring tiny sparkles.
+- id: oldest-tree
+  text: The oldest tree in the woods knows all that has ever been. It talks in slow, hummy not-quite-words
+    and never says the same thing twice.
+- id: no-big-people
+  text: No big people know the woods are here. A soft magic glow hides it — it looks like a plain old
+    bush to them. Tales stay at fairy size.
+factions:
+- name: Dew Helpers
+  description: Fairies who use morning dew to make light, heat, and fizzy drinks. They love to tinker
+    and try new things — even when it goes a bit fizz-bang.
+  values: cleverness, helping out, a love for big tries that sometimes go wrong in a funny way
+- name: Nut Group
+  description: The older fairies who meet inside a big nut shell to fix small tiffs (mostly whose turn
+    it is to rake the moss).
+  values: fair play, naps, a very strict tea time
+timeline:
+- label: The Big Acorn Fall
+  description: Long ago, a huge nut fell and split open — showing the first fairy home. Every year fairies
+    have a nut party to mark the day.
+- label: The Pond Promise
+  description: All fairy homes said yes to share the pond and its firefly light. No one home may keep
+    it all. This is the first rule of fairy life.
+motifs:
+- fireflies as tiny lamps
+- nut-cap hats and nut-shell doors
+- dew-drop lamps that glow at dusk
+- tiny music boxes
+- bell flowers that ring in the wind
+themes:
+- mischief
+- friendship
+- discovery
+- community
+- everyday-magic
+art_style:
+  medium: soft watercolor with delicate ink outlines and colored-pencil texture
+  line_quality: gentle, rounded, hand-drawn with slight wobble — never stiff
+  shading: soft washes, low contrast, colors bleed slightly into one another
+  lighting: warm dappled sunlight filtering through leaves, golden-hour glow
+  perspective: low, child's-eye view — the world feels big and wonderful
+  palette:
+  - name: cream
+    hex: '#f4e1c1'
+    role: background
+  - name: sage
+    hex: '#7a9f7e'
+    role: primary
+  - name: lavender
+    hex: '#b8a9c9'
+    role: secondary
+  - name: honey-gold
+    hex: '#e8b96d'
+    role: accent
+  - name: dusk-blue
+    hex: '#3d5a73'
+    role: shadow
+  - name: berry-pink
+    hex: '#d4808c'
+    role: pop
+  influences:
+  - Beatrix Potter
+  - Cicely Mary Barker (Flower Fairies)
+  - Studio Ghibli forest scenes
+  - Trina Schart Hyman
+  prompt_style_block: 'soft watercolor children''s book illustration with delicate ink outlines, warm
+    muted palette (#f4e1c1 cream, #7a9f7e sage, #b8a9c9 lavender, #e8b96d honey-gold, #3d5a73 dusk-blue,
+    #d4808c berry-pink), dappled golden-hour sunlight filtering through leaves, rounded friendly shapes
+    with slight hand-drawn wobble, watercolor washes bleeding softly at the edges, low child''s-eye perspective
+    making the world feel big and wonderful, hand-painted paper texture, cozy gentle storybook mood, no
+    text'
+  negative_prompt: photorealism, harsh shadows, scary or distorted faces, extra fingers, text artifacts,
+    watermark, cluttered composition, sharp edges, cold blue lighting, CGI, flat digital art
+  aspect_ratio: '4:3'
+  text_treatment:
+    placement: lower third
+    scrim: soft cream rounded panel at 85% opacity
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+- fairy
+- forest
+- cozy
+- little-folk

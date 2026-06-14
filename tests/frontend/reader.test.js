@@ -172,6 +172,65 @@ describe("extras strip (vocabulary + reading notes)", () => {
 });
 
 
+describe("clickable vocabulary hints", () => {
+  it("wraps a vocabulary word in a clickable button inside the page text", () => {
+    loadReaderWith(makeStory());
+    document.getElementById("next").click();  // page 2 — vocabulary: ['once']
+    const clue = document.querySelector(".word-clue");
+    expect(clue).toBeTruthy();
+    expect(clue.textContent).toContain("Once");
+    expect(clue.getAttribute("data-word")).toBe("Once");
+  });
+
+  it("clicking a word opens a clue popup with the word and read-aloud button", () => {
+    loadReaderWith(makeStory());
+    document.getElementById("next").click();
+    document.querySelector(".word-clue").click();
+    const popup = document.querySelector(".word-clue-popup");
+    expect(popup).toBeTruthy();
+    expect(popup.classList.contains("open")).toBe(true);
+    expect(popup.textContent).toContain("Once");
+    expect(popup.querySelector(".word-clue-speak")).toBeTruthy();
+  });
+
+  it("renders rich vocabulary entries with icon, clue, and read-aloud text", () => {
+    const story = makeStory();
+    story.pages[1].vocabulary = [{
+      word: "Once",
+      clue: "One time, a long time ago.",
+      icon: "🕰️",
+      read_aloud: "Once upon a time",
+    }];
+    loadReaderWith(story);
+    document.getElementById("next").click();
+    const clue = document.querySelector(".word-clue");
+    expect(clue.querySelector(".word-icon").textContent).toBe("🕰️");
+    clue.click();
+    const popup = document.querySelector(".word-clue-popup.open");
+    expect(popup.textContent).toContain("Once");
+    expect(popup.textContent).toContain("One time, a long time ago");
+    expect(popup.getAttribute("data-read")).toBe("Once upon a time");
+  });
+
+  it("clicking outside the popup closes it", () => {
+    loadReaderWith(makeStory());
+    document.getElementById("next").click();
+    document.querySelector(".word-clue").click();
+    expect(document.querySelector(".word-clue-popup.open")).toBeTruthy();
+    // Dispatch a click on the document itself, well outside the popup.
+    document.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(document.querySelector(".word-clue-popup.open")).toBeFalsy();
+  });
+
+  it("clicking a word does not turn the page", () => {
+    loadReaderWith(makeStory());
+    document.getElementById("next").click();
+    document.querySelector(".word-clue").click();
+    expect(document.getElementById("pageno").textContent).toBe("2 / 3");
+  });
+});
+
+
 describe("interactions", () => {
   it("renders a 'Play game' button on pages that have an interaction", () => {
     const story = makeStory([{

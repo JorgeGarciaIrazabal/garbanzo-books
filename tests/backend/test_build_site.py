@@ -94,7 +94,7 @@ def test_search_index_lists_published_stories_with_required_keys(workspace, writ
     index = json.loads((workspace.site / "search-index.json").read_text())
     assert len(index) == 1
     entry = index[0]
-    for k in ("title", "world", "world_slug", "slug", "age_band", "logline", "tags", "url"):
+    for k in ("title", "world", "world_slug", "slug", "age", "logline", "tags", "url"):
         assert k in entry, f"search-index missing {k}"
     assert entry["url"].endswith("/index.html")
     assert "story/ww/s1" in entry["url"]
@@ -206,6 +206,32 @@ def test_reader_per_page_keys_match_runtime_contract(workspace, write_world, fac
                 "vocabulary", "reading_notes"}
     for page in payload["pages"]:
         assert set(page.keys()) == expected, f"reader page schema drift: {page.keys()}"
+
+
+def test_reader_payload_preserves_rich_vocabulary_objects(workspace, write_world, factories):
+    """Rich vocabulary hints {word, clue, icon, read_aloud} must survive the
+    build and reach the runtime so the reader can show clickable in-text clues."""
+    import re
+    story = factories.story(slug="s1", world="ww", status="published")
+    story["pages"][1]["vocabulary"] = [
+        {"word": "glimmer", "clue": "shine with a soft light.", "icon": "✨",
+         "read_aloud": "glimmer"},
+    ]
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[story])
+    build(include_drafts=False)
+    reader = (workspace.site / "story" / "ww" / "s1" / "index.html").read_text()
+    m = re.search(r'<script id="story-data"[^>]*>([\s\S]*?)</script>', reader)
+    payload = json.loads(m.group(1))
+    vocab = payload["pages"][1]["vocabulary"]
+    assert len(vocab) == 1
+    assert vocab[0] == {
+        "word": "glimmer",
+        "clue": "shine with a soft light.",
+        "icon": "✨",
+        "read_aloud": "glimmer",
+    }
 
 
 # ============================================================================ accessibility hooks

@@ -46,10 +46,12 @@ ui/             Dynamic UI server (OpenCode + local Ollama, no API key) — the 
   visual consistency), `reference_images` + `seed` (image anchors), and an **`evolution`**
   track so a character can grow across a series without losing identity.
 - **Story** (`stories/*/story.yaml`) — one book: the **`spine`** (story structure), the
-  **two age knobs** — **`target_year`** (one number: the age the CONTENT is pitched at —
-  humor, stakes, themes) and **`age_band`/`reading_level`** (who reads the WORDS — sentence
-  length, words/page, word choice; they may diverge) — the character roster (with each
-  character's evolution `stage` for this book), and **`pages[]`**. Each page = embedded `text` + an `image`
+  **age knob** — **`target_year`** (one number, the reader's AGE in years): it pitches the
+  CONTENT (humor, stakes, themes) AND, via the per-year curve in `scripts/lib/readability.py`,
+  the advisory `reading_level` anchors for the WORDS (sentence length, words/page, word choice).
+  Books are chosen by year, **not by age band** (the old `age_band` field is deprecated/derived).
+  Plus the character roster (with each character's evolution `stage` for this book), and
+  **`pages[]`**. Each page = embedded `text` + an `image`
   (scene-only prompt — style & character tokens are injected automatically) + an optional
   **`interaction`** (puzzle/game/comprehension beat) + target `vocabulary`.
 
@@ -139,21 +141,45 @@ A stage is not "done" — and must not hand off to the next — until:
    illustrated before publish).
 3. For a finished book, `uv run python scripts/quality_report.py <world>/<story>` is reviewed and
    no gate regressed.
+4. For a story, the **read-aloud & flow gate** passes — the single most important check, and the
+   one no script can make for you. Read the whole book aloud and confirm: the prose flows (no
+   telegraphic sentence-stumps), the words are simple enough for the band (no fancy-word
+   stuffing — there is no per-page "vocabulary" target), every page picks up the thread from the
+   one before, and a laugh/gasp/cliff lands on most spreads. The scripts only prove a book isn't
+   *broken* or structurally thin; they cannot tell you it's *good*. A green scorecard with
+   choppy, fancy, disconnected prose is NOT done. Deeper pass: `/new-debate <world>/<story>`.
 
 Never mark a story `published` with outstanding validator failures — the publish gate blocks it.
+
+## Building a book: WORDS first, then ART — four human-confirmed gates
+
+A book is produced in two halves — lock all the **words** before making any **art** (a render
+of the wrong words is wasted budget) — and within each half the **character** precedes the
+**story**. That gives **four gates, in this exact order, each ending in a HUMAN sign-off**:
+
+> **① character description → ② story description → ③ character images → ④ story images**
+
+At every gate the agent **stops, shows the concrete artifact (the YAML / the rendered images),
+and asks the user to approve or request modifications** — and does NOT proceed (or start the
+next gate's work) until the user confirms. The scripts (`validate.py`, `quality_report.py`,
+`reading_level.py`, the read-aloud/flow pass) *prepare* an artifact for review; they never
+replace the person's "yes". The `storybook-studio` skill owns the full sequence; the commands
+below each own one or two gates.
 
 ## Typical workflow
 
 ```
 /new-world      → interview + scaffold a world bible & art style
-/new-character  → add a character bible (personality + appearance_token + evolution)
-/new-story      → plan the spine, write age-appropriate pages, design interactions
-/illustrate     → assemble prompts & generate consistent page images
+/new-character  → GATE ① write the character bible (text only) → human confirms
+/new-story      → GATE ② plan the spine, write pages, age-fit, games, layout → human confirms
+/illustrate --character …  → GATE ③ generate character reference sheets → human confirms
+/illustrate <world>/<story> → GATE ④ generate page images → human confirms
 /validate       → schema + consistency + reading-level checks
 /publish        → build the static site and (optionally) deploy to GitHub Pages
 ```
 
-Or run the whole thing from the **dynamic UI** in `ui/` (the Claude-Agent-SDK entrypoint).
+Or run the whole thing end-to-end with `/new-book` (it walks all four gates), or from the
+**dynamic UI** in `ui/` (the Claude-Agent-SDK entrypoint).
 
 ## Conventions
 

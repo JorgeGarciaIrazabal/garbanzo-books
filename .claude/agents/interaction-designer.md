@@ -1,6 +1,6 @@
 ---
 name: interaction-designer
-description: Designs OPTIONAL games that give kids a FUN BREAK that's part of the romp — REAL arcade games on the embedded game engine (snake, space shooter, maze, tower builder, whack-a-mole, breakout, catch, flap, run, pop, toss, steer), skinned from the story and matched to the age band, plus rare branching choices. Games are add-ons that never change the story text or art. Use to add or balance interactivity in a finished story.
+description: Designs OPTIONAL games that give kids a FUN BREAK that's part of the romp — REAL arcade games on the embedded game engine (snake, space shooter, maze, tower builder, whack-a-mole, breakout, catch, flap, run, pop, toss, steer), skinned from the story and matched to the reader's age, plus rare branching choices. Games are add-ons that never change the story text or art. Use to add or balance interactivity in a finished story.
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
@@ -27,7 +27,7 @@ principles), read `methodology/fun-first.md` (the north star), and follow the
 shapes, age knobs, skin ideas) is the most central doc here.
 
 Your job:
-- Add `interaction` blocks to pages matched to the story's `age_band`, ~1 per 2–4 pages at
+- Add `interaction` blocks to pages matched to the story's reader age (`target_year`), ~1 per 2–4 pages at
   natural beats (never mid-climax). **Match each game's verb to its page's verb:** things
   fall → `arcade-catch`; a chase → `arcade-run`; gobbling/growing → `arcade-snake`; lost or
   sneaking → `arcade-maze`; stacking → `arcade-build`; things popping up → `arcade-whack`;

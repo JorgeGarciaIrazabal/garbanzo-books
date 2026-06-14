@@ -7,7 +7,7 @@ Usage:
 
 Prints, compactly: the world's premise/tone/rules/motifs + locked art notes, every
 character's personality/voice/catchphrases/evolution stages, the existing story slugs
-(avoid collisions, honour the timeline), the age-band language table, and the exact
+(avoid collisions, honour the timeline), the per-year reader-language portraits, and the exact
 scaffold command. Each LLM round trip on a local model costs 10-60s of context
 re-processing — collapsing the pre-flight reads into one call is the single biggest
 time win in the story workflow short of the writing itself.
@@ -19,7 +19,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.model import ContentError, load_world  # noqa: E402
-from lib.readability import BANDS  # noqa: E402
+from lib.readability import (MAX_YEAR, MIN_YEAR, targets_for_year,  # noqa: E402
+                            world_age_label)
 
 
 def _line(label: str, value) -> None:
@@ -44,7 +45,7 @@ def main() -> int:
     _line("premise", w.get("premise"))
     _line("tagline", w.get("tagline"))
     _line("tone", w.get("tone"))
-    _line("age bands", w.get("target_age_bands"))
+    _line("reader ages", w.get("target_years") or world_age_label(w))
     _line("themes", w.get("themes"))
     _line("motifs", w.get("motifs"))
     print("  rules (INVIOLABLE):")
@@ -75,16 +76,18 @@ def main() -> int:
     for s in world.stories:
         print(f"  {s.slug} [{s.data.get('status','draft')}] — {s.data.get('title')}")
 
-    print("\n=== AGE-BAND LANGUAGE (light touch — see methodology/reading-pedagogy.md) ===")
-    for band_id, b in BANDS.items():
-        avg = b.get("min_avg_sentence_words")
-        print(f"  {band_id}: ≤{b['max_words_per_page']} words/page, longest sentence "
-              f"≤{b['max_sentence_words']}"
-              + (f", avg ≥{avg:g} (no telegraphic fragments!)" if avg else " (read-aloud band)"))
+    print("\n=== AGE-FIT LANGUAGE BY YEAR (advisory anchors — read the portraits in "
+          "methodology/reading-pedagogy.md; no hard rules) ===")
+    for y in range(MIN_YEAR + 1, MAX_YEAR):
+        t = targets_for_year(y)
+        fk = (f"FK ~{t['fk_lo']}-{t['fk_hi']}" if t["fk_lo"] is not None else "read-aloud (FK n/a)")
+        print(f"  age {y}: aim ~{t['max_words_per_page']} words/page, sentences up to "
+              f"~{t['max_sentence_words']}, {fk}  — {t['label']}")
+    print("  (numbers are gentle aims, not caps. The read-aloud test beats every number.)")
 
     print("\n=== NEXT STEPS ===")
-    print(f"  scaffold: uv run python scripts/new_story.py {world.slug} \"<Title>\" --age 5-7"
-          " [--slug s]   (world+title are POSITIONAL)")
+    print(f"  scaffold: uv run python scripts/new_story.py {world.slug} \"<Title>\" --year 6"
+          " [--slug s]   (world+title are POSITIONAL; --year = the reader's age)")
     print("  then: write spine + pages in STAGES (small writes), validate, illustrate.")
     print("  north star: methodology/fun-first.md — funny, mischievous, real stakes, "
           "flowing read-aloud prose (never chopped fragments), no moral-of-the-story.")

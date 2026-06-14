@@ -1,0 +1,18 @@
+{
+  "page": 4,
+  "prompt_seed": 5555,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "attempt": 0,
+      "path": "page-04-5555.svg",
+      "ok": true,
+      "score": 10.0,
+      "reason": "qc disabled",
+      "flags": [
+        "qc_disabled"
+      ]
+    }
+  ],
+  "winner": "page-04.svg"
+}

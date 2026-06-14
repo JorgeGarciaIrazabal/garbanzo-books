@@ -1,0 +1,20 @@
+{
+  "page": 7,
+  "prompt_seed": 1231933768,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely meets the specifications, with minor stylistic inconsistencies and a slightly anxious expression on the bee.",
+      "flags": [
+        "style_inconsistent",
+        "anatomy_issue"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-07-1231933768.png"
+    }
+  ],
+  "winner": "page-07.png"
+}

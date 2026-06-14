@@ -29,12 +29,22 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.checks.interactivity import RICH_TYPES, SKILL_PRACTICE_TYPES  # noqa: E402
 from lib.model import load_all_worlds, load_world  # noqa: E402
-from lib.readability import BANDS, words  # noqa: E402
+from lib.readability import story_targets, words  # noqa: E402
 
 # Generous upper bounds on total word count per band (sprawl guard, from the
 # storybook-pipeline manuscript table). Short is fine for kids' books; bloat isn't.
 MAX_TOTAL_WORDS = {"0-3": 150, "3-5": 600, "5-7": 1500, "7-9": 3500, "9-12": 9000, "grown-up": 20000}
 SPINE_BEATS = ["once_upon_a_time", "every_day", "until_one_day", "until_finally", "ever_since_then"]
+
+# Cause-and-effect / temporal connectors. A book whose pages mostly DON'T pick up a thread
+# from the page before reads as a string of disconnected vignettes — the "things aren't
+# connected page to page" complaint. This is a soft proxy: real flow is a human call (the
+# read-aloud pass), but a book with almost no connective tissue is worth flagging.
+CONNECTORS = {
+    "and", "but", "so", "then", "because", "when", "while", "after", "before", "until",
+    "since", "soon", "suddenly", "now", "later", "meanwhile", "still", "yet", "though",
+    "if", "as", "once", "finally", "next", "first", "too", "also",
+}
 
 
 @dataclass
@@ -70,10 +80,9 @@ def _gate_spine(story: dict) -> Gate:
 
 
 def _gate_manuscript(story: dict, band_id: str) -> Gate:
-    band = BANDS.get(band_id, BANDS["5-7"])
     pages = story.get("pages", []) or []
     total = sum(len(words(p.get("text") or "")) for p in pages)
-    cap = band["max_words_per_page"]
+    cap = story_targets(story)["max_words_per_page"]
     over = [p.get("number") for p in pages
             if p.get("kind") not in ("title", "interaction")
             and len(words(p.get("text") or "")) > cap]
@@ -89,24 +98,74 @@ def _gate_manuscript(story: dict, band_id: str) -> Gate:
 
 
 def _gate_pacing(story: dict) -> Gate:
+    """Page-count sanity only. We deliberately do NOT enforce a games-per-page quota any
+    more — games are OPTIONAL add-ons matched to a beat, never a cadence to hit (a quota
+    pushes authors to drop blank-text game pages into the story, which fragments the read).
+    See _gate_flow for the cost of those interruptions, and methodology/fun-first.md."""
     pages = story.get("pages", []) or []
     content = _content_pages(pages)
     n = len(content)
     interactions = [p for p in pages if p.get("interaction")]
-    # Expect at least one engagement beat per ~6 content pages (interactivity.md cadence).
-    expected = max(1, ceil(n / 6))
     problems = []
     if n < 6:
         problems.append(f"only {n} content pages (thin for a picture book)")
     elif n > 40:
         problems.append(f"{n} content pages (long — consider tightening)")
-    if len(interactions) < expected:
-        problems.append(f"{len(interactions)} interaction(s) over {n} pages "
-                        f"(want ≥{expected} for a lively page-turn rhythm)")
     if not problems:
         return Gate("Pacing & page-turns", True,
-                    f"{n} content pages, {len(interactions)} engagement beats")
+                    f"{n} content pages, {len(interactions)} optional game(s)")
     return Gate("Pacing & page-turns", False, "; ".join(problems))
+
+
+def _gate_flow(story: dict) -> Gate:
+    """Flow & continuity — a soft proxy for 'does it read as one connected story?'. Two
+    concrete signals: (1) pure-interaction pages with no story text dropped mid-book punch
+    literal holes in the narrative; (2) story pages that almost never pick up a thread from
+    the page before (no cause/effect/temporal connectors) read as disconnected vignettes.
+    Real flow is a human call — this just flags the books most likely to feel choppy."""
+    pages = story.get("pages", []) or []
+    story_pages = [p for p in pages if p.get("kind") == "story"]
+    n = len(story_pages)
+
+    # (1) Blank-text pages that interrupt the story (a game page with no narrative text,
+    # sitting between story pages). The game belongs ON a story page, not in a gap.
+    seen_story = trailing = False
+    holes = []
+    for p in pages:
+        kind = p.get("kind")
+        has_text = bool((p.get("text") or "").strip())
+        if kind == "story" and has_text:
+            seen_story = True
+            trailing = False
+        elif kind in ("title", "end"):
+            continue
+        elif not has_text and seen_story:
+            # an empty-text page (typically a standalone interaction) after the story began
+            holes.append(p.get("number"))
+            trailing = True
+    # A trailing empty page at the very end isn't a mid-story hole; drop the last if trailing.
+    if holes and trailing:
+        holes = holes[:-1]
+
+    # (2) Connective tissue across story pages.
+    connected = 0
+    for p in story_pages:
+        toks = {w.lower() for w in words(p.get("text") or "")}
+        if toks & CONNECTORS:
+            connected += 1
+    ratio = connected / n if n else 1.0
+
+    problems = []
+    if holes:
+        problems.append(f"blank-text page(s) interrupt the story: {holes} "
+                        "(put the game on a story page, don't break the read)")
+    if n >= 6 and ratio < 0.5:
+        problems.append(f"only {connected}/{n} story pages connect to the flow "
+                        "(few cause/effect/temporal links — risks reading as separate vignettes)")
+    if not problems:
+        return Gate("Flow & continuity", True,
+                    f"no narrative gaps; {connected}/{n} story pages carry connective tissue")
+    return Gate("Flow & continuity", False, "; ".join(problems))
 
 
 def _gate_character_art(world, story: dict) -> Gate:
@@ -191,6 +250,7 @@ def score_story(world, story) -> list[Gate]:
         _gate_spine(s),
         _gate_manuscript(s, band_id),
         _gate_pacing(s),
+        _gate_flow(s),
         _gate_character_art(world, s),
         _gate_engagement(s),
         _gate_finish(world, s),
@@ -213,7 +273,10 @@ def _print_card(world, story) -> None:
     for g in gates:
         mark = "✓" if g.ok else "⚠"
         print(f"  {mark}  {g.name}: {g.detail}")
-    print(f"  → {passed}/{total} gates — {label}")
+    print(f"  → {passed}/{total} STRUCTURAL gates — {label}")
+    print("  NOTE: these are structural proxies only. The gate that actually decides if a "
+          "book is good — is it FUN, and does it flow aloud? — is a human call (the "
+          "read-aloud / debate pass). A green card here is necessary, never sufficient.")
 
 
 def _resolve(target: str):

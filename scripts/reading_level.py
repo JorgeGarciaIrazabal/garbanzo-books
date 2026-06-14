@@ -17,7 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.model import ROOT, load_yaml  # noqa: E402
-from lib.readability import BANDS, analyze, count_syllables, words  # noqa: E402
+from lib.readability import analyze, count_syllables, story_targets, words  # noqa: E402
 
 # Common irregular sight/heart words allowed even in decodable text.
 DEFAULT_SIGHT = {
@@ -57,14 +57,17 @@ def decodable_focus_letters(focus: str) -> set[str]:
 def report(story_yaml: Path) -> bool:
     data = load_yaml(story_yaml)
     band_id = data.get("age_band", "5-7")
-    band = BANDS.get(band_id, BANDS["5-7"])
+    year = data.get("target_year")
+    t = story_targets(data)
     rl = data.get("reading_level", {}) or {}
     pages = data.get("pages", []) or []
 
-    target = rl.get("target_fk_grade", band.get("fk_grade"))
-    tol = rl.get("fk_grade_tolerance", 1.0)
-    max_wpp = rl.get("max_words_per_page", band["max_words_per_page"])
-    max_sent = rl.get("max_sentence_words", band["max_sentence_words"])
+    target = t["fk_target"]
+    tol = t["fk_tol"]
+    max_wpp = t["max_words_per_page"]
+    max_sent = t["max_sentence_words"]
+    fk_enforced = t["fk_enforced"]
+    read_aloud = t["read_aloud"]
 
     text = page_text(pages)
     m = analyze(text)
@@ -80,15 +83,18 @@ def report(story_yaml: Path) -> bool:
             longest = pm.longest_sentence_words
             longest_pg = pg.get("number")
 
-    print(f"=== {data.get('title','(untitled)')}  [{band_id} — {band['label']}] ===")
+    yr = f"age {year}" if isinstance(year, int) else band_id
+    print(f"=== {data.get('title','(untitled)')}  [{yr} — {t['label']}] ===")
     print(f"  words: {m.words}   sentences: {m.sentences}   words/sentence: {m.words_per_sentence:.1f}")
     print(f"  Flesch Reading Ease: {m.flesch_reading_ease}   FK grade: {m.fk_grade}")
     print(f"  longest sentence: {longest} words (cap {max_sent}) on page {longest_pg}")
 
     ok = True
 
-    # FKGL guardrail (only meaningful for 5-7+; the formula is unreliable below ~G1).
-    if band.get("fk_grade") is not None and target is not None:
+    # FKGL guardrail — only where the formula carries signal (fk_enforced, ~age 7+). Below that
+    # FKGL is noisy on tiny text, so we don't gate on it at all; the words/page + sentence
+    # length + read-aloud judgement carry the weight.
+    if fk_enforced and target is not None:
         lo, hi = target - tol, target + tol
         if m.fk_grade > hi:
             ok = False
@@ -100,8 +106,8 @@ def report(story_yaml: Path) -> bool:
         else:
             print(f"  PASS: FK grade within {target} +/-{tol}.")
     else:
-        print("  (read-aloud band: judging by words/page, sentence length, rhyme/repetition — "
-              "FKGL not used.)")
+        print("  (early/read-aloud age: FKGL not used — it's unreliable this young; judging by "
+              "words/page, sentence length, rhyme/repetition.)")
 
     # Per-page word caps + longest sentence.
     over_pages = []
@@ -127,9 +133,10 @@ def report(story_yaml: Path) -> bool:
 
     # Anti-telegraphic guard: prose amputated into fragments to duck the caps
     # ("Seoul at night. Bright lights. Palaces glow.") reads like a robot. Only
-    # meaningful with enough sentences to average over, and only for bands where
-    # short rhythmic refrain lines aren't the natural style.
-    min_avg = rl.get("min_avg_sentence_words", band.get("min_avg_sentence_words"))
+    # meaningful with enough sentences to average over, and ONLY for ages past the
+    # read-aloud years — for ages <=5 short rhythmic refrain lines are a legitimate
+    # style, so we don't flag them at all (the human read-aloud pass makes that call).
+    min_avg = t["min_avg_sentence_words"]
     total_w = total_s = 0
     for pg in pages:
         if pg.get("kind") in ("title", "end", "interaction"):
@@ -139,13 +146,15 @@ def report(story_yaml: Path) -> bool:
             total_w += pm.words
             total_s += pm.sentences
     avg = total_w / total_s if total_s else 0.0
-    if min_avg and total_s >= 12:
+    if not read_aloud and min_avg and total_s >= 6:
+        # The kid is reading these words themselves now; telegram prose is amputated writing —
+        # the one firm line (see methodology/reading-pedagogy.md "the telegraphic trap").
         if avg < min_avg:
             ok = False
             print(f"  FAIL: telegraphic prose — sentences average {avg:.1f} words "
-                  f"(want >= {min_avg:g} for {band_id}). The fix is NEVER more chopping: "
-                  "join the fragments into flowing sentences (and/but/so/then/because) "
-                  "that read aloud like a person telling a story.")
+                  f"(want >= {min_avg:g} for age {year if isinstance(year, int) else band_id}). "
+                  "The fix is NEVER more chopping: join the fragments into flowing sentences "
+                  "(and/but/so/then/because) that read aloud like a person telling a story.")
         else:
             print(f"  PASS: prose flows — sentences average {avg:.1f} words.")
     elif total_s:

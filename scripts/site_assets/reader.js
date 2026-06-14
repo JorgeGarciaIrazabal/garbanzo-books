@@ -43,6 +43,26 @@
   };
   GB.label = (x) => (x && x.label != null ? x.label : x);
   GB.coord = (x) => (x && x.at ? x.at : x);
+  GB.escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  // ---------- vocabulary helpers (shared by controller) ----------
+  // Normalize vocabulary entries to {word, clue, icon, read_aloud}. Plain strings
+  // become read-aloud-only hints; rich objects carry a kid-friendly clue + icon.
+  GB.normalizeVocab = (v) =>
+    (v || [])
+      .map((x) => {
+        if (x && typeof x === "object") {
+          return {
+            word: String(x.word || "").trim(),
+            clue: String(x.clue || "").trim(),
+            icon: x.icon || "🔊",
+            read_aloud: String(x.read_aloud || x.word || "").trim(),
+          };
+        }
+        const w = String(x || "").trim();
+        return { word: w, clue: "", icon: "🔊", read_aloud: w };
+      })
+      .filter((x) => x.word);
 
   // ---------- game registry ----------
   // GB.define(type, def) — def: { icon, rich, arcade, render(ctx) }.
@@ -104,11 +124,157 @@
         const pos = "pos-" + (layout.text_position || "lower-third");
         const align = layout.text_align ? "align-" + layout.text_align : "";
         const overlay = h("div", `page-text ${pos} ${align}`);
-        overlay.appendChild(h("div", layout.scrim === false ? "" : "scrim", esc(page.text)));
+        const inner = h("div", layout.scrim === false ? "" : "scrim", esc(page.text));
+        decorateVocab(inner, page.vocabulary);
+        overlay.appendChild(inner);
         figure.appendChild(overlay);
       }
       return figure;
     }
+
+    // ---------- in-text vocabulary hints ----------
+    // Turn tricky words into clickable buttons. Plain-string vocabulary gives a
+    // read-aloud button; rich {word, clue, icon} entries show a kid-friendly clue.
+    // Clicks on a word button stop propagation so the stage tap-zones don't turn the page.
+    function decorateVocab(inner, vocab) {
+      const entries = GB.normalizeVocab(vocab);
+      if (!entries.length || !inner.textContent.trim()) return;
+      // Prefer longer words first so shorter ones don't hide inside longer matches.
+      const sorted = entries.slice().sort((a, b) => b.word.length - a.word.length);
+      const map = new Map();
+      sorted.forEach((e) => map.set(e.word.toLowerCase(), e));
+      const pattern = sorted.map((e) => GB.escapeRegex(e.word)).join("|");
+      const re = new RegExp(`\\b(${pattern})\\b`, "gi");
+      const text = inner.textContent;
+      let html = "";
+      let last = 0;
+      text.replace(re, (match, _group, offset) => {
+        html += esc(text.slice(last, offset));
+        const entry = map.get(match.toLowerCase());
+        const icon = entry.icon
+          ? `<span class="word-icon" aria-hidden="true">${esc(entry.icon)}</span>`
+          : "";
+        const label = entry.clue
+          ? `Clue for ${esc(match)}: ${esc(entry.clue)}`
+          : `Read aloud: ${esc(match)}`;
+        html += `<button class="word-clue" type="button" aria-label="${label}" data-word="${esc(match)}" data-clue="${esc(entry.clue || "")}" data-read="${esc(entry.read_aloud || match)}" data-icon="${esc(entry.icon || "")}">${esc(match)}${icon}</button>`;
+        last = offset + match.length;
+        return "";
+      });
+      html += esc(text.slice(last));
+      inner.innerHTML = html;
+      inner.addEventListener("click", (e) => {
+        const btn = e.target.closest(".word-clue");
+        if (!btn) return;
+        e.stopPropagation();
+        openVocabPopup(btn);
+      });
+    }
+
+    // Shared popup for vocabulary clues. Created once per boot, removed on teardown.
+    let vocabPopup = null;
+    function ensureVocabPopup() {
+      if (vocabPopup) return vocabPopup;
+      vocabPopup = h("div", "word-clue-popup");
+      vocabPopup.setAttribute("role", "dialog");
+      vocabPopup.setAttribute("aria-modal", "true");
+      vocabPopup.setAttribute("aria-label", "Word clue");
+      vocabPopup.tabIndex = -1;
+      vocabPopup.innerHTML = `
+        <button class="word-clue-close" type="button" aria-label="Close clue">✕</button>
+        <div class="word-clue-head"></div>
+        <div class="word-clue-body"></div>
+        <button class="word-clue-speak" type="button"><span class="speak-icon">🔊</span> <span class="speak-label">Read aloud</span></button>`;
+      vocabPopup.querySelector(".word-clue-close").addEventListener("click", (e) => {
+        e.stopPropagation();
+        hideVocabPopup();
+      });
+      vocabPopup.querySelector(".word-clue-speak").addEventListener("click", (e) => {
+        e.stopPropagation();
+        speakVocabWord();
+      });
+      reader.appendChild(vocabPopup);
+      return vocabPopup;
+    }
+
+    function openVocabPopup(btn) {
+      const popup = ensureVocabPopup();
+      const word = btn.getAttribute("data-word") || "";
+      const clue = btn.getAttribute("data-clue") || "";
+      const icon = btn.getAttribute("data-icon") || "";
+      popup.dataset.word = word;
+      popup.dataset.read = btn.getAttribute("data-read") || word;
+      popup.querySelector(".word-clue-head").innerHTML =
+        (icon ? `<span class="popup-icon">${esc(icon)}</span> ` : "") + esc(word);
+      popup.querySelector(".word-clue-body").textContent = clue || "Tap the speaker to hear this word.";
+      const speakBtn = popup.querySelector(".word-clue-speak");
+      speakBtn.disabled = !("speechSynthesis" in window);
+      popup.classList.add("open");
+      // Defer positioning one frame so the popup has measurable size.
+      requestAnimationFrame(() => {
+        positionVocabPopup(btn, popup);
+        popup.focus();
+      });
+    }
+
+    function hideVocabPopup() {
+      if (vocabPopup) vocabPopup.classList.remove("open");
+    }
+
+    function positionVocabPopup(anchor, popup) {
+      const r = anchor.getBoundingClientRect();
+      const pad = 10;
+      let left = r.left + r.width / 2 - popup.offsetWidth / 2;
+      let top = r.bottom + 8;
+      // keep inside viewport
+      left = Math.max(pad, Math.min(left, window.innerWidth - popup.offsetWidth - pad));
+      if (top + popup.offsetHeight + pad > window.innerHeight) {
+        top = r.top - popup.offsetHeight - 8;
+      }
+      popup.style.left = left + "px";
+      popup.style.top = top + "px";
+    }
+
+    function speakVocabWord() {
+      if (!("speechSynthesis" in window)) return;
+      const word = vocabPopup && vocabPopup.dataset.read;
+      if (!word) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.rate = 0.88;
+      u.pitch = 1.05;
+      window.speechSynthesis.speak(u);
+    }
+
+    function closeVocabPopupOnOutside(e) {
+      if (!vocabPopup || !vocabPopup.classList.contains("open")) return;
+      const target = e.target;
+      if (!target) return;
+      // Document/body-level clicks are definitely outside the popup.
+      if (target !== document && target !== document.body) {
+        if (typeof target.closest === "function") {
+          if (vocabPopup.contains(target)) return;
+          if (target.closest(".word-clue")) return; // tapping another word just re-opens
+        } else {
+          return; // non-element target we can't reason about safely
+        }
+      }
+      hideVocabPopup();
+    }
+    // Avoid duplicate listeners across reloads (the test harness re-runs boot).
+    if (GB._closeVocabListener) document.removeEventListener("click", GB._closeVocabListener);
+    GB._closeVocabListener = closeVocabPopupOnOutside;
+    document.addEventListener("click", closeVocabPopupOnOutside);
+    // Ensure the handler actually fires in test environments where the document
+    // is the event target (jsdom can set target to #document for document-dispatched clicks).
+    document.addEventListener("click", (e) => {
+      if (e.target === document) closeVocabPopupOnOutside(e);
+    });
+    GB.onTeardown(() => {
+      document.removeEventListener("click", closeVocabPopupOnOutside);
+      if (vocabPopup && vocabPopup.parentNode) vocabPopup.remove();
+      vocabPopup = null;
+    });
 
     // ---------- dynamic text fit ----------
     // Long passages must never come out huge or swallow the illustration. Two
@@ -124,7 +290,7 @@
       const box = overlay && overlay.firstElementChild; // .scrim, or the plain text div
       if (!box) return;
 
-      overlay.style.fontSize = ""; // reset so we read the CSS / age-band base
+      overlay.style.fontSize = ""; // reset so we read the CSS / reader-age base
       box.style.maxHeight = "none";
       box.style.overflowY = "";
       const base = parseFloat(getComputedStyle(overlay).fontSize) || 20;
@@ -242,10 +408,14 @@
 
     function renderExtras(page) {
       extrasBox.innerHTML = "";
-      if (page.vocabulary && page.vocabulary.length) {
+      const vocabEntries = GB.normalizeVocab(page.vocabulary);
+      if (vocabEntries.length) {
         const g = h("div", "glossary");
         g.appendChild(h("span", "glossary-label", "New words: "));
-        page.vocabulary.forEach((w) => g.appendChild(h("span", "chip", esc(w))));
+        vocabEntries.forEach((e) => {
+          const label = e.icon ? `${e.icon} ${e.word}` : e.word;
+          g.appendChild(h("span", "chip", esc(label)));
+        });
         extrasBox.appendChild(g);
       }
       if (page.reading_notes) {
