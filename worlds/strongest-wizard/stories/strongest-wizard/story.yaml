@@ -539,11 +539,11 @@ interactions_summary:
 status: published
 tags: []
 cover:
-  image: images/page-00.svg
+  image: images/page-00.png
   image_prompt: Aria stands on Practice Meadow at golden hour, oversized blush-pink robe glowing, messy
     chestnut bob with lavender streak catching light, determined grin, mint satchel at hip, charred and
     flowered practice dummies behind her, Bram counting on fingers nearby, Sylfie floating effortlessly
     with sparkles, ward stones pulsing at village edge in background
-  alt: Aria the determined girl wizard on Practice Meadow with her friends Bram and Sylfie, practice dummies
-    showing messy spell results
+  alt: Aria stands on Practice Meadow at golden hour in her oversized pink robe, determined grin, friends
+    nearby
 affirms_rules: []

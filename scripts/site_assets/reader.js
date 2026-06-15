@@ -64,6 +64,86 @@
       })
       .filter((x) => x.word);
 
+  // ---------- natural TTS helper (Kokoro in the studio, browser TTS fallback) ----------
+  // The studio serves a local Kokoro endpoint at /api/tts. The same reader also runs on
+  // GitHub Pages with no backend, so we probe once and fall back to the browser's voice.
+  const ttsCache = new Map(); // text -> object URL
+  let backendTts = null;      // null = unknown, true/false after probe
+  let ttsAudio = null;        // currently playing <audio>
+  let ttsAbort = null;        // AbortController for in-flight backend request
+
+  function stopSpeaking() {
+    if (ttsAudio) { ttsAudio.pause(); ttsAudio = null; }
+    if (ttsAbort) { try { ttsAbort.abort(); } catch (e) {} ttsAbort = null; }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+  GB.stopSpeaking = stopSpeaking;
+
+  async function fetchTtsAudio(text) {
+    if (ttsCache.has(text)) return ttsCache.get(text);
+    if (typeof fetch !== "function") throw new Error("fetch unavailable");
+    ttsAbort = new AbortController();
+    const res = await fetch("/api/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, voice: "af_heart", speed: 0.95 }),
+      signal: ttsAbort.signal,
+    });
+    ttsAbort = null;
+    if (!res.ok) throw new Error("tts failed");
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    ttsCache.set(text, url);
+    return url;
+  }
+
+  function playAudio(url) {
+    return new Promise((resolve, reject) => {
+      const audio = new Audio(url);
+      ttsAudio = audio;
+      const cleanup = () => { if (ttsAudio === audio) ttsAudio = null; };
+      audio.addEventListener("ended", () => { cleanup(); resolve(); }, { once: true });
+      audio.addEventListener("error", () => { cleanup(); reject(new Error("audio error")); }, { once: true });
+      audio.play().then(() => {}, (err) => { cleanup(); reject(err); });
+    });
+  }
+
+  function browserSpeak(text) {
+    if (!("speechSynthesis" in window)) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.88;
+    u.pitch = 1.05;
+    window.speechSynthesis.speak(u);
+  }
+
+  async function speak(text) {
+    if (!text) return;
+    stopSpeaking();
+    if (backendTts !== false) {
+      try {
+        const url = await fetchTtsAudio(text);
+        if (url) {
+          backendTts = true;
+          await playAudio(url);
+          return;
+        }
+      } catch (e) {
+        // Network/downgrade: stop trying the backend for this session.
+        backendTts = false;
+      }
+    }
+    browserSpeak(text);
+  }
+  GB.speak = speak;
+
+  // Probe the studio backend once, fire-and-forget, so the first tap is fast.
+  if (typeof fetch === "function") {
+    fetch("/api/voice")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((c) => { backendTts = !!(c && c.tts); })
+      .catch(() => { backendTts = false; });
+  }
+
   // ---------- game registry ----------
   // GB.define(type, def) — def: { icon, rich, arcade, render(ctx) }.
   GB.defs = GB.defs || {};
@@ -77,6 +157,7 @@
   // registers a teardown; the controller flushes them on page change / sheet close.
   GB.onTeardown = (fn) => (GB._teardowns = GB._teardowns || []).push(fn);
   GB.teardown = () => {
+    if (GB.stopSpeaking) GB.stopSpeaking();
     (GB._teardowns || []).splice(0).forEach((fn) => {
       try { fn(); } catch (e) { /* teardown must never break the reader */ }
     });
@@ -151,13 +232,12 @@
       text.replace(re, (match, _group, offset) => {
         html += esc(text.slice(last, offset));
         const entry = map.get(match.toLowerCase());
-        const icon = entry.icon
-          ? `<span class="word-icon" aria-hidden="true">${esc(entry.icon)}</span>`
-          : "";
         const label = entry.clue
           ? `Clue for ${esc(match)}: ${esc(entry.clue)}`
           : `Read aloud: ${esc(match)}`;
-        html += `<button class="word-clue" type="button" aria-label="${label}" data-word="${esc(match)}" data-clue="${esc(entry.clue || "")}" data-read="${esc(entry.read_aloud || match)}" data-icon="${esc(entry.icon || "")}">${esc(match)}${icon}</button>`;
+        // The icon stays hidden in the text — it only appears in the popup once
+        // the word is tapped (carried on data-icon).
+        html += `<button class="word-clue" type="button" aria-label="${label}" data-word="${esc(match)}" data-clue="${esc(entry.clue || "")}" data-read="${esc(entry.read_aloud || match)}" data-icon="${esc(entry.icon || "")}">${esc(match)}</button>`;
         last = offset + match.length;
         return "";
       });
@@ -184,7 +264,7 @@
         <button class="word-clue-close" type="button" aria-label="Close clue">✕</button>
         <div class="word-clue-head"></div>
         <div class="word-clue-body"></div>
-        <button class="word-clue-speak" type="button"><span class="speak-icon">🔊</span> <span class="speak-label">Read aloud</span></button>`;
+        <button class="word-clue-speak" type="button"><span class="speak-icon">🔊</span> <span class="speak-label">Read tip</span></button>`;
       vocabPopup.querySelector(".word-clue-close").addEventListener("click", (e) => {
         e.stopPropagation();
         hideVocabPopup();
@@ -203,12 +283,16 @@
       const clue = btn.getAttribute("data-clue") || "";
       const icon = btn.getAttribute("data-icon") || "";
       popup.dataset.word = word;
+      popup.dataset.clue = clue;
       popup.dataset.read = btn.getAttribute("data-read") || word;
       popup.querySelector(".word-clue-head").innerHTML =
         (icon ? `<span class="popup-icon">${esc(icon)}</span> ` : "") + esc(word);
-      popup.querySelector(".word-clue-body").textContent = clue || "Tap the speaker to hear this word.";
+      popup.querySelector(".word-clue-body").textContent = clue || "Tap the button to hear a hint.";
       const speakBtn = popup.querySelector(".word-clue-speak");
-      speakBtn.disabled = !("speechSynthesis" in window);
+      // Use the word's own icon on the button (fall back to a speaker glyph).
+      speakBtn.querySelector(".speak-icon").textContent = icon || "🔊";
+      // Enable if the studio backend *might* be there, or if browser TTS exists.
+      speakBtn.disabled = backendTts === false && !("speechSynthesis" in window);
       popup.classList.add("open");
       // Defer positioning one frame so the popup has measurable size.
       requestAnimationFrame(() => {
@@ -236,14 +320,11 @@
     }
 
     function speakVocabWord() {
-      if (!("speechSynthesis" in window)) return;
-      const word = vocabPopup && vocabPopup.dataset.read;
-      if (!word) return;
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(word);
-      u.rate = 0.88;
-      u.pitch = 1.05;
-      window.speechSynthesis.speak(u);
+      if (!vocabPopup) return;
+      // Read the kid-friendly clue (the "tip") so the child can guess the word.
+      const text = vocabPopup.dataset.clue || vocabPopup.dataset.read || vocabPopup.dataset.word;
+      if (!text) return;
+      GB.speak(text);
     }
 
     function closeVocabPopupOnOutside(e) {

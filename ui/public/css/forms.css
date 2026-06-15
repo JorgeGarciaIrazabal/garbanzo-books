@@ -1,0 +1,54 @@
+/* ====================================================== forms (guided/agent) */
+.formcard{max-width:100%}
+.formcard .fc-title{font-family:var(--display);font-weight:680;font-size:1.05rem;margin-bottom:2px}
+.formcard .fc-intro{color:var(--muted);font-size:.85rem;margin-bottom:8px}
+.formcard .fc-form{margin-top:4px}
+.guided .other.hide{display:none}
+
+.formwrap{
+  border-bottom:1.5px dashed var(--line);background:linear-gradient(180deg, var(--leaf-soft), var(--card));
+  padding:14px 22px 16px;max-height:48%;overflow-y:auto;
+}
+.formwrap.hidden{display:none}
+.form-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.form-head strong{font-family:var(--display);font-weight:680;font-size:1.08rem}
+
+.guided{display:grid;grid-template-columns:1fr 1fr;gap:11px 16px}
+.guided .field{display:flex;flex-direction:column;gap:4px;font-size:.84rem}
+.guided .field span{color:var(--ink-soft);font-weight:700;font-size:.78rem;letter-spacing:.02em}
+.guided .field:has(textarea){grid-column:1 / -1}
+.guided input,.guided select,.guided textarea{
+  background:var(--card);color:var(--ink);border:1.6px solid var(--line-strong);
+  border-radius:10px;padding:9px 10px;font:inherit;font-size:.92rem;width:100%;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.guided input:focus,.guided select:focus,.guided textarea:focus{
+  outline:none;border-color:var(--leaf);box-shadow:0 0 0 3px rgba(71,122,82,.18);
+}
+.guided textarea{resize:vertical}
+.guided .invalid{border-color:var(--persimmon);box-shadow:0 0 0 3px rgba(217,101,64,.16)}
+.form-actions{grid-column:1 / -1;display:flex;justify-content:flex-end;gap:9px;margin-top:2px}
+
+/* "?" badge + popup explaining what a form field is FOR (hover or keyboard focus) */
+.guided .hint{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:15px;height:15px;margin-left:5px;border-radius:50%;
+  background:var(--leaf-soft);border:1px solid var(--line-strong);color:var(--ink-soft);
+  font-size:.68rem;font-weight:800;cursor:help;vertical-align:1px;
+}
+.guided .hint .hint-pop{
+  display:none;position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);
+  width:240px;z-index:30;padding:9px 11px;border-radius:10px;
+  background:var(--ink);color:var(--card);font-weight:500;font-size:.78rem;line-height:1.45;
+  letter-spacing:0;text-transform:none;box-shadow:0 6px 18px rgba(52,38,26,.35);
+}
+.guided .hint .hint-pop::after{
+  content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--ink);
+}
+.guided .hint:hover .hint-pop,.guided .hint:focus .hint-pop{display:block}
+
+/* helper line under a select describing the currently chosen option */
+.guided .opt-desc{
+  color:var(--muted);font-size:.76rem;line-height:1.4;min-height:1em;margin-top:1px;
+}

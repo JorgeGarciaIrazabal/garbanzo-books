@@ -1,0 +1,63 @@
+/* ============================================================================
+   Garbanzo Books Studio — “the bookbinder's atelier”
+   A warm paper-and-gouache workspace: cream paper, ink-brown type, clothbound
+   green masthead with foil lettering, sticker buttons with hard offset
+   shadows, folder-tab workbench. Fraunces (display) · Nunito Sans (UI) ·
+   Spline Sans Mono (tool output).
+   ========================================================================== */
+
+:root{
+  /* paper & ink */
+  --paper:#f6eedb;
+  --paper-deep:#efe3c6;
+  --card:#fffdf4;
+  --ink:#34261a;
+  --ink-soft:#5b4936;
+  --muted:#94806a;
+  --line:#e1d2b2;
+  --line-strong:#c8b48c;
+
+  /* gouache accents */
+  --cloth:#2f5240;        /* deep bookcloth green */
+  --cloth-deep:#27452f;
+  --leaf:#477a52;         /* garbanzo leaf */
+  --leaf-soft:#e3ecdc;
+  --foil:#e8c468;         /* gold foil */
+  --honey:#dba32f;
+  --persimmon:#d96540;    /* warm orange-red */
+  --persimmon-soft:#f7e0d2;
+  --teal:#41776e;
+  --teal-soft:#dcebe5;
+
+  --shadow-ink:rgba(52,38,26,.18);
+  --radius:14px;
+  --font:"Nunito Sans","Segoe UI",system-ui,sans-serif;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --mono:"Spline Sans Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;display:flex;flex-direction:column;
+  font-family:var(--font);color:var(--ink);
+  background:
+    radial-gradient(1100px 500px at 85% -10%, rgba(232,196,104,.16), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(71,122,82,.10), transparent 55%),
+    var(--paper);
+  font-size:15px;line-height:1.5;
+}
+/* paper grain over everything (subtle) */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+::selection{background:rgba(232,196,104,.55)}
+
+/* ------------------------------------------------------------- scrollbars */
+*{scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+*::-webkit-scrollbar{width:10px;height:10px}
+*::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:8px;border:3px solid var(--paper)}
+*::-webkit-scrollbar-track{background:transparent}

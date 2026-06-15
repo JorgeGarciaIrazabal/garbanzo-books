@@ -22,6 +22,41 @@ time. Flesch–Kincaid grade ≈ US school grade ≈ *age − 5* (a 5-year-old i
 grade ~0), and it's genuinely unreliable below ~Grade 1, so for the youngest ages ignore the
 number and trust your ear.
 
+## Read-aloud or reading it alone? (this is the word-choice lever)
+
+The same age splits into two very different readers, and **who holds the book decides how hard
+the individual words can be** — a thing the sentence-length and words/page anchors are blind to.
+This is a real setting on the story: **`reading_level.read_mode`** = `read_aloud` or `solo`. Set
+it deliberately for the ambiguous ages (~4–8); leave it off and it defaults by age (read-aloud
+for ≤5, solo from 6). It is the single biggest lever on vocabulary, and it also **tightens the
+words-per-page cap** for a solo reader:
+
+- **Read-aloud (`read_aloud`) — a grown-up reads it.** The default for ages ~3–6, and common up
+  to ~8 for a bedtime book. The child *listens*, so a juicy, low-frequency, many-syllabled word
+  is a **gift** — "hawthorn", "catastrophe", "reflected" land beautifully when a parent says
+  them. Reach for rich words here; they grow a kid's ear. The page can carry more text, too,
+  because the grown-up does the decoding.
+- **Solo decoder (`solo`) — the child reads it alone.** Possible from ~5 and the norm by ~7. Now
+  every word has to be *sounded out by a small person*, so lean on **high-frequency / decodable**
+  words: short, common, regularly-spelled. A low-frequency three-syllable word ("privacy",
+  "collapses", "definitely") isn't a treat — it's a wall the kid hits mid-joke and gives up. Keep
+  stretch words to **one or two a page at most**, and make them ones a 6-year-old could plausibly
+  attack. **And cut the words-per-page right down** — a brand-new solo reader needs short lines
+  and lots of white space (the solo caps in `scripts/lib/readability.py` are roughly half the
+  read-aloud cap for the young years; e.g. age 5 ≈ 25 words/page solo vs ≈ 55 read-aloud).
+
+**A 5-year-old is the hinge case, and both books are real:** a *read-aloud* age-5 bedtime book
+(rich words a parent voices, ~55 words/page) and a *solo* age-5 early reader (decodable words the
+child sounds out, ~25 words/page, short repetitive sentences) are two genuinely different books at
+the same age. Pick one on purpose.
+
+So before you fit the words, **know which book you're writing.** If it isn't obvious from the
+request, *ask* — "is this one a grown-up reads aloud, or one the kid reads alone?" — set
+`read_mode` to match, because the answer changes your whole vocabulary posture and the page cap,
+not the sentence length. This is judgment, not a rule: no word list, no checker. When unsure for
+the young ages, assume **read-aloud** (richer words welcome) — but say so, so the choice is
+deliberate rather than accidental.
+
 ## The reader at each age
 
 **Age 3 — lap reader (read *to*).** A grown-up reads every word. Write for the *ear*: one
@@ -36,15 +71,23 @@ the rest. A silly sound beats a "correct" word every time.
 > *"The frog went hop. The frog went plop. The frog would NOT, would not, would not stop!"*
 Anchors: 1 sentence, 5–10 words; ~35 words/page; FK ~0.
 
-**Age 5 — kindergarten / brand-new reader.** Sounding out their first words. Short, *whole*
-sentences (subject + verb) they can decode, with lots of friendly repetition and a few sight
-words. One big new word as a treat — said with relish — is a gift, not a problem.
+**Age 5 — kindergarten / brand-new reader.** The hinge age — decide `read_mode` (see above).
+Sounding out their first words. Short, *whole* sentences (subject + verb) they can decode, with
+lots of friendly repetition and a few sight words. One big new word as a treat — said with
+relish — is a gift, not a problem.
 > *"Pip had a plan. It was a VERY big plan. He grinned and grabbed his hat."*
-Anchors: 6–9 words a sentence; ~55 words/page; FK ~0–0.6 (don't chase it).
+Anchors: 6–9 words a sentence.
+> • **Read-aloud** (a grown-up voices it): ~55 words/page; reach for a rich, fun word or two.
+> • **Solo reader** (the child decodes it): ~25 words/page, short lines and white space;
+>   high-frequency/decodable words, at most one stretch word a page.
+FK ~0–0.6 (don't chase it).
 
 **Age 6 — kindergarten / Grade 1.** Reading simple sentences with growing confidence. You
 can chain two clauses with *and / but / so*, build a little suspense across a page-turn, and
-sprinkle the occasional juicy stretch word.
+sprinkle the occasional juicy stretch word. **This is the hinge age** (see "Read-aloud or
+reading it alone?" above): a read-*aloud* 6-year-old book can carry rich words a parent voices,
+while a *solo*-reader 6-year-old book should stay mostly high-frequency and decodable with only
+a stretch word or two a page. Decide which, then choose words to match.
 > *"She tiptoed past the dragon, so quiet, so slow — and then her tummy gave a GIANT
 > rumble."*
 Anchors: 7–11 words, vary them; ~70 words/page; FK ~0.6–1.3.
@@ -113,9 +156,10 @@ Rules of thumb:
   like a telegram, it fails, whatever the metrics say.
 
 More notes:
-- **Younger = read-aloud.** For ages 3–6 a grown-up is doing the reading, so write for the
-  *ear*: rhythm, rhyme, repetition, words that are fun to *say*. Silly sounds beat "correct"
-  words.
+- **Younger = usually read-aloud.** For ages 3–6 a grown-up is *usually* doing the reading, so
+  write for the *ear*: rhythm, rhyme, repetition, words that are fun to *say*. Silly sounds beat
+  "correct" words. But confirm it — a 5- or 6-year-old reading *solo* needs decodable words, not
+  a parent's rich vocabulary (see "Read-aloud or reading it alone?" above).
 - **One big idea per page** for the young ages, so the picture can carry it.
 - **A few stretch words are good, not bad.** A kid *loves* a giant, ridiculous, satisfying
   word ("CATASTROPHE!"). Don't strip them out — just don't fill every line with them.

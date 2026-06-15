@@ -171,15 +171,6 @@ h1, h2, h3 { line-height: 1.2; }
   outline-offset: 2px;
   border-radius: 4px;
 }
-.word-icon {
-  display: inline-block;
-  margin-left: 0.15em;
-  font-size: 0.82em;
-  vertical-align: super;
-  line-height: 1;
-  pointer-events: none;
-}
-
 /* vocabulary clue popup */
 .word-clue-popup {
   position: fixed;

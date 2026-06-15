@@ -204,12 +204,32 @@ describe("clickable vocabulary hints", () => {
     loadReaderWith(story);
     document.getElementById("next").click();
     const clue = document.querySelector(".word-clue");
-    expect(clue.querySelector(".word-icon").textContent).toBe("🕰️");
+    // The icon stays hidden in the text — it only appears once the word is tapped.
+    expect(clue.querySelector(".word-icon")).toBeNull();
+    expect(clue.getAttribute("data-icon")).toBe("🕰️");
     clue.click();
     const popup = document.querySelector(".word-clue-popup.open");
     expect(popup.textContent).toContain("Once");
     expect(popup.textContent).toContain("One time, a long time ago");
     expect(popup.getAttribute("data-read")).toBe("Once upon a time");
+    // The read-tip button carries the word's own icon, not a generic speaker.
+    expect(popup.querySelector(".word-clue-speak .speak-icon").textContent).toBe("🕰️");
+  });
+
+  it("speaks the clue, not the word, when a tip is available", () => {
+    const story = makeStory();
+    story.pages[1].vocabulary = [{
+      word: "Once",
+      clue: "One time, a long time ago.",
+    }];
+    loadReaderWith(story);
+    document.getElementById("next").click();
+    document.querySelector(".word-clue").click();
+    const popup = document.querySelector(".word-clue-popup.open");
+    expect(popup).toBeTruthy();
+    // The popup stores the clue as the preferred text to speak.
+    expect(popup.dataset.clue).toBe("One time, a long time ago.");
+    expect(popup.querySelector(".word-clue-speak")).toBeTruthy();
   });
 
   it("clicking outside the popup closes it", () => {

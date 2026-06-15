@@ -1,0 +1,19 @@
+{
+  "page": 14,
+  "prompt_seed": 424054802,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration captures a dreamy pastel aesthetic, but the scene lacks the expected sparkle and feels slightly flat.",
+      "flags": [
+        "style_inconsistent"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-14-424054802.png"
+    }
+  ],
+  "winner": "page-14.png"
+}

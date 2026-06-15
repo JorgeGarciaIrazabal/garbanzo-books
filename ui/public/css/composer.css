@@ -1,0 +1,79 @@
+/* ======================================================= activity strip */
+.activity{
+  display:flex;align-items:center;gap:9px;padding:8px 20px;
+  background:linear-gradient(90deg, rgba(232,196,104,.22), rgba(232,196,104,.06));
+  border-top:1.5px dashed var(--line);color:var(--ink-soft);font-size:.83rem;
+}
+.activity.hidden{display:none}
+.activity .dot{
+  width:10px;height:10px;border-radius:50%;background:var(--honey);flex:none;
+  animation:toolpulse 1.1s ease-in-out infinite;
+  box-shadow:0 0 0 3px rgba(219,163,47,.22);
+}
+.activity #activity-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.activity .elapsed{color:var(--muted);font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:.76rem}
+/* the strip turns alarmed when the stall watchdog says "this looks stuck" */
+.activity.warn{
+  background:linear-gradient(90deg, var(--persimmon-soft), rgba(214,93,62,.06));
+  border-top-color:var(--persimmon);color:var(--ink);
+}
+.activity.warn .dot{background:var(--persimmon);box-shadow:0 0 0 3px rgba(214,93,62,.25)}
+
+/* quick replies */
+.quickreplies{display:flex;flex-wrap:wrap;gap:8px;padding:10px 20px 0;background:transparent}
+.quickreplies.hidden{display:none}
+.qr{
+  background:var(--card);border:1.6px solid var(--line-strong);color:var(--ink-soft);
+  border-radius:999px;padding:7px 13px;font:inherit;font-size:.84rem;font-weight:700;cursor:pointer;
+  box-shadow:2px 2px 0 var(--shadow-ink);
+  transition:transform .08s ease, box-shadow .08s ease, border-color .15s ease;
+}
+.qr:hover{border-color:var(--ink);color:var(--ink);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--shadow-ink)}
+.qr:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--shadow-ink)}
+
+/* ============================================================= composer */
+.composer{border-top:2px solid var(--line);padding:13px 18px 14px;background:linear-gradient(180deg, var(--card), var(--paper))}
+.composer-input{position:relative}
+.composer textarea{
+  width:100%;background:var(--card);color:var(--ink);
+  border:2px solid var(--line-strong);border-radius:14px;
+  padding:11px 50px 11px 13px;font:inherit;font-size:.95rem;resize:vertical;min-height:48px;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.composer textarea:focus{outline:none;border-color:var(--leaf);box-shadow:0 0 0 3px rgba(71,122,82,.16)}
+.composer textarea::placeholder{color:var(--muted);font-style:italic}
+
+.micbtn{
+  position:absolute;right:9px;bottom:9px;width:34px;height:34px;border-radius:50%;
+  border:1.6px solid var(--line-strong);background:var(--card);color:var(--ink);font-size:.95rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;
+  transition:border-color .15s ease, transform .1s ease;
+}
+.micbtn:hover{border-color:var(--ink);transform:scale(1.06)}
+.micbtn.rec{background:var(--persimmon);border-color:#8e3c22;color:#fff;animation:micpulse 1.1s ease-in-out infinite}
+.micbtn.busy{background:var(--foil);border-color:var(--honey);color:#3a2c12}
+.micbtn.unsupported{opacity:.4;cursor:not-allowed}
+@keyframes micpulse{0%,100%{box-shadow:0 0 0 0 rgba(217,101,64,.5)}50%{box-shadow:0 0 0 8px rgba(217,101,64,0)}}
+
+.composer-row{display:flex;align-items:center;justify-content:space-between;margin-top:9px;gap:10px;flex-wrap:wrap}
+.composer-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}
+.composer-send{display:flex;align-items:center;gap:8px}
+.clearbtn{padding:5px 11px;font-size:.78rem}
+.modelpick{color:var(--muted);font-size:.8rem;display:flex;gap:7px;align-items:center;min-width:0;font-weight:700}
+.modelpick select{
+  background:var(--card);color:var(--ink);border:1.6px solid var(--line-strong);
+  border-radius:9px;padding:5px 8px;font:inherit;font-size:.78rem;max-width:240px;
+}
+.modelpick select:focus{outline:none;border-color:var(--leaf)}
+.stage-chip{
+  font-size:.7rem;padding:3px 9px;border-radius:999px;border:1.6px solid var(--line-strong);
+  background:var(--card);color:var(--muted);white-space:nowrap;max-width:220px;overflow:hidden;
+  text-overflow:ellipsis;font-weight:800;
+}
+.stage-chip.auto{
+  background:linear-gradient(135deg, rgba(232,196,104,.35), rgba(71,122,82,.18));
+  border-color:var(--honey);color:var(--ink);
+}
+.stage-chip.pinned{background:transparent;border-style:dashed;color:var(--muted)}
+
+.newsess{color:var(--muted);font-size:.82rem;display:flex;gap:6px;align-items:center}

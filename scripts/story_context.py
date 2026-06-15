@@ -78,11 +78,19 @@ def main() -> int:
 
     print("\n=== AGE-FIT LANGUAGE BY YEAR (advisory anchors — read the portraits in "
           "methodology/reading-pedagogy.md; no hard rules) ===")
+    print("  Two columns where they differ: a SOLO reader (the child decodes every word) gets a "
+          "tighter page than a READ-ALOUD book a grown-up voices. Set reading_level.read_mode.")
     for y in range(MIN_YEAR + 1, MAX_YEAR):
-        t = targets_for_year(y)
-        fk = (f"FK ~{t['fk_lo']}-{t['fk_hi']}" if t["fk_lo"] is not None else "read-aloud (FK n/a)")
-        print(f"  age {y}: aim ~{t['max_words_per_page']} words/page, sentences up to "
-              f"~{t['max_sentence_words']}, {fk}  — {t['label']}")
+        ta = targets_for_year(y, "read_aloud")
+        ts = targets_for_year(y, "solo")
+        fk = (f"FK ~{ta['fk_lo']}-{ta['fk_hi']}" if ta["fk_lo"] is not None else "read-aloud (FK n/a)")
+        if ts["max_words_per_page"] != ta["max_words_per_page"] or ts["max_sentence_words"] != ta["max_sentence_words"]:
+            wpp = f"~{ts['max_words_per_page']} words/page solo · ~{ta['max_words_per_page']} read-aloud"
+            sent = f"sentences up to ~{ts['max_sentence_words']} solo / ~{ta['max_sentence_words']} read-aloud"
+        else:
+            wpp = f"~{ta['max_words_per_page']} words/page"
+            sent = f"sentences up to ~{ta['max_sentence_words']}"
+        print(f"  age {y}: aim {wpp}, {sent}, {fk}  — {ta['label']}")
     print("  (numbers are gentle aims, not caps. The read-aloud test beats every number.)")
 
     print("\n=== NEXT STEPS ===")

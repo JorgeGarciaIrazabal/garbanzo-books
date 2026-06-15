@@ -1,0 +1,35 @@
+/* ============================================================== masthead */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:10px 22px;
+  color:var(--ink);
+  background:color-mix(in srgb, var(--card) 72%, transparent);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1.5px solid var(--line);
+  position:relative;z-index:5;
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0;white-space:nowrap}
+/* app-icon style logo tile */
+.brand-bean{
+  display:flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:10px;font-size:1.15rem;
+  background:linear-gradient(145deg, var(--leaf-soft), color-mix(in srgb, var(--leaf) 28%, var(--card)));
+  border:1px solid color-mix(in srgb, var(--leaf) 45%, var(--line));
+  box-shadow:0 1px 2px rgba(52,38,26,.10);
+}
+.brand-name{
+  font-family:var(--display);font-weight:660;font-size:1.24rem;letter-spacing:.01em;
+  color:var(--ink);
+  font-variation-settings:"SOFT" 60,"WONK" 0,"opsz" 40;
+}
+.brand-sub{
+  font-style:normal;font-size:.66rem;font-weight:800;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);
+  padding:3px 9px;border:1px solid var(--line);border-radius:999px;
+  background:color-mix(in srgb, var(--paper) 60%, transparent);
+}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.action-group{display:flex;gap:6px;align-items:center}
+.action-sep{width:1px;height:22px;background:var(--line)}
+.status{color:var(--muted);font-size:.76rem;margin-left:2px;font-family:var(--mono)}

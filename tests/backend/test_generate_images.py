@@ -13,6 +13,7 @@ from pathlib import Path
 import pytest
 
 import generate_images as gi
+from lib import image_pipeline as ip  # _run_best_of_n lives here; patch its helpers HERE
 from lib.model import dump_yaml, load_yaml
 
 
@@ -154,7 +155,10 @@ def test_try_real_provider_swallows_provider_exceptions(monkeypatch, tmp_path):
     def raises(*a, **kw):
         raise RuntimeError("simulated provider failure")
 
-    monkeypatch.setattr(gi, "_gen_nano_banana", raises)
+    # try_real_provider lives in lib.image_providers and calls _gen_nano_banana from THAT
+    # module's namespace, so patch it there (gi just re-exports it).
+    from lib import image_providers
+    monkeypatch.setattr(image_providers, "_gen_nano_banana", raises)
     from lib.prompt_assembly import AssembledPrompt
     ap = AssembledPrompt(prompt="x", negative="", seed=None, aspect_ratio="4:3")
     ok = gi.try_real_provider("nano-banana", ap, tmp_path / "x.png", ref_base=tmp_path)
@@ -388,8 +392,8 @@ def test_run_best_of_n_stops_at_first_good_candidate(monkeypatch, workspace, wri
         out = images_dir / f"page-{num:02d}-{ap_.seed}.svg"
         out.write_text("<svg/>", encoding="utf-8")
         return out
-    monkeypatch.setattr(gi, "_generate_one_candidate", fake_gen)
-    monkeypatch.setattr(gi, "_qc_candidate",
+    monkeypatch.setattr(ip, "_generate_one_candidate", fake_gen)
+    monkeypatch.setattr(ip, "_qc_candidate",
                         lambda *a, **kw: {"ok": True, "score": 9.5, "reason": "great",
                                           "flags": ["good"]})
 
@@ -422,14 +426,14 @@ def test_run_best_of_n_retries_until_threshold_is_met(monkeypatch, workspace, wr
         out = images_dir / f"page-{num:02d}-{ap_.seed}.svg"
         out.write_text("<svg/>", encoding="utf-8")
         return out
-    monkeypatch.setattr(gi, "_generate_one_candidate", fake_gen)
+    monkeypatch.setattr(ip, "_generate_one_candidate", fake_gen)
     # First two attempts are bad (score 3.0), third is good (score 9.0).
     scores = [3.0, 3.0, 9.0]
     def fake_qc(cand, **kw):
         s = scores.pop(0) if scores else 9.0
         return {"ok": s >= 7.0, "score": s, "reason": "ok" if s >= 7.0 else "bad",
                 "flags": [] if s >= 7.0 else ["scene_mismatch"]}
-    monkeypatch.setattr(gi, "_qc_candidate", fake_qc)
+    monkeypatch.setattr(ip, "_qc_candidate", fake_qc)
 
     img_dir = workspace.worlds / "ww" / "stories" / "s1" / "images"
     winner, qc_log = gi._run_best_of_n(
@@ -464,8 +468,8 @@ def test_run_best_of_n_caps_at_max_attempts(monkeypatch, workspace, write_world,
         out = images_dir / f"page-{num:02d}-{ap_.seed}.svg"
         out.write_text("<svg/>", encoding="utf-8")
         return out
-    monkeypatch.setattr(gi, "_generate_one_candidate", fake_gen)
-    monkeypatch.setattr(gi, "_qc_candidate",
+    monkeypatch.setattr(ip, "_generate_one_candidate", fake_gen)
+    monkeypatch.setattr(ip, "_qc_candidate",
                         lambda *a, **kw: {"ok": False, "score": 2.0, "reason": "terrible",
                                           "flags": ["scene_mismatch"]})
 
@@ -500,8 +504,8 @@ def test_run_best_of_n_hard_flags_short_circuit(monkeypatch, workspace, write_wo
         out = images_dir / f"page-{num:02d}-{ap_.seed}.svg"
         out.write_text("<svg/>", encoding="utf-8")
         return out
-    monkeypatch.setattr(gi, "_generate_one_candidate", fake_gen)
-    monkeypatch.setattr(gi, "_qc_candidate",
+    monkeypatch.setattr(ip, "_generate_one_candidate", fake_gen)
+    monkeypatch.setattr(ip, "_qc_candidate",
                         lambda *a, **kw: {"ok": False, "score": 4.0, "reason": "dupes",
                                           "flags": ["duplicate_characters"]})
 
@@ -556,3 +560,19 @@ def test_raster_refs_empty_when_ref_base_is_none():
     ap = AssembledPrompt(prompt="x", negative="", seed=None, aspect_ratio="4:3",
                           reference_images=["ref.png"])
     assert gi._raster_refs(ap, None) == []
+
+
+# ============================================================================ CLI parsing
+def test_cli_print_timeout_sets_env_var(monkeypatch):
+    import os
+    import sys
+    monkeypatch.setattr(sys, "argv", ["generate_images.py", "ww/s1", "--print-timeout", "100s", "--verify"])
+    
+    # Mock verify_story to return 0 so main() exits cleanly
+    monkeypatch.setattr(gi, "verify_story", lambda target: 0)
+    
+    # Run main and assert the env variable was updated
+    rc = gi.main()
+    assert rc == 0
+    assert os.environ.get("ANTIGRAVITY_TIMEOUT") == "100s"
+

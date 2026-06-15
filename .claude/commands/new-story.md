@@ -20,7 +20,13 @@ Run the stages in order, delegating to the specialist skills/agents:
 1. **story-craft** — confirm the reader's **age** (`--year N`) & cast (pin each character's
    `evolution.stage`); nail the hook and "why it's fun", then write the `logline`, `spine`, and
    `pages[]` at the ~14-spread rhythm with scene-only image prompts. Scaffold:
-   `uv run python scripts/new_story.py <world> "<Title>" --year <N>`.
+   `uv run python scripts/new_story.py <world> "<Title>" --year <N> [--read-mode read_aloud|solo]`.
+   **For a young age (~4–8), also confirm read mode up front** — read *aloud* by a grown-up (rich
+   words welcome, generous words/page) or read *solo* by the kid (high-frequency / decodable words,
+   stretch words rare, **tighter words/page** — e.g. age 5 ≈ 25 vs ≈ 55)? Pass `--read-mode` to set
+   it (it lands in `reading_level.read_mode`; default: read-aloud for ≤5, solo from 6). Ask the user
+   if the brief doesn't say; it sets the vocabulary posture AND the per-page cap for the whole book
+   (see "Read-aloud or reading it alone?" in `reading-pedagogy.md`).
 2. **reading-level-adaptation** — a light age-fit pass so the words don't block the fun. Keep
    word choice simple for the age: don't reach for fancy/complicated words (there is NO
    per-page "vocabulary" target any more — write for fun first). Spot-check with

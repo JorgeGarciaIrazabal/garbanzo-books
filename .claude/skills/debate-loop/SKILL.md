@@ -138,7 +138,7 @@ The user reads `final-verdict.md` to judge. They do NOT have to read all nine cr
 - **Critic roles** = new subagents. They have read-only tools; they do not edit `story.yaml`.
   Their job is the *critique file*, not the artifact.
 - **`/new-debate`** = the user entry point. It's a wrapper that runs the loop. The existing
-  `/new-story` and `/new-book` commands stay — but for any "good" output, the recommended path
+  `/new-story` command stays — but for any "good" output, the recommended path
   is: draft → `/new-debate` → validate → publish.
 - **Validation** = unchanged. `scripts/validate.py` and `scripts/quality_report.py` run on the
   final `story.yaml` after the loop ends.

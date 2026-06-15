@@ -76,6 +76,7 @@ appearance_token: 'SYLFIE: human girl 7-8, graceful slight build, pale peach shi
   slippers, floating ribbon hair ties, golden sparkles trailing fingertips, ribbons moving with mood,
   serene confident smile with mischievous glint'
 reference_images:
+- characters/sylfie.refs/model-sheet.png
 - characters/sylfie.refs/model-sheet.svg
 seed: 339147
 relationships: []

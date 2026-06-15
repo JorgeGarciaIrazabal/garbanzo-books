@@ -42,7 +42,8 @@ def check_reading(rep: Report, world: Any, story: Any) -> None:
             if p.get("kind") not in ("title", "interaction")
             and len(words(p.get("text") or "")) > max_wpp]
     if over:
-        rep.warn(f"{where}: pages denser than typical (~{max_wpp} words) for the age: {over}. "
+        mode = "solo reader" if t["read_mode"] == "solo" else "read-aloud"
+        rep.warn(f"{where}: pages denser than typical (~{max_wpp} words, {mode}) for the age: {over}. "
                  "Fine if the read-aloud sings — just check it fits the page with the picture.")
 
     if rl.get("decodable") and not (rl.get("decoding_focus") or "").strip():

@@ -67,7 +67,8 @@ def report(story_yaml: Path) -> bool:
     max_wpp = t["max_words_per_page"]
     max_sent = t["max_sentence_words"]
     fk_enforced = t["fk_enforced"]
-    read_aloud = t["read_aloud"]
+    read_mode = t["read_mode"]
+    telegraphic_relaxed = t["telegraphic_relaxed"]
 
     text = page_text(pages)
     m = analyze(text)
@@ -84,7 +85,8 @@ def report(story_yaml: Path) -> bool:
             longest_pg = pg.get("number")
 
     yr = f"age {year}" if isinstance(year, int) else band_id
-    print(f"=== {data.get('title','(untitled)')}  [{yr} — {t['label']}] ===")
+    mode_label = "read-aloud (a grown-up voices it)" if read_mode == "read_aloud" else "solo reader (the child decodes it)"
+    print(f"=== {data.get('title','(untitled)')}  [{yr} — {t['label']} — {mode_label}] ===")
     print(f"  words: {m.words}   sentences: {m.sentences}   words/sentence: {m.words_per_sentence:.1f}")
     print(f"  Flesch Reading Ease: {m.flesch_reading_ease}   FK grade: {m.fk_grade}")
     print(f"  longest sentence: {longest} words (cap {max_sent}) on page {longest_pg}")
@@ -109,7 +111,9 @@ def report(story_yaml: Path) -> bool:
         print("  (early/read-aloud age: FKGL not used — it's unreliable this young; judging by "
               "words/page, sentence length, rhyme/repetition.)")
 
-    # Per-page word caps + longest sentence.
+    # Per-page word caps + longest sentence. The cap is mode-aware: a solo reader (sounding out
+    # every word) gets a tighter page than a read-aloud book a grown-up voices.
+    cap_note = " (solo reader)" if read_mode == "solo" else " (read-aloud)"
     over_pages = []
     for pg in pages:
         if pg.get("kind") in ("title", "interaction"):
@@ -119,10 +123,10 @@ def report(story_yaml: Path) -> bool:
             over_pages.append((pg.get("number"), wc))
     if over_pages:
         ok = False
-        print(f"  FAIL: {len(over_pages)} page(s) over the {max_wpp}-word cap: " +
+        print(f"  FAIL: {len(over_pages)} page(s) over the {max_wpp}-word cap{cap_note}: " +
               ", ".join(f"p{n}={c}" for n, c in over_pages))
     else:
-        print(f"  PASS: all pages within the {max_wpp}-word cap.")
+        print(f"  PASS: all pages within the {max_wpp}-word cap{cap_note}.")
 
     if longest > max_sent:
         ok = False
@@ -133,9 +137,10 @@ def report(story_yaml: Path) -> bool:
 
     # Anti-telegraphic guard: prose amputated into fragments to duck the caps
     # ("Seoul at night. Bright lights. Palaces glow.") reads like a robot. Only
-    # meaningful with enough sentences to average over, and ONLY for ages past the
-    # read-aloud years — for ages <=5 short rhythmic refrain lines are a legitimate
-    # style, so we don't flag them at all (the human read-aloud pass makes that call).
+    # meaningful with enough sentences to average over, and ONLY past the youngest ages —
+    # for the early-reader years short lines are a legitimate style in BOTH modes (rhythmic
+    # read-aloud refrains AND a brand-new solo decoder's short decodable sentences), so we
+    # don't flag them at all (the human read-aloud pass makes that call).
     min_avg = t["min_avg_sentence_words"]
     total_w = total_s = 0
     for pg in pages:
@@ -146,7 +151,7 @@ def report(story_yaml: Path) -> bool:
             total_w += pm.words
             total_s += pm.sentences
     avg = total_w / total_s if total_s else 0.0
-    if not read_aloud and min_avg and total_s >= 6:
+    if not telegraphic_relaxed and min_avg and total_s >= 6:
         # The kid is reading these words themselves now; telegram prose is amputated writing —
         # the one firm line (see methodology/reading-pedagogy.md "the telegraphic trap").
         if avg < min_avg:

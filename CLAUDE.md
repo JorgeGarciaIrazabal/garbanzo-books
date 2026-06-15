@@ -178,8 +178,11 @@ below each own one or two gates.
 /publish        → build the static site and (optionally) deploy to GitHub Pages
 ```
 
-Or run the whole thing end-to-end with `/new-book` (it walks all four gates), or from the
-**dynamic UI** in `ui/` (the Claude-Agent-SDK entrypoint).
+Always walk the gates in order — `world → character → story → art` — confirming each before the
+next. There is no all-in-one "make a whole book" shortcut: building piece by piece keeps the
+world/character/style consistency invariants intact and makes every gate a deliberate sign-off.
+You can also drive the same sequence from the **dynamic UI** in `ui/` (the Claude-Agent-SDK
+entrypoint), whose guided forms are New world / New character / New story.
 
 ## Conventions
 
@@ -218,6 +221,11 @@ scripts directly via the FastAPI server — no need to ask the AI to "build" or 
   commit & push from the server (`/api/deploy`); the push triggers the deploy-pages
   workflow. Validate/quality remain available as small check buttons on the same tab, and
   the manual commands (`git push`, `gh workflow run deploy-pages.yml`) sit in a fold-out.
+- **🗑 Delete on each library card / 🗑 Delete world in each world header** — permanently
+  removes one story dir, or a whole world (bible + every character AND story), via
+  `scripts/delete_content.py`. Both go through a confirmation popup first (this is
+  destructive and irreversible); the studio then rebuilds both previews so the shelves match
+  disk. To purge a deleted book from the public site, redeploy afterwards.
 
 Library cards in the studio show all stories (drafts + published) with a clear `draft` /
 `published` pill. Drafts link to the studio preview build (`/preview/...`); published stories
@@ -228,6 +236,10 @@ CLI equivalents:
 ```bash
 # Publish/unpublish one story (runs the validator gate before publishing)
 uv run python scripts/publish_story.py <world>/<story> [--draft]
+
+# Delete one story, or a whole world (destructive; --yes skips the prompt)
+uv run python scripts/delete_content.py <world>/<story>   # one story
+uv run python scripts/delete_content.py <world>           # the whole world
 
 # Studio preview — drafts included, into ./site/
 uv run python scripts/build_site.py --include-drafts

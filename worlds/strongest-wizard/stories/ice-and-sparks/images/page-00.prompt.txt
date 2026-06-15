@@ -4,7 +4,7 @@ A frost-covered spellbook lying open on a wooden desk, frost curling up from the
 NEGATIVE:
 photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
 
-SEED: 518738573
+SEED: 664723596
 ASPECT: 4:3
 CHARACTERS: —
 REFERENCES: —

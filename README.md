@@ -34,7 +34,7 @@ methodology/    the craft: pipeline · pedagogy · consistency · interactivity 
 .claude/
   skills/       9 craft skills (storybook-studio orchestrator + 8 specialists)
   agents/       7 specialist subagents (world architect, illustration director, validator…)
-  commands/     /new-world /new-character /new-story /illustrate /validate /publish /new-book
+  commands/     /new-world /new-character /new-story /illustrate /validate /publish
 scripts/        Python tools: scaffold · generate_images · reading_level · validate · build_site
 worlds/         your content (the sample "Whispering Woods" world ships included)
 site/           generated static site → GitHub Pages
@@ -51,9 +51,12 @@ make serve            # build + preview the site at http://localhost:8008
 Every tool runs through the locked env, e.g. `uv run python scripts/validate.py`. No uv? A
 generated `requirements.txt` lets you `pip install -r requirements.txt` and run with `python3`
 (`make test RUN=python3`).
-Make a book with Claude Code (the skills/commands load automatically in this repo):
+Make a book with Claude Code (the skills/commands load automatically in this repo). Build it
+piece by piece — world, then character, then story — confirming each gate before the next:
 ```
-/new-book a shy dragon who learns to share, for ages 5-7
+/new-world an underwater city of curious octopus children, for ages 5-7
+/new-character Ember, a shy dragon who learns to share
+/new-story <world-slug> a shy dragon who learns to share
 ```
 …or run the **dynamic UI** and just ask (no API key — uses OpenCode + local Ollama):
 ```bash

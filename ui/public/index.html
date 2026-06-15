@@ -34,7 +34,6 @@
       <p class="eyebrow">the writing desk</p>
       <h2>What shall we make today?</h2>
       <div class="quick" id="form-launchers">
-        <button class="chip-btn" data-form="book"><span class="chip-ico">✨</span>New book</button>
         <button class="chip-btn" data-form="world"><span class="chip-ico">🌍</span>New world</button>
         <button class="chip-btn" data-form="character"><span class="chip-ico">🧸</span>New character</button>
         <button class="chip-btn" data-form="story"><span class="chip-ico">📖</span>New story</button>
@@ -96,7 +95,11 @@
     <div class="tabview" id="view-library">
       <div class="library-bar">
         <span class="library-hint" id="lib-counts">Everything on your shelves — drafts &amp; published.</span>
-        <button class="btn ghost small" id="btn-refresh">↻ Refresh</button>
+        <span class="library-bar-actions">
+          <button class="btn ghost small" id="btn-collapse-all" title="Collapse every world to its title">⊖ Collapse all</button>
+          <button class="btn ghost small" id="btn-expand-all" title="Expand every world">⊕ Expand all</button>
+          <button class="btn ghost small" id="btn-refresh">↻ Refresh</button>
+        </span>
       </div>
       <div id="library"></div>
     </div>
@@ -175,6 +178,18 @@
   </section>
 </main>
 
-<script src="app.js"></script>
+<!-- The console is split across ordered classic scripts sharing one global scope (see app.core.js).
+     Order matters: app.boot.js wires everything up and must load LAST. -->
+<script src="app.core.js"></script>
+<script src="app.voice.js"></script>
+<script src="app.kids.js"></script>
+<script src="app.render.js"></script>
+<script src="app.messages.js"></script>
+<script src="app.stream.js"></script>
+<script src="app.forms.js"></script>
+<script src="app.debug.js"></script>
+<script src="app.library.js"></script>
+<script src="app.actions.js"></script>
+<script src="app.boot.js"></script>
 </body>
 </html>

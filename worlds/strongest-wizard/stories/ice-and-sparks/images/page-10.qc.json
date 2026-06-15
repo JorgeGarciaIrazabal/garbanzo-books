@@ -1,0 +1,19 @@
+{
+  "page": 10,
+  "prompt_seed": 995323994,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.0,
+      "reason": "The illustration effectively captures the scene and character details with a dreamy aesthetic and accurate color palette.",
+      "flags": [
+        "good"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-10-995323994.png"
+    }
+  ],
+  "winner": "page-10.png"
+}

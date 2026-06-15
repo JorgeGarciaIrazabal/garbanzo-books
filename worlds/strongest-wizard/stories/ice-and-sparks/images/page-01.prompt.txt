@@ -7,4 +7,4 @@ photorealism, harsh shadows, saturated neon colors, scary or distorted faces, ex
 SEED: 884721
 ASPECT: 4:3
 CHARACTERS: aria
-REFERENCES: characters/aria.refs/model-sheet.svg
+REFERENCES: characters/aria.refs/model-sheet.png, characters/aria.refs/model-sheet.svg

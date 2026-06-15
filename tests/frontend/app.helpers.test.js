@@ -10,7 +10,7 @@
 //   * detectStage (the model auto-switch tag)
 //   * fieldOptions + the form field types ("select" with __other__, "world", etc.)
 //   * guessEmoji (the friendly icon for kids-mode options)
-//   * FORMS.book/world/character/story .build() functions (prompt templates)
+//   * FORMS.world/character/story .build() functions (prompt templates)
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
@@ -305,27 +305,6 @@ describe("fieldHtml — hint popups and described select options", () => {
 });
 
 describe("FORMS — the guided-form prompt builders", () => {
-  it("the book form includes all user answers in the built prompt", () => {
-    const values = {
-      about: "a shy dragon",
-      year: "7", reading: "5-7", tone: "funny & playful", art: "soft watercolor storybook",
-      characters: "Ember", skill: "rhyming",
-    };
-    const prompt = gb.FORMS.book.build(values);
-    expect(prompt).toContain("a shy dragon");
-    expect(prompt).toContain("7-year-old");        // content age, one number
-    expect(prompt).toContain("--age 5-7 --year 7"); // exact scaffold flags for the agent
-    expect(prompt).toContain("rhyming");
-    expect(prompt).toContain("Ember");
-    expect(prompt).toContain("step by step");
-  });
-
-  it("the book form suggests a couple of characters when the user leaves it blank", () => {
-    const p = gb.FORMS.book.build({ about: "x", year: "6", reading: "5-7", tone: "t", art: "a",
-                                     characters: "", skill: "" });
-    expect(p.toLowerCase()).toContain("suggest");
-  });
-
   it("the world form says 'you propose one' when name is left blank", () => {
     const p = gb.FORMS.world.build({ name: "", setting: "deep sea",
                                        age: "3-5", mood: "cozy", art: "a", motifs: "" });
@@ -360,8 +339,8 @@ describe("FORMS — the guided-form prompt builders", () => {
     expect(p).toContain("--age 7-9 --year 8");
   });
 
-  it("the book and story forms carry the two age knobs with explanatory hints", () => {
-    for (const key of ["book", "story"]) {
+  it("the story form carries the two age knobs with explanatory hints", () => {
+    for (const key of ["story"]) {
       const fields = gb.FORMS[key].fields;
       const year = fields.find(f => f.name === "year");
       const reading = fields.find(f => f.name === "reading");

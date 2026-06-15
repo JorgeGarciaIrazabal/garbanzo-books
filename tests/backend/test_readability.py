@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import pytest
 
-from lib.readability import BANDS, Metrics, analyze, count_syllables, sentences, words
+from lib.readability import (BANDS, Metrics, analyze, count_syllables,
+                             default_read_mode, normalize_read_mode, sentences,
+                             story_targets, targets_for_year, words)
 
 
 # =============================================================================== syllable heuristic
@@ -171,3 +173,63 @@ def test_analyze_matches_pieces_for_known_input():
 
 def test_analyze_returns_metrics_instance():
     assert isinstance(analyze("Hello world."), Metrics)
+
+
+# =============================================================================== read mode (solo vs read-aloud)
+def test_default_read_mode_splits_at_age_five():
+    """Youngest default to read-aloud (a grown-up voices it); from age 6 solo is the default."""
+    assert default_read_mode(3) == "read_aloud"
+    assert default_read_mode(5) == "read_aloud"
+    assert default_read_mode(6) == "solo"
+    assert default_read_mode(9) == "solo"
+    assert default_read_mode(None) == "read_aloud"
+
+
+@pytest.mark.parametrize("raw,year,expected", [
+    ("solo", 5, "solo"),
+    ("read_aloud", 6, "read_aloud"),
+    ("read-aloud", 6, "read_aloud"),   # hyphen tolerated
+    ("INDEPENDENT", 5, "solo"),         # synonym + case
+    ("", 5, "read_aloud"),              # empty -> age default
+    ("nonsense", 8, "solo"),            # garbage -> age default (8 -> solo)
+])
+def test_normalize_read_mode(raw, year, expected):
+    assert normalize_read_mode(raw, year) == expected
+
+
+def test_solo_reader_gets_tighter_page_caps_in_early_years():
+    """A solo 5-year-old (decoding every word) gets a much smaller words/page cap than a
+    read-aloud book the grown-up voices."""
+    aloud = targets_for_year(5, "read_aloud")
+    solo = targets_for_year(5, "solo")
+    assert solo["max_words_per_page"] < aloud["max_words_per_page"]
+    assert solo["max_sentence_words"] <= aloud["max_sentence_words"]
+    assert solo["read_mode"] == "solo" and solo["read_aloud"] is False
+    assert aloud["read_aloud"] is True
+
+
+def test_read_modes_converge_in_older_years():
+    """By age 9 almost everyone reads solo and the cap is already generous, so the two modes
+    share the same page caps (no solo override needed)."""
+    aloud = targets_for_year(9, "read_aloud")
+    solo = targets_for_year(9, "solo")
+    assert solo["max_words_per_page"] == aloud["max_words_per_page"]
+    assert solo["max_sentence_words"] == aloud["max_sentence_words"]
+
+
+def test_story_targets_honours_explicit_read_mode():
+    """An explicit reading_level.read_mode overrides the age default."""
+    solo5 = story_targets({"target_year": 5, "reading_level": {"read_mode": "solo"}})
+    aloud5 = story_targets({"target_year": 5})  # defaults to read-aloud at age 5
+    assert solo5["read_mode"] == "solo"
+    assert aloud5["read_mode"] == "read_aloud"
+    assert solo5["max_words_per_page"] < aloud5["max_words_per_page"]
+
+
+def test_telegraphic_relaxed_only_for_youngest_both_modes():
+    """Short non-flowing lines are legitimate at the youngest ages in BOTH modes; from age 6
+    flowing sentences are expected whoever reads them."""
+    assert targets_for_year(5, "solo")["telegraphic_relaxed"] is True
+    assert targets_for_year(5, "read_aloud")["telegraphic_relaxed"] is True
+    assert targets_for_year(6, "solo")["telegraphic_relaxed"] is False
+    assert targets_for_year(7, "read_aloud")["telegraphic_relaxed"] is False

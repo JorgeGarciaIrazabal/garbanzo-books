@@ -1,0 +1,36 @@
+/* ================================================================ buttons */
+.btn{
+  font:inherit;font-weight:800;cursor:pointer;line-height:1;
+  border-radius:999px;padding:9px 16px;
+  border:2px solid var(--ink);
+  background:var(--card);color:var(--ink);
+  box-shadow:2.5px 2.5px 0 var(--shadow-ink);
+  transition:transform .08s ease, box-shadow .08s ease, background .15s ease;
+}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:3.5px 3.5px 0 var(--shadow-ink)}
+.btn:active{transform:translate(1.5px,1.5px);box-shadow:1px 1px 0 var(--shadow-ink)}
+.btn:disabled{opacity:.55;cursor:default;transform:none;box-shadow:2.5px 2.5px 0 var(--shadow-ink)}
+.btn.primary{background:var(--persimmon);color:#fff8ef;border-color:#8e3c22;box-shadow:2.5px 2.5px 0 rgba(142,60,34,.45)}
+.btn.primary:hover{box-shadow:3.5px 3.5px 0 rgba(142,60,34,.45)}
+.btn.small{padding:5px 12px;font-size:.82rem;border-width:1.6px;box-shadow:2px 2px 0 var(--shadow-ink)}
+
+/* masthead buttons — quiet pills; the pressed state is a soft leaf tint */
+.topbar .btn.ghost{
+  background:transparent;color:var(--ink-soft);border:1.5px solid var(--line-strong);
+  box-shadow:none;font-weight:700;padding:7px 13px;font-size:.84rem;
+  transition:background .15s ease, border-color .15s ease, color .15s ease;
+}
+.topbar .btn.ghost:hover{background:var(--paper-deep);transform:none;border-color:var(--ink);color:var(--ink)}
+.topbar .btn.toggle[aria-pressed="true"]{
+  background:var(--leaf-soft);color:var(--leaf);border-color:var(--leaf);font-weight:800;
+}
+.topbar .btn.toggle[aria-pressed="true"]:hover{background:color-mix(in srgb, var(--leaf) 22%, var(--card))}
+
+/* in-body ghost buttons */
+.btn.ghost{background:transparent;border-color:var(--line-strong);box-shadow:none;font-weight:700;color:var(--ink-soft)}
+.btn.ghost:hover{border-color:var(--ink);color:var(--ink);transform:none;background:rgba(255,253,244,.7)}
+.btn.stopbtn{background:var(--persimmon);color:#fff8ef;border-color:#8e3c22;box-shadow:2px 2px 0 rgba(142,60,34,.4)}
+.btn.stopbtn.hidden{display:none}
+
+.iconbtn{background:transparent;border:0;color:var(--muted);font-size:1rem;cursor:pointer;padding:2px 7px;border-radius:8px}
+.iconbtn:hover{color:var(--ink);background:var(--paper-deep)}

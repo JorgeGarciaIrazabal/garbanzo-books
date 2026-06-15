@@ -33,6 +33,11 @@
       "description": "Targets that drive language adaptation and are verified by the validator.",
       "required": ["target_fk_grade"],
       "properties": {
+        "read_mode": {
+          "type": "string",
+          "enum": ["read_aloud", "solo"],
+          "description": "WHO turns the words into sound — the single biggest lever on how hard the individual words may be (orthogonal to sentence length / words-per-page). 'read_aloud' = a grown-up voices it, so juicy low-frequency, multi-syllable words are a gift and the page can carry more text. 'solo' = the child decodes every word alone, so lean on high-frequency/decodable words, keep stretch words to 1-2 a page, and the per-page word cap tightens (see the solo caps in scripts/lib/readability.py). Set it explicitly for ages ~4-8 where it's ambiguous (e.g. a 5-year-old solo reader vs a 5-year-old bedtime read-aloud). When omitted it defaults by age (read-aloud for <=5, solo from 6). Advisory, like all reading targets."
+        },
         "target_fk_grade": { "type": "number", "description": "Target Flesch-Kincaid grade level for the whole book." },
         "fk_grade_tolerance": { "type": "number", "default": 1.0 },
         "lexile_range": { "type": "string", "description": "e.g. 'BR40L-200L'." },

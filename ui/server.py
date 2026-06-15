@@ -5,28 +5,30 @@ Serves the console (ui/public), proxies the built site at /preview, and exposes:
   POST /api/build         — build the studio preview, drafts included (scripts/build_site.py)
   POST /api/build/publish — build the public preview, published only (→ site_publish/)
   POST /api/story/status  — publish/unpublish ONE story via the gated scripts/publish_story.py
+  POST /api/story/delete  — permanently delete ONE story (scripts/delete_content.py)
+  POST /api/world/delete  — permanently delete a WHOLE world (scripts/delete_content.py)
   POST /api/deploy        — git add/commit/push so the Pages workflow ships the site
   POST /api/validate      — QA the workspace (scripts/validate.py)
   POST /api/chat          — stream the AI agent (Server-Sent Events)
 
-The chat agent is OpenCode driving a LOCAL Ollama model (default minimax-m3:cloud) — so NO API
-KEY is needed. We manage an `opencode serve` subprocess (random port, killed on exit) and talk
-to its HTTP API with httpx (REST + SSE via httpx-sse). Image generation, when the agent calls
-scripts/generate_images.py, still uses GEMINI_API_KEY from .env (separate from the chat model).
+This module owns the HTTP surface; the moving parts live in focused siblings:
+  config.py          — env knobs + the chat-model roster
+  studio_prompts.py  — the agent's system briefs (STUDIO_BRIEF / KIDS_BRIEF)
+  opencode_client.py — the `opencode serve` subprocess lifecycle (the shared `oc`)
+  chat.py            — the SSE chat turn (chat_stream) + tool/stage helpers
+  voice.py           — local Kokoro TTS + faster-whisper STT
+
+The chat agent is OpenCode driving a LOCAL Ollama model — so NO API KEY is needed. Image
+generation, when the agent calls scripts/generate_images.py, still uses GEMINI_API_KEY from
+.env (separate from the chat model).
 
 Run:  uv run --group ui python ui/server.py     (or `make ui`)
 """
 from __future__ import annotations
 
 import asyncio
-import atexit
-import ctypes
-import ctypes.util
 import json
 import os
-import random
-import signal
-import subprocess
 import time
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -35,54 +37,19 @@ import httpx
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from httpx_sse import aconnect_sse
 
 import voice  # local Kokoro TTS + faster-whisper STT (read-aloud & voice input); see ui/voice.py
+# Re-exported so the rest of the codebase (and tests) can keep importing them from `server`.
+from config import (ALLOWED_MODELS, MODELS, OPENCODE_MODEL, PORT,  # noqa: F401
+                    PY_CMD, STAGE_TO_MODEL)
+from chat import _tool_detail, _tool_event, chat_stream, sse  # noqa: F401
+from opencode_client import oc, start_opencode, stop_opencode  # noqa: F401
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                      # repo root = the workspace OpenCode operates in
 PUBLIC = HERE / "public"
 SITE = ROOT / "site"                   # studio preview build (with drafts) — what the in-app iframe shows
 SITE_PUBLISH = ROOT / "site_publish"   # "what GitHub Pages will see" build (published only)
-PORT = int(os.environ.get("PORT", "4317"))
-PY_CMD = os.environ.get("PY_CMD", "uv run python").split()
-OPENCODE_BIN = os.environ.get("OPENCODE_BIN", "opencode")
-OPENCODE_MODEL = os.environ.get("OPENCODE_MODEL", "ollama/nemotron-3-ultra:cloud")
-PROVIDER_ID, MODEL_ID = OPENCODE_MODEL.split("/", 1)
-
-# Models the studio offers in its model picker. Each must also be registered under the matching
-# provider in opencode.json. Three tiers, each tuned to a different job:
-#   - Nemotron-3-Ultra  : fast + reliable, the default for world/character/building/validation
-#   - DeepSeek-V4-Pro   : slower but more creative, used when the agent is writing the STORY
-#   - MiniMax-M3        : best for information gathering (web search, summarising, looking things up)
-# The "auto" sentinel lets the studio pick the right model per stage (see STAGE_TO_MODEL).
-MODELS = [
-    {"id": "ollama/nemotron-3-ultra:cloud",
-     "label": "Nemotron-3-Ultra — fast & reliable (default for craft)"},
-    {"id": "ollama/deepseek-v4-pro:cloud",
-     "label": "DeepSeek-V4-Pro — more creative (best for stories)"},
-    {"id": "ollama/minimax-m3:cloud",
-     "label": "MiniMax-M3 — best for research & information gathering"},
-    {"id": "auto",
-     "label": "Auto (switch by stage) — recommended"},
-]
-ALLOWED_MODELS = {m["id"] for m in MODELS}
-
-# Stage tag → model. The agent emits [[stage:<name>]] (see STUDIO_BRIEF) at the end of its message
-# to tell the studio what kind of step it just finished. In Auto mode, the NEXT turn uses the model
-# mapped below. (OpenCode's HTTP API binds a model at prompt time, so we can't switch mid-turn —
-# the next user reply is the natural place to swap.) The "craft" stages all share the fast default
-# because they're tool-heavy; "story" is the only creative stage; "research" routes to MiniMax.
-STAGE_TO_MODEL = {
-    "craft":     "ollama/deepseek-v4-pro:cloud",
-    "world":     "ollama/deepseek-v4-pro:cloud",
-    "character": "ollama/deepseek-v4-pro:cloud",
-    "build":     "ollama/nemotron-3-ultra:cloud",
-    "validate":  "ollama/nemotron-3-ultra:cloud",
-    "done":      "ollama/nemotron-3-ultra:cloud",
-    "story":     "ollama/deepseek-v4-pro:cloud",
-    "research":  "ollama/minimax-m3:cloud",
-}
 
 
 def load_env_file() -> dict:
@@ -120,218 +87,6 @@ def print_env_check() -> None:
         print("  ⚠ .env has no GEMINI_API_KEY/GOOGLE_API_KEY — illustrations will be placeholders.")
         print("    get a free key at https://aistudio.google.com/apikey, add it to .env, restart.")
 
-STUDIO_BRIEF = """You are the studio director inside the "Garbanzo Books" AI storybook workspace.
-Read CLAUDE.md and methodology/ as needed. Tools live in scripts/ — run them via
-"uv run python scripts/<tool>.py" (new_world.py, new_character.py, new_story.py,
-generate_images.py, validate.py, build_site.py).
-
-SPEED — every tool round trip costs a full model pass, so batch your context gathering:
-- Writing a story in an EXISTING world? Run "uv run python scripts/story_context.py <world>"
-  FIRST — it prints the world bible, full cast (personalities, voices, catchphrases, stages),
-  existing story slugs, the per-year reader portraits, and the exact scaffold command in ONE call.
-  Do NOT separately read world.yaml + each character yaml — the pack has it all.
-- Illustrations render pages in parallel already (generate_images.py --jobs, default 4);
-  run it ONCE for the whole story, never page-by-page.
-
-Work INTERACTIVELY and CONFIRM as you go — never build everything in one giant turn:
-1. When the user wants a new world or book, FIRST gather the missing details with a FORM (see the
-   FORM PROTOCOL below) — setting, target reader age (in years), tone, art-style vibe, main character ideas,
-   and anything else specific to their idea. Then STOP and wait for their answers.
-2. Propose a short world bible + locked art style as a brief summary, scaffold ONLY the world
-   (new_world.py) and edit world.yaml/style-guide.md. Then STOP and ask: "Does this world look
-   right before I design characters?"
-3. After approval, design 1-3 characters and generate their reference sheets
-   (generate_images.py --character ...). Show what you made and STOP: "Do the characters look
-   good before I write the story?"
-4. After approval, write the story (new_story.py + story-craft), adapt the reading level,
-   add interactions, generate page images, validate, and build. Confirm before publishing.
-
-FORM PROTOCOL — this is how you ask the user for information or choices. DO NOT write questions as
-prose or numbered lists. Instead emit exactly ONE fenced code block tagged `form` whose body is a
-JSON object, then END YOUR TURN with nothing after it. The console renders it as a fillable form;
-the user's answers arrive as the next message. Schema:
-```form
-{"title": "A few quick choices",
- "intro": "Pick an option or type your own.",
- "fields": [
-   {"name": "setting", "label": "Setting", "type": "select",
-    "options": ["glowing flower meadow", "mossy forest", "coral beach", "starry mountainside"]},
-   {"name": "art", "label": "Art style", "type": "select",
-    "options": ["soft watercolor storybook", "bold gouache", "Ghibli pastel", "flat cute big-eyes"]},
-   {"name": "sidekick", "label": "Sidekick companion", "type": "text",
-    "placeholder": "e.g. a fluffy grass-type bunny, or none"}
- ]}
-```
-Rules: 3-5 fields max; "select" fields give 3-6 options (the user can also type their own); other
-types are "text" and "textarea". A one-sentence lead-in before the block is fine; write NOTHING
-after the block. For plain yes/no confirmations ("Does this look right?") it is fine to just ask in
-one short sentence and stop. The form is a fenced code block in your normal MESSAGE TEXT — there
-is NO tool named "form"; never attempt a tool call named "form" (it will error). Likewise NEVER
-call any interactive "question"/"ask" tool (it is disabled).
-
-MODEL STAGES — the console can AUTO-PICK a model tuned to whatever step you're about to do, but
-only if you tell it which step that is. Emit exactly ONE of the following on its OWN line at the
-END of your message (the tag is hidden from the user — never mention it):
-  [[stage:story]]     whenever the NEXT thing you'll do is write or revise the STORY text/pages
-                      (emit it on the confirmation message right before you start writing, and keep
-                      emitting it on messages WHILE you are writing the story).
-  [[stage:craft]]     for tool-heavy craft work that is NOT a story — scaffolding/validating files,
-                      reading-level work, building the site, image prompts, etc.
-  [[stage:world]]     specifically when you are world-building (creating or editing a world.yaml).
-  [[stage:character]] specifically when you are designing a character (creating or editing a
-                      character bible / reference art).
-  [[stage:build]]     specifically when you are generating page images or building the static site.
-  [[stage:research]]  specifically when you are gathering information (web search, reading docs,
-                      looking things up) before making a decision.
-  [[stage:done]]      when the user's request is complete and you are signing off.
-
-If you forget, the console falls back to the fast default. The exact text of the tag is matched —
-no extra spaces inside the brackets, the word after the colon is lowercase.
-
-FILE SAFETY — the workspace must never be left with a broken file. Content YAML under worlds/
-is NEVER written or edited as text. Two rules cover everything:
-- CREATE with the scaffolding scripts (new_world.py, new_character.py, new_story.py) — they
-  write valid, atomic YAML with every stub pre-filled. Check a script's usage (positional
-  args!) with --help BEFORE guessing flags — e.g. new_story.py takes
-  `<world> "<Title>" --year 6 --pages 14 [--slug s]` as positionals, not --world/--title.
-  For a story ALWAYS scaffold all the page stubs up front with --pages N.
-  Books are selected by the reader's AGE — one number, no age bands:
-    --year <N>    = the reader's age in years (1-18). It sets target_year and derives the
-                    advisory reading-language anchors (sentence length, words/page, word
-                    choice) from the per-year curve. ~14+ means an adult reader. See the
-                    per-year reader portraits in methodology/reading-pedagogy.md.
-  (new_world.py likewise takes repeatable --year N for the world's audience, e.g.
-  --year 5 --year 6 --year 7.)
-- EDIT with the JSON-patch scripts (edit_world.py, edit_character.py, edit_story.py): you emit
-  a SMALL JSON payload on stdin (a heredoc), the script deep-merges it, validates the merged
-  document against the schema, and writes atomically. A bad patch changes NOTHING and prints
-  every schema error at once — fix the JSON and re-run; the file on disk is never broken.
-  NEVER use your write/edit file tools on worlds/**/*.yaml — YAML indentation by hand is how
-  files break. (write/edit tools are still fine for style-guide.md and other non-YAML files.)
-    uv run python scripts/edit_story.py <world>/<story> meta <<'JSON'
-    {"logline": "...", "spine": {...}}
-    JSON
-    uv run python scripts/edit_story.py <world>/<story> pages <<'JSON'
-    [{"number": 3, "text": "...", "image": {"prompt": "...", "characters_present": [...], "alt": "..."}}]
-    JSON
-    uv run python scripts/edit_story.py <world>/<story> interaction <N> <<'JSON'   # game on page N
-    {"type": "...", "prompt": "...", "data": {...}}
-    JSON
-    uv run python scripts/edit_world.py <world> <<'JSON' ...           # same for world.yaml
-    uv run python scripts/edit_character.py <world>/<char> <<'JSON' ...  # and character yamls
-  Merge rules: nested objects merge key-by-key; story pages merge by "number" (send partial
-  page objects); other lists replace wholesale; JSON null deletes a key.
-- Keep every patch SMALL — fill a story's metadata + spine in one call, then the pages in
-  batches of 3-4 pages per call. One giant 300+ line generation takes minutes on the local
-  model and the studio looks frozen the whole time.
-- When the whole artifact is filled in, run "uv run python scripts/validate.py worlds/<world>"
-  (or the specific story path) and FIX any failures before moving on or telling the user a step
-  is done — the edit scripts guarantee schema-validity, but validate.py also checks
-  cross-file consistency (rosters, tokens, images). Do not mark a book published while
-  validation fails.
-
-IMAGE GENERATION — the GEMINI_API_KEY is ALREADY configured in this workspace's .env and loaded
-into your environment. ALWAYS assume it is present and just run "uv run python
-scripts/generate_images.py ..." — do not ask the user whether to generate images, do not skip the
-step "in case the key is missing", do not propose placeholders as an alternative, and do not
-suggest the user set up a key. Just run the tool. If (and only if) the script itself exits with an
-error about a missing/invalid key, STOP IMMEDIATELY, surface that one short error to the user, and
-do not retry — never silently fall back to placeholder art."""
-
-# Appended to the brief when the console is in KIDS MODE — the person answering is a young child
-# using big icon buttons, voice in, and voice out (the console reads your replies aloud and renders
-# each form as ONE big question at a time). Tailor your language and forms to that.
-KIDS_BRIEF = """
-
-KIDS MODE IS ON. A young child is answering — using big picture buttons and talking out loud, and
-the console READS YOUR REPLIES ALOUD. Adapt everything for them:
-- Keep every reply VERY short (1-2 simple, warm sentences). Use easy, concrete words. No jargon,
-  no file paths, no tool names, no markdown headings/code in messages to the child.
-- When you need input, ALWAYS use the form protocol, and ask only ONE question per form (a single
-  field; never more than two). Give 3-4 concrete, picture-able "select" options in plain kid words,
-  each something a child can imagine (e.g. "a sleepy dragon", "a brave little mouse").
-- Cheer them on for their choices. Do the technical work quietly between questions."""
-
-
-# --------------------------------------------------------------------------- OpenCode lifecycle
-class OpenCode:
-    proc: subprocess.Popen | None = None
-    base: str | None = None
-    port: int | None = None
-
-
-oc = OpenCode()
-
-
-def _child_preexec():
-    """Run in the OpenCode child after fork, before exec:
-    - os.setsid(): give it its own session/group so we can kill the whole group.
-    - PR_SET_PDEATHSIG=SIGKILL: the kernel kills it the moment THIS python process dies, for
-      ANY reason (SIGKILL, crash, terminal close) — the real guarantee against orphans."""
-    os.setsid()
-    try:
-        libc = ctypes.CDLL(ctypes.util.find_library("c") or "libc.so.6", use_errno=True)
-        libc.prctl(1, signal.SIGKILL)  # PR_SET_PDEATHSIG = 1
-    except Exception:
-        pass  # non-Linux: fall back to the explicit kills in stop_opencode()
-
-
-async def start_opencode() -> None:
-    """Spawn `opencode serve` on a random port, in the repo root so it reads ./opencode.json
-    (provider, model, instructions, permissions). The child dies with us (see _child_preexec)."""
-    port = random.randint(40000, 60000)
-    proc = subprocess.Popen(
-        [OPENCODE_BIN, "serve", "--hostname", "127.0.0.1", "--port", str(port)],
-        cwd=str(ROOT), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        preexec_fn=_child_preexec,
-    )
-    base = f"http://127.0.0.1:{port}"
-    # 240 retries × 0.25s = ~60s. The default opencode cold start is <2s, but on the first
-    # ever launch the local model may need to be loaded by Ollama, which can take much longer
-    # — the longer window makes a one-time cold start finish cleanly instead of erroring out.
-    max_retries = 240
-    async with httpx.AsyncClient() as client:
-        for i in range(max_retries):
-            if proc.poll() is not None:
-                raise RuntimeError(f"opencode serve exited early (code {proc.returncode})")
-            try:
-                await client.get(base + "/config", timeout=2.0)
-                oc.proc, oc.base, oc.port = proc, base, port
-                print(f"  opencode server: {base} (pid {proc.pid})", flush=True)
-                return
-            except Exception:
-                if i > 0 and i % 40 == 0:  # progress ping every ~10s
-                    print(f"  …waiting for opencode serve ({i*0.25:.0f}s)", flush=True)
-                await asyncio.sleep(0.25)
-    proc.kill()
-    raise RuntimeError(
-        f"opencode serve did not become ready in {max_retries*0.25:.0f}s "
-        f"(is 'opencode' installed and reachable on PATH?)"
-    )
-
-
-def stop_opencode() -> None:
-    if oc.proc is not None:
-        try:
-            os.killpg(os.getpgid(oc.proc.pid), signal.SIGKILL)  # whole session group
-        except Exception:
-            try:
-                oc.proc.kill()
-            except Exception:
-                pass
-    if oc.port is not None:  # belt: opencode may daemonize its real server into a new session
-        try:
-            subprocess.run(
-                ["pkill", "-9", "-f", f"opencode serve --hostname 127.0.0.1 --port {oc.port}"],
-                check=False,
-            )
-        except Exception:
-            pass
-    oc.proc = oc.base = oc.port = None
-
-
-atexit.register(stop_opencode)  # belt for normal interpreter exit (PDEATHSIG covers hard kills)
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -361,6 +116,13 @@ async def run_tool(args: list[str]) -> dict:
     return {"ok": proc.returncode == 0, "output": out.decode("utf-8", "replace")}
 
 
+def _publish_out_arg() -> str:
+    """The published-only build's output dir, relative to ROOT when possible (matches /api/build/publish)."""
+    if SITE_PUBLISH.is_absolute() and SITE_PUBLISH.is_relative_to(ROOT):
+        return str(SITE_PUBLISH.relative_to(ROOT))
+    return str(SITE_PUBLISH)
+
+
 def _preview_is_stale() -> bool:
     """True if authored content under worlds/ is newer than the studio preview build.
 
@@ -387,6 +149,7 @@ def _preview_is_stale() -> bool:
     return False
 
 
+# ------------------------------------------------------------------------------- library + builds
 @app.get("/api/library")
 async def api_library():
     # Keep the studio preview in sync with disk: if a draft was created/edited since the last
@@ -417,8 +180,7 @@ async def api_build_publish():
     """Published-only build into ./site_publish/. This is the EXACT shape the GH Pages
     workflow will deploy — letting the author preview 'what will go live' before pushing.
     Does not touch ./site/, so the studio's in-app preview is unaffected."""
-    out_arg = str(SITE_PUBLISH.relative_to(ROOT)) if SITE_PUBLISH.is_absolute() and SITE_PUBLISH.is_relative_to(ROOT) else str(SITE_PUBLISH)
-    return JSONResponse(await run_tool(["scripts/build_site.py", "--out", out_arg]))
+    return JSONResponse(await run_tool(["scripts/build_site.py", "--out", _publish_out_arg()]))
 
 
 @app.get("/api/publish/status")
@@ -469,6 +231,7 @@ async def api_publish_status():
     }
 
 
+# ------------------------------------------------------------------------------- story / world ops
 @app.post("/api/story/status")
 async def api_story_status(request: Request):
     """Flip one story between draft and published via scripts/publish_story.py — which runs
@@ -487,6 +250,38 @@ async def api_story_status(request: Request):
     return JSONResponse(await run_tool(args))
 
 
+@app.post("/api/story/delete")
+async def api_story_delete(request: Request):
+    """Permanently delete ONE story (its whole dir) via scripts/delete_content.py, then rebuild
+    both previews so the library/ribbons reflect disk. Body: {"world": "<slug>", "story": "<slug>"}."""
+    body = await request.json()
+    wslug = (body.get("world") or "").strip()
+    sslug = (body.get("story") or "").strip()
+    if not wslug or not sslug:
+        return JSONResponse({"ok": False, "output": "need world and story"}, status_code=400)
+    res = await run_tool(["scripts/delete_content.py", f"{wslug}/{sslug}", "--yes"])
+    if res["ok"]:  # keep the studio + public previews in sync with what's now on disk
+        await run_tool(["scripts/build_site.py", "--include-drafts"])
+        await run_tool(["scripts/build_site.py", "--out", _publish_out_arg()])
+    return JSONResponse(res)
+
+
+@app.post("/api/world/delete")
+async def api_world_delete(request: Request):
+    """Permanently delete a WHOLE world (bible + every character AND story) via
+    scripts/delete_content.py, then rebuild both previews. Body: {"world": "<slug>"}."""
+    body = await request.json()
+    wslug = (body.get("world") or "").strip()
+    if not wslug:
+        return JSONResponse({"ok": False, "output": "need world"}, status_code=400)
+    res = await run_tool(["scripts/delete_content.py", wslug, "--yes"])
+    if res["ok"]:
+        await run_tool(["scripts/build_site.py", "--include-drafts"])
+        await run_tool(["scripts/build_site.py", "--out", _publish_out_arg()])
+    return JSONResponse(res)
+
+
+# ------------------------------------------------------------------------------------ git / deploy
 async def run_git(args: list[str]) -> tuple[int, str]:
     proc = await asyncio.create_subprocess_exec(
         "git", *args, cwd=str(ROOT),
@@ -520,6 +315,7 @@ async def api_deploy():
     return JSONResponse({"ok": rc == 0, "output": "\n".join(log)})
 
 
+# --------------------------------------------------------------------------------------- progress
 @app.get("/api/progress")
 async def api_progress():
     """Live progress from long-running scripts (scripts/lib/progress.py side-channel).
@@ -540,6 +336,7 @@ async def api_progress():
         return {"active": False}
 
 
+# ----------------------------------------------------------------------------------- QA endpoints
 @app.post("/api/validate")
 async def api_validate():
     return JSONResponse(await run_tool(["scripts/validate.py"]))
@@ -602,225 +399,6 @@ async def api_stt(request: Request):
 
 
 # ------------------------------------------------------------------------------------ chat (SSE)
-def sse(obj: dict) -> str:
-    return f"data: {json.dumps(obj, ensure_ascii=False)}\n\n"
-
-# Per-session last-seen [[stage:...]] tag. The agent emits these at the END of an assistant turn
-# (see STUDIO_BRIEF). In Auto mode the server uses this to pick the model for the NEXT turn.
-# Keyed by OpenCode session id. Capped so a long-running studio doesn't leak memory.
-LAST_STAGE_BY_SESSION: dict[str, str] = {}
-_LAST_STAGE_MAX = 256
-_STAGE_TAG_RE = __import__("re").compile(r"\[\[stage:(\w+)\]\]", __import__("re").IGNORECASE)
-
-
-def _remember_stage(sid: str | None, stage: str | None) -> None:
-    if not sid or not stage:
-        return
-    stage = stage.lower()
-    # Only record stages the model router knows about — anything else is ignored.
-    if stage in STAGE_TO_MODEL:
-        LAST_STAGE_BY_SESSION[sid] = stage
-        # Cap + drop the oldest entry if we grow past the limit.
-        if len(LAST_STAGE_BY_SESSION) > _LAST_STAGE_MAX:
-            # dicts are insertion-ordered in py3.7+, so the first key is the oldest.
-            oldest = next(iter(LAST_STAGE_BY_SESSION))
-            if oldest != sid:
-                LAST_STAGE_BY_SESSION.pop(oldest, None)
-
-
-def _tool_event(part: dict) -> dict:
-    """Build the SSE payload for a tool part: the compact human line (title) PLUS the full
-    input/output so the studio can render the row as an expandable section. Output is capped —
-    it's for eyeballing progress/debugging, not for re-parsing."""
-    state = part.get("state", {}) or {}
-    tool = part.get("tool") or "tool"
-    ev: dict = {"type": "tool", "id": part.get("id"), "tool": tool,
-                "status": state.get("status", ""),
-                "title": str(_tool_detail(tool, state))[:140]}
-    inp = state.get("input") or {}
-    if inp:
-        try:
-            ev["input"] = json.dumps(inp, ensure_ascii=False)[:3000]
-        except Exception:
-            ev["input"] = str(inp)[:3000]
-    out = state.get("output")
-    if isinstance(out, str) and out.strip():
-        ev["output"] = out[:8000]
-    err = state.get("error")
-    if err:
-        ev["error"] = str(err)[:2000]
-    return ev
-
-
-def _tool_detail(tool: str, state: dict) -> str:
-    """Turn an OpenCode tool part into a short, human-readable 'what is happening' line.
-    The interesting bits live in state.input (e.g. bash → {command, description}; edit/write/read
-    → {filePath}; glob/grep → {pattern}; webfetch → {url}). We prefer the most specific field so
-    the studio shows 'running scripts/new_world.py' instead of a bare 'ran command'."""
-    inp = state.get("input") or {}
-    if tool == "bash":
-        cmd = inp.get("command") or ""
-        # The model usually writes a human description; fall back to the command itself.
-        return (inp.get("description") or cmd or "").strip()
-    if tool in ("edit", "write", "read", "patch"):
-        fp = inp.get("filePath") or inp.get("path") or ""
-        return fp.split("/")[-1] if fp else (state.get("title") or "")
-    if tool in ("glob", "grep", "list"):
-        return inp.get("pattern") or inp.get("path") or (state.get("title") or "")
-    if tool in ("webfetch", "fetch"):
-        return inp.get("url") or (state.get("title") or "")
-    return state.get("title") or tool
-
-
-async def chat_stream(prompt: str, session_id: str | None, model: str | None, request: Request,
-                      kids: bool = False):
-    if not oc.base:
-        yield sse({"type": "error", "text": "OpenCode unavailable — is 'opencode' installed and is Ollama running?"})
-        yield sse({"type": "done"})
-        return
-
-    # Resolve the requested model. "auto" (or any unknown value) means: pick the model that matches
-    # the stage tag from the agent's LAST turn in this session. Falls back to the default if the
-    # session is new, no tag was emitted yet, or the tag is unknown.
-    chosen: str
-    if model == "auto" or model not in ALLOWED_MODELS:
-        last_stage = LAST_STAGE_BY_SESSION.get(session_id) if session_id else None
-        chosen = STAGE_TO_MODEL.get(last_stage or "", OPENCODE_MODEL)
-    else:
-        chosen = model
-    # Belt: if a stale "auto" sneaks in with no resolved stage, use the default rather than crash.
-    if chosen == "auto":
-        chosen = OPENCODE_MODEL
-    provider_id, model_id = chosen.split("/", 1)
-    system_brief = STUDIO_BRIEF + (KIDS_BRIEF if kids else "")
-    # Tell the client which model we actually picked (so the picker can reflect Auto decisions).
-    yield sse({"type": "model", "model": chosen, "stage": LAST_STAGE_BY_SESSION.get(session_id) if session_id else None})
-
-    async with httpx.AsyncClient(base_url=oc.base, timeout=None) as client:
-        sid = session_id
-        try:
-            if not sid:
-                r = await client.post("/session", json={"title": prompt[:50]})
-                sid = r.json()["id"]
-            yield sse({"type": "session", "sessionId": sid})
-
-            role_by_msg: dict[str, str] = {}
-            text_len: dict[str, int] = {}
-
-            # Subscribe to the global event stream, THEN fire the prompt (async, returns at once),
-            # and drive the turn off events — finishing on session.idle. No long-held request.
-            async with aconnect_sse(client, "GET", "/event") as es:
-                await client.post(
-                    f"/session/{sid}/prompt_async",
-                    json={
-                        "model": {"providerID": provider_id, "modelID": model_id},
-                        "system": system_brief,
-                        "tools": {"question": False, "ask": False},
-                        "parts": [{"type": "text", "text": prompt}],
-                    },
-                )
-                # Watchdog loop: OpenCode goes COMPLETELY silent while the model streams a
-                # long tool call's arguments (e.g. a whole story.yaml in one `write`) — a
-                # session once sat 6½ minutes with zero events and the studio looked frozen.
-                # Waking every 30s lets us (a) tell the UI "still generating" and (b) notice
-                # a closed tab and abort the agent instead of letting it run unattended.
-                events = es.aiter_sse()
-                silent_secs = 0
-                while True:
-                    try:
-                        msg = await asyncio.wait_for(anext(events), timeout=30.0)
-                    except asyncio.TimeoutError:
-                        if await request.is_disconnected():
-                            try:
-                                await client.post(f"/session/{sid}/abort")
-                            except Exception:
-                                pass
-                            break
-                        silent_secs += 30
-                        # Distinguish "model is slowly generating" from "OpenCode died":
-                        # a quick health probe. A dead process must surface as an ERROR,
-                        # not an eternal series of 'still working' pings.
-                        try:
-                            await client.get("/config", timeout=5.0)
-                        except Exception:
-                            yield sse({"type": "error",
-                                       "text": "OpenCode stopped responding — the agent "
-                                               "process looks dead (crash or Ollama down). "
-                                               "Restart `make ui`, then send "
-                                               "“continue where you left off”; finished "
-                                               "steps are already saved."})
-                            break
-                        yield sse({"type": "stall", "seconds": silent_secs})
-                        continue
-                    except StopAsyncIteration:
-                        break
-                    silent_secs = 0
-                    if await request.is_disconnected():
-                        # The user navigated away or hit Stop — tell OpenCode to abort the agent
-                        # loop so it doesn't keep running tools in the background.
-                        try:
-                            await client.post(f"/session/{sid}/abort")
-                        except Exception:
-                            pass
-                        break
-                    try:
-                        ev = json.loads(msg.data)
-                    except Exception:
-                        continue
-                    p = ev.get("properties", {}) or {}
-                    part = p.get("part", {}) or {}
-                    ev_sid = p.get("sessionID") or part.get("sessionID") or (p.get("info", {}) or {}).get("sessionID")
-                    if ev_sid and ev_sid != sid:
-                        continue
-                    t = ev.get("type")
-                    if t == "message.updated":
-                        info = p.get("info", {}) or {}
-                        if info.get("id"):
-                            role_by_msg[info["id"]] = info.get("role")
-                    elif t == "message.part.updated":
-                        role = role_by_msg.get(part.get("messageID"))
-                        if part.get("type") == "text" and part.get("text") and role != "user":
-                            full = part["text"]
-                            prev = text_len.get(part.get("id"), 0)
-                            if len(full) > prev:
-                                yield sse({"type": "assistant", "text": full[prev:]})
-                                text_len[part["id"]] = len(full)
-                            # Stage tag detection: the agent appends a [[stage:foo]] on its own line
-                            # at the end of a turn. We only trust the LAST one we see (and only
-                            # ones we know how to route) so an echo in earlier text can't poison
-                            # the choice for the next turn.
-                            m = _STAGE_TAG_RE.findall(full)
-                            if m:
-                                _remember_stage(sid, m[-1])
-                                yield sse({"type": "stage", "stage": m[-1].lower()})
-                        elif part.get("type") == "reasoning" and part.get("text") and role != "user":
-                            # The model's chain-of-thought, streamed like text but as its own
-                            # event type so the studio can show it in a collapsible section.
-                            full = part["text"]
-                            prev = text_len.get(part.get("id"), 0)
-                            if len(full) > prev:
-                                yield sse({"type": "reasoning", "id": part.get("id"),
-                                           "text": full[prev:]})
-                                text_len[part["id"]] = len(full)
-                        elif part.get("type") == "tool":
-                            yield sse(_tool_event(part))
-                    elif t == "session.status":
-                        # busy/idle heartbeat — lets the UI show "working…" with confidence even
-                        # during long silent steps (e.g. image generation).
-                        st = (p.get("status") or {}).get("type")
-                        if st in ("busy", "idle"):
-                            yield sse({"type": "status", "state": st})
-                    elif t == "session.error":
-                        yield sse({"type": "error", "text": str(p.get("error"))[:300]})
-                        break
-                    elif t == "session.idle":
-                        break
-            yield sse({"type": "result", "text": "done · local (free)"})
-        except Exception as e:
-            yield sse({"type": "error", "text": str(e)[:300]})
-    yield sse({"type": "done"})
-
-
 @app.get("/api/session/{sid}/messages")
 async def api_session_messages(sid: str):
     """Debug view: the FULL OpenCode conversation for a session — every message with all its

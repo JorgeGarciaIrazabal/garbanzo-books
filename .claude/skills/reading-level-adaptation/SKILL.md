@@ -17,8 +17,24 @@ trade a funnier word, a great line, or the pace to hit a readability number.
    readers. The portrait's numbers (FK grade, words/page, sentence length) are gentle anchors
    to aim at, not targets to hit. You can optionally record them in
    `story.reading_level.target_fk_grade` / `max_words_per_page` / `max_sentence_words`, but
-   they're advisory. The phonics fields (`decoding_focus`, `decodable`) are **optional** —
-   only for a deliberately strict early-reader; most fun books skip them.
+   they're advisory. Set `story.reading_level.read_mode` too (see 1b — `read_aloud` vs `solo`):
+   it picks the right per-page cap and steers word choice. The phonics fields (`decoding_focus`,
+   `decodable`) are **optional** — only for a deliberately strict solo early-reader; most fun
+   books skip them.
+1b. **Know who's holding the book — it sets how hard the WORDS can be.** Read
+   "Read-aloud or reading it alone?" in `reading-pedagogy.md`. The sentence/page-length anchors
+   are blind to whether an individual word is too hard, so the **read mode** is a separate, real
+   setting: **`reading_level.read_mode`** = `read_aloud` or `solo`. Decide it (especially for
+   ages ~4–8, where it's ambiguous — a 5-year-old solo reader and a 5-year-old bedtime read-aloud
+   are two different books): **read-aloud** → a parent voices rich, low-frequency, multi-syllable
+   words, so keep the juicy ones, and the page can carry more text; **solo decoder** → the child
+   sounds out every word, so prefer high-frequency / decodable words, cap stretch words to one or
+   two a page (a low-frequency 3-syllable word like "privacy" or "collapses" is a wall mid-joke,
+   not a treat), **and the words-per-page cap tightens** (roughly half the read-aloud cap for the
+   young years — e.g. age 5 ≈ 25 solo vs ≈ 55 read-aloud; `scripts/reading_level.py` reports the
+   mode-aware cap). Set `read_mode` on the story so the anchors and the soft checks match the book
+   you're writing. If the request doesn't say, **ask**; if you must assume for a young age, assume
+   read-aloud and *say so*. This is judgment — no word list, no checker.
 2. **Pass over the page text** with that age's portrait in mind:
    - Younger (3–6): write for the *ear* — rhythm, rhyme, repetition, words fun to *say*,
      one big idea per page so the picture can carry it.

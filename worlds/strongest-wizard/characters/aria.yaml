@@ -76,6 +76,7 @@ appearance_token: 'ARIA: human girl 7-8, small stocky build, warm beige skin wit
   scuffed brown boots (#4e342e), golden friendship bracelets (#ffd93d) both wrists, ink-smudged fingers,
   singed robe hem, tiny star scar on chin, determined concentrated expression with tongue peeking out'
 reference_images:
+- characters/aria.refs/model-sheet.png
 - characters/aria.refs/model-sheet.svg
 seed: 884721
 relationships: []

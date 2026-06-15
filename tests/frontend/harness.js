@@ -17,7 +17,16 @@ import { fileURLToPath } from "node:url";
 import { resolve, dirname } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-export const APP_JS = resolve(__dirname, "..", "..", "ui", "public", "app.js");
+const PUBLIC_DIR = resolve(__dirname, "..", "..", "ui", "public");
+// The console is split across ordered classic scripts that share one global lexical scope
+// (mirrors the <script> tags in index.html — see app.core.js). Concatenating them in this order
+// reproduces the single-scope page exactly, so the helpers harness below works unchanged.
+export const APP_SCRIPTS = [
+  "app.core.js", "app.voice.js", "app.kids.js", "app.render.js", "app.messages.js",
+  "app.stream.js", "app.forms.js", "app.debug.js", "app.library.js", "app.actions.js",
+  "app.boot.js",
+];
+export const APP_JS = resolve(PUBLIC_DIR, "app.core.js"); // kept for back-compat imports
 
 // The reader runtime; load in this exact order (mirrors scripts/build_site.py
 // READER_SCRIPTS). reader.boot.js (last) calls GB.boot(). The Kaplay engine is lazy-loaded
@@ -29,7 +38,9 @@ export const READER_SCRIPTS = [
 export const READER_JS = resolve(ASSET_DIR, "reader.js"); // kept for back-compat imports
 
 // Strip the bottom side effects. Anchor on the stable English "Welcome" string.
-const APP_SRC = readFileSync(APP_JS, "utf-8");
+// Concatenate the ordered console scripts into one source (same effect as the page's ordered
+// <script> tags — they share a single global scope).
+const APP_SRC = APP_SCRIPTS.map((f) => readFileSync(resolve(PUBLIC_DIR, f), "utf-8")).join("\n");
 const cutMarker = 'addMsg("system", "Welcome to the studio.';
 const cutAt = APP_SRC.indexOf(cutMarker);
 if (cutAt < 0) throw new Error("Couldn't locate app.js bottom side-effects block");

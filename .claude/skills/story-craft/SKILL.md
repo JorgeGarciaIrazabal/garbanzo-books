@@ -21,7 +21,11 @@ language, add games, lay out text, and illustrate.
    word choice). Go read that age's **reader portrait** in `reading-pedagogy.md` and write
    toward it. The `reading_level` anchors are *advisory*, not gates; `new_story.py --year N`
    derives them for you, and `reading-level-adaptation` fine-tunes later. Pin each character's
-   `evolution.stage` for this book.
+   `evolution.stage` for this book. **For a young age (~5–8), also settle read mode up front**
+   — is this read *aloud* by a grown-up (rich words welcome) or read *solo* by the kid
+   (high-frequency / decodable words, stretch words rare)? See "Read-aloud or reading it alone?"
+   in `reading-pedagogy.md`. It changes your word choice, not your sentence length; if the
+   request doesn't say, ask or assume read-aloud and note it.
 2. **Hook + why it's fun.** One-sentence `logline` (protagonist + goal + obstacle) AND a
    clear answer to "where are the laughs / stakes / mischief / surprise?". Pressure-test by
    pitching it aloud — if it doesn't make you grin or lean in, fix it before writing pages.
