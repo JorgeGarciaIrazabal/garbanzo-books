@@ -1,0 +1,114 @@
+slug: magical-backyard
+title: The Magical Backyard
+tagline: A perfectly ordinary backyard — except nothing in it is ordinary.
+premise: 'Hunter''s backyard looks normal: a patch of grass, a fence, a garden shed. But the dirt has
+  opinions, the plants throw parties at midnight, and anything you bury might just come back as your best
+  friend. Gross, hilarious, and a little bit dangerous — the kind of place where a kid can dig a hole
+  and change their life.'
+tone:
+- madcap
+- mischievous
+- gross-out-funny
+- surprising
+- a-little-wild
+genres:
+- absurd-comedy
+- adventure
+target_years:
+- 5
+- 8
+target_age_bands:
+- 7-9
+languages:
+- en
+geography:
+  overview: A suburban backyard that's secretly alive. The grass whispers gossip. The garden shed is bigger
+    on the inside. The fence posts have faces — and opinions. And the dirt? The dirt remembers everything
+    you put in it.
+  locations:
+  - name: The Patch
+    description: A circle of extra-dark dirt in the middle of the yard where things grow... differently.
+      Anything buried here comes back changed.
+    mood: mysterious
+    recurring: true
+  - name: The Shed
+    description: A rickety garden shed that's way bigger inside. Full of weird tools, talking plants,
+      and a ladder that goes somewhere it shouldn't.
+    mood: chaotic
+    recurring: true
+  - name: The Fence
+    description: A wooden fence whose posts have carved faces. They gossip, argue, and give terrible advice.
+    mood: nosy
+    recurring: true
+  - name: The Compost Heap
+    description: A steaming pile that occasionally burps and once spat out a fully-formed opinion about
+      the weather.
+    mood: gross
+    recurring: false
+rules:
+- id: dirt-remembers
+  text: Anything buried in The Patch comes back the next day — alive, friendly, and slightly different
+    from what you put in.
+- id: night-awakening
+  text: At night, the backyard wakes up. Plants walk around. The fence posts argue louder. Things that
+    were buried start looking for their bury-er.
+- id: dragon-visits
+  text: A huge, clumsy dragon visits the backyard at night. It has terrible aim and a habit of throwing
+    things up — but it means well.
+factions: []
+timeline: []
+motifs:
+- digging
+- things coming back changed
+- the dragon's terrible aim
+- the fence posts arguing
+themes:
+- unexpected-friendship
+- glorious-grossness
+- chaos-with-heart
+art_style:
+  medium: scribbly colored-pencil and marker on crumpled paper
+  line_quality: loose, energetic, deliberately messy — like a kid drew it with passion
+  shading: scribble-hatching, uneven, full of character
+  lighting: bright and punchy, with dramatic night scenes under a big moon
+  perspective: wonky, exaggerated, kid's-eye-view — things loom and tilt
+  palette:
+  - name: grass-green
+    hex: '#7ec850'
+    role: primary
+  - name: dirt-brown
+    hex: '#8b5e3c'
+    role: primary
+  - name: sky-blue
+    hex: '#5ba0d0'
+    role: sky
+  - name: dragon-purple
+    hex: '#9b59b6'
+    role: accent
+  - name: moon-yellow
+    hex: '#f9e076'
+    role: accent
+  - name: night-navy
+    hex: '#1a1a3e'
+    role: shadow
+  influences:
+  - Dav Pilkey
+  - kid's own drawings
+  - Quentin Blake
+  prompt_style_block: 'scribbly children''s book illustration, colored pencil and marker on crumpled paper
+    texture, loose energetic lines, deliberately messy kid-art style, wonky exaggerated perspective, bright
+    punchy colors (#7ec850 grass-green, #8b5e3c dirt-brown, #5ba0d0 sky-blue, #9b59b6 dragon-purple, #f9e076
+    moon-yellow), scribble-hatched shading, Dav Pilkey energy, no text'
+  negative_prompt: photorealism, clean polished lines, smooth digital art, realistic proportions, soft
+    watercolor, cute big-eyes anime, text artifacts, watermark, scary faces
+  aspect_ratio: '4:3'
+  text_treatment:
+    placement: lower third
+    scrim: scribbly torn-paper panel at 85% opacity
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+- gross-humor
+- unexpected-friends
+- dragons
+- backyard-adventure

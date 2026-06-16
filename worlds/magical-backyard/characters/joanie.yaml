@@ -1,0 +1,94 @@
+slug: joanie
+world: magical-backyard
+name: Joanie
+role: protagonist
+species: human
+pronouns: he/him
+one_liner: An 8-year-old boy who digs holes and isn't afraid of anything gross — in fact, he kind of loves
+  it.
+personality:
+  traits:
+  - mischievous
+  - fearless
+  - grossness-enthusiast
+  - loyal
+  - impulsive
+  motivation: To discover what happens when you dig deep enough — and to make the weirdest friends possible.
+  fears:
+  - being bored
+  - vegetables that talk back
+  flaws:
+  - digs first, thinks later
+  - cannot resist a mysterious hole
+  - laughs at the worst possible moments
+  strengths:
+  - brave when things get weird
+  - never gives up on a friend — even a gross one
+  - incredible digging stamina
+  quirks:
+  - carries a trowel everywhere
+  - names everything he digs up
+  - talks to dirt like it's a pet
+  values:
+  - friendship
+  - curiosity
+  - glorious messes
+voice:
+  speech_style: loud, excited, full of gross-out enthusiasm — says 'WHOAAA' and 'GROSSSS' a lot, but always
+    in a delighted way
+  catchphrases:
+  - WHOAAA!
+  - That is SO gross!
+  - Let's dig!
+  vocabulary_level: age-8, concrete but expressive, loves words like 'disgusting', 'magnificent', 'stink-tastic'
+appearance:
+  age_appearance: 8 years old
+  build: scrappy, wiry, always slightly dirty
+  height: knee-high to an adult
+  skin: dark brown, usually smudged with dirt
+  hair: messy brown mop, sticks up in every direction, always has a little dirt in it
+  eyes: big bright green, wide with excitement
+  outfit: orange t-shirt with a dirt stain on the front, blue shorts with patched knees, one red sneaker
+    and one blue sneaker (he lost the matching pairs)
+  distinguishing_features:
+  - always carries a bright yellow trowel
+  - mismatched sneakers — one red, one blue
+  - permanent dirt smudge on his left cheek
+  - hair that looks like it just survived a small explosion
+  color_palette:
+  - part: t-shirt
+    hex: '#e67e22'
+  - part: shorts
+    hex: '#2980b9'
+  - part: hair
+    hex: '#6b4226'
+  - part: eyes
+    hex: '#27ae60'
+  - part: trowel
+    hex: '#f1c40f'
+  - part: red-sneaker
+    hex: '#c0392b'
+  - part: blue-sneaker
+    hex: '#3498db'
+  silhouette_notes: Small wiry kid with explosion-hair, one hand always holding a trowel, mismatched shoes
+    visible even in outline.
+appearance_token: 'JOANIE: an 8-year-old boy, scrappy wiry build, messy brown mop hair (#6b4226) sticking
+  up everywhere, big bright green eyes (#27ae60), dark brown skin with a permanent dirt smudge on his
+  left cheek, orange t-shirt (#e67e22) with a dirt stain, blue shorts (#2980b9) with patched knees, mismatched
+  sneakers — one red (#c0392b) one blue (#3498db), always holding a bright yellow trowel (#f1c40f), excited
+  wide-eyed expression, slightly dirty all over'
+reference_images:
+- characters/joanie.refs/model-sheet.png
+seed: 4242
+relationships: []
+evolution:
+- stage: base
+  order: 0
+  summary: Starting state.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- kid-hero
+- gross-lover
+- digger

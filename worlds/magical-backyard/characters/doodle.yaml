@@ -1,0 +1,86 @@
+slug: doodle
+world: magical-backyard
+name: Doodle
+role: protagonist
+species: living-poop-creature
+pronouns: he/him
+one_liner: A small, wobbly, surprisingly cute creature that used to be something much grosser — and is
+  now Hunter's best friend.
+personality:
+  traits:
+  - wobbly
+  - eager-to-please
+  - a-little-stinky
+  - loyal
+  - easily-startled
+  motivation: To stay by Hunter's side and prove that even the grossest beginnings can make the best friends.
+  fears:
+  - being flushed
+  - the garden hose
+  - being called 'just poop'
+  flaws:
+  - falls over a lot
+  - leaves a little trail
+  - too trusting of strangers
+  strengths:
+  - bounces back from anything
+  - makes Hunter laugh
+  - surprisingly good at hide-and-seek
+  quirks:
+  - wobbles when he walks
+  - makes a small 'plop' sound when excited
+  - smells a little like dirt and flowers mixed together
+  values:
+  - friendship
+  - belonging
+voice:
+  speech_style: small, squeaky, a little wobbly — says things in short bursts, often repeats words when
+    excited
+  catchphrases:
+  - Ploop!
+  - Friend! Friend!
+  - Uh oh...
+  vocabulary_level: very simple, age-5, mostly one or two word exclamations
+appearance:
+  age_appearance: brand new — only one day old
+  build: small round blob, about the size of a softball, with stubby little arms and legs
+  height: fits in Hunter's hand
+  skin: smooth and brown like rich garden dirt, with a slight shine
+  hair: a tiny tuft of green grass sprouting from the top of his head
+  eyes: two big round googly eyes, bright white with tiny black dots
+  outfit: none — he's a blob! But he sometimes wears a tiny leaf as a hat
+  distinguishing_features:
+  - round blob shape with stubby arms and legs
+  - tiny tuft of green grass on top
+  - big googly eyes that wobble when he moves
+  - leaves a faint trail of sparkly dirt behind him
+  color_palette:
+  - part: body
+    hex: '#6b4226'
+  - part: grass-tuft
+    hex: '#7ec850'
+  - part: eyes-white
+    hex: '#ffffff'
+  - part: eyes-dot
+    hex: '#1a1a1a'
+  silhouette_notes: Small round blob with a tuft on top and tiny stick limbs — unmistakable even as a
+    shadow.
+appearance_token: 'DOODLE: a small round blob creature the size of a softball, smooth brown body (#6b4226)
+  like rich garden dirt, stubby little arms and legs, a tiny tuft of bright green grass (#7ec850) sprouting
+  from the top of his head, two big round googly eyes — white (#ffffff) with tiny black dot pupils (#1a1a1a),
+  wobbly and slightly shiny, leaves a faint sparkly dirt trail, cute in a weird gross way'
+reference_images:
+- characters/doodle.refs/model-sheet.png
+seed: 7777
+relationships: []
+evolution:
+- stage: base
+  order: 0
+  summary: Starting state.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- gross-cute
+- blob
+- sidekick

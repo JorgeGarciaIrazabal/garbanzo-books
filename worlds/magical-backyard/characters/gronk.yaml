@@ -1,0 +1,92 @@
+slug: gronk
+world: magical-backyard
+name: Gronk
+role: protagonist
+species: dragon
+pronouns: he/him
+one_liner: A huge, clumsy, well-meaning dragon who visits the backyard at night — he has terrible aim,
+  a habit of throwing things up, and a heart of gold.
+personality:
+  traits:
+  - clumsy
+  - well-meaning
+  - easily-embarrassed
+  - enormous
+  - surprisingly-gentle
+  motivation: To make friends, even though he keeps messing it up — literally.
+  fears:
+  - stepping on small things
+  - being yelled at
+  - his own hiccups
+  flaws:
+  - terrible aim
+  - throws up when nervous
+  - doesn't know his own size
+  - breaks things by accident
+  strengths:
+  - incredibly strong
+  - never means any harm
+  - always tries to fix his mistakes
+  - gives the best clumsy hugs
+  quirks:
+  - hiccups fire sparks
+  - sneezes smoke rings
+  - walks on tiptoes to try to be quiet (it doesn't work)
+  - apologizes to everything he bumps into
+  values:
+  - friendship
+  - trying-your-best
+voice:
+  speech_style: deep and rumbly but very apologetic — lots of 'sorry!' and 'oops!', speaks slowly and
+    carefully
+  catchphrases:
+  - OOPS!
+  - Sorry! Sorry!
+  - I didn't mean to!
+  vocabulary_level: simple, age-5, speaks in short careful sentences
+appearance:
+  age_appearance: young adult dragon, still growing into his wings
+  build: enormous, round-bellied, with wings that are slightly too small for his body
+  height: as tall as a house
+  skin: bumpy purple scales with a soft underbelly
+  hair: a ridge of spiky orange scales running from his head down his back
+  eyes: big yellow eyes, always looking worried
+  outfit: none — he's a dragon! But he has a tiny flower tucked behind one ear that he doesn't know is
+    there
+  distinguishing_features:
+  - wings too small for his huge body
+  - always looks worried or apologetic
+  - tiny flower behind one ear
+  - orange spike ridge down his back
+  color_palette:
+  - part: scales
+    hex: '#9b59b6'
+  - part: belly
+    hex: '#d2b4de'
+  - part: spikes
+    hex: '#e67e22'
+  - part: eyes
+    hex: '#f9e076'
+  - part: flower
+    hex: '#e74c3c'
+  silhouette_notes: Huge round dragon shape with tiny wings, a spike ridge, and a worried tilt to his
+    head.
+appearance_token: 'GRONK: an enormous round-bellied young dragon as tall as a house, bumpy purple scales
+  (#9b59b6) with a soft pale purple underbelly (#d2b4de), wings slightly too small for his body, a ridge
+  of spiky orange scales (#e67e22) running from his head down his back, big worried yellow eyes (#f9e076),
+  a tiny red flower (#e74c3c) tucked behind one ear, always looks apologetic, clumsy gentle giant'
+reference_images:
+- characters/gronk.refs/model-sheet.png
+seed: 8888
+relationships: []
+evolution:
+- stage: base
+  order: 0
+  summary: Starting state.
+  personality_delta: ''
+  appearance_delta: ''
+  unlocked_by: ''
+tags:
+- dragon
+- clumsy-giant
+- gentle-monster

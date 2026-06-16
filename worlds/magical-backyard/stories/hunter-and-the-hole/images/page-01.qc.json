@@ -1,0 +1,19 @@
+{
+  "page": 1,
+  "prompt_seed": 4242,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely captures Joanie's appearance and the desired scribbly art style, with only minor inconsistencies.",
+      "flags": [
+        "style_inconsistent"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-01-4242.png"
+    }
+  ],
+  "winner": "page-01.png"
+}

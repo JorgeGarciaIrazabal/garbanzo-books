@@ -1,0 +1,208 @@
+slug: hunter-and-the-hole
+world: magical-backyard
+title: Joanie and the Hole
+logline: Joanie poops in a magic hole — and the next day it comes back as his new best friend. Then a
+  clumsy dragon swallows it by accident.
+summary: Joanie loves digging in his magical backyard. One day he really has to go, so he poops in a special
+  dark patch of dirt. The next morning, the dirt wiggles and a little blob creature pops out — it's alive!
+  Joanie names it Doodle and they become best friends. But that night, a huge clumsy dragon named Gronk
+  visits the yard, trips, and accidentally swallows Doodle. Gronk feels terrible and throws Doodle back
+  up. Doodle is fine, and now all three are friends!
+age_band: 3-5
+target_year: 5
+reading_level:
+  read_mode: solo
+  target_fk_grade: 0.3
+  fk_grade_tolerance: 0.3
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 25
+  max_sentence_words: 8
+  decoding_focus: ''
+  decodable: false
+themes:
+- unexpected-friendship
+- glorious-grossness
+- everyone-makes-mistakes
+characters:
+- slug: joanie
+  stage: base
+  role_in_story: The digger — a grossness-loving kid who makes the weirdest best friend
+- slug: doodle
+  stage: base
+  role_in_story: The poop that came back — a wobbly, loyal, surprisingly cute blob
+- slug: gronk
+  stage: base
+  role_in_story: The clumsy dragon who messes up and then makes it right
+spine:
+  once_upon_a_time: Joanie is a boy who loves to dig in his magical backyard.
+  every_day: He digs with his yellow trowel and finds cool stuff in the dirt.
+  until_one_day: His tummy feels funny and he has to go — right now — and the only spot is the special
+    dark patch.
+  because_of_that:
+  - He poops in a hole and covers it up.
+  - The next day, the dirt wiggles and a little blob creature pops out!
+  - Joanie names it Doodle and they become best friends.
+  - That night, a huge clumsy dragon named Gronk visits the yard.
+  - Gronk trips and accidentally swallows Doodle!
+  - Gronk feels terrible and throws Doodle back up.
+  until_finally: Doodle is fine, Gronk is so sorry, and Doodle says 'Friend!' to the big dragon.
+  ever_since_then: Joanie, Doodle, and Gronk are all best friends — they dig and play together every night.
+pages:
+- number: 0
+  kind: title
+  text: Joanie and the Hole
+  image:
+    prompt: Joanie standing proudly in his magical backyard holding his yellow trowel, Doodle the little
+      brown blob with googly eyes and grass tuft sitting in his other hand, Gronk the huge purple dragon
+      peeking over the fence looking worried, bright sunny day, wonky kid-art perspective
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: Joanie holding his trowel and Doodle, with Gronk peeking over the fence
+    text_zone: center
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: Joanie loves to dig. His backyard is magic.
+  image:
+    prompt: Joanie in his magical backyard, holding his yellow trowel, digging in the dirt with a big
+      grin, the fence posts have carved faces watching him, bright sunny day, scribbly energetic style
+    characters_present:
+    - joanie
+    alt: Joanie digging happily in his magical backyard
+    text_zone: lower third
+    file: images/page-01.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 2
+  kind: story
+  text: One day his tummy feels funny. He has to go! He poops in a hole.
+  image:
+    prompt: Joanie crouching over the dark patch of dirt, digging a quick hole with his trowel, looking
+      both panicked and relieved, the special dark dirt circle visible, scribbly kid-art style, funny
+      exaggerated expression
+    characters_present:
+    - joanie
+    alt: Joanie pooping in the dark patch hole
+    text_zone: lower third
+    file: images/page-02.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 3
+  kind: story
+  text: He covers it up. He pats the dirt. Then he goes to bed.
+  image:
+    prompt: Joanie patting down the dirt over the dark patch, looking a little guilty but also curious,
+      trowel in hand, evening light fading, the fence posts whispering to each other, scribbly style
+    characters_present:
+    - joanie
+    alt: Joanie covering up the hole and patting the dirt
+    text_zone: lower third
+    file: images/page-03.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 4
+  kind: story
+  text: The next day the dirt is wiggling! A little blob pops out!
+  image:
+    prompt: Doodle the small brown blob creature popping out of the wiggling dirt, big googly eyes looking
+      up, tiny grass tuft on top, stubby arms and legs, sparkly dirt trail, Joanie crouched nearby looking
+      amazed and delighted, scribbly style
+    characters_present:
+    - joanie
+    - doodle
+    alt: Doodle popping out of the wiggling dirt
+    text_zone: lower third
+    file: images/page-04.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 5
+  kind: story
+  text: It has googly eyes. It says "Ploop!" Joanie names it Doodle.
+  image:
+    prompt: Joanie holding Doodle in his hands, Doodle looking up with googly eyes wobbling, Joanie grinning
+      huge, Doodle making a little sparkle, close-up warm moment, scribbly kid-art style
+    characters_present:
+    - joanie
+    - doodle
+    alt: Joanie holding Doodle and naming him
+    text_zone: lower third
+    file: images/page-05.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 6
+  kind: story
+  text: That night a big dragon lands. His name is Gronk. He trips and — GULP! He swallows Doodle!
+  image:
+    prompt: Night scene in the backyard, big yellow moon overhead, Gronk the enormous purple dragon tripping
+      over his own feet, mouth open in surprise, Doodle the little brown blob flying through the air toward
+      Gronk's mouth, Joanie watching in horror, dramatic funny moment, scribbly style
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: Gronk tripping and swallowing Doodle
+    text_zone: lower third
+    file: images/page-06.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 7
+  kind: story
+  text: Gronk feels bad. He goes — BLORP! Doodle flies out! Doodle says "Friend!" Now they are all friends.
+  image:
+    prompt: Gronk the purple dragon looking embarrassed and apologetic, Doodle flying out of his mouth
+      in a sparkly arc, Joanie running over with arms open, night scene with big moon, scribbly funny
+      style
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: Gronk throwing Doodle back up and everyone becoming friends
+    text_zone: lower third
+    file: images/page-07.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 8
+  kind: story
+  text: 'TODO: page text within the word cap.'
+  image:
+    prompt: 'TODO: scene only — who/where/action/emotion.'
+    characters_present: []
+    alt: TODO
+    text_zone: lower third
+    file: images/page-08.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+interactions_summary: []
+status: draft
+tags:
+- gross-humor
+- unexpected-friends
+- dragons
+- poop
+cover:
+  image: ''
+  image_prompt: ''
+  alt: ''
