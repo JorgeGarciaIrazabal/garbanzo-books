@@ -1,0 +1,293 @@
+slug: gronk-hiccupped-the-moon
+world: magical-backyard
+title: Gronk Hiccupped the Moon
+logline: Gronk gets the hiccups and hiccups the MOON right out of the sky — now the backyard is dark and
+  Joanie has to get it back up before bedtime.
+summary: 'Gronk visits the backyard, eats a spicy comet, and gets the hiccups. One big HIC launches the
+  moon out of the sky and it rolls into The Patch. The yard goes dark. Joanie and Doodle try to get it
+  back up: they throw it (too heavy), Gronk tries to hiccup it back (hiccups out a shoe instead), and
+  a fence post suggests a sneeze. Joanie tickles Gronk''s nose with a feather-grass blade. Gronk sneezes
+  the moon back into the sky — but now the sun is coming up. Bedtime? No way. The yard is awake and the
+  moon has a face.'
+age_band: 3-5
+target_year: 5
+reading_level:
+  read_mode: solo
+  target_fk_grade: 0.3
+  fk_grade_tolerance: 0.3
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 25
+  max_sentence_words: 8
+  decoding_focus: ''
+  decodable: false
+themes:
+- chaos-with-heart
+- unexpected-friendship
+- glorious-grossness
+moral: ''
+characters:
+- slug: joanie
+  stage: base
+  role_in_story: protagonist
+- slug: doodle
+  stage: base
+  role_in_story: supporting
+- slug: gronk
+  stage: base
+  role_in_story: deuteragonist
+spine:
+  once_upon_a_time: Every night Gronk the dragon visited the backyard, and every night the moon came too.
+  every_day: Gronk ate snacks from The Patch and the moon watched from the sky.
+  until_one_day: Gronk ate a spicy comet — and got the hiccups.
+  because_of_that:
+  - One big HIC hiccups the moon right out of the sky and it rolls into The Patch.
+  - Joanie and Doodle try to get it back up, but it is too heavy and Gronk keeps hiccupping the wrong
+    things.
+  until_finally: Joanie tickles Gronk's nose and Gronk SNEEZES the moon back into the sky.
+  ever_since_then: The moon stayed up — but now it had a grin, and Gronk never ate spicy comets again.
+    (Well, almost never.)
+pages:
+- number: 0
+  kind: title
+  text: Gronk Hiccupped the Moon
+  image:
+    prompt: 'Night backyard scene: a huge round moon hanging low over a tilted fence, a big clumsy dragon
+      sitting in the yard looking up at it, a small boy and a tiny wobbly sock-creature beside him. One
+      comet streaks across the sky. Scribbly colored-pencil on crumpled paper, deep blues and warm yellow
+      moon-glow. Clear center for title text.'
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: A dragon, a boy, and a small creature look at the moon in a nighttime backyard.
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: 'So Gronk came to the yard at night.
+
+    Gronk liked night snacks.
+
+    Night snacks were the BEST.'
+  image:
+    prompt: A huge clumsy dragon settling into the backyard at night, sniffing the dirt patch with a happy
+      expression. The moon glows above. A small boy peeks from behind the shed, delighted. Crickets and
+      stars. Warm scribbly night palette, blues and purples with yellow moon glow.
+    characters_present:
+    - joanie
+    - gronk
+    alt: Gronk the dragon arrives in the backyard at night looking for snacks.
+    file: images/page-01.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 2
+  kind: story
+  text: 'Then Gronk saw a comet.
+
+    A spicy, hot, zingy comet.
+
+    ''WHOAAA!'' said Joanie. ''Don''t eat it!'''
+  image:
+    prompt: A small bright comet streaking low across the yard, glowing red-orange with little chili-pepper
+      heat lines. Gronk's eyes go wide and hungry, mouth opening to chase it. Joanie waving arms in a
+      'NO!' gesture from behind a fence post. Comic suspense. The moon watches from above.
+    characters_present:
+    - joanie
+    - gronk
+    alt: Gronk chases a spicy comet while Joanie warns him not to eat it.
+    file: images/page-02.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 3
+  kind: story
+  text: 'GULP!
+
+    Gronk ate the comet.
+
+    Gronk''s tummy rumbled.
+
+    Gronk got the… hiccups.'
+  image:
+    prompt: Gronk mid-swallow, the comet's glow visible through his throat like a light bulb inside. His
+      belly glowing orange. His whole body mid-HIC, jolting up. Sound-letters HIC drawn big. Joanie and
+      Doodle watching with huge eyes. Comic climax pose.
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: Gronk eats the comet and gets the hiccups, belly glowing.
+    file: images/page-03.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 4
+  kind: story
+  text: 'HIC!
+
+    The moon shook.
+
+    HIC! The moon slipped.
+
+    HIC! The moon FELL out of the sky.'
+  image:
+    prompt: The moon tumbling down from the sky in three stuttering jerks, trailing star-stuff, HIC sound-letters
+      punctuating each drop. Gronk below, horrified, hands over mouth. The sky now has an empty dark circle
+      where the moon was. The yard below going dark. Big comic motion, dramatic.
+    characters_present:
+    - gronk
+    alt: Gronk hiccups and the moon falls out of the sky in three jerks.
+    file: images/page-04.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 5
+  kind: story
+  text: 'And so the yard went DARK.
+
+    Too dark.
+
+    Doodle shook. ''Uh oh…'' said Doodle.'
+  image:
+    prompt: The backyard in near-total darkness, just a faint glow from Gronk's belly. Doodle the small
+      wobbly sock-creature trembling, eyes huge and white in the dark. Joanie holding Doodle close. The
+      fallen moon sits in The Patch like a giant pale bowling ball, faintly glowing. Spooky-funny mood,
+      heavy shadows, scribbly texture.
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: The yard goes dark and Doodle is scared, with the moon sitting in the dirt patch.
+    file: images/page-05.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 6
+  kind: story
+  text: 'Joanie pushed the moon. Too heavy.
+
+    Gronk pushed the moon. Too heavy.
+
+    ''Let''s dig under it!'' said Joanie.'
+  image:
+    prompt: Joanie on one side and Gronk on the other, both straining to push the giant glowing moon that
+      sits in the dirt patch. Moon barely moves, sweat drops on both. Joanie has a lightbulb moment —
+      finger up, grinning, trowel in other hand. Doodle on Joanie's head. Comic effort pose.
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: Joanie and Gronk try to push the moon but it's too heavy; Joanie gets an idea.
+    file: images/page-06.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 7
+  kind: story
+  text: 'So Joanie dug. Doodle dug.
+
+    Gronk tried to help.
+
+    But HIC! Out flew a shoe. Not a moon.'
+  image:
+    prompt: Joanie and tiny Doodle digging frantically under the moon, dirt flying. Gronk leaning in to
+      help, but mid-HIC — a single shoe launches up from his mouth in a comic arc. The moon still sitting.
+      Gronk embarrassed, hands up. Doodle looking up at the shoe. Big slapstick energy.
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: They dig under the moon but Gronk hiccups out a shoe instead of helping.
+    file: images/page-07.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 8
+  kind: story
+  text: 'Then a fence post said, ''Tickle him!''
+
+    Joanie had a grass blade.
+
+    So Joanie tickled Gronk''s big nose.'
+  image:
+    prompt: One of the leaning fence posts has a crude drawn-on face, talking. Joanie standing on a bucket
+      to reach Gronk's huge face, holding up a single long blade of grass toward Gronk's giant nostril.
+      Gronk's eyes crossing, nose twitching, a giant ACHOO building. Doodle bracing. Maximum comic build-up
+      tension. The moon glowing in the patch behind them.
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: A fence post suggests tickling Gronk; Joanie tickles the dragon's nose with a grass blade.
+    file: images/page-08.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 9
+  kind: story
+  text: 'ACHOO!
+
+    The moon flew UP, UP, UP!
+
+    It rolled back into the sky. Plop.'
+  image:
+    prompt: Massive ACHOO — Gronk's sneeze blast launching the giant moon straight up in a spiral of star-stuff
+      and snot droplets. The moon arcing up, up, up back toward its empty slot in the dark sky. Joanie
+      and Doodle blown backward by the sneeze wind, hair and ears flying. Huge comic motion, triumphant.
+      ACHOO sound-letters giant.
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: Gronk sneezes the moon back up into the sky in a giant blast.
+    file: images/page-09.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 10
+  kind: story
+  text: 'And the moon sat in the sky.
+
+    The moon had a grin now.
+
+    But the sky was turning… pink?'
+  image:
+    prompt: Dawn breaking over the backyard — the sky gradient shifting from deep blue to pink and orange
+      on one side. The moon back in place up high, now with a big goofy drawn-on grin. Gronk exhausted
+      and happy, lying flat. Joanie on Gronk's belly, Doodle on Joanie's head. A tiny spicy comet far
+      in the corner with a 'do not eat' crossed-out sign. Warm triumphant funny dawn palette.
+    characters_present:
+    - joanie
+    - doodle
+    - gronk
+    alt: The moon is back with a grin, dawn is breaking, and the friends relax.
+    file: images/page-10.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+interactions_summary: []
+status: draft
+tags:
+- absurd
+- physical-comedy
+- bedtime
+- sneezes
+cover:
+  image: ''
+  image_prompt: ''
+  alt: ''

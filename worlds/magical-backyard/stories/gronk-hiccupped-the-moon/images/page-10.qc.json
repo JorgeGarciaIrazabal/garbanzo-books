@@ -1,0 +1,20 @@
+{
+  "page": 10,
+  "prompt_seed": 999757229,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "The illustration captures the scene well, but some details need refinement to fully meet the specified criteria.",
+      "flags": [
+        "style_inconsistent",
+        "anatomy_issue"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-10-999757229.png"
+    }
+  ],
+  "winner": "page-10.png"
+}

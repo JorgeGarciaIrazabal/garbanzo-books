@@ -1,0 +1,10 @@
+PROMPT:
+The moon tumbling down from the sky in three stuttering jerks, trailing star-stuff, HIC sound-letters punctuating each drop. Gronk below, horrified, hands over mouth. The sky now has an empty dark circle where the moon was. The yard below going dark. Big comic motion, dramatic. Characters: GRONK: an enormous round-bellied young dragon as tall as a house, bumpy purple scales (#9b59b6) with a soft pale purple underbelly (#d2b4de), wings slightly too small for his body, a ridge of spiky orange scales (#e67e22) running from his head down his back, big worried yellow eyes (#f9e076), a tiny red flower (#e74c3c) tucked behind one ear, always looks apologetic, clumsy gentle giant. scribbly children's book illustration, colored pencil and marker on crumpled paper texture, loose energetic lines, deliberately messy kid-art style, wonky exaggerated perspective, bright punchy colors (#7ec850 grass-green, #8b5e3c dirt-brown, #5ba0d0 sky-blue, #9b59b6 dragon-purple, #f9e076 moon-yellow), scribble-hatched shading, Dav Pilkey energy, no text. palette: grass-green #7ec850, dirt-brown #8b5e3c, sky-blue #5ba0d0, dragon-purple #9b59b6, moon-yellow #f9e076, night-navy #1a1a3e. character colors: gronk scales #9b59b6, gronk belly #d2b4de, gronk spikes #e67e22, gronk eyes #f9e076, gronk flower #e74c3c. leave the top as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, clean polished lines, smooth digital art, realistic proportions, soft watercolor, cute big-eyes anime, text artifacts, watermark, scary faces
+
+SEED: 8888
+ASPECT: 4:3
+CHARACTERS: gronk
+REFERENCES: characters/gronk.refs/model-sheet.png

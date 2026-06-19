@@ -81,6 +81,29 @@ pages:
     text_position: upper-third
     text_align: center
     scrim: true
+  interaction:
+    type: arcade-pop
+    prompt: Pop Sylfie's fox-change sparkles!
+    data:
+      pop:
+      - emoji: ✨
+        label: fox-change sparkle
+      - emoji: 🦊
+        label: fox poof
+      avoid:
+      - emoji: 🦋
+        label: meadow butterfly
+      goal: 6
+      speed: gentle
+      how: Tap the sparkly poofs — but let the butterfly fly by!
+      avoid_line: Not the butterfly! She lives here! 🦋
+    feedback:
+      correct: Pop! Pop! Sylfie flips from fox to girl like a snap. ✨
+      try_again: Catch the sparkly ones — skip the butterfly!
+    reward:
+      label: Fox-Pop Sparkler
+      emoji: 🦊
+      id: fox-pop-sparkler
 - number: 3
   kind: story
   text: I want to try, said Aria. Sylfie grinned. Go!
@@ -110,6 +133,29 @@ pages:
     text_position: lower-third
     text_align: center
     scrim: true
+  interaction:
+    type: arcade-whack
+    prompt: Bop the fox ears popping out of the POOF cloud!
+    data:
+      whack:
+      - emoji: 🦊
+        label: fox ear
+      - emoji: 👂
+        label: pointy ear
+      avoid:
+      - emoji: 🐝
+        label: meadow bee
+      goal: 6
+      speed: gentle
+      how: Tap the ears before they duck back — don't bop the bee!
+      avoid_line: Not the bee! She's busy making honey! 🐝
+    feedback:
+      correct: Two ears, bopped! Aria looks very foxy now. 🦊
+      try_again: Quick — bop the ears before they hide!
+    reward:
+      label: Ear Bopper
+      emoji: 👂
+      id: ear-bopper
 - number: 5
   kind: story
   text: And a big bushy tail! Aria looked back. Oh no!
@@ -138,6 +184,29 @@ pages:
     text_position: lower-third
     text_align: center
     scrim: true
+  interaction:
+    type: arcade-maze
+    prompt: Sneak Aria through the grass to her hiding tree!
+    data:
+      player:
+        emoji: 🧙‍♀️
+        label: Aria
+      exit:
+        emoji: 🌳
+        label: the hiding tree
+      collect:
+        emoji: 🌿
+        label: tall grass
+      size: cozy
+      how: Swipe to scoot through the grass — keep your tail down!
+      avoid_line: Tuck that tail! Someone might see it! 🦊
+    feedback:
+      correct: Safe behind the tree! Now nobody can see that tail. 🌳
+      try_again: Sneak around — find the tree!
+    reward:
+      label: Tail Hider
+      emoji: 🌳
+      id: tail-hider
 - number: 7
   kind: story
   text: She tried again. Now she had whiskers too. Long ones!
@@ -182,6 +251,32 @@ pages:
     text_position: lower-third
     text_align: center
     scrim: true
+  interaction:
+    type: arcade-catch
+    prompt: Catch the spell sparkles drifting down — soft and slow, together.
+    data:
+      player:
+        emoji: 📖
+        label: the open spellbook
+      catch:
+      - emoji: ✨
+        label: spell sparkle
+      - emoji: 🌟
+        label: magic star
+      avoid:
+      - emoji: 🦋
+        label: meadow butterfly
+      goal: 6
+      speed: gentle
+      how: Drag the spellbook — catch every sparkle as it falls!
+      avoid_line: Not the butterfly! She's just watching! 🦋
+    feedback:
+      correct: The spellbook glows! Aria and Sylfie say it together. ✨
+      try_again: Soft and slow — under the sparkles!
+    reward:
+      label: Spell Catcher
+      emoji: 📖
+      id: spell-catcher
 - number: 10
   kind: story
   text: They said it together. Pop! Aria was Aria. One ear stayed, just for fun.
@@ -197,7 +292,11 @@ pages:
     text_position: upper-third
     text_align: center
     scrim: true
-interactions_summary: []
+interactions_summary:
+- 'Page 2 (arcade-pop): pop Sylfie''s fox-change sparkles, spare the meadow butterfly'
+- 'Page 4 (arcade-whack): bop the fox ears popping out of the POOF cloud, spare the bee'
+- 'Page 6 (arcade-maze): sneak Aria through the grass to her hiding tree'
+- 'Page 9 (arcade-catch): catch the spell sparkles drifting into the open spellbook, together'
 status: published
 tags:
 - friendship
