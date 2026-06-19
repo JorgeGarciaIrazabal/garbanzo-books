@@ -106,6 +106,13 @@ pages:
     text_position: top
     text_align: center
     scrim: true
+  vocabulary:
+  - word: comet
+    clue: a hot rock that flies through the sky
+    icon: ☄️
+  - word: spicy
+    clue: hot and zingy on your tongue
+    icon: 🌶️
 - number: 3
   kind: story
   text: 'GULP!
@@ -129,6 +136,10 @@ pages:
     text_position: top
     text_align: center
     scrim: true
+  vocabulary:
+  - word: rumbled
+    clue: made a low grrrr sound in his belly
+    icon: 🫨
 - number: 4
   kind: story
   text: 'HIC!
@@ -150,6 +161,29 @@ pages:
     text_position: top
     text_align: center
     scrim: true
+  interaction:
+    type: arcade-pop
+    prompt: Gronk's hiccups are shaking the moon! Pop the hiccup-bubbles before they knock it down.
+    skill: engagement
+    difficulty: easy
+    data:
+      pop:
+      - emoji: 💫
+        label: hiccup bubble
+      avoid:
+      - emoji: 🌙
+        label: the moon
+      goal: 6
+      speed: gentle
+      how: Tap the sparkly hiccup-bubbles. Don't pop the moon!
+      avoid_line: Not the moon! Leave that one alone!
+    feedback:
+      correct: POP! No more hiccup!
+      try_again: Almost — try the sparkly ones!
+    reward:
+      label: Moon Saver
+      emoji: 🌟
+      id: moon-saver
 - number: 5
   kind: story
   text: 'And so the yard went DARK.
@@ -193,6 +227,10 @@ pages:
     text_position: top
     text_align: center
     scrim: true
+  vocabulary:
+  - word: heavy
+    clue: too big to lift
+    icon: 🏋️
 - number: 7
   kind: story
   text: 'So Joanie dug. Doodle dug.
@@ -214,6 +252,33 @@ pages:
     text_position: lower-third
     text_align: center
     scrim: true
+  interaction:
+    type: arcade-whack
+    prompt: Gronk's hiccups keep spitting out junk! Bop the flying things back into the pile.
+    skill: engagement
+    difficulty: easy
+    data:
+      whack:
+      - emoji: 👟
+        label: shoe
+      - emoji: 🥾
+        label: boot
+      - emoji: 🍌
+        label: banana
+      avoid:
+      - emoji: 🌙
+        label: the moon
+      goal: 5
+      speed: gentle
+      how: Tap the junk as it pops up. Whack it back down!
+      avoid_line: That's the moon, not junk — leave it!
+    feedback:
+      correct: BOP! Back in the pile!
+      try_again: Keep bopping — you've got this!
+    reward:
+      label: Junk Bopper
+      emoji: 🏏
+      id: junk-bopper
 - number: 8
   kind: story
   text: 'Then a fence post said, ''Tickle him!''
@@ -236,6 +301,13 @@ pages:
     text_position: top
     text_align: center
     scrim: true
+  vocabulary:
+  - word: tickle
+    clue: touch lightly to make someone wiggle and laugh
+    icon: 🪶
+  - word: blade
+    clue: a long thin piece of grass
+    icon: 🌾
 - number: 9
   kind: story
   text: 'ACHOO!
@@ -258,6 +330,32 @@ pages:
     text_position: top
     text_align: center
     scrim: true
+  interaction:
+    type: arcade-toss
+    prompt: SNEEZE the moon back into the sky! Aim the moon up, up, up.
+    skill: engagement
+    difficulty: easy
+    data:
+      projectile:
+        emoji: 🌙
+        label: the moon
+      target:
+        emoji: ⭐
+        label: the sky slot
+      avoid:
+      - emoji: 👟
+        label: a stray shoe
+      goal: 4
+      speed: gentle
+      how: Pull back and let go — sneeze the moon into the star slot!
+      avoid_line: Not a shoe! Aim for the stars!
+    feedback:
+      correct: ACHOO! Bullseye — the moon's home!
+      try_again: So close! Pull back farther!
+    reward:
+      label: Sneeze Champion
+      emoji: 🌟
+      id: sneeze-champion
 - number: 10
   kind: story
   text: 'And the moon sat in the sky.
@@ -280,8 +378,15 @@ pages:
     text_position: lower-third
     text_align: center
     scrim: true
-interactions_summary: []
-status: draft
+  vocabulary:
+  - word: grin
+    clue: a big happy smile
+    icon: 😁
+interactions_summary:
+- p4 arcade-pop — pop Gronk's hiccup-bubbles before they shake the moon down
+- p7 arcade-whack — bop the junk Gronk hiccups out back into the pile
+- p9 arcade-toss — sneeze-launch the moon back into its sky slot
+status: published
 tags:
 - absurd
 - physical-comedy
