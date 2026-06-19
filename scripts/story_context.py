@@ -85,7 +85,13 @@ def main() -> int:
         ts = targets_for_year(y, "solo")
         fk = (f"FK ~{ta['fk_lo']}-{ta['fk_hi']}" if ta["fk_lo"] is not None else "read-aloud (FK n/a)")
         if ts["max_words_per_page"] != ta["max_words_per_page"] or ts["max_sentence_words"] != ta["max_sentence_words"]:
-            wpp = f"~{ts['max_words_per_page']} words/page solo · ~{ta['max_words_per_page']} read-aloud"
+            # For the youngest solo decoders show the AVERAGE aim too (e.g. age 5 solo: aim ~15, max 25),
+            # so the author targets the typical page, not the ceiling.
+            solo_avg = ts.get("avg_words_per_page")
+            if solo_avg:
+                wpp = f"~{solo_avg} words/page solo (max {ts['max_words_per_page']}) · ~{ta['max_words_per_page']} read-aloud"
+            else:
+                wpp = f"~{ts['max_words_per_page']} words/page solo · ~{ta['max_words_per_page']} read-aloud"
             sent = f"sentences up to ~{ts['max_sentence_words']} solo / ~{ta['max_sentence_words']} read-aloud"
         else:
             wpp = f"~{ta['max_words_per_page']} words/page"

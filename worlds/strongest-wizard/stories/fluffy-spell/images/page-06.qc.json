@@ -1,0 +1,19 @@
+{
+  "page": 6,
+  "prompt_seed": 884721,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.2,
+      "reason": "The illustration accurately depicts Aria in the specified pose and style, closely matching the page text and character tokens.",
+      "flags": [
+        "too_dark"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-06-884721.png"
+    }
+  ],
+  "winner": "page-06.png"
+}

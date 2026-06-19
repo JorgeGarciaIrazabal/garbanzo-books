@@ -3,8 +3,35 @@
 STUDIO_BRIEF is the always-on director persona + the FORM / MODEL-STAGE / FILE-SAFETY /
 IMAGE-GENERATION protocols; KIDS_BRIEF is appended when the console is in kids mode. They
 live here (not inline in server.py) so the prose is easy to find and edit on its own.
+
+The reading-level numbers in the brief (the --read-mode example) are NOT hardcoded — they are
+pulled from scripts/lib/readability.py via read_mode_example(), so editing the per-year curve
+there updates every prompt and help string automatically.
 """
 from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+# ui/ runs as `python ui/server.py` from the repo root, so sys.path[0] is ui/, not the repo.
+# Add the repo root so we can import the single source of truth for reading-level numbers.
+_REPO_ROOT = str(Path(__file__).resolve().parent.parent)
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+
+from scripts.lib.readability import (  # noqa: E402
+    adult_threshold_label,
+    read_mode_default_label,
+    read_mode_example,
+    year_range_label,
+)
+
+# e.g. "age 5 solo: aim ~15, max 25 vs ≈ 55 read-aloud" — rendered from the data, never hardcoded.
+_READ_MODE_EXAMPLE = read_mode_example(5)
+# Structural labels for the brief — all derived from readability.py so they can't drift.
+_YEAR_RANGE = year_range_label()        # "1-18"
+_ADULT_THRESHOLD = adult_threshold_label()  # "~14+"
+_READ_MODE_DEFAULT = read_mode_default_label()  # "read-aloud for age <=5, solo from 6"
 
 STUDIO_BRIEF = """You are the studio director inside the "Garbanzo Books" AI storybook workspace.
 Read CLAUDE.md and methodology/ as needed. Tools live in scripts/ — run them via
@@ -82,14 +109,15 @@ is NEVER written or edited as text. Two rules cover everything:
   `<world> "<Title>" --year 6 --pages 14 [--slug s] [--read-mode read_aloud|solo]` as positionals
   (plus flags), not --world/--title. For a story ALWAYS scaffold all the page stubs up front with --pages N.
   Books are selected by the reader's AGE — one number, no age bands:
-    --year <N>    = the reader's age in years (1-18). It sets target_year and derives the
+    --year <N>    = the reader's age in years (__YEAR_RANGE__). It sets target_year and derives the
                     advisory reading-language anchors (sentence length, words/page, word
-                    choice) from the per-year curve. ~14+ means an adult reader. See the
+                    choice) from the per-year curve. __ADULT_THRESHOLD__ means an adult reader. See the
                     per-year reader portraits in methodology/reading-pedagogy.md.
     --read-mode   = read_aloud | solo — WHO reads the words. read_aloud (a grown-up voices it):
                     rich words welcome, generous words/page. solo (the child decodes it alone):
-                    high-frequency/decodable words, tighter words/page (e.g. age 5 ≈ 25 vs ≈ 55).
-                    Set it for ages ~4-8 where it's ambiguous; default read-aloud for <=5, solo from 6.
+                    high-frequency/decodable words, tighter words/page (e.g. __READ_MODE_EXAMPLE__
+                    — the max is the ceiling, not the target).
+                    Set it for ages ~4-8 where it's ambiguous; default __READ_MODE_DEFAULT__.
   (new_world.py likewise takes repeatable --year N for the world's audience, e.g.
   --year 5 --year 6 --year 7.)
 - EDIT with the JSON-patch scripts (edit_world.py, edit_character.py, edit_story.py): you emit
@@ -127,6 +155,15 @@ step "in case the key is missing", do not propose placeholders as an alternative
 suggest the user set up a key. Just run the tool. If (and only if) the script itself exits with an
 error about a missing/invalid key, STOP IMMEDIATELY, surface that one short error to the user, and
 do not retry — never silently fall back to placeholder art."""
+
+# Inject the data-derived reading-level labels (e.g. "age 5 solo: aim ~15, max 25 vs ≈ 55
+# read-aloud", "1-18", "~14+", "read-aloud for age <=5, solo from 6") so the brief never hardcodes
+# numbers or boundaries that live in scripts/lib/readability.py.
+STUDIO_BRIEF = (STUDIO_BRIEF
+                .replace("__READ_MODE_EXAMPLE__", _READ_MODE_EXAMPLE)
+                .replace("__YEAR_RANGE__", _YEAR_RANGE)
+                .replace("__ADULT_THRESHOLD__", _ADULT_THRESHOLD)
+                .replace("__READ_MODE_DEFAULT__", _READ_MODE_DEFAULT))
 
 # Appended to the brief when the console is in KIDS MODE — the person answering is a young child
 # using big icon buttons, voice in, and voice out (the console reads your replies aloud and renders

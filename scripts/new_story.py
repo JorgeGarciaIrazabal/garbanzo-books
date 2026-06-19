@@ -12,7 +12,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.model import WORLDS, dump_yaml, slugify  # noqa: E402
-from lib.readability import band_for_year, default_read_mode, normalize_read_mode, story_targets  # noqa: E402
+from lib.readability import (  # noqa: E402
+    band_for_year, default_read_mode, normalize_read_mode, story_targets,
+    adult_threshold_label, read_mode_default_label, valid_cli_year, year_range_label,
+)
 
 DEFAULT_YEAR = 6  # a safe early-reader when no --year is given
 
@@ -101,14 +104,14 @@ def main() -> int:
     ap.add_argument("world", help="world slug")
     ap.add_argument("title", help="story title")
     ap.add_argument("--year", type=int, default=DEFAULT_YEAR, metavar="N",
-                    help="the reader's AGE in years (1-18) — the single age knob for the book. "
+                    help="the reader's AGE in years (" + year_range_label() + ") — the single age knob for the book. "
                          "Sets target_year and derives the advisory reading anchors from the "
-                         f"per-year curve. ~14+ = adult reader. Default {DEFAULT_YEAR}.")
+                         f"per-year curve. {adult_threshold_label()} = adult reader. Default {DEFAULT_YEAR}.")
     ap.add_argument("--read-mode", choices=["read_aloud", "solo"], default=None, dest="read_mode",
                     help="WHO reads the words: 'read_aloud' (a grown-up voices it — rich words "
                          "welcome) or 'solo' (the child decodes every word — lean decodable, "
                          "tighter word cap). Set it for ages ~4-8 where it's ambiguous (e.g. a "
-                         "5-year-old solo reader). Default: read-aloud for age <=5, solo from 6.")
+                         "5-year-old solo reader). Default: " + read_mode_default_label() + ".")
     ap.add_argument("--slug", help="override the slug")
     ap.add_argument("--pages", type=int, default=1, metavar="N",
                     help="scaffold N story-page stubs (plus the title page) so the author "
@@ -127,8 +130,8 @@ def main() -> int:
         print(f"! story '{slug}' already exists at {sdir}", file=sys.stderr)
         return 1
 
-    if not (1 <= args.year <= 18):
-        print(f"! --year must be 1-18 (got {args.year})", file=sys.stderr)
+    if not valid_cli_year(args.year):
+        print(f"! --year must be {year_range_label()} (got {args.year})", file=sys.stderr)
         return 1
     # Year is the single knob; the legacy age_band is derived from it (display/back-compat).
     year = args.year

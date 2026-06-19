@@ -79,6 +79,37 @@ DEFAULT_READ_ALOUD_MAX_YEAR = 5
 # (previously only read-aloud got the pass, but read_mode didn't exist as a concept yet).
 TELEGRAPHIC_RELAXED_MAX_YEAR = 5
 
+# --- Structural constants (the CLI input range vs the data-table range) ----------------------
+# The per-year DATA table (READING_BY_YEAR) covers MIN_YEAR..MAX_YEAR (2..13) with explicit
+# targets; years outside that clamp to the nearest row. The CLI accepts a WIDER input range
+# (CLI_MIN_YEAR..CLI_MAX_YEAR = 1..18) so a user can type 1 or 17 without the scaffold refusing;
+# the data clamp handles the rest. ADULT_YEAR is where band_for_year flips to 'grown-up'.
+# These are named (not magic numbers) so help text and validation derive from one place.
+CLI_MIN_YEAR = 1
+CLI_MAX_YEAR = 18
+ADULT_YEAR = 14
+
+
+def valid_cli_year(y: int) -> bool:
+    """True if y is an accepted --year value on the CLI (the input range, not the data range)."""
+    return isinstance(y, int) and CLI_MIN_YEAR <= y <= CLI_MAX_YEAR
+
+
+def year_range_label() -> str:
+    """The '--year N' accepted range as a label for help text, e.g. '1-18'. Single source."""
+    return f"{CLI_MIN_YEAR}-{CLI_MAX_YEAR}"
+
+
+def adult_threshold_label() -> str:
+    """The 'adult reader' age threshold as a label for help text, e.g. '~14+'. Single source."""
+    return f"~{ADULT_YEAR}+"
+
+
+def read_mode_default_label() -> str:
+    """How the read_mode default-by-age rule reads in prose, e.g. 'read-aloud for age <=5, solo
+    from 6'. Derived from DEFAULT_READ_ALOUD_MAX_YEAR so the boundary never drifts from the code."""
+    return f"read-aloud for age <={DEFAULT_READ_ALOUD_MAX_YEAR}, solo from {DEFAULT_READ_ALOUD_MAX_YEAR + 1}"
+
 
 def default_read_mode(year: int | None) -> str:
     """The read mode a story falls back to when it doesn't set one explicitly: read-aloud for
@@ -152,6 +183,22 @@ def targets_for_year(year: int, read_mode: str | None = None) -> dict:
         "avg_words_per_page": avg_wpp,
         "label": row["label"],
     }
+
+
+def read_mode_example(year: int = 5) -> str:
+    """A one-line read-mode example rendered FROM the per-year data, so prompts/help text never
+    hardcode the numbers and drift when the curve changes. Picks a representative young solo
+    year (default 5) and shows 'aim ~AVG, max MAX vs ≈ READALOUD' — or just '≈ MAX' when no
+    advisory average is set for that year. This is the single source for the '~15/max 25' style
+    string that appears in studio_prompts.py and story_context.py."""
+    solo = targets_for_year(year, "solo")
+    aloud = targets_for_year(year, "read_aloud")
+    avg = solo.get("avg_words_per_page")
+    if avg:
+        solo_part = f"aim ~{avg}, max {solo['max_words_per_page']}"
+    else:
+        solo_part = f"≈ {solo['max_words_per_page']}"
+    return f"age {year} solo: {solo_part} vs ≈ {aloud['max_words_per_page']} read-aloud"
 
 
 def story_age_label(story: dict) -> str:

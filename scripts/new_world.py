@@ -14,7 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.model import WORLDS, dump_yaml, slugify  # noqa: E402
-from lib.readability import band_for_year  # noqa: E402
+from lib.readability import band_for_year, valid_cli_year, year_range_label  # noqa: E402
 
 
 def starter(slug: str, title: str, years: list[int]) -> dict:
@@ -107,12 +107,13 @@ def main() -> int:
     ap.add_argument("title")
     ap.add_argument("--year", action="append", dest="years", type=int, default=[],
                     metavar="N", help="target reader AGE in years (repeatable), e.g. --year 5 "
-                                      "--year 6 --year 7. Default 6.")
+                                      "--year 6 --year 7. Default 6. Accepted range: "
+                                      + year_range_label() + ".")
     ap.add_argument("--slug", help="override the slug")
     args = ap.parse_args()
 
-    if any(not (1 <= y <= 18) for y in args.years):
-        print("! each --year must be 1-18", file=sys.stderr)
+    if any(not valid_cli_year(y) for y in args.years):
+        print(f"! each --year must be {year_range_label()}", file=sys.stderr)
         return 1
 
     slug = args.slug or slugify(args.title)

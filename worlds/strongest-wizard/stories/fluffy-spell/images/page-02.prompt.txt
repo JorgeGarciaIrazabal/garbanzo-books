@@ -1,0 +1,10 @@
+PROMPT:
+Sylfie mid-transform, one side a grinning girl and one side a red fox, a puff of sparkles around her. Meadow behind. Characters: SYLFIE: human girl 7-8, graceful slight build, pale peach shimmering skin, long silver-blonde waves (#f5f0e1) with lavender tips (#c7b8ea) floating weightlessly, violet-blue sparkling eyes (#9c88ff), lavender dress-robe (#c7b8ea) with gold trim (#ffd93d), sheer mint-green overskirt (#a8e6cf), golden slippers, floating ribbon hair ties, golden sparkles trailing fingertips, ribbons moving with mood, serene confident smile with mischievous glint [partner: friendship bracelet matching Aria's, robe has practical pockets now, floating hair settles into gentle waves]. dreamy pastel children's book illustration, soft blush and mint palette, whisper-thin rounded lines, golden-hour glow with floating magic motes, ethereal gradients, hand-painted paper texture, cozy whimsical mood, no text. palette: cream #fdf6e3, blush-pink #f4c2c2, mint-green #a8e6cf, lavender #c7b8ea, golden-hour #ffd93d, dusk-lavender #6b5b95. character colors: sylfie robe #c7b8ea, sylfie overskirt #a8e6cf, sylfie gold_trim #ffd93d, sylfie hair #f5f0e1, sylfie hair_tips #c7b8ea, sylfie eyes #9c88ff, sylfie slippers #ffd93d. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
+
+SEED: 339147
+ASPECT: 4:3
+CHARACTERS: sylfie
+REFERENCES: characters/sylfie.refs/model-sheet.png, characters/sylfie.refs/model-sheet.svg

@@ -1,0 +1,212 @@
+slug: fluffy-spell
+world: strongest-wizard
+title: The Fluffy Spell
+logline: Aria tries Sylfie's fox-change spell, gets stuck half-fluffy, and learns the only way out is
+  to let a friend help her through it.
+summary: Aria wants to learn the fox-change spell to impress Sylfie and feel like a real wizard. But the
+  spell goes fluffy-wrong — fox ears, a bushy tail, whiskers — and Aria can't undo it. Sylfie finds her,
+  laughs, then stays to teach the spell step by step until it clicks, together.
+age_band: 3-5
+target_year: 5
+reading_level:
+  read_mode: solo
+  target_fk_grade: 0.3
+  fk_grade_tolerance: 0.3
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 25
+  max_sentence_words: 8
+  decoding_focus: ''
+  decodable: false
+themes:
+- friendship
+- transformation
+- magic-gone-wrong
+- funny
+moral: 'TODO: shown, not told.'
+characters:
+- slug: aria
+  stage: base
+- slug: sylfie
+  stage: partner
+spine:
+  once_upon_a_time: Aria wanted to learn the fox-change spell, the one Sylfie could pop in a blink.
+  every_day: Aria watched Sylfie turn into a red fox and back, fast as a snap.
+  until_one_day: Aria said the spell by herself — and turned into a half-fox, half-Aria fluffy mess.
+  because_of_that:
+  - Aria hid her tail and tried to fix it alone, but it got worse — whiskers, then paws.
+  - Sylfie found her, laughed, then sat down to teach the spell one step at a time.
+  - Each try flopped funnier — Aria barked, grew a second tail, and turned her nose black.
+  until_finally: Aria asked Sylfie to cast it with her, together — and the spell clicked at last.
+  ever_since_then: Aria popped back to herself, fur all gone — but kept one soft fox ear a minute longer,
+    and they laughed.
+pages:
+- number: 0
+  kind: title
+  text: The Fluffy Spell
+  image:
+    prompt: 'TODO: a warm establishing scene for the cover/title.'
+    characters_present: []
+    alt: TODO
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: Aria liked spells. The fox spell was the best.
+  image:
+    prompt: Aria sits cross-legged on the practice meadow grass, an open spellbook in her lap, pages rippling.
+      Bright sunny day, soft clouds. Wide eager smile.
+    characters_present:
+    - aria
+    alt: Aria reading a spellbook in a sunny meadow
+    file: images/page-01.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+- number: 2
+  kind: story
+  text: Sylfie could do it. Pop — a red fox! Pop — a girl!
+  image:
+    prompt: Sylfie mid-transform, one side a grinning girl and one side a red fox, a puff of sparkles
+      around her. Meadow behind.
+    characters_present:
+    - sylfie
+    alt: Sylfie changing between girl and red fox
+    file: images/page-02.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+- number: 3
+  kind: story
+  text: I want to try, said Aria. Sylfie grinned. Go!
+  image:
+    prompt: Aria standing determined, fists clenched, looking at a glowing spellbook. Sylfie beside her,
+      cheering with both arms up. Meadow.
+    characters_present:
+    - aria
+    - sylfie
+    alt: Aria ready to try the fox spell, Sylfie cheering
+    file: images/page-03.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 4
+  kind: story
+  text: Aria said the words. POOF! Two fox ears popped up.
+  image:
+    prompt: Aria mid-spell, hands out, surprised face. Two pointy red fox ears have sprouted from her
+      hair. A big sparkly POOF cloud around her head.
+    characters_present:
+    - aria
+    alt: Aria with two fox ears popping out
+    file: images/page-04.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 5
+  kind: story
+  text: And a big bushy tail! Aria looked back. Oh no!
+  image:
+    prompt: Aria twisting to look over her shoulder at a huge fluffy red fox tail that has sprouted from
+      her back. Big wide eyes, puffed cheeks.
+    characters_present:
+    - aria
+    alt: Aria discovering her fox tail
+    file: images/page-05.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 6
+  kind: story
+  text: Aria hid behind a tree. I can fix this. I can fix it.
+  image:
+    prompt: Aria hiding behind a thick oak trunk, only her bushy tail sticking out one side. Determined
+      worried face peeking.
+    characters_present:
+    - aria
+    alt: Aria hiding her tail behind a tree
+    file: images/page-06.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 7
+  kind: story
+  text: She tried again. Now she had whiskers too. Long ones!
+  image:
+    prompt: Aria pulling at long silvery whiskers that sprouted from her cheeks. Fox ears, tail, whiskers.
+      Surprised dismayed expression.
+    characters_present:
+    - aria
+    alt: Aria with whiskers sprouting
+    file: images/page-07.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 8
+  kind: story
+  text: Sylfie found her. She looked. She laughed and laughed.
+  image:
+    prompt: Sylfie doubled over laughing, pointing at fluffy half-fox Aria behind the tree. Aria pouting
+      with arms crossed, tail swishing.
+    characters_present:
+    - sylfie
+    - aria
+    alt: Sylfie laughing at fluffy Aria
+    file: images/page-08.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+- number: 9
+  kind: story
+  text: Sit by me, said Sylfie. We will do it together. Soft and slow.
+  image:
+    prompt: Sylfie patting the grass beside her, warm kind smile. Aria sitting down, tail curling around
+      her legs. Spellbook open and glowing between them.
+    characters_present:
+    - sylfie
+    - aria
+    alt: Sylfie inviting Aria to sit and learn together
+    file: images/page-09.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 10
+  kind: story
+  text: They said it together. Pop! Aria was Aria. One ear stayed, just for fun.
+  image:
+    prompt: Aria back to fully human, hopping with joy, but one soft fox ear still on her head. Sylfie
+      hugging her, both beaming. Sunset meadow light.
+    characters_present:
+    - aria
+    - sylfie
+    alt: Aria back to normal with one fox ear, hugging Sylfie
+    file: images/page-10.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+interactions_summary: []
+status: published
+tags:
+- friendship
+- transformation
+- magic-gone-wrong
+- funny
+cover:
+  image: images/cover.png
+  image_prompt: Aria as a half-fox fluffy mess — fox ears, big bushy tail, whiskers — standing next to
+    Sylfie who is mid-laugh, both in the sunny practice meadow. Sparkly magic poofs around them. Fun,
+    warm, inviting.
+  alt: 'Cover: Aria half-turned into a fluffy fox, Sylfie laughing beside her in a sunny meadow'

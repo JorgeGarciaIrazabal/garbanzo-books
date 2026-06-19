@@ -1,0 +1,19 @@
+{
+  "page": 10,
+  "prompt_seed": 1870327378,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely matches the specifications, with minor stylistic variations and a slight scene mismatch.",
+      "flags": [
+        "scene_mismatch"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-10-1870327378.png"
+    }
+  ],
+  "winner": "page-10.png"
+}
