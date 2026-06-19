@@ -1,0 +1,94 @@
+slug: mom
+world: the-baby-luka
+name: Mom
+role: recurring
+species: human adult
+pronouns: she/her
+one_liner: Luka's loving mom — well-meaning, schedule-driven, and completely unable to see the Pokémon
+  layer of reality.
+personality:
+  traits:
+  - loving
+  - organized
+  - well-meaning
+  - a little frazzled
+  - patient but firm about meals
+  - oblivious to Pokémon
+  motivation: To raise Luka right — fed, napped, and hitting his milestones — on schedule.
+  fears:
+  - Luka not eating his veggies
+  - Luka not napping
+  - messes she can't explain
+  flaws:
+  - thinks Luka's babble is nonsense (it's Pokémon talk)
+  - sticks to the schedule even when it ruins an adventure
+  - attributes every Pokémon sign to baby chaos
+  strengths:
+  - warm and patient
+  - creative with baby food
+  - genuinely adores Luka
+  - unflappable about messes
+  quirks:
+  - sings a broccoli cheer-up song
+  - calls Luka 'munchkin'
+  - sees Oddish's leaves and assumes it's a garden weed Luka found
+  - spoons incoming with a big airplane 'vroom vroom'
+  values:
+  - nutrition
+  - naps
+  - schedules
+  - love (in grown-up language)
+voice:
+  speech_style: Warm sing-song mom voice, lots of 'here comes the airplane!' and encouragement. Oblivious
+    to Pokémon references.
+  catchphrases:
+  - Here comes the airplane! Vroom!
+  - Just one more bite, munchkin.
+  - Is that a weed? Put it down, sweetie.
+  vocabulary_level: Grown-up mom-talk, simple and warm.
+appearance:
+  age_appearance: young adult mom, early 30s
+  build: average, warm posture
+  height: tall from Luka's POV — towers over him
+  skin: warm light tan
+  hair: shoulder-length dark brown hair, often in a quick messy bun
+  eyes: kind brown eyes
+  outfit: a cozy kanto-sky-blue cardigan over a cream top, comfy jeans, an 'I ❤ MUNCHKIN' apron at meal
+    times
+  distinguishing_features:
+  - messy bun hair
+  - sky-blue cardigan
+  - warm patient smile
+  - always has a spoon ready
+  color_palette:
+  - part: cardigan
+    hex: 3B9BE0
+  - part: hair
+    hex: 5B3A1A
+  - part: skin
+    hex: F1C27D
+  - part: apron
+    hex: FFF4E0
+  - part: eyes
+    hex: 5B4A1A
+  silhouette_notes: Tall from baby-POV, messy bun, cardigan, holding a spoon — a warm looming grown-up
+    shape.
+appearance_token: 'Mom: young loving mom seen from a low baby''s-eye POV so she towers above, shoulder-length
+  dark brown hair (#5B3A1A) in a quick messy bun, kind brown eyes (#5B4A1A), warm light tan skin (#F1C27D),
+  wearing a kanto-sky-blue cardigan (#3B9BE0) over a cream top (#FFF4E0) and a cream apron (#FFF4E0),
+  holding a spoon, warm patient smile, exaggerated tall from Luka''s perspective'
+reference_images:
+- characters/mom.refs/model-sheet.png
+seed: 30117
+relationships:
+- character: luka
+  relation: her beloved 'munchkin' — she adores him, just in the wrong language
+evolution:
+- stage: oblivious
+  order: 1
+  summary: Default — loving but completely unable to see Pokémon, attributes all signs to baby chaos.
+tags:
+- parent
+- recurring
+- grown-up
+- oblivious

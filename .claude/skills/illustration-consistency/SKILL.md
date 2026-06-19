@@ -59,18 +59,9 @@ ASPECT   = world art_style.aspect_ratio
    (`--page N` + a stronger prompt). If a character looks different at an evolution stage,
    that's intended only if the story pins that `stage` (which appends `appearance_delta`).
 
-## Image provider — Google "Nano Banana" (REQUIRED)
-`generate_images.py` MUST run with `--provider nano-banana` (the default — Google Gemini's
-image model, `gemini-2.5-flash-image`). Get a **free** key at https://aistudio.google.com/apikey
-and set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) **before** illustrating. Nano Banana's
-superpower for us: it accepts each character's **reference image as input**, so once you've
-approved a character sheet, every page can be anchored to it — the single best lever for
-character consistency. Override the model with `GEMINI_IMAGE_MODEL` (e.g. `gemini-3-pro-image`
-= "Nano Banana Pro"). Note: Gemini images carry an invisible SynthID watermark.
-
 ## QC provider — Local Ollama vision (RECOMMENDED)
 The best-of-N loop above is powered by a local Ollama vision model so the whole pipeline
-stays **API-key-free for QC** (it still needs a Gemini key for the actual image renders).
+stays **API-key-free for QC** (image renders go through antigravity/nano-banana, not Ollama).
 Any vision-capable model works; `gemma3:4b` is the default and is small enough to run on
 CPU in a few seconds per page. To set it up:
 
@@ -84,27 +75,33 @@ duplicates, scene matches the page text, art style matches the world bible, text
 legible, and no clear anatomy issues. Each attempt's verdict is written to `page-NN.qc.json`
 so the QC decision is reproducible and reviewable.
 
-## Image provider — Google "Nano Banana" (REQUIRED)
-`generate_images.py` MUST run with `--provider nano-banana` (the default — Google Gemini's
-image model, `gemini-2.5-flash-image`). Get a **free** key at https://aistudio.google.com/apikey
-and set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) **before** illustrating. Nano Banana's
-superpower for us: it accepts each character's **reference image as input**, so once you've
-approved a character sheet, every page can be anchored to it — the single best lever for
-character consistency. Override the model with `GEMINI_IMAGE_MODEL` (e.g. `gemini-3-pro-image`
-= "Nano Banana Pro"). Note: Gemini images carry an invisible SynthID watermark.
+## Image provider — Antigravity (default) / Nano Banana (fallback)
+`generate_images.py` defaults to `--provider antigravity` — the local Antigravity CLI (`agy`)
+via your Google OAuth session, so **no API key is needed**. Install `agy` and sign in with
+Google before illustrating. Override the model with `ANTIGRAVITY_MODEL` (default
+`gemini-3.1-flash-image`). Note: agy's tool interface doesn't accept inline reference images,
+so on-model consistency relies on the dense `appearance_token` text in the assembled prompt.
+
+Fallback: `--provider nano-banana` (Google Gemini's image model, `gemini-2.5-flash-image`).
+Get a **free** key at https://aistudio.google.com/apikey and set `GEMINI_API_KEY` (or
+`GOOGLE_API_KEY`). Nano Banana's superpower for us: it accepts each character's **reference
+image as input**, so once you've approved a character sheet, every page can be anchored to
+it — the single best lever for character consistency. Override the model with
+`GEMINI_IMAGE_MODEL` (e.g. `gemini-3-pro-image` = "Nano Banana Pro"). Note: Gemini images
+carry an invisible SynthID watermark.
 
 ## Never accept placeholders
 SVG placeholders are a **development-only** fallback baked into the script for offline
 debugging. They are **NOT acceptable output**. If `generate_images.py` writes a `.svg` for any
 page or character sheet, treat it as a hard failure:
 1. Stop. Do not commit. Do not mark the story `published`.
-2. Fix the root cause — set `GEMINI_API_KEY`, enable billing if the free quota was exhausted,
-   or pick a different model via `GEMINI_IMAGE_MODEL` — then re-run until every page has a
-   real `.png` from Gemini.
+2. Fix the root cause — install/sign in to `agy` (antigravity), or set `GEMINI_API_KEY` and
+   run with `--provider nano-banana`, enable billing if the free quota was exhausted, or pick
+   a different model via `GEMINI_IMAGE_MODEL` — then re-run until every page has a real `.png`.
 3. Delete any leftover `.svg` placeholders the script may have written and re-point the page
    `image.file` to the `.png` (the script does this for you when the real provider succeeds).
 Do **not** pass `--provider placeholder`. (`--provider openai` with `OPENAI_API_KEY` is the
-only acceptable alternative if Gemini is unavailable.)
+only acceptable alternative if both antigravity and Gemini are unavailable.)
 
 ## Output
 `worlds/<world>/stories/<slug>/images/page-*.png` (winner), per-page `page-NN.prompt.txt`

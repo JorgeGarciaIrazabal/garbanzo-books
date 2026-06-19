@@ -251,38 +251,42 @@ uv run python scripts/build_site.py --out site_publish
 uv run python scripts/build_site.py
 ```
 
-## Image generation key — ALWAYS CHECK FIRST
+## Image generation — ALWAYS CHECK FIRST
 
 Before running `/illustrate` (or anything that calls `scripts/generate_images.py`),
-verify the image-gen key is present:
+verify the image-gen path is ready:
 
 ```bash
 make check-gemini
 ```
 
-- ✓ key found → `/illustrate` will render real images with the Nano Banana provider
-- ✗ key missing → `/illustrate` falls back to labeled SVG placeholders, and the book
-  can't actually be marked `published` without the user adding a key
+- ✓ `agy` CLI found → `/illustrate` will render real images with the **antigravity** provider
+  (default; local CLI via Google OAuth — no API key needed)
+- ⚠ no `agy`, but key found → falls back to the **nano-banana** provider (`GEMINI_API_KEY`)
+- ✗ neither found → `/illustrate` falls back to labeled SVG placeholders, and the book
+  can't actually be marked `published` without the user adding a key or installing `agy`
 
-The key lives in `.env` as `GEMINI_API_KEY=...` (or `GOOGLE_API_KEY=...`). A real
-exported env var beats the .env value. A blank exported value is treated as unset,
-so the .env value always fills in.
+The default provider is **antigravity** (the local `agy` CLI via Google OAuth — no key
+required). The fallback is **nano-banana** (Google Gemini `gemini-2.5-flash-image`), which
+needs `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in `.env`. A real exported env var beats the
+.env value. A blank exported value is treated as unset, so the .env value always fills in.
 
 The server (`ui/server.py`) loads `.env` exactly the same way at startup, and every
 subprocess it spawns (including the agent's tool calls) inherits the result. So
 restarting `make ui` is required after editing `.env` for the new key to reach the
 agent's image-generation calls.
 
-If the key is missing AND the user asked for a new book, do NOT silently switch to
-placeholders — run `make check-gemini`, report the result, and ask the user how to
-proceed (e.g. "Add a key to `.env` and I'll re-run, or shall I generate placeholders
-for now?").
+If both `agy` and the key are missing AND the user asked for a new book, do NOT silently
+switch to placeholders — run `make check-gemini`, report the result, and ask the user how
+to proceed (e.g. "Install `agy` and I'll re-run, or add a key to `.env`, or shall I
+generate placeholders for now?").
 
 ## Setup
 
 `uv sync` (or `make setup`) creates the `.venv` from `pyproject.toml`/`uv.lock`; run tools with
 `uv run python scripts/...`. (No uv? `pip install -r requirements.txt` + `python3` works too.)
-Image generation defaults to Google's
-**Nano Banana** (Gemini `gemini-2.5-flash-image`) — set a free `GEMINI_API_KEY` (or
-`GOOGLE_API_KEY`) from Google AI Studio. Without a key it emits labeled placeholder art so the
-whole pipeline still runs and validates offline. See `.env.example`.
+Image generation defaults to the **Antigravity** CLI (`agy`, via Google OAuth — no key
+needed); the fallback is Google's **Nano Banana** (Gemini `gemini-2.5-flash-image`) — set a
+free `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) from Google AI Studio. Without either it emits
+labeled placeholder art so the whole pipeline still runs and validates offline. See
+`.env.example`.

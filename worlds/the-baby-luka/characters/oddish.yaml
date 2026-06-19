@@ -1,0 +1,94 @@
+slug: oddish
+world: the-baby-luka
+name: Oddish
+role: sidekick
+species: 'Oddish (Pokémon #43, Gen 1 Kanto)'
+pronouns: it/they
+one_liner: A tiny round blue grass-Pokémon with leaf sprouts on its head — Luka's first real Pokémon friend.
+personality:
+  traits:
+  - gentle
+  - curious
+  - a little shy
+  - loyal
+  - playful
+  - brave when it counts
+  motivation: To find a sunny spot and a friend who understands it — and to nibble good snacks.
+  fears:
+  - big loud feet
+  - being caught by adults
+  - dark cold soil
+  flaws:
+  - slow walker — shuffles on little root-feet
+  - easily startled, ducks underground
+  - can't reach the high chair
+  strengths:
+  - kind and loyal
+  - knows grass-type moves (Stun Spore, Acid — used only for silly gags)
+  - surprising courage when Luka needs help
+  quirks:
+  - wiggles its leaves when happy
+  - hides by ducking its head underground leaving only leaves showing
+  - loves dropped Cheerios and berry bits
+  - makes a soft 'oddi-oddi' sound
+  values:
+  - sunshine
+  - friendship
+  - snacks
+  - gentle play
+voice:
+  speech_style: Soft, earnest, a bit timid. Speaks in short friendly sentences. Calls Luka 'Lu'.
+  catchphrases:
+  - Oddi-oddi!
+  - Lu, look!
+  - (scared) duck duck duck!
+  vocabulary_level: Simple warm Pokémon-speech (only Luka understands).
+appearance:
+  age_appearance: young Pokémon, small and round, toddler-scale
+  build: round blue body, no visible arms, two little root-feet
+  height: ankle-high to an adult, sits in Luka's lap easily
+  skin: smooth round blue body
+  hair: five bright green leafy sprouts on top of its head, like a tiny plant
+  eyes: big round black eyes with white shine dots, cute and expressive
+  outfit: none — it's a Pokémon; the leaves are its decoration
+  distinguishing_features:
+  - round blue body
+  - five green leaf sprouts on head
+  - two tiny root-feet
+  - big round black shiny eyes
+  color_palette:
+  - part: body
+    hex: 3B9BE0
+  - part: leaves
+    hex: 5BCB5F
+  - part: eyes
+    hex: 1A1A1A
+  - part: feet
+    hex: 5B4A8A
+  silhouette_notes: A round blue egg-shaped body with five leaves sticking up — reads as a walking radish.
+appearance_token: 'Oddish: small round toddler-scale Pokémon, round blue body (#3B9BE0), five bright green
+  leafy sprouts (#5BCB5F) on top of its head, two tiny root-feet (#5B4A8A), big round shiny black eyes
+  (#1A1A1A) with white shine dots, no arms, cute expressive face, ankle-high to an adult, on-model classic
+  anime Oddish design'
+reference_images:
+- characters/oddish.refs/model-sheet.png
+seed: 43043
+relationships:
+- character: luka
+  relation: first and best human friend — Luka understands it
+evolution:
+- stage: shy
+  order: 1
+  summary: Default — gentle, curious but timid, hides when adults are near.
+- stage: friend
+  order: 2
+  summary: After befriending Luka — braver, loyal, willing to risk being seen to help Lu.
+  personality_delta: Trusts Luka completely; will waddle out of hiding for him.
+  appearance_delta: leaves perk up brighter green when happy around Luka
+  unlocked_by: Luka Meets Oddish
+tags:
+- pokemon
+- sidekick
+- grass-type
+- gen1
+- kanto

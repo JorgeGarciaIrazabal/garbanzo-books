@@ -1,0 +1,10 @@
+PROMPT:
+Luka sitting on the living room rug, big happy smile, holding up his baby rattle like a Pokéball. A tiny Pikachu tail pokes out from under the couch behind him. Bright anime lighting, baby-eye-low POV. Playful secret-keeping mood. Keep lower third clear for text. Characters: Luka: chubby 12-month-old baby boy, round belly and short limbs, soft warm tan skin (#F1C27D), fluffy tufts of dark brown hair (#5B3A1A), huge round dark brown expressive eyes (#3B2A1A), wearing a sunshine-yellow onesie (#FFD23F) and a small red cap (#EE1515) worn backwards, one tiny sock slipping off his foot, barefoot otherwise, baby-face proportions with big chubby cheeks, knee-high to an adult [first-friend: gains a tiny grass-stain on the onesie knee from sitting with Oddish]. bold flat vector cartoon, anime-style cel-shading with crisp 2-3 tone flats, thick confident black outlines, bright punchy Pokémon-anime palette (#FFD23F sunshine yellow, #EE1515 pokeball red, #FFA52B pikachu orange, #3B9BE0 kanto sky blue, #5BCB5F bulba green, #5B4A8A soft shadow purple, #FFF4E0 cream paper), graphic sunburst lighting motifs, dynamic baby-eye-low POV, clean uncluttered composition with generous negative space, storybook-meets-anime-key-art mood, playful and funny, no text, no photorealism. palette: sunshine yellow #ffd23f, pokeball red #ee1515, pikachu orange #ffa52b, kanto sky blue #3b9be0, bulba green #5bcb5f, soft shadow purple #5b4a8a, cream paper #fff4e0. character colors: luka onesie #ffd23f, luka cap #ee1515, luka hair #5b3a1a, luka skin #f1c27d, luka eyes #3b2a1a. leave the top as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, 3D render, soft watercolor, gradient shading, blurry edges, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, dark mood, realistic proportions, gore, weapons
+
+SEED: 41117
+ASPECT: 4:3
+CHARACTERS: luka
+REFERENCES: characters/luka.refs/model-sheet.png

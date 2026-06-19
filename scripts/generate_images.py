@@ -17,14 +17,14 @@ This module is the CLI + the story/character drivers; the moving parts live in l
   lib/image_pipeline.py   — best-of-N render + local-vision QC + winner finalisation
 
 Providers:
-  - "nano-banana" (default) — Google Gemini's "Nano Banana" image model
-    (gemini-2.5-flash-image). Free to start: get a key at https://aistudio.google.com/apikey
-    and set GEMINI_API_KEY (or GOOGLE_API_KEY). Crucially, Nano Banana accepts the character's
-    reference images as INPUT, which anchors character consistency far better than text alone.
+  - "antigravity" (default) — Google Gemini image generation via the local Antigravity CLI
+    (agy) and its generate_image tool. Uses your existing Google OAuth session; no API key
+    required. Set ANTIGRAVITY_MODEL to override the default image model.
+  - "nano-banana" — Google Gemini's "Nano Banana" image model (gemini-2.5-flash-image).
+    Free to start: get a key at https://aistudio.google.com/apikey and set GEMINI_API_KEY (or
+    GOOGLE_API_KEY). Crucially, Nano Banana accepts the character's reference images as INPUT,
+    which anchors character consistency far better than text alone.
   - "openai" — OpenAI Images (gpt-image-1), set OPENAI_API_KEY.
-  - "antigravity" — Google Gemini image generation via the local Antigravity CLI (agy) and its
-    generate_image tool. Uses your existing Google OAuth session; no API key required. Set
-    ANTIGRAVITY_MODEL to override the default image model.
   - "placeholder" — no network: writes labeled SVG placeholders showing the assembled prompt +
     characters + seed over the world palette, so the whole pipeline runs/validates/builds
     offline. Automatically used as a fallback whenever the chosen provider has no API key.
@@ -42,7 +42,7 @@ Env:
   GEMINI_API_KEY / GOOGLE_API_KEY   key for Nano Banana (free tier from Google AI Studio)
   GEMINI_IMAGE_MODEL                 override model (default gemini-2.5-flash-image; e.g.
                                      gemini-3-pro-image = "Nano Banana Pro", gemini-3.1-flash-image)
-  IMAGE_PROVIDER                     default provider (default: nano-banana)
+  IMAGE_PROVIDER                     default provider (default: antigravity)
   OLLAMA_HOST                        Ollama endpoint (default http://localhost:11434)
   VISION_QC_MODEL                    override the auto-picked vision model
                                      (default: first vision-capable model pulled)
@@ -255,11 +255,11 @@ def main() -> int:
     ap.add_argument("--character", help="<world>/<char> — generate a model sheet instead")
     ap.add_argument("--page", type=int, help="only this page number")
     ap.add_argument("--seed", type=int, help="override seed")
-    ap.add_argument("--provider", default=os.getenv("IMAGE_PROVIDER", "nano-banana"),
+    ap.add_argument("--provider", default=os.getenv("IMAGE_PROVIDER", "antigravity"),
                     choices=["nano-banana", "gemini", "openai", "antigravity", "placeholder"],
-                    help="default: nano-banana (Google Gemini image model); falls back to "
-                         "placeholders if no API key is set. antigravity uses the local agy CLI "
-                         "and its generate_image tool via Google OAuth")
+                    help="default: antigravity (local agy CLI via Google OAuth, no API key); "
+                         "nano-banana/gemini use GEMINI_API_KEY and fall back to placeholders "
+                         "if no key is set")
     ap.add_argument("--print-prompts", action="store_true", help="dry run: only print prompts")
     ap.add_argument("--verify", action="store_true",
                     help="check render-readiness invariants (tokens/seeds/refs) without "

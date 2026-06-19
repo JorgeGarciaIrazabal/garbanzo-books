@@ -25,9 +25,11 @@ Workflow:
 4. Fix drift by strengthening the appearance_token, leaning on the reference image, re-pinning
    the seed, or regenerating the single bad page.
 
-Real Gemini PNGs are REQUIRED. SVG placeholders are a dev-only fallback and are NEVER
-acceptable output: if the script emits a `.svg`, stop, fix the root cause (set
-`GEMINI_API_KEY` / `GOOGLE_API_KEY`, enable billing if free quota is 0, or switch
-`GEMINI_IMAGE_MODEL`), and re-run until every page and character sheet is a real `.png`.
-Do not pass `--provider placeholder`.
+Real PNGs are REQUIRED. The default provider is antigravity (the local `agy` CLI via Google
+OAuth — no key needed); if `agy` isn't installed, fall back to `--provider nano-banana` with
+`GEMINI_API_KEY`/`GOOGLE_API_KEY`. SVG placeholders are a dev-only fallback and are NEVER
+acceptable output: if the script emits a `.svg`, stop, fix the root cause (install/sign in to
+`agy`, or set `GEMINI_API_KEY` / `GOOGLE_API_KEY`, enable billing if free quota is 0, or
+switch `GEMINI_IMAGE_MODEL`), and re-run until every page and character sheet is a real
+`.png`. Do not pass `--provider placeholder`.
 Return which images were generated and any pages that need a human eye.

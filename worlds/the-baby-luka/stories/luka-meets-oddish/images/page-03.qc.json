@@ -1,0 +1,19 @@
+{
+  "page": 3,
+  "prompt_seed": 41117,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.2,
+      "reason": "The illustration largely meets the specifications, with only minor stylistic variations.",
+      "flags": [
+        "style_inconsistent"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-03-41117.png"
+    }
+  ],
+  "winner": "page-03.png"
+}

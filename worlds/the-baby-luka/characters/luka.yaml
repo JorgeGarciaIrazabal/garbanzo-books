@@ -1,0 +1,103 @@
+slug: luka
+world: the-baby-luka
+name: Luka
+role: protagonist
+species: human baby
+pronouns: he/him
+one_liner: A one-year-old who secretly talks to Pokémon and is deeply misunderstood by his loving parents.
+personality:
+  traits:
+  - curious
+  - mischevious
+  - determined
+  - good-humored
+  - secretive
+  - easily frustrated by baby things
+  motivation: To play with his Pokémon friends and be understood — and to avoid broccoli at all costs.
+  fears:
+  - the broccoli spoon coming at him
+  - naptime interrupting a Pokémon adventure
+  - Mom finding out about his secret
+  flaws:
+  - can't walk well yet — pulls himself up and wobbles
+  - short attention span
+  - limited to baby skills so his schemes backfire hilariously
+  strengths:
+  - endless imagination
+  - brave with Pokémon
+  - creative baby-workarounds
+  - infectious giggle
+  quirks:
+  - glances at the camera with a 'don't tell Mom' look
+  - points and babbles to cover for a Pokémon
+  - treats his rattle like a Pokéball
+  - says 'Pika!' which Mom hears as baby babble
+  values:
+  - friendship
+  - play
+  - freedom from mashed peas
+voice:
+  speech_style: Fluent when talking TO Pokémon (full sentences, confident). To adults it comes out as
+    'ba ba ga' babble — the comic split. Internally thoughtful and funny.
+  catchphrases:
+  - Pika-pals!
+  - (to adults) ba ba ba!
+  - (camera glance) shh.
+  vocabulary_level: Fluent Pokémon-talker; baby-babble to grown-ups.
+appearance:
+  age_appearance: 12-month-old baby, round chubby cheeks, soft features
+  build: chubby toddler, round belly, short limbs
+  height: knee-high to an adult, just pulls himself up to standing
+  skin: soft warm tan
+  hair: a few fluffy tufts of dark brown hair on top, otherwise baby-bald
+  eyes: big round dark brown eyes, very expressive
+  outfit: a sunshine-yellow onesie with a tiny red cap on backwards; barefoot; one tiny sock always slipping
+    off
+  distinguishing_features:
+  - backwards red cap
+  - yellow onesie
+  - one slipping sock
+  - round chubby cheeks
+  - huge expressive eyes
+  color_palette:
+  - part: onesie
+    hex: FFD23F
+  - part: cap
+    hex: EE1515
+  - part: hair
+    hex: 5B3A1A
+  - part: skin
+    hex: F1C27D
+  - part: eyes
+    hex: 3B2A1A
+  silhouette_notes: Tiny round-bodied baby in a backwards cap, big head, short limbs — unmistakably a
+    baby, not a kid.
+appearance_token: 'Luka: chubby 12-month-old baby boy, round belly and short limbs, soft warm tan skin
+  (#F1C27D), fluffy tufts of dark brown hair (#5B3A1A), huge round dark brown expressive eyes (#3B2A1A),
+  wearing a sunshine-yellow onesie (#FFD23F) and a small red cap (#EE1515) worn backwards, one tiny sock
+  slipping off his foot, barefoot otherwise, baby-face proportions with big chubby cheeks, knee-high to
+  an adult'
+reference_images:
+- characters/luka.refs/model-sheet.png
+seed: 41117
+relationships:
+- character: oddish
+  relation: new best Pokémon friend — met in the backyard
+- character: mom
+  relation: loving mom who forces broccoli and naps, can't see Pokémon
+evolution:
+- stage: baby
+  order: 1
+  summary: Default stage — curious, mischievous, can't walk well, has Pokémon friends but no human gets
+    him.
+- stage: first-friend
+  order: 2
+  summary: After making his first deliberate Pokémon friend (Oddish) — braver, more trusting of his own
+    secret world.
+  personality_delta: More confident reaching out to Pokémon; learns friendship is worth the risk.
+  appearance_delta: gains a tiny grass-stain on the onesie knee from sitting with Oddish
+  unlocked_by: Luka Meets Oddish
+tags:
+- protagonist
+- baby
+- pokemon-talker

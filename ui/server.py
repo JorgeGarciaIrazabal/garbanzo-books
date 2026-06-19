@@ -78,14 +78,25 @@ ENV_STATUS = load_env_file()
 
 
 def print_env_check() -> None:
-    """Startup self-check so the user knows up front whether real illustrations will render."""
-    if not ENV_STATUS["env_exists"]:
-        print("  ⚠ no .env file found — image generation will use labeled placeholders.")
+    """Startup self-check so the user knows up front whether real illustrations will render.
+
+    The default image provider is now antigravity (the local agy CLI via Google OAuth — no
+    API key needed), so we check for the CLI first and treat the Gemini key as the fallback
+    path for the nano-banana provider."""
+    import shutil
+    agy_path = shutil.which("agy") or str(Path.home() / ".local" / "bin" / "agy")
+    agy_present = shutil.which("agy") is not None or Path(agy_path).exists()
+    if agy_present:
+        print("  image provider: antigravity (agy CLI) ✓ — illustrations will render via OAuth")
     elif ENV_STATUS["gemini"]:
-        print("  image key: GEMINI_API_KEY loaded from .env ✓ (illustrations will render)")
+        print("  image provider: no agy CLI found — falling back to nano-banana (GEMINI_API_KEY ✓)")
+        print("    install agy to use the antigravity path, or set IMAGE_PROVIDER=nano-banana.")
+    elif not ENV_STATUS["env_exists"]:
+        print("  ⚠ no .env file and no agy CLI — image generation will use labeled placeholders.")
     else:
-        print("  ⚠ .env has no GEMINI_API_KEY/GOOGLE_API_KEY — illustrations will be placeholders.")
-        print("    get a free key at https://aistudio.google.com/apikey, add it to .env, restart.")
+        print("  ⚠ no agy CLI and .env has no GEMINI_API_KEY/GOOGLE_API_KEY — illustrations will be placeholders.")
+        print("    install agy (no key needed), or get a free key at https://aistudio.google.com/apikey,")
+        print("    add it to .env, and restart.")
 
 
 @asynccontextmanager

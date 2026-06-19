@@ -1,0 +1,19 @@
+{
+  "page": 1,
+  "prompt_seed": 41117,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.2,
+      "reason": "The illustration accurately depicts Luka and his interaction with Pok\u00e9mon, adhering to the specified style and character tokens.",
+      "flags": [
+        "good"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-01-41117.png"
+    }
+  ],
+  "winner": "page-01.png"
+}

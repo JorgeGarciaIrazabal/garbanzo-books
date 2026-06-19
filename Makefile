@@ -63,25 +63,34 @@ game-lab:
 	$(RUN) scripts/game_lab.py
 
 check-gemini:
-	@# Quick check for the image-gen key. The studio/server load it the same way
-	@# (env first, then .env) so this is the authoritative pre-flight for /illustrate.
-	@if [ -n "$$GEMINI_API_KEY" ] || [ -n "$$GOOGLE_API_KEY" ]; then \
+	@# Pre-flight for /illustrate. The default provider is now antigravity (the local agy CLI,
+	@# via Google OAuth — no API key needed), so we check for the CLI first and fall back to the
+	@# Gemini key check for the nano-banana provider. The studio/server loads .env the same way
+	@# (env first, then .env) so this is the authoritative pre-flight.
+	@if command -v agy >/dev/null 2>&1 || [ -x "$$HOME/.local/bin/agy" ]; then \
+		[ -x "$$HOME/.local/bin/agy" ] && agy_path="$$HOME/.local/bin/agy" || agy_path=$$(command -v agy); \
+		printf "  \033[32m✓\033[0m Antigravity CLI found: %s\n" "$$agy_path"; \
+		printf "    /illustrate will render real images (provider: antigravity, via OAuth).\n"; \
+	elif [ -n "$$GEMINI_API_KEY" ] || [ -n "$$GOOGLE_API_KEY" ]; then \
 		[ -n "$$GEMINI_API_KEY" ] && src="GEMINI_API_KEY (env, length=$${#GEMINI_API_KEY})" \
 			|| src="GOOGLE_API_KEY (env, length=$${#GOOGLE_API_KEY})"; \
-		printf "  \033[32m✓\033[0m image key present: %s\n" "$$src"; \
+		printf "  \033[33m⚠\033[0m no agy CLI, but image key present: %s\n" "$$src"; \
 		printf "    /illustrate will render real images (provider: nano-banana).\n"; \
+		printf "    Install agy to use the antigravity path, or set IMAGE_PROVIDER=nano-banana.\n"; \
 	else \
 		if [ -f .env ] && grep -qE '^(GEMINI_API_KEY|GOOGLE_API_KEY)=.+\S' .env; then \
 			val=$$(grep -E '^(GEMINI_API_KEY|GOOGLE_API_KEY)=' .env | head -1 | cut -d= -f2-); \
-			printf "  \033[32m✓\033[0m image key present: .env (length=%d)\n" "$${#val}"; \
+			printf "  \033[33m⚠\033[0m no agy CLI, but image key present: .env (length=%d)\n" "$${#val}"; \
 			printf "    /illustrate will render real images (provider: nano-banana).\n"; \
+			printf "    Install agy to use the antigravity path, or set IMAGE_PROVIDER=nano-banana.\n"; \
 		else \
-			printf "  \033[31m✗\033[0m no image key found.\n"; \
+			printf "  \033[31m✗\033[0m no agy CLI and no image key found.\n"; \
 			printf "    Image generation will fall back to labeled placeholders.\n"; \
-			printf "    To render real images:\n"; \
-			printf "      1. Get a free key at https://aistudio.google.com/apikey\n"; \
-			printf "      2. Add to .env:   GEMINI_API_KEY=your-key\n"; \
-			printf "      3. Run \`make ui\` again so the server reloads .env\n"; \
+			printf "    To render real images (pick one):\n"; \
+			printf "      • Antigravity (default, no key): install the agy CLI and sign in with Google\n"; \
+			printf "      • Nano Banana: get a free key at https://aistudio.google.com/apikey,\n"; \
+			printf "        add GEMINI_API_KEY=your-key to .env, set IMAGE_PROVIDER=nano-banana,\n"; \
+			printf "        and run \`make ui\` again so the server reloads .env\n"; \
 			exit 1; \
 		fi; \
 	fi

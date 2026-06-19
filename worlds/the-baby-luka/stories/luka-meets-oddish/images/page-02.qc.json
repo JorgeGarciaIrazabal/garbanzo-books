@@ -1,0 +1,19 @@
+{
+  "page": 2,
+  "prompt_seed": 761798165,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.5,
+      "reason": "The illustration effectively captures the scene and character details according to the specifications.",
+      "flags": [
+        "too_dark"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-02-761798165.png"
+    }
+  ],
+  "winner": "page-02.png"
+}

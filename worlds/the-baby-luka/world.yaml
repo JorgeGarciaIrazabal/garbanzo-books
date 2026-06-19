@@ -1,0 +1,170 @@
+slug: the-baby-luka
+title: The baby Luka
+tagline: A one-year-old who chats with Pokémon — if only his parents could understand him.
+premise: 'Luka is an ordinary-looking one-year-old with an extraordinary secret: he can understand and
+  talk to real Gen 1 (Kanto) Pokémon. While Mom and Dad see a babbling toddler who needs naps and mashed
+  peas, Luka is secretly hosting Bulbasaurs in the backyard, trading snacks with Pikachu under the high
+  chair, and settling Squirtle turf wars in the bathtub. The comedy lives in the enormous gap between
+  his rich Pokémon life and the baffling ''baby things'' his loving, well-meaning parents keep making
+  him do.'
+tone:
+- funny
+- playful
+- mischievous
+- warm
+genres:
+- comedy
+- slice-of-life
+- adventure
+target_years:
+- 5
+- 6
+- 7
+target_age_bands:
+- 3-5
+- 5-7
+languages:
+- en
+geography:
+  overview: A sunny ordinary suburban home and its surrounds — but through Luka's eyes every room is a
+    Pokémon habitat in disguise. The grown-up world (house, yard, park) and the Pokémon world occupy the
+    same space; only Luka sees both layers.
+  locations:
+  - name: Luka's House
+    description: 'The main stage. To adults: a normal baby-proofed home. To Luka: a multi-zone Pokémon
+      sanctuary — living room savanna, kitchen snack-trading post, nursery nap-bunker.'
+    mood: cozy-chaotic
+    recurring: true
+  - name: The Backyard
+    description: Luka's safari zone. Grass-type Pokémon graze by the swings, a Pidgey nest sits in the
+      oak tree, and the fence has a known Diglett bump. Where wild encounters happen.
+    mood: sunny-adventurous
+    recurring: true
+  - name: The Park
+    description: Public Pokémon encounters beyond the yard — sandpit Sandshrew, pond Poliwag, and other
+      kids who can't see what Luka sees. Field-trip stories live here.
+    mood: breezy-social
+    recurring: true
+  - name: The Bathtub
+    description: Squirtle and Magikarp territory. Bath time is secretly a water-type splash battle — adult
+      sees bubbles, Luka sees a naval skirmish.
+    mood: splashy-wild
+    recurring: true
+  - name: Under the High Chair
+    description: The indoor snack economy. Crumbs and dropped peas are currency; Pikachu runs the trade.
+      Ground-level, baby-eye perspective.
+    mood: sneaky-funny
+    recurring: true
+  - name: Naptime Dreamland
+    description: Where the rules bend further — Luka's dreams blend real Pokémon memories with baby-imagination.
+      Used for the wildest, most surreal spreads.
+    mood: dreamy-surreal
+    recurring: false
+rules:
+- Only Luka understands Pokémon speech. To adults, Pokémon sound like animal noises and Luka sounds like
+  baby babble — even mid-conversation. This misunderstanding is the engine of every joke.
+- Pokémon are real Gen 1 (Kanto) Pokémon and behave like their anime/game counterparts — but they're roughly
+  toddler-scale in this world (no giant Onix demolishing the house). Big Pokémon stay outside.
+- Mom and Dad are loving and well-meaning, NEVER villains. They just literally cannot perceive the Pokémon
+  layer. The comedy is the misunderstanding, not bad parenting — never make parents cruel or neglectful.
+- 'Luka''s baby limitations are REAL and drive the comedy of problem-solving: he can''t walk well, can''t
+  reach high things, has a short attention span, and is subject to naps/meals/diaper changes. Every Pokémon
+  problem needs a creative baby-workaround.'
+- Pokémon are sneaky and resourceful — if one wants to visit Luka, walls and doors don't stop it for long.
+  Adults just never catch them in the open (comic timing/ducking-behind-furniture).
+- No Pokémon gets hurt or captured in a scary way. 'Battles' are playful roughhousing and anime-style
+  poses, never anime combat with damage. Stakes are funny-stakes (a stolen snack, a ruined nap), not danger.
+- Luka's secret never gets exposed to adults — the gap persists. Close calls and near-discoveries are
+  a core comic beat, but the parents never actually see a Pokémon.
+factions:
+- name: The Grown-Up World
+  description: Mom, Dad, babysitters, the pediatrician. They run on schedules, safety rules, and 'age-appropriate
+    activities'. Love Luka fiercely — in exactly the wrong language.
+  values: schedules, safety, mashed food, naptime, milestones
+- name: The Backyard Pokémon Crew
+  description: The outdoor regulars — Bulbasaur, Pidgey, Oddish, Caterpie, a shy Diglett. Luka's wild
+    friends; they come when the back door's open.
+  values: play, sunbeam naps, berry snacks, gentle mischief
+- name: The Indoor Stowaways
+  description: Pokémon who've snuck inside and live hidden — Pikachu under the high chair, a Jigglypuff
+    in the linen closet, a Meowth testing the pantry. Masters of ducking out of sight.
+  values: hiding spots, pantry raids, avoiding adult detection
+timeline:
+- label: The First Word
+  description: Luka's first word was 'Pika!' — parents heard it as 'peek-a-boo' and were delighted. The
+    secret began.
+- label: The Backyard Discovery
+  description: Luka crawls onto the grass and meets his first Pokémon (a curious Bulbasaur). The backyard
+    safari zone opens.
+- label: The High Chair Treaty
+  description: Luka negotiates the original snack-sharing deal with Pikachu. The indoor snack economy
+    is founded.
+- label: The Bath Squirtle Incident
+  description: Bath time becomes a splash battle. Mom blames the rubber duck. Luka knows the truth.
+motifs:
+- Baby items repurposed as Pokémon gear — rattle as a Pokéball stand-in, blanket as a cape, sippy cup
+  as a potion.
+- '''Babble vs. Speech'' split panels — what adults hear (gibberish/animal noises) vs. what''s actually
+  being said (full conversation).'
+- The snack economy — berries, mushed peas, and dropped Cheerios as Pokémon currency.
+- Luka's stealth glance to the camera — the 'don't tell Mom' look, fourth-wall-aware mischief.
+- Anime-style action lines and poses for baby-scale 'battles' — dramatic, but the stakes are a cracker.
+- The disappearing act — a Pokémon vanishing behind furniture one frame before an adult looks.
+themes:
+- being understood — and the comedy of being misunderstood
+- imagination as a superpower
+- friendship across difference (a baby and a Pikachu)
+- the secret life kids lead that grown-ups forget
+art_style:
+  medium: bold flat vector cartoon with cel-shading, anime-influenced storybook illustration
+  line_quality: clean confident black outlines, thick and graphic, anime production-cel style
+  shading: flat cel-shading with 2-3 tone flats per color, crisp shadow shapes, no gradient blur
+  lighting: bright even anime lighting with occasional graphic sunburst/flare motifs, punchy rim accents
+  perspective: dynamic anime angles — low baby-eye POV, dramatic close-ups, occasional fisheye for comedy
+  palette:
+  - name: sunshine yellow
+    hex: '#FFD23F'
+    role: primary
+  - name: pokeball red
+    hex: '#EE1515'
+    role: accent
+  - name: pikachu orange
+    hex: '#FFA52B'
+    role: accent
+  - name: kanto sky blue
+    hex: '#3B9BE0'
+    role: sky
+  - name: bulba green
+    hex: '#5BCB5F'
+    role: primary
+  - name: soft shadow purple
+    hex: '#5B4A8A'
+    role: shadow
+  - name: cream paper
+    hex: '#FFF4E0'
+    role: background
+  influences:
+  - Pokémon anime (Kanto era) production cels
+  - bold flat storybook cartoons
+  - cel-shaded anime key art
+  prompt_style_block: 'bold flat vector cartoon, anime-style cel-shading with crisp 2-3 tone flats, thick
+    confident black outlines, bright punchy Pokémon-anime palette (#FFD23F sunshine yellow, #EE1515 pokeball
+    red, #FFA52B pikachu orange, #3B9BE0 kanto sky blue, #5BCB5F bulba green, #5B4A8A soft shadow purple,
+    #FFF4E0 cream paper), graphic sunburst lighting motifs, dynamic baby-eye-low POV, clean uncluttered
+    composition with generous negative space, storybook-meets-anime-key-art mood, playful and funny, no
+    text, no photorealism'
+  negative_prompt: photorealism, 3D render, soft watercolor, gradient shading, blurry edges, scary or
+    distorted faces, extra fingers, text artifacts, watermark, cluttered composition, dark mood, realistic
+    proportions, gore, weapons
+  aspect_ratio: '4:3'
+  text_treatment:
+    placement: lower-third
+    scrim: cream rounded panel at 90% opacity with thick black outline, anime speech-bubble feel
+    font_family: Andika
+    dyslexia_friendly: true
+tags:
+- pokemon
+- baby
+- comedy
+- anime
+- kanto

@@ -12,8 +12,8 @@ Rules:
 
 This command owns the two **image** gates of the studio's four-gate flow (① character
 description → ② story description → ③ character images → ④ story images). Image generation
-spends real budget (Nano Banana) and re-rendering is expensive, so words are locked first and
-every render ends in a **human sign-off**.
+spends real budget (Antigravity/Gemini) and re-rendering is expensive, so words are locked
+first and every render ends in a **human sign-off**.
 
 **A `--character` pass = GATE ③ (character images).**
 1. Generate the reference sheet, QC against the silhouette & distinguishing-features checklist.
@@ -41,8 +41,10 @@ Then:
    **approve or request modifications**. Loop (regenerate flagged pages) until approved. Don't
    move to `/validate` + `/publish` until they say go.
 
-(Real Gemini PNGs are REQUIRED. If `GEMINI_API_KEY` / `GOOGLE_API_KEY` is unset the script
-falls back to SVG placeholders — treat that as a hard failure: set the key, re-run, and
+(Real PNGs are REQUIRED. The default provider is antigravity (the local `agy` CLI via Google
+OAuth — no key needed); if `agy` isn't installed, the script falls back to nano-banana and
+needs `GEMINI_API_KEY`/`GOOGLE_API_KEY`. If neither is available the script writes SVG
+placeholders — treat that as a hard failure: install `agy` (or set a Gemini key), re-run, and
 verify every page has a real `.png` before continuing. Never accept `.svg` output for a page
 or character sheet.)
 

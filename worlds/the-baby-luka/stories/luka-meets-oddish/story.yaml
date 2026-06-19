@@ -1,0 +1,408 @@
+slug: luka-meets-oddish
+world: the-baby-luka
+title: Luka Meets Oddish
+logline: A baby who talks to Pokémon befriends a shy Oddish in the backyard — and the two bond over their
+  shared, desperate hatred of broccoli.
+summary: 'Luka, a one-year-old who secretly talks to real Gen 1 Pokémon, crawls into the backyard and
+  meets a shy Oddish hiding in the garden. They''re just becoming friends when Mom calls lunch — and produces
+  a bowl of mushy green broccoli. Luka clamps his mouth shut, then has a bright idea: offer the broccoli
+  to his new grass-type pal! But Oddish pulls an even bigger gross face — grass Pokémon don''t eat cooked
+  broccoli either. Bonded by mutual disgust, the two new friends pull yuck-faces together while Mom, completely
+  oblivious, spots only Oddish''s leaves and assumes it''s a weed. Luka babbles cover, the broccoli vanishes
+  into the grass, and Mom beams: ''Good boy, you ate it all!'' From then on, every lunch is a secret broccoli-protest
+  between best friends.'
+age_band: 3-5
+target_year: 5
+reading_level:
+  read_mode: solo
+  target_fk_grade: 0.3
+  fk_grade_tolerance: 0.3
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 25
+  max_sentence_words: 8
+  decoding_focus: ''
+  decodable: false
+themes:
+- friendship
+- mischief
+- the secret life kids lead
+moral: ''
+characters:
+- slug: luka
+  stage: first-friend
+  role_in_story: protagonist
+- slug: oddish
+  stage: friend
+  role_in_story: sidekick — the new best friend
+- slug: mom
+  stage: oblivious
+  role_in_story: the broccoli-wielding loving antagonist
+spine:
+  once_upon_a_time: Luka was a one-year-old baby with a secret — he could talk to real Pokémon, but his
+    parents only heard 'ba ba ba.'
+  every_day: Luka played with Pokémon friends in the backyard while Mom fed him mushy baby food he did
+    not love.
+  until_one_day: Luka met a shy Oddish hiding in the garden — and Mom called him in for lunch with a big
+    bowl of broccoli.
+  because_of_that:
+  - Luka tried to say hello, but Oddish was scared and ducked underground.
+  - Mom chased Luka with the broccoli spoon — 'Here comes the airplane!' — and Luka clamped his mouth
+    shut.
+  - 'Luka had an idea: he offered the broccoli to Oddish. But Oddish pulled an even BIGGER gross face
+    — grass Pokémon hate cooked broccoli too!'
+  - Mom came out to the yard. Oddish popped underground, leaving only its leaves. Mom saw the leaves and
+    said, 'Is that a weed, sweetie?'
+  until_finally: 'Luka babbled ''ba ba ba'' to cover, the broccoli was gone in the grass, and Mom beamed:
+    ''Good boy, you ate it all!'' — while Luka and Oddish shared a secret gross-face grin. They were best
+    friends now.'
+  ever_since_then: Every lunch, Mom brings the broccoli. Every lunch, two gross faces pop up — one above
+    the table, one in the garden. Best friends hate broccoli together.
+pages:
+- number: 0
+  kind: title
+  text: Luka Meets Oddish
+  image:
+    prompt: 'Cover establishing shot: a sunny backyard at baby-eye-low POV. Luka (chubby baby in yellow
+      onesie, red backwards cap) sits in soft green grass, reaching out a chubby hand toward a shy round
+      blue Oddish peeking out from a garden bush. Oddish''s five green leaves poke up from the bush. Big
+      anime sunburst in the sky. Warm friendly playful mood. Keep lower third clear for title text.'
+    characters_present:
+    - luka
+    - oddish
+    alt: Baby Luka in a sunny backyard, reaching toward a shy blue Oddish hiding in a garden bush.
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: 'This is Luka. He is one.
+
+    He talks to Pokémon!
+
+    "Pika-pals!" says Luka.'
+  image:
+    prompt: Luka sitting on the living room rug, big happy smile, holding up his baby rattle like a Pokéball.
+      A tiny Pikachu tail pokes out from under the couch behind him. Bright anime lighting, baby-eye-low
+      POV. Playful secret-keeping mood. Keep lower third clear for text.
+    characters_present:
+    - luka
+    alt: Baby Luka on the rug holding a rattle like a Pokéball, a Pikachu tail poking from under the couch.
+    file: images/page-01.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: Pokémon
+    clue: fun creature friends Luka can talk to
+    icon: ⚡
+- number: 2
+  kind: story
+  text: 'But Mom can not hear them.
+
+    Mom hears, "ba ba ba."'
+  image:
+    prompt: 'Split-reaction shot: Mom (tall from baby POV, messy bun, sky-blue cardigan, apron) beams
+      down at Luka, who is sitting up babbling with arms out. A speech-bubble motif: Mom hears ''ba ba
+      ba'' while Luka actually says ''Pika-pals!''. Warm funny misunderstanding mood. Keep lower third
+      clear for text.'
+    characters_present:
+    - luka
+    - mom
+    alt: Mom beams at babbling Luka, a speech bubble shows she hears baby babble while he says 'Pika-pals!'.
+    file: images/page-02.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 3
+  kind: story
+  text: 'Luka goes out to play.
+
+    The grass is green.
+
+    What is that?'
+  image:
+    prompt: Luka on all fours crawling onto the bright green backyard grass, sunlit yard, reaching toward
+      a garden bush where a round blue shape (Oddish) is just barely visible peeking through leaves. Anime
+      sunburst lighting. Curious discovery mood. Keep lower third clear for text.
+    characters_present:
+    - luka
+    alt: Luka crawling onto the sunny backyard grass, spotting a round blue shape peeking from a bush.
+    file: images/page-03.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 4
+  kind: story
+  text: 'It is not a ball.
+
+    It is an Oddish!
+
+    "Hi!" says Luka.'
+  image:
+    prompt: 'Close-up at baby-eye-low POV: the round blue Oddish fully visible now, peeking shyly from
+      behind the bush, big round shiny black eyes meeting Luka''s big expressive eyes. Luka reaches out
+      a chubby hand in greeting. Oddish''s five green leaves perk up with curiosity. Sweet first-meeting
+      mood. Keep lower third clear for text.'
+    characters_present:
+    - luka
+    - oddish
+    alt: Luka greets a shy Oddish peeking from the bush, reaching out a chubby hand.
+    file: images/page-04.png
+  layout:
+    text_position: left
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: Oddish
+    clue: a round blue grass Pokémon with leaves on its head
+    icon: 🌱
+- number: 5
+  kind: story
+  text: 'Oddish is shy.
+
+    Pop! Oddish goes in the dirt.
+
+    Only leaves show.'
+  image:
+    prompt: 'Comedy beat: Oddish has ducked underground leaving only its five green leafy sprouts poking
+      up from the soil. Luka looks surprised and delighted, peering at the leaves. Anime reaction lines
+      around the leaves. Funny cute mood. Keep lower third clear for text.'
+    characters_present:
+    - luka
+    - oddish
+    alt: Oddish hides underground, only its five green leaves poke up from the dirt, Luka looks delighted.
+    file: images/page-05.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 6
+  kind: story
+  text: 'Luka laughs.
+
+    "Come out!"
+
+    Oddish pops up.
+
+    "Friends?" says Oddish.'
+  image:
+    prompt: Oddish pops back up out of the soil, leaves wobbling happily, big round eyes beaming at Luka.
+      Luka giggles with a huge open-mouth baby smile, arms out. Bright sunburst of friendship lighting.
+      Warm joyful first-friend mood. Keep lower third clear for text.
+    characters_present:
+    - luka
+    - oddish
+    alt: Oddish pops back up beaming, Luka giggles with arms out — they become friends.
+    file: images/page-06.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 7
+  kind: story
+  text: 'Mom calls out.
+
+    "Luka! Time to eat!"
+
+    Uh oh.'
+  image:
+    prompt: From baby-eye-low POV, Mom's silhouette looms in the back door frame, sky-blue cardigan, messy
+      bun, holding a bowl and spoon, beaming. Luka in the foreground freezes mid-giggle, eyes wide, anime
+      sweat-drop reaction. Oddish just starting to duck behind the bush. Comedy uh-oh mood. Keep lower
+      third clear for text.
+    characters_present:
+    - luka
+    - mom
+    - oddish
+    alt: Mom appears in the back door with a bowl and spoon, Luka freezes, Oddish ducks behind the bush.
+    file: images/page-07.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 8
+  kind: story
+  text: 'Mom has a green spoon.
+
+    "Here comes the plane! Vroom!"
+
+    It is broccoli.'
+  image:
+    prompt: Luka strapped into the high chair, eyes wide with comic horror at the spoonful of bright green
+      mushy broccoli coming toward him. Mom looms tall from baby POV, making an airplane motion with the
+      spoon, big cheerful airplane-smile. Anime action lines on the spoon. Comic dread mood. Keep lower
+      third clear for text.
+    characters_present:
+    - luka
+    - mom
+    alt: Luka in the high chair looking horrified as Mom airplane-spoons green broccoli toward him.
+    file: images/page-08.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: broccoli
+    clue: a green veggie — Luka does not like it
+    icon: 🥦
+- number: 9
+  kind: story
+  text: 'Luka shuts his mouth.
+
+    No. No no no!
+
+    No broccoli!'
+  image:
+    prompt: 'Extreme close-up of Luka''s face: mouth clamped shut tight, cheeks puffed, big eyes glaring
+      sideways, anime protest determination lines. Bright punchy colors. Pure baby-protest comedy. Keep
+      lower third clear for text.'
+    characters_present:
+    - luka
+    alt: Extreme close-up of Luka clamping his mouth shut in protest, glaring at the broccoli spoon.
+    file: images/page-09.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 10
+  kind: story
+  text: 'Luka has an idea!
+
+    He drops it in the grass.
+
+    "Here, Oddish!"'
+  image:
+    prompt: Luka, out of the high chair and sitting in the backyard grass, sneakily drops a glob of green
+      broccoli toward Oddish, who is peeking out from the bush. Luka has a sneaky scheming grin, one finger
+      to his lips in a 'shh' gesture, anime mischievous sparkles. Keep lower third clear for text.
+    characters_present:
+    - luka
+    - oddish
+    alt: Luka sneakily drops broccoli toward Oddish with a mischievous shh gesture.
+    file: images/page-10.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 11
+  kind: story
+  text: 'Oddish sniffs it.
+
+    YUCK!
+
+    Oddish does not like it too!'
+  image:
+    prompt: 'Comedy punchline: Oddish has sniffed the broccoli glob and pulled an enormous exaggerated
+      gross-face — tongue out, eyes squished, leaves drooping in disgust. The broccoli glob sits rejected
+      on the grass. Luka beside it is cracking up laughing, huge baby belly-laugh. Anime gross-out reaction
+      lines. Hilarious mood. Keep lower third clear for text.'
+    characters_present:
+    - luka
+    - oddish
+    alt: Oddish pulls a huge gross face at the broccoli, Luka cracks up laughing beside it.
+    file: images/page-11.png
+  layout:
+    text_position: right
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: YUCK
+    clue: what you say when food is gross
+    icon: 🤢
+- number: 12
+  kind: story
+  text: 'Mom comes out.
+
+    Oddish ducks!
+
+    Mom sees the leaves.
+
+    "A weed?" says Mom.'
+  image:
+    prompt: Mom steps onto the backyard grass, looking down at Oddish's five green leafy sprouts poking
+      from the soil (Oddish has ducked underground). Mom has a puzzled tolerant smile, tilting her head.
+      Luka stands wobbly nearby, eyes wide, anime nervous sweat-drop. Close-call comedy mood. Keep lower
+      third clear for text.
+    characters_present:
+    - luka
+    - mom
+    - oddish
+    alt: Mom spots Oddish's leaves in the grass and thinks it's a weed, Luka looks nervous.
+    file: images/page-12.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 13
+  kind: story
+  text: 'Luka points up.
+
+    Mom looks up.
+
+    The broccoli is gone!
+
+    "Good boy!"'
+  image:
+    prompt: Luka babbles innocently pointing up at the sky with a chubby finger, huge angelic baby smile.
+      Mom looks up, pleased and proud, hands clapping. In the foreground low grass, Oddish's leaves poke
+      up next to the hidden broccoli glob — a secret only the reader sees. Triumphant mischievous mood.
+      Keep lower third clear for text.
+    characters_present:
+    - luka
+    - mom
+    - oddish
+    alt: Luka points at the sky innocently while Mom looks up proud, Oddish's leaves hide the broccoli
+      in the grass.
+    file: images/page-13.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 14
+  kind: end
+  text: 'Now every lunch is the same.
+
+    Two gross faces!
+
+    Best friends.'
+  image:
+    prompt: 'Final heartwarming spread, split scene: on the left, Luka in the high chair pulling a silly
+      gross face at a broccoli spoon; on the right, low in the garden grass, Oddish popping up pulling
+      a matching silly gross face beside broccoli globs hidden in the grass. Both faces mirror each other
+      in friendship. Warm bright anime sunburst lighting. Triumphant funny friendship-ending mood. Keep
+      lower third clear for text.'
+    characters_present:
+    - luka
+    - oddish
+    - mom
+    alt: 'Split scene: Luka at the table and Oddish in the grass pull matching gross faces at broccoli
+      — best friends.'
+    file: images/page-14.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+interactions_summary: []
+status: published
+tags:
+- pokemon
+- oddish
+- broccoli
+- friendship
+- funny
+- backyard
+cover:
+  image: ''
+  image_prompt: ''
+  alt: ''
+affirms_rules:
+- r1
+- r3
+- r5
+- r7
