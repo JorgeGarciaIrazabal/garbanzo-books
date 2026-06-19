@@ -59,7 +59,7 @@ Run the stages in order, delegating to the specialist skills/agents:
    warm feedback. A game must NEVER change `page.text` or the art, NEVER advance/gate the plot,
    and NEVER live on its own blank-text page that interrupts the read — put it on a story page.
    The book must read as a complete, satisfying story with every game skipped.
-5. **page-layout** — set `layout` + `image.text_zone` + alt text per page.
+5. **page-layout** — set `layout` (text_position + text_align + scrim) + alt text per page.
 6. **Prepare the story for sign-off.** The words and games are final now. Run
    `uv run python scripts/validate.py worlds/<world>/stories/<story>` (must be clean) and
    `uv run python scripts/quality_report.py <world>/<story>` (no gate failing), and do the

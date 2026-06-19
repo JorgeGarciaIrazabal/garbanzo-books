@@ -2,7 +2,7 @@
 """Scaffold a new character bible: worlds/<world>/characters/<slug>.yaml
 
 Usage:
-    uv run python scripts/new_character.py whispering-woods "Pip the Hedgehog"
+    uv run python scripts/new_character.py magical-forest "Pip the Fairy"
 """
 from __future__ import annotations
 

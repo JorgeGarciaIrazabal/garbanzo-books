@@ -34,9 +34,9 @@ every file is the JSON Schema it must satisfy:
 - Story → [`schemas/story.schema.json`](../schemas/story.schema.json)
 
 For a complete, real-world reference to copy from, read the shipped example under
-[`worlds/whispering-woods/`](../worlds/whispering-woods/) — a fully-authored world, two
+[`worlds/magical-forest/`](../worlds/magical-forest/) — a fully-authored world, two
 character bibles (with appearance tokens, palettes, and an evolution track), and a validated
-16-page interactive story.
+interactive story.
 
 Run `python scripts/validate.py worlds/<slug>` after editing to check your content against the
 schemas and the consistency / reading-level / accessibility invariants.

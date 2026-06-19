@@ -2,7 +2,7 @@
 """Scaffold a new story: worlds/<world>/stories/<slug>/story.yaml + images/ dir.
 
 Usage:
-    uv run python scripts/new_story.py whispering-woods "Pip and the Lost Star" --year 6
+    uv run python scripts/new_story.py magical-forest "Pip and the Hidden Honey" --year 6
 """
 from __future__ import annotations
 
@@ -26,13 +26,14 @@ def _story_page_stub(number: int) -> dict:
             "prompt": "TODO: scene only — who/where/action/emotion.",
             "characters_present": [],
             "alt": "TODO",
-            "text_zone": "lower third",
         },
         "layout": {"text_position": "lower-third", "text_align": "center", "scrim": True},
         # NOTE: no `vocabulary` field on purpose. It used to seed an empty list per page,
         # which trained authors to pre-pick "target words" and then write fancy prose to
         # contain them — the opposite of fun-first. The field still exists in the schema as
         # an OPTIONAL, passive glossary byproduct, but it is never an authoring target.
+        # NOTE: no `image.text_zone` — layout.text_position is the single source of truth
+        # for where text sits; the image generator derives the calm zone from it.
     }
 
 
@@ -83,7 +84,6 @@ def starter(slug: str, world: str, title: str, band_id: str, year: int,
                     "prompt": "TODO: a warm establishing scene for the cover/title.",
                     "characters_present": [],
                     "alt": "TODO",
-                    "text_zone": "center",
                 },
                 "layout": {"text_position": "center", "text_align": "center", "scrim": True},
             },

@@ -69,11 +69,15 @@ def assemble_page_prompt(world: World, story: dict[str, Any], page: dict[str, An
             seed = char.get("seed")
 
     # Composition / text-zone note keeps the page's text area low-detail and legible.
-    text_zone = image.get("text_zone") or (art.get("text_treatment", {}) or {}).get(
-        "placement", "lower third"
-    )
+    # text_position is the SINGLE source of truth — it drives both the reader render and
+    # the image prompt's reserved calm zone, so the two can never drift. We phrase it for
+    # the illustrator ("lower third") regardless of the enum's hyphen form ("lower-third").
+    text_position = (page.get("layout") or {}).get("text_position") or (
+        art.get("text_treatment", {}) or {}
+    ).get("placement", "lower-third")
+    text_zone_phrase = text_position.replace("-", " ")
     comp_note = (
-        f"leave the {text_zone} as calm, low-detail negative space for caption text; "
+        f"leave the {text_zone_phrase} as calm, low-detail negative space for caption text; "
         "keep characters clear of that zone"
     )
 

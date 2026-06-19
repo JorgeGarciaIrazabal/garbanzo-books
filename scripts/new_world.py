@@ -64,7 +64,7 @@ def starter(slug: str, title: str, years: list[int]) -> dict:
             ),
             "aspect_ratio": "4:3",
             "text_treatment": {
-                "placement": "lower third",
+                "placement": "lower-third",
                 "scrim": "soft cream rounded panel at 85% opacity",
                 "font_family": "Andika",
                 "dyslexia_friendly": True,

@@ -21,10 +21,10 @@ from lib.model import load_yaml, validate_content
 # ============================================================================ new_world.py
 def test_new_world_creates_schema_valid_world(workspace, monkeypatch):
     import new_world
-    monkeypatch.setattr("sys.argv", ["new_world.py", "The Whispering Woods"])
+    monkeypatch.setattr("sys.argv", ["new_world.py", "The Test Woods"])
     rc = new_world.main()
     assert rc == 0
-    out = workspace.worlds / "the-whispering-woods" / "world.yaml"
+    out = workspace.worlds / "the-test-woods" / "world.yaml"
     assert out.exists()
     data = load_yaml(out)
     validate_content("world", data)
@@ -170,10 +170,10 @@ def test_new_story_requires_existing_world(workspace, monkeypatch, capsys):
 def test_new_story_creates_story_yaml_with_images_dir(workspace, monkeypatch):
     _make_world(workspace, monkeypatch)
     import new_story
-    monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Pip and the Lost Star"])
+    monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Pip and the Test Star"])
     rc = new_story.main()
     assert rc == 0
-    out = workspace.worlds / "ww" / "stories" / "pip-and-the-lost-star" / "story.yaml"
+    out = workspace.worlds / "ww" / "stories" / "pip-and-the-test-star" / "story.yaml"
     assert out.exists()
     assert (out.parent / "images").is_dir()
 
@@ -290,5 +290,5 @@ def test_new_story_pages_flag_scaffolds_page_stubs(workspace, monkeypatch):
     assert [p["number"] for p in pages] == list(range(15))
     for p in pages[1:]:
         assert p["kind"] == "story"
-        assert p["image"]["text_zone"]      # layout boilerplate pre-filled
+        assert p["layout"]["text_position"]   # layout boilerplate pre-filled
         assert p["layout"]["scrim"] is True

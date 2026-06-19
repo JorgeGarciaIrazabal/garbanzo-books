@@ -169,7 +169,7 @@
           "additionalProperties": false,
           "description": "How embedded page text sits on the full-page image so it stays legible.",
           "properties": {
-            "placement": { "type": "string", "description": "Default zone reserved for text, e.g. 'lower third'." },
+            "placement": { "type": "string", "enum": ["top", "bottom", "left", "right", "center", "lower-third", "upper-third"], "default": "lower-third", "description": "Default text position for pages that don't set layout.text_position. Same enum as the story schema's layout.text_position — the single source of truth for where text sits." },
             "scrim": { "type": "string", "description": "Legibility device, e.g. 'soft cream rounded panel at 85% opacity'." },
             "font_family": { "type": "string" },
             "dyslexia_friendly": { "type": "boolean", "default": true }

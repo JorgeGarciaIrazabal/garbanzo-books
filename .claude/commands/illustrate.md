@@ -34,7 +34,7 @@ Then:
 3. Run `uv run python scripts/generate_images.py worlds/<world>/stories/<story>`
    (or `--page N` for one page). Image files + alt text are written back to the pages.
 4. QC each page: on-model proportions/palette, all distinguishing features, style matches,
-   no negative-prompt artifacts, `text_zone` kept clear, scene matches the text. Fix drift by
+   no negative-prompt artifacts, the text_position zone kept clear, scene matches the text. Fix drift by
    strengthening the appearance_token, leaning on the reference image, re-pinning the seed, or
    regenerating the bad page.
 5. **✋ GATE ④ — human confirmation.** Show the illustrated pages to the user and ask them to

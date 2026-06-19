@@ -19,7 +19,7 @@ Check, and report each as PASS/FAIL with the exact remedy:
    way too dense for the band); the words don't block the fun. Not a strict target.
 4. **Interactivity** — interaction `data` matches its `type`; branching `goto`s resolve; no
    dead ends; games are varied (a mix of kinds, not all quizzes); pacing reasonable.
-5. **Layout/accessibility** — each page has `layout` + `image.text_zone` + alt text; text
+5. **Layout/accessibility** — each page has `layout` (text_position) + alt text; text
    treatment present.
 6. **Illustration** — every page has a **real** image file from Gemini (`.png`); SVG
    placeholders are a hard FAIL (never publish-acceptable). Characters present have their

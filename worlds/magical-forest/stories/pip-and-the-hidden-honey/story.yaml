@@ -1,12 +1,8 @@
 slug: pip-and-the-hidden-honey
 world: magical-forest
 title: Pip and the Hidden Honey
-logline: Pip drags a nervous Bumble on a hunt for the forest's sweetest hidden honey — but a grumpy toad
-  is sitting on it.
-summary: When Pip overhears about the sweetest honey in the forest, she has to find it. The Oldest Tree
-  gives them a riddle with three clues. Pip races through Pond Place, The Log Shops, and Sunny Field,
-  getting into mess after mess — while Bumble worries and grumbles and follows her anyway. But when a
-  big grumpy toad blocks the honey, it's Bumble who finds his brave side and saves the day.
+logline: Pip drags a nervous Bumble on a hunt for the forest's sweetest hidden honey — but a grumpy toad is sitting on it.
+summary: When Pip overhears about the sweetest honey in the forest, she has to find it. The Oldest Tree gives them a riddle with three clues. Pip races through Pond Place, The Log Shops, and Sunny Field, getting into mess after mess — while Bumble worries and grumbles and follows her anyway. But when a big grumpy toad blocks the honey, it's Bumble who finds his brave side and saves the day.
 age_band: 5-7
 target_year: 6
 reading_level:
@@ -27,39 +23,24 @@ characters:
 - slug: bumble
   stage: worrier
 spine:
-  once_upon_a_time: Pip and Bumble live in Berry Homes. Pip wakes up every morning looking for the next
-    fun thing. Bumble wakes up every morning looking for a quiet day. They almost never get the same kind
-    of day.
-  every_day: Pip gets ideas — big ones, small ones, messy ones. Bumble trails behind her, cleaning his
-    wings and saying 'Um... Pip, are you sure?' He is almost never sure. But he follows her anyway.
-  until_one_day: At The Log Shops, Pip's big ears perk up. The pie seller is talking about the Hidden
-    Honey — the sweetest honey in the whole forest! And only the Oldest Tree knows where it is.
+  once_upon_a_time: Pip and Bumble live in Berry Homes. Pip wakes up every morning looking for the next fun thing. Bumble wakes up every morning looking for a quiet day. They almost never get the same kind of day.
+  every_day: Pip gets ideas — big ones, small ones, messy ones. Bumble trails behind her, cleaning his wings and saying 'Um... Pip, are you sure?' He is almost never sure. But he follows her anyway.
+  until_one_day: At The Log Shops, Pip's big ears perk up. The pie seller is talking about the Hidden Honey — the sweetest honey in the whole forest! And only the Oldest Tree knows where it is.
   because_of_that:
-  - Pip drags Bumble to The Old Trees. The tree hums a slow riddle with three clues. Pip bounces on her
-    toes — but the tree will only say it once.
-  - Clue one sends them to Pond Place. Pip tries to hop across lily pads to the clue. Splash! Into the
-    pond she goes. Bumble sighs and pulls her out by her crinkled wing.
-  - Clue two is inside The Log Shops. A muddled beetle shopkeeper holds the next hint — but Pip is in
-    such a rush she grabs the wrong thing and they have to start again.
-  - Clue three leads to Sunny Field. There it is — a tiny pot of golden honey, glowing in the sun! But
-    a big, grumpy toad is planted right on top of it. He will not budge.
-  until_finally: Pip shrinks herself tiny to sneak under the toad — but she gets dizzy and pops back to
-    size right in front of him! The toad blinks. Bumble takes a deep breath — and buzzes as loud as he
-    can, zipping around the toad's head until the big grouch hops away, dizzy himself. Pip grabs the pot.
-    'Bumble! You did it!' Bumble is shaking but grinning.
-  ever_since_then: Back at Berry Homes, they dip berries in the honey. It really is the sweetest honey
-    ever. Pip says 'Best plan ever!' Bumble wipes a sticky spot off his specs and says, 'Um... next time,
-    maybe we just ask the bee next door.' Then he grins and takes another berry.
+  - Pip drags Bumble to The Old Trees. The tree hums a slow riddle with three clues. Pip bounces on her toes — but the tree will only say it once.
+  - Clue one sends them to Pond Place. Pip tries to hop across lily pads to the clue. Splash! Into the pond she goes. Bumble sighs and pulls her out by her crinkled wing.
+  - Clue two is inside The Log Shops. A muddled beetle shopkeeper holds the next hint — but Pip is in such a rush she grabs the wrong thing and they have to start again.
+  - Clue three leads to Sunny Field. There it is — a tiny pot of golden honey, glowing in the sun! But a big, grumpy toad is planted right on top of it. He will not budge.
+  until_finally: Pip shrinks herself tiny to sneak under the toad — but she gets dizzy and pops back to size right in front of him! The toad blinks. Bumble takes a deep breath — and buzzes as loud as he can, zipping around the toad's head until the big grouch hops away, dizzy himself. Pip grabs the pot. 'Bumble! You did it!' Bumble is shaking but grinning.
+  ever_since_then: Back at Berry Homes, they dip berries in the honey. It really is the sweetest honey ever. Pip says 'Best plan ever!' Bumble wipes a sticky spot off his specs and says, 'Um... next time, maybe we just ask the bee next door.' Then he grins and takes another berry.
 pages:
 - number: 0
   kind: title
   text: Pip and the Hidden Honey
   image:
-    prompt: A title page — a tiny pot of golden honey glowing on a mossy tree stump, with a small fairy
-      footprint in a drip of honey next to it, warm sunlight through leaves
+    prompt: A title page — a tiny pot of golden honey glowing on a mossy tree stump, with a small fairy footprint in a drip of honey next to it, warm sunlight through leaves
     characters_present: []
     alt: A pot of glowing honey on a mossy stump
-    text_zone: center
     file: images/page-00.png
   layout:
     text_position: center
@@ -69,13 +50,11 @@ pages:
   kind: story
   text: Pip woke up. Today was a day for a big fun thing!
   image:
-    prompt: Inside a cozy nut-shell home - Pip bouncing on a leaf bed, arms waving excitedly, Bumble still
-      curled up on a petal pillow with specs askew, one antenna drooping
+    prompt: Inside a cozy nut-shell home - Pip bouncing on a leaf bed, arms waving excitedly, Bumble still curled up on a petal pillow with specs askew, one antenna drooping
     characters_present:
     - pip
     - bumble
     alt: Pip bouncing on her leaf bed while Bumble sleeps
-    text_zone: lower third
     file: images/page-01.png
   layout:
     text_position: lower-third
@@ -85,13 +64,11 @@ pages:
   kind: story
   text: At The Log Shops, Pip got a big tip. The Oldest Tree had the way to the Hidden Honey!
   image:
-    prompt: The Log Shops marketplace - Pip and Bumble hiding behind a mushroom stool, eavesdropping on
-      a pie seller fairy chatting, firefly lamps glowing, Pip with enormous wide eyes
+    prompt: The Log Shops marketplace - Pip and Bumble hiding behind a mushroom stool, eavesdropping on a pie seller fairy chatting, firefly lamps glowing, Pip with enormous wide eyes
     characters_present:
     - pip
     - bumble
     alt: Pip and Bumble overhear about Hidden Honey at the market
-    text_zone: lower third
     file: images/page-02.png
   layout:
     text_position: lower-third
@@ -101,13 +78,11 @@ pages:
   kind: story
   text: The old tree hummed a slow hum. "Go where the fireflies dance!"
   image:
-    prompt: A giant ancient oak with a face in its bark glowing softly green, Pip standing before it with
-      hands on hips, Bumble peeking from behind a root with wide amber eyes
+    prompt: A giant ancient oak with a face in its bark glowing softly green, Pip standing before it with hands on hips, Bumble peeking from behind a root with wide amber eyes
     characters_present:
     - pip
     - bumble
     alt: The old tree gives Pip the first clue
-    text_zone: lower third
     file: images/page-03.png
   layout:
     text_position: lower-third
@@ -121,13 +96,11 @@ pages:
   kind: story
   text: Pip hopped on the lily pads at Pond Place - hop, hop, SPLASH!
   image:
-    prompt: Pond Place - Pip sitting on a lily pad soaking wet, water dripping from her crinkled wing,
-      Bumble hovering above reaching for her with a worried face, fireflies nearby
+    prompt: Pond Place - Pip sitting on a lily pad soaking wet, water dripping from her crinkled wing, Bumble hovering above reaching for her with a worried face, fireflies nearby
     characters_present:
     - pip
     - bumble
     alt: Pip falls in the pond at Pond Place
-    text_zone: lower third
     file: images/page-04.png
   layout:
     text_position: lower-third
@@ -141,13 +114,11 @@ pages:
   kind: story
   text: '"Got it!" A wet leaf said: go to the nut shop. Pip ran in and got the bad nut.'
   image:
-    prompt: Inside a cluttered shop in The Log Shops - Pip on the counter holding up the wrong acorn triumphantly,
-      a confused beetle shopkeeper with six arms, Bumble behind Pip shaking his head
+    prompt: Inside a cluttered shop in The Log Shops - Pip on the counter holding up the wrong acorn triumphantly, a confused beetle shopkeeper with six arms, Bumble behind Pip shaking his head
     characters_present:
     - pip
     - bumble
     alt: Pip grabs the wrong nut at the beetle shop
-    text_zone: lower third
     file: images/page-05.png
   layout:
     text_position: lower-third
@@ -157,13 +128,11 @@ pages:
   kind: story
   text: 'Bumble had a sniff and he got it. The last hint: Sunny Field!'
   image:
-    prompt: Bumble holding up a small golden nut proudly, cleaning his specs with his other paw, Pip looking
-      surprised and impressed beside him, shelves of nuts and hats behind them
+    prompt: Bumble holding up a small golden nut proudly, cleaning his specs with his other paw, Pip looking surprised and impressed beside him, shelves of nuts and hats behind them
     characters_present:
     - pip
     - bumble
     alt: Bumble finds the right nut
-    text_zone: lower third
     file: images/page-06.png
   layout:
     text_position: lower-third
@@ -173,13 +142,11 @@ pages:
   kind: story
   text: The honey was on a stump. But on top of the pot sat a big grumpy toad.
   image:
-    prompt: Sunny Field - a mossy stump with a tiny glowing pot of golden honey, a huge grumpy toad sitting
-      right on top of it with half-closed eyes, Pip and Bumble peeking from behind grass looking up
+    prompt: Sunny Field - a mossy stump with a tiny glowing pot of golden honey, a huge grumpy toad sitting right on top of it with half-closed eyes, Pip and Bumble peeking from behind grass looking up
     characters_present:
     - pip
     - bumble
     alt: The honey sits under a big grumpy toad
-    text_zone: lower third
     file: images/page-07.png
   layout:
     text_position: lower-third
@@ -196,12 +163,10 @@ pages:
   kind: story
   text: Pip got small to slip past — PLOOF! — she popped back to size on his nose!
   image:
-    prompt: Pip popping back to full size on the toad's enormous surprised face, dizziness swirls above
-      Pip's head, her crinkled wing drooping, the toad's eyes wide and crossed
+    prompt: Pip popping back to full size on the toad's enormous surprised face, dizziness swirls above Pip's head, her crinkled wing drooping, the toad's eyes wide and crossed
     characters_present:
     - pip
     alt: Pip pops back to size on the toad's nose
-    text_zone: lower third
     file: images/page-08.png
   layout:
     text_position: lower-third
@@ -211,14 +176,11 @@ pages:
   kind: story
   text: Bumble did a big buzz — ZOOM, ZIP, BUZZ! — and the big toad ran off!
   image:
-    prompt: Sunny Field - Bumble buzzing in a fast zigzag around the toad's head with motion lines, the
-      toad's eyes crossed and tongue out looking dizzy, Pip on the stump cheering, grabbing the honey
-      pot
+    prompt: Sunny Field - Bumble buzzing in a fast zigzag around the toad's head with motion lines, the toad's eyes crossed and tongue out looking dizzy, Pip on the stump cheering, grabbing the honey pot
     characters_present:
     - pip
     - bumble
     alt: Bumble buzzes the toad away, Pip grabs the honey
-    text_zone: lower third
     file: images/page-09.png
   layout:
     text_position: lower-third
@@ -232,14 +194,11 @@ pages:
   kind: end
   text: Back home, they ate sweet golden honey. Bumble grinned — and Pip did too.
   image:
-    prompt: Evening at Berry Homes - Pip and Bumble sitting on a leaf outside their nut-shell homes, a
-      bowl of berries and the golden honey pot between them, Pip with honey on her cheek laughing, Bumble
-      grinning with sticky crooked specs, fireflies glowing, warm cottage lights
+    prompt: Evening at Berry Homes - Pip and Bumble sitting on a leaf outside their nut-shell homes, a bowl of berries and the golden honey pot between them, Pip with honey on her cheek laughing, Bumble grinning with sticky crooked specs, fireflies glowing, warm cottage lights
     characters_present:
     - pip
     - bumble
     alt: Pip and Bumble share honey outside their homes
-    text_zone: lower third
     file: images/page-10.png
   layout:
     text_position: lower-third

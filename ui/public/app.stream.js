@@ -66,10 +66,11 @@ async function streamChat(prompt) {
       // Auto mode + a new stage tag from the agent → switch the picker to that tier for next time
       // (we don't override an explicit pin).
       if (currentModel() === M_AUTO && state.lastStage) {
-        const want = state.lastStage === "story" ? M_CREATIVE
+        const want = (state.lastStage === "story" || state.lastStage === "world"
+                   || state.lastStage === "character" || state.lastStage === "craft") ? M_GLM
                    : state.lastStage === "research" ? M_SEARCH
                    : M_FAST;
-        const labels = { [M_FAST]: "Nemotron (fast)", [M_CREATIVE]: "DeepSeek (creative)", [M_SEARCH]: "MiniMax (research)" };
+        const labels = { [M_FAST]: "Nemotron (fast)", [M_GLM]: "GLM (creative)", [M_CREATIVE]: "DeepSeek (creative)", [M_SEARCH]: "MiniMax (research)" };
         addMsg("system", `↻ Auto → next turn will use ${labels[want]} (the agent flagged [[stage:${state.lastStage}]]).`, "system");
       }
       const found = extractForm(state.curBubble._md || "");

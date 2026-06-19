@@ -13,16 +13,19 @@ OPENCODE_BIN = os.environ.get("OPENCODE_BIN", "opencode")
 OPENCODE_MODEL = os.environ.get("OPENCODE_MODEL", "ollama/nemotron-3-ultra:cloud")
 
 # Models the studio offers in its model picker. Each must also be registered under the matching
-# provider in opencode.json. Three tiers, each tuned to a different job:
-#   - Nemotron-3-Ultra  : fast + reliable, the default for world/character/building/validation
-#   - DeepSeek-V4-Pro   : slower but more creative, used when the agent is writing the STORY
+# provider in opencode.json. Four tiers, each tuned to a different job:
+#   - Nemotron-3-Ultra  : fast + reliable, the default for building/validation
+#   - GLM-5.2           : strong creative writer, the default for STORY / WORLD / CHARACTER work
+#   - DeepSeek-V4-Pro   : slower but more creative (alt story model)
 #   - MiniMax-M3        : best for information gathering (web search, summarising, looking things up)
 # The "auto" sentinel lets the studio pick the right model per stage (see STAGE_TO_MODEL).
 MODELS = [
     {"id": "ollama/nemotron-3-ultra:cloud",
-     "label": "Nemotron-3-Ultra — fast & reliable (default for craft)"},
+     "label": "Nemotron-3-Ultra — fast & reliable (default for build/validate)"},
+    {"id": "ollama/glm-5.2:cloud",
+     "label": "GLM-5.2 — creative writer (best for stories, worlds & characters)"},
     {"id": "ollama/deepseek-v4-pro:cloud",
-     "label": "DeepSeek-V4-Pro — more creative (best for stories)"},
+     "label": "DeepSeek-V4-Pro — more creative (alt story model)"},
     {"id": "ollama/minimax-m3:cloud",
      "label": "MiniMax-M3 — best for research & information gathering"},
     {"id": "auto",
@@ -33,15 +36,16 @@ ALLOWED_MODELS = {m["id"] for m in MODELS}
 # Stage tag → model. The agent emits [[stage:<name>]] (see STUDIO_BRIEF) at the end of its message
 # to tell the studio what kind of step it just finished. In Auto mode, the NEXT turn uses the model
 # mapped below. (OpenCode's HTTP API binds a model at prompt time, so we can't switch mid-turn —
-# the next user reply is the natural place to swap.) The "craft" stages all share the fast default
-# because they're tool-heavy; "story" is the only creative stage; "research" routes to MiniMax.
+# the next user reply is the natural place to swap.) The creative stages (story/world/character)
+# route to GLM-5.2; the tool-heavy "build"/"validate"/"done" stages share the fast default;
+# "research" routes to MiniMax.
 STAGE_TO_MODEL = {
-    "craft":     "ollama/deepseek-v4-pro:cloud",
-    "world":     "ollama/deepseek-v4-pro:cloud",
-    "character": "ollama/deepseek-v4-pro:cloud",
+    "craft":     "ollama/glm-5.2:cloud",
+    "world":     "ollama/glm-5.2:cloud",
+    "character": "ollama/glm-5.2:cloud",
     "build":     "ollama/nemotron-3-ultra:cloud",
     "validate":  "ollama/nemotron-3-ultra:cloud",
     "done":      "ollama/nemotron-3-ultra:cloud",
-    "story":     "ollama/deepseek-v4-pro:cloud",
+    "story":     "ollama/glm-5.2:cloud",
     "research":  "ollama/minimax-m3:cloud",
 }

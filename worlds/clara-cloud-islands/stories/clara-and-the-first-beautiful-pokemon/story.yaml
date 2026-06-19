@@ -1,16 +1,8 @@
 slug: clara-and-the-first-beautiful-pokemon
 world: clara-cloud-islands
 title: Clara and the First Beautiful Pokemon
-logline: Clara wants to catch her very first beautiful Pokemon, but the shy glittery crystal moth she
-  finds keeps hiding, and Clara must try, and try, and try again to win her trust.
-summary: 'Clara already has Pip, her tiny fire-mouse sidekick, and now she wants a beautiful Pokemon all
-  her own. She follows a trail of sparkly glitter-dust to a quiet clearing on Sparkle Volcano Island,
-  where she finds a glittery crystal moth named Moxie. Clara yells her loudest catchphrase and Moxie flutters
-  away. Clara tries again and again — too loud, too fast, too grabby — and Moxie keeps hiding. Each time
-  she fails, Clara notices one tiny new thing; the dust trail, the color of the wings, the heart-shape
-  of the antennae. She tries quieter, then softer, then stiller. After many tries, Moxie finally lands
-  on Clara''s hand and chooses her. Clara learns that never giving up does not mean being loud — it means
-  trying a new way, again and again, until a friend says yes.
+logline: Clara wants to catch her very first beautiful Pokemon, but the shy glittery crystal moth she finds keeps hiding, and Clara must try, and try, and try again to win her trust.
+summary: 'Clara already has Pip, her tiny fire-mouse sidekick, and now she wants a beautiful Pokemon all her own. She follows a trail of sparkly glitter-dust to a quiet clearing on Sparkle Volcano Island, where she finds a glittery crystal moth named Moxie. Clara yells her loudest catchphrase and Moxie flutters away. Clara tries again and again — too loud, too fast, too grabby — and Moxie keeps hiding. Each time she fails, Clara notices one tiny new thing; the dust trail, the color of the wings, the heart-shape of the antennae. She tries quieter, then softer, then stiller. After many tries, Moxie finally lands on Clara''s hand and chooses her. Clara learns that never giving up does not mean being loud — it means trying a new way, again and again, until a friend says yes.
 
   '
 age_band: 5-7
@@ -21,9 +13,7 @@ reading_level:
   fountas_pinnell: A-C
   max_words_per_page: 20
   max_sentence_words: 6
-  decoding_focus: 'CVC words (short e, short o, short u blends); sight words: one, two, three, try, again,
-    soft, kind, here, said, want, find, run, fly, look; new: beautiful, glitter, wings, moth, sparkly,
-    quiet, trust, friend, never, give, up'
+  decoding_focus: 'CVC words (short e, short o, short u blends); sight words: one, two, three, try, again, soft, kind, here, said, want, find, run, fly, look; new: beautiful, glitter, wings, moth, sparkly, quiet, trust, friend, never, give, up'
   decodable: false
 themes:
 - never giving up
@@ -43,37 +33,26 @@ characters:
   stage: base
   role_in_story: beautiful-pokemon-to-befriend
 spine:
-  once_upon_a_time: Clara already has Pip, her tiny fire-mouse sidekick, and now she wants her very first
-    BEAUTIFUL Pokemon.
+  once_upon_a_time: Clara already has Pip, her tiny fire-mouse sidekick, and now she wants her very first BEAUTIFUL Pokemon.
   every_day: She looks for sparkly Pokemon on every island, but they all run away when she yells.
-  until_one_day: On Sparkle Volcano Island, Clara sees a trail of glitter-dust floating in the air, and
-    follows it to a quiet clearing.
+  until_one_day: On Sparkle Volcano Island, Clara sees a trail of glitter-dust floating in the air, and follows it to a quiet clearing.
   because_of_that:
-  - She finds a glittery crystal moth with rainbow wings, and yells her loudest catchphrase — but the
-    moth flutters away and hides.
-  - Clara tries to be QUIET, but she is still too fast. She tries to be STILL, but she is still too loud.
-    She tries a SOFT voice, but she forgets and grabs. Each time, the moth hides somewhere new.
-  - Each time she fails, Clara notices one tiny new thing — her violet eyes, her crystal-tipped antennae,
-    the way her wings fold like a cloak. She remembers, and she tries a new way.
-  until_finally: Clara sits very, very still and says one kind, soft word. The moth lands on her hand
-    and chooses Clara. Beautiful and hers.
-  ever_since_then: Clara and Pip and Moxie explore the cloud islands together. Clara still yells BEAUTIFUL
-    at sparkly things — but now she remembers to try a new way, again and again, until a friend says yes.
+  - She finds a glittery crystal moth with rainbow wings, and yells her loudest catchphrase — but the moth flutters away and hides.
+  - Clara tries to be QUIET, but she is still too fast. She tries to be STILL, but she is still too loud. She tries a SOFT voice, but she forgets and grabs. Each time, the moth hides somewhere new.
+  - Each time she fails, Clara notices one tiny new thing — her violet eyes, her crystal-tipped antennae, the way her wings fold like a cloak. She remembers, and she tries a new way.
+  until_finally: Clara sits very, very still and says one kind, soft word. The moth lands on her hand and chooses Clara. Beautiful and hers.
+  ever_since_then: Clara and Pip and Moxie explore the cloud islands together. Clara still yells BEAUTIFUL at sparkly things — but now she remembers to try a new way, again and again, until a friend says yes.
 pages:
 - number: 0
   kind: title
   text: Clara and the First Beautiful Pokemon
   image:
-    prompt: Clara standing on Sparkle Volcano Island, hands on her hips, big tooth-gap grin, pointing
-      up at a glittery crystal moth with rainbow wings fluttering in the sparkly air just out of reach.
-      Pip on her shoulder sneezing a tiny flame. Pink sky, candy-pink cloud grass, glittery volcano in
-      the background, sparkly dust in the air.
+    prompt: Clara standing on Sparkle Volcano Island, hands on her hips, big tooth-gap grin, pointing up at a glittery crystal moth with rainbow wings fluttering in the sparkly air just out of reach. Pip on her shoulder sneezing a tiny flame. Pink sky, candy-pink cloud grass, glittery volcano in the background, sparkly dust in the air.
     characters_present:
     - clara
     - pip
     - moxie
     alt: Clara, Pip, and a glittery crystal moth on a sparkly pink cloud island
-    text_zone: center
     file: images/page-00.png
   layout:
     text_position: center
@@ -83,14 +62,11 @@ pages:
   kind: story
   text: Clara has Pip. Pip is tiny. Clara wants MORE!
   image:
-    prompt: Clara and Pip standing on Sunny Meadow Island. Clara has her hands on her hips in her bossy
-      pose, big tooth-gap grin. Pip is on her shoulder, flame-tuft wiggling. Behind them, a chain of cloud
-      islands stretches into the distance. Bright morning sky.
+    prompt: Clara and Pip standing on Sunny Meadow Island. Clara has her hands on her hips in her bossy pose, big tooth-gap grin. Pip is on her shoulder, flame-tuft wiggling. Behind them, a chain of cloud islands stretches into the distance. Bright morning sky.
     characters_present:
     - clara
     - pip
     alt: Clara and Pip looking out at more cloud islands
-    text_zone: lower-third
     file: images/page-01.png
   layout:
     text_position: lower-third
@@ -103,14 +79,11 @@ pages:
   kind: story
   text: Clara wants a beautiful Pokemon. The MOST beautiful!
   image:
-    prompt: Clara skipping across a rainbow rope-bridge from one cloud island to the next, arms wide,
-      big joyful bossy grin. Pip holding onto her hoodie pocket for dear life, flame-tuft streaming. Other
-      cloud islands in the distance, sparkly sun.
+    prompt: Clara skipping across a rainbow rope-bridge from one cloud island to the next, arms wide, big joyful bossy grin. Pip holding onto her hoodie pocket for dear life, flame-tuft streaming. Other cloud islands in the distance, sparkly sun.
     characters_present:
     - clara
     - pip
     alt: Clara skipping across a rainbow bridge chasing a beautiful Pokemon
-    text_zone: lower-third
     file: images/page-02.png
   layout:
     text_position: lower-third
@@ -122,14 +95,11 @@ pages:
   kind: interaction
   text: Sparkly dust! Follow, follow, follow!
   image:
-    prompt: Clara and Pip looking down at a winding trail of sparkly glitter-dust on the candy-pink cloud
-      grass. The dust trail leads off to the right, toward a small puffy volcano with sparkly clouds coming
-      out of it. Clara's hand is on her chin, curious face.
+    prompt: Clara and Pip looking down at a winding trail of sparkly glitter-dust on the candy-pink cloud grass. The dust trail leads off to the right, toward a small puffy volcano with sparkly clouds coming out of it. Clara's hand is on her chin, curious face.
     characters_present:
     - clara
     - pip
     alt: Clara following a trail of sparkly dust
-    text_zone: lower-third
     file: images/page-03.png
   layout:
     text_position: lower-third
@@ -156,16 +126,12 @@ pages:
   kind: story
   text: Oh! A moth! Big, sparkly wings!
   image:
-    prompt: Clara and Pip peeking around a sparkly bush. In the clearing beyond, a small fluffy round
-      crystal-moth Pokemon with huge rainbow crystal wings sits on a flower, gently opening and closing
-      her wings. Soft sparkly dust floats around her, glowing in the light. Clara's eyes are HUGE, mouth
-      in a perfect O of wonder.
+    prompt: Clara and Pip peeking around a sparkly bush. In the clearing beyond, a small fluffy round crystal-moth Pokemon with huge rainbow crystal wings sits on a flower, gently opening and closing her wings. Soft sparkly dust floats around her, glowing in the light. Clara's eyes are HUGE, mouth in a perfect O of wonder.
     characters_present:
     - clara
     - pip
     - moxie
     alt: Clara peeks at a glittery crystal moth in a clearing
-    text_zone: lower-third
     file: images/page-04.png
   layout:
     text_position: lower-third
@@ -178,15 +144,12 @@ pages:
   kind: story
   text: '"BEAUTIFUL AND MINE!" The moth flew away.'
   image:
-    prompt: The crystal moth fluttering up into the air in a panic, wings a blur of rainbow. Clara standing
-      in the clearing with her arms wide open, mouth open mid-yell. Pip has fallen on his bottom, startled.
-      The clearing is empty now except for floating sparkly dust.
+    prompt: The crystal moth fluttering up into the air in a panic, wings a blur of rainbow. Clara standing in the clearing with her arms wide open, mouth open mid-yell. Pip has fallen on his bottom, startled. The clearing is empty now except for floating sparkly dust.
     characters_present:
     - clara
     - pip
     - moxie
     alt: The moth flies away when Clara yells
-    text_zone: lower-third
     file: images/page-05.png
   layout:
     text_position: lower-third
@@ -197,15 +160,12 @@ pages:
   kind: interaction
   text: Try ONE. Be quiet. Be still.
   image:
-    prompt: Clara tiptoeing slowly across a clearing, one finger to her lips, big soft eyes. Pip right
-      behind her, tiptoeing too, flame-tuft dimmed low so it does not flicker. In the distance, the crystal
-      moth sits on a flower with her wings folded like a cloak.
+    prompt: Clara tiptoeing slowly across a clearing, one finger to her lips, big soft eyes. Pip right behind her, tiptoeing too, flame-tuft dimmed low so it does not flicker. In the distance, the crystal moth sits on a flower with her wings folded like a cloak.
     characters_present:
     - clara
     - pip
     - moxie
     alt: Clara tiptoeing quietly toward the moth
-    text_zone: lower-third
     file: images/page-06.png
   layout:
     text_position: lower-third
@@ -231,15 +191,12 @@ pages:
   kind: story
   text: Oops! Clara tripped. The moth hid again.
   image:
-    prompt: Clara face-down on the pink cloud grass, one red sneaker in the air. Pip has tripped over
-      her and tumbled too, flame-tuft poofing tiny smoke. In the distance, the crystal moth has flitted
-      to a higher flower and folded her wings into a cloak.
+    prompt: Clara face-down on the pink cloud grass, one red sneaker in the air. Pip has tripped over her and tumbled too, flame-tuft poofing tiny smoke. In the distance, the crystal moth has flitted to a higher flower and folded her wings into a cloak.
     characters_present:
     - clara
     - pip
     - moxie
     alt: Clara trips and the moth hides again
-    text_zone: lower-third
     file: images/page-07.png
   layout:
     text_position: lower-third
@@ -250,10 +207,7 @@ pages:
   kind: interaction
   text: Try TWO. Look at the moth. What do you see?
   image:
-    prompt: 'Clara sitting on the grass a short distance from the moth, watching closely, eyes wide and
-      curious. The crystal moth is still folded in her wing-cloak on a flower. A callout shows three things
-      to notice — two violet eyes peeking out, two glowing crystal tips on the antennae, four rainbow
-      wings tucked in.
+    prompt: 'Clara sitting on the grass a short distance from the moth, watching closely, eyes wide and curious. The crystal moth is still folded in her wing-cloak on a flower. A callout shows three things to notice — two violet eyes peeking out, two glowing crystal tips on the antennae, four rainbow wings tucked in.
 
       '
     characters_present:
@@ -261,7 +215,6 @@ pages:
     - pip
     - moxie
     alt: Clara sits and watches the moth
-    text_zone: lower-third
     file: images/page-08.png
   layout:
     text_position: lower-third
@@ -285,15 +238,12 @@ pages:
   kind: story
   text: Try THREE. Soft voice. Soft hands. No grab.
   image:
-    prompt: Clara kneeling down slowly, both hands open and flat on her lap, palms up. Her mouth is a
-      tiny O as she whispers. Pip beside her, flame-tuft dimmed to a tiny glow. The crystal moth is still
-      folded in her cloak on the flower, but two violet eyes peek out now.
+    prompt: Clara kneeling down slowly, both hands open and flat on her lap, palms up. Her mouth is a tiny O as she whispers. Pip beside her, flame-tuft dimmed to a tiny glow. The crystal moth is still folded in her cloak on the flower, but two violet eyes peek out now.
     characters_present:
     - clara
     - pip
     - moxie
     alt: Clara kneels with soft voice and soft hands
-    text_zone: lower-third
     file: images/page-09.png
   layout:
     text_position: lower-third
@@ -305,15 +255,12 @@ pages:
   kind: interaction
   text: Is the moth ready? Tick, tock.
   image:
-    prompt: Clara and Pip sitting very still, watching. The crystal moth is on her flower, wings half-open
-      now — one wing pulled back, one wing still cloaked. A tiny puff of glitter-dust drifts up from her.
-      Pink sky, calm mood, the volcano in the distance.
+    prompt: Clara and Pip sitting very still, watching. The crystal moth is on her flower, wings half-open now — one wing pulled back, one wing still cloaked. A tiny puff of glitter-dust drifts up from her. Pink sky, calm mood, the volcano in the distance.
     characters_present:
     - clara
     - pip
     - moxie
     alt: The moth peeks out, one wing open
-    text_zone: lower-third
     file: images/page-10.png
   layout:
     text_position: lower-third
@@ -336,15 +283,12 @@ pages:
   kind: story
   text: The moth came. Soft. Slow. On Clara's hand.
   image:
-    prompt: Close-up. The crystal moth with all four rainbow wings fully open, glowing softly, perched
-      gently on Clara's open palm. Clara's other hand hovers near, not touching. A single happy tear sparkles
-      on Clara's cheek, big tooth-gap smile. Pip nearby, flame-tuft glowing soft orange.
+    prompt: Close-up. The crystal moth with all four rainbow wings fully open, glowing softly, perched gently on Clara's open palm. Clara's other hand hovers near, not touching. A single happy tear sparkles on Clara's cheek, big tooth-gap smile. Pip nearby, flame-tuft glowing soft orange.
     characters_present:
     - clara
     - pip
     - moxie
     alt: The crystal moth lands on Clara's hand
-    text_zone: lower-third
     file: images/page-11.png
   layout:
     text_position: lower-third
@@ -355,15 +299,12 @@ pages:
   kind: interaction
   text: BEAUTIFUL! And my friend.
   image:
-    prompt: Clara holding her hand up, the crystal moth perched on it, all four rainbow wings spread in
-      a happy flutter. Pip on Clara's other hand, sneezing three happy flames. Sparkly dust swirling around
-      them like a tiny snowstorm of glitter. Pink sky, sunset glow.
+    prompt: Clara holding her hand up, the crystal moth perched on it, all four rainbow wings spread in a happy flutter. Pip on Clara's other hand, sneezing three happy flames. Sparkly dust swirling around them like a tiny snowstorm of glitter. Pink sky, sunset glow.
     characters_present:
     - clara
     - pip
     - moxie
     alt: Clara holds Moxie, sparkly dust swirling
-    text_zone: lower-third
     file: images/page-12.png
   layout:
     text_position: lower-third
@@ -385,16 +326,12 @@ pages:
   kind: story
   text: Never give up. Try a new way. Try, try, try.
   image:
-    prompt: Clara, Pip, and Moxie together on a pink cloud, looking out at the chain of other cloud islands.
-      Clara pointing forward with one bossy finger. Pip on her shoulder sneezing a happy flame. Moxie
-      fluttering just above her hand, wings rainbow, leaving a trail of glitter. Vast pink-gold sunset
-      sky.
+    prompt: Clara, Pip, and Moxie together on a pink cloud, looking out at the chain of other cloud islands. Clara pointing forward with one bossy finger. Pip on her shoulder sneezing a happy flame. Moxie fluttering just above her hand, wings rainbow, leaving a trail of glitter. Vast pink-gold sunset sky.
     characters_present:
     - clara
     - pip
     - moxie
     alt: Clara, Pip, and Moxie ready for the next adventure
-    text_zone: lower-third
     file: images/page-13.png
   layout:
     text_position: lower-third
@@ -405,15 +342,12 @@ pages:
   kind: end
   text: Three friends. Big sky. Off we go!
   image:
-    prompt: Clara on the edge of Sparkle Volcano Island, looking out. Pip on her shoulder. Moxie fluttering
-      above her hand, rainbow wings spread. All three silhouetted against a vast pink-gold sunset sky.
-      Sparkly clouds, distant cloud islands connected by rainbow bridges.
+    prompt: Clara on the edge of Sparkle Volcano Island, looking out. Pip on her shoulder. Moxie fluttering above her hand, rainbow wings spread. All three silhouetted against a vast pink-gold sunset sky. Sparkly clouds, distant cloud islands connected by rainbow bridges.
     characters_present:
     - clara
     - pip
     - moxie
     alt: Clara, Pip, and Moxie looking out at the cloud islands
-    text_zone: lower-third
     file: images/page-14.png
   layout:
     text_position: lower-third
@@ -435,9 +369,5 @@ tags:
 - puzzles
 cover:
   image: ''
-  image_prompt: Clara with her hand on her hip in her bossy pose, Pip on her shoulder, and a glittery
-    crystal moth with rainbow wings fluttering just above her open palm. Sparkle Volcano Island in the
-    background, candy-pink grass, glittery volcano puffing sparkly clouds. Pink-gold sunset sky, sparkly
-    dust in the air. Big-eyed bright Pokemon-anime cel-shaded style, warm and inviting.
-  alt: Cover of Clara and the First Beautiful Pokemon — Clara, Pip, and a glittery crystal moth on a sparkly
-    cloud island
+  image_prompt: Clara with her hand on her hip in her bossy pose, Pip on her shoulder, and a glittery crystal moth with rainbow wings fluttering just above her open palm. Sparkle Volcano Island in the background, candy-pink grass, glittery volcano puffing sparkly clouds. Pink-gold sunset sky, sparkly dust in the air. Big-eyed bright Pokemon-anime cel-shaded style, warm and inviting.
+  alt: Cover of Clara and the First Beautiful Pokemon — Clara, Pip, and a glittery crystal moth on a sparkly cloud island

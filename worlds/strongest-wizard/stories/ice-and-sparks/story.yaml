@@ -1,13 +1,8 @@
 slug: ice-and-sparks
 world: strongest-wizard
 title: Ice and Sparks
-logline: Aria tries to learn ice magic but keeps making puddles — until a funny penguin-shaped teacher
-  shows her that cold magic comes from a warm heart, and Sylfie finds a real rival.
-summary: Aria finds a frosty spellbook and wants to learn ice magic, but every spell turns to slush. Sylfie
-  freezes things without trying. When a round, riddling wizard named Professor Chillworth comes to the
-  meadow, Aria learns that ice is not about being cold — it is about heart. She asks Sylfie for an ice
-  fight, loses big, but wins Sylfie's respect. Together they fix a cracking ward stone, and Sylfie calls
-  Aria her real rival.
+logline: Aria tries to learn ice magic but keeps making puddles — until a funny penguin-shaped teacher shows her that cold magic comes from a warm heart, and Sylfie finds a real rival.
+summary: Aria finds a frosty spellbook and wants to learn ice magic, but every spell turns to slush. Sylfie freezes things without trying. When a round, riddling wizard named Professor Chillworth comes to the meadow, Aria learns that ice is not about being cold — it is about heart. She asks Sylfie for an ice fight, loses big, but wins Sylfie's respect. Together they fix a cracking ward stone, and Sylfie calls Aria her real rival.
 age_band: 5-7
 target_year: 5
 reading_level:
@@ -17,8 +12,7 @@ reading_level:
   fountas_pinnell: ''
   max_words_per_page: 30
   max_sentence_words: 8
-  decoding_focus: CVC, CCVC, CVCC words; high-frequency sight words; consonant digraphs sh/th/ch/wh; one
-    stretch word per page with clickable hint
+  decoding_focus: CVC, CCVC, CVCC words; high-frequency sight words; consonant digraphs sh/th/ch/wh; one stretch word per page with clickable hint
   decodable: true
   read_mode: solo
 themes:
@@ -36,31 +30,23 @@ characters:
 spine:
   once_upon_a_time: Aria finds a frost spellbook so cold it sticks to her hands.
   every_day: Every ice spell she casts melts into a puddle. Bram brings her blankets. She will not stop.
-  until_one_day: Sylfie freezes the whole meadow without trying. A strange round wizard called Professor
-    Chillworth comes and sees something good in Aria's melted mess.
+  until_one_day: Sylfie freezes the whole meadow without trying. A strange round wizard called Professor Chillworth comes and sees something good in Aria's melted mess.
   because_of_that:
-  - 'Professor Chillworth gives Aria his odd ice tasks: put an ice cube on your nose, freeze a daisy without
-    crushing it, slide down a hill yelling ''Brrr-illiant!'''
+  - 'Professor Chillworth gives Aria his odd ice tasks: put an ice cube on your nose, freeze a daisy without crushing it, slide down a hill yelling ''Brrr-illiant!'''
   - Aria asks Sylfie for an ice fight at sunset. Sylfie grins and says yes.
-  - In the fight, Aria makes a big ice dragon — her best yet. But Sylfie freezes a whole castle with tiny
-    flags, then a wind scoops Aria into a snow pile.
-  - 'Sylfie, instead of bragging, runs over amazed: ''That dragon was so good. Teach me how you work so
-    hard?'''
+  - In the fight, Aria makes a big ice dragon — her best yet. But Sylfie freezes a whole castle with tiny flags, then a wind scoops Aria into a snow pile.
+  - 'Sylfie, instead of bragging, runs over amazed: ''That dragon was so good. Teach me how you work so hard?'''
   - A frostling comes in — a ward stone is cracking. The two rivals mix their ice magic and fix it together.
-  until_finally: 'Aria and Sylfie train side by side. Sylfie calls Aria her real rival — and Chillworth''s
-    teapot whistles about their next lesson: lightning.'
-  ever_since_then: Aria falls asleep with a smile, frost shapes on her window, a drawing of her and Sylfie
-    with the word RIVALS in her spellbook.
+  until_finally: 'Aria and Sylfie train side by side. Sylfie calls Aria her real rival — and Chillworth''s teapot whistles about their next lesson: lightning.'
+  ever_since_then: Aria falls asleep with a smile, frost shapes on her window, a drawing of her and Sylfie with the word RIVALS in her spellbook.
 pages:
 - number: 0
   kind: title
   text: Ice and Sparks
   image:
-    prompt: A frost-covered spellbook lying open on a wooden desk, frost curling up from the pages in
-      spirals, a single amber lamp glowing beside it, tiny ice crystals floating in the warm light
+    prompt: A frost-covered spellbook lying open on a wooden desk, frost curling up from the pages in spirals, a single amber lamp glowing beside it, tiny ice crystals floating in the warm light
     characters_present: []
     alt: A frosty spellbook glows on a wooden desk
-    text_zone: center
     file: images/page-00.png
   layout:
     text_position: center
@@ -68,16 +54,12 @@ pages:
     scrim: true
 - number: 1
   kind: story
-  text: Aria went to the big tree library. She found a cold book. It stuck to her hands! The book said
-    ICE MAGIC. "I will learn this," she said. She put it in her bag.
+  text: Aria went to the big tree library. She found a cold book. It stuck to her hands! The book said ICE MAGIC. "I will learn this," she said. She put it in her bag.
   image:
-    prompt: Aria in the Great Oak Library, pulling a frost-covered blue spellbook off a high shelf, her
-      fingers sticking to the icy cover, frost curling off the pages, warm candlelight around her, look
-      of thrilled determination on her face
+    prompt: Aria in the Great Oak Library, pulling a frost-covered blue spellbook off a high shelf, her fingers sticking to the icy cover, frost curling off the pages, warm candlelight around her, look of thrilled determination on her face
     characters_present:
     - aria
     alt: Aria pulls a frosty spellbook from a library shelf, her fingers sticking to the ice
-    text_zone: lower third
     file: images/page-01.png
   layout:
     text_position: lower-third
@@ -89,18 +71,13 @@ pages:
     icon: 📚
 - number: 2
   kind: story
-  text: Aria did it all week. She tried to freeze a cup. Drip, drip, drip. She tried to frost a plant.
-    Slush! Her spells made wet spots. Bram came with blankets. "You are so cold!" "I will not stop," Aria
-    said. She did it again.
+  text: Aria did it all week. She tried to freeze a cup. Drip, drip, drip. She tried to frost a plant. Slush! Her spells made wet spots. Bram came with blankets. "You are so cold!" "I will not stop," Aria said. She did it again.
   image:
-    prompt: Practice Meadow at dusk, Aria standing in a circle of melted puddles and sad slush patches,
-      shivering with chattering teeth, wrapped in layered blankets, Bram beside her holding a sandwich
-      with a worried expression, frosty breath barely visible
+    prompt: Practice Meadow at dusk, Aria standing in a circle of melted puddles and sad slush patches, shivering with chattering teeth, wrapped in layered blankets, Bram beside her holding a sandwich with a worried expression, frosty breath barely visible
     characters_present:
     - aria
     - bram
     alt: Aria shivers in a meadow full of melted puddles while Bram brings her blankets
-    text_zone: lower third
     file: images/page-02.png
   layout:
     text_position: lower-third
@@ -112,18 +89,13 @@ pages:
     icon: 🛏️
 - number: 3
   kind: story
-  text: Then Sylfie came in. "What is this wet mess?" She did a flick with her wand. The grass went stiff.
-    The trees got ice. A big ice slide went up. "Ice is so easy!" A man with a teapot said, "Yes. But
-    to make it look good? That takes heart."
+  text: Then Sylfie came in. "What is this wet mess?" She did a flick with her wand. The grass went stiff. The trees got ice. A big ice slide went up. "Ice is so easy!" A man with a teapot said, "Yes. But to make it look good? That takes heart."
   image:
-    prompt: Practice Meadow instantly transformed into a glittering ice rink, Sylfie standing in the center
-      with her wand raised, looking pleased, trees sparkling with frost, an ice slide weaving between
-      frozen practice dummies, Aria in the background looking stunned among her puddles
+    prompt: Practice Meadow instantly transformed into a glittering ice rink, Sylfie standing in the center with her wand raised, looking pleased, trees sparkling with frost, an ice slide weaving between frozen practice dummies, Aria in the background looking stunned among her puddles
     characters_present:
     - aria
     - sylfie
     alt: Sylfie freezes the entire meadow into a sparkling ice wonderland with a flick of her wand
-    text_zone: lower third
     file: images/page-03.png
   layout:
     text_position: lower-third
@@ -135,19 +107,13 @@ pages:
     icon: 🪄
 - number: 4
   kind: story
-  text: Aria spun. A round man came to her. He had a big white mustache. He had a hot teapot. "A warm
-    heart makes the best ice," he said. "I am Professor Chillworth. You are not bad. You are just new."
-    He gave her a cup. The tea was so good.
+  text: Aria spun. A round man came to her. He had a big white mustache. He had a hot teapot. "A warm heart makes the best ice," he said. "I am Professor Chillworth. You are not bad. You are just new." He gave her a cup. The tea was so good.
   image:
-    prompt: Close-up of Professor Chillworth waddling toward Aria across the frozen meadow, tiny tweed
-      vest, silver spiral mustache, steaming teapot in one hand pouring into a small cup, his pink cheeks
-      and twinkling eyes behind spectacles, Aria looking up at him with surprise and hope, the meadow
-      glittering behind them
+    prompt: Close-up of Professor Chillworth waddling toward Aria across the frozen meadow, tiny tweed vest, silver spiral mustache, steaming teapot in one hand pouring into a small cup, his pink cheeks and twinkling eyes behind spectacles, Aria looking up at him with surprise and hope, the meadow glittering behind them
     characters_present:
     - aria
     - chillworth
     alt: Professor Chillworth waddles toward Aria, teapot in hand, calling her a beginner not a failure
-    text_zone: lower third
     file: images/page-04.png
   layout:
     text_position: lower-third
@@ -162,19 +128,13 @@ pages:
     icon: 🎓
 - number: 5
   kind: story
-  text: 'Chillworth had odd tasks. "Put an ice cube on your nose! Arms out! Sing!" "This is so silly!"
-    Aria said. The cube slid into her shirt. She let out a giggle. "Silly is how you get brave," he said.
-    Next: freeze a daisy. Do not crush it. Aria did it ten times. On the last try, it was cold and so
-    pretty.'
+  text: 'Chillworth had odd tasks. "Put an ice cube on your nose! Arms out! Sing!" "This is so silly!" Aria said. The cube slid into her shirt. She let out a giggle. "Silly is how you get brave," he said. Next: freeze a daisy. Do not crush it. Aria did it ten times. On the last try, it was cold and so pretty.'
   image:
-    prompt: Practice Meadow, Aria standing on one foot balancing an ice cube on her nose with arms stretched
-      out, giggling as it slips, Professor Chillworth beside her with teapot, gesturing instructively,
-      a row of frozen daisies nearby — eleven crushed ones and one perfectly preserved sparkling one
+    prompt: Practice Meadow, Aria standing on one foot balancing an ice cube on her nose with arms stretched out, giggling as it slips, Professor Chillworth beside her with teapot, gesturing instructively, a row of frozen daisies nearby — eleven crushed ones and one perfectly preserved sparkling one
     characters_present:
     - aria
     - chillworth
     alt: Aria balances an ice cube on her nose while Chillworth teaches her through silly exercises
-    text_zone: lower third
     file: images/page-05.png
   layout:
     text_position: lower-third
@@ -186,20 +146,14 @@ pages:
     icon: 🌼
 - number: 6
   kind: story
-  text: Sylfie went past. "Nose-balancing? That is not magic. That is a clown game." Aria stood up tall.
-    The cube did not fall. "It IS magic, Sylfie. It took me ten tries!" Sylfie stopped. Her grin went
-    small. "...Okay, puddle-girl." But she went slow after that.
+  text: Sylfie went past. "Nose-balancing? That is not magic. That is a clown game." Aria stood up tall. The cube did not fall. "It IS magic, Sylfie. It took me ten tries!" Sylfie stopped. Her grin went small. "...Okay, puddle-girl." But she went slow after that.
   image:
-    prompt: Aria standing tall with ice cube still on her nose, looking directly at Sylfie who is walking
-      past the meadow edge, Sylfie mid-step turning back with a flicker of surprise and maybe curiosity
-      on her face, the frozen meadow behind them, Chillworth in the background contentedly pouring tea
-      and watching
+    prompt: Aria standing tall with ice cube still on her nose, looking directly at Sylfie who is walking past the meadow edge, Sylfie mid-step turning back with a flicker of surprise and maybe curiosity on her face, the frozen meadow behind them, Chillworth in the background contentedly pouring tea and watching
     characters_present:
     - aria
     - sylfie
     - chillworth
     alt: Aria stands proud with ice on her nose, Sylfie pauses mid-smirk with a flicker of surprise
-    text_zone: lower third
     file: images/page-06.png
   layout:
     text_position: lower-third
@@ -211,20 +165,15 @@ pages:
     icon: ⚖️
 - number: 7
   kind: story
-  text: The next day Aria went up to Sylfie. "Ice fight! At sunset!" Sylfie's eyes got big. "You. Want
-    to fight. Me?" "I want you to SEE me." Sylfie blinked. Then she gave a real grin. "You are on, puddle-girl."
-    Bram hid his eyes. Chillworth made more tea.
+  text: The next day Aria went up to Sylfie. "Ice fight! At sunset!" Sylfie's eyes got big. "You. Want to fight. Me?" "I want you to SEE me." Sylfie blinked. Then she gave a real grin. "You are on, puddle-girl." Bram hid his eyes. Chillworth made more tea.
   image:
-    prompt: Aria standing in front of Sylfie in the Practice Meadow at midday, chin up, determined expression,
-      pointing at Sylfie who has a surprised then delighted grin, Bram in the background with hands over
-      his eyes peeking through fingers, Chillworth beside Bram casually pouring tea from his teapot
+    prompt: Aria standing in front of Sylfie in the Practice Meadow at midday, chin up, determined expression, pointing at Sylfie who has a surprised then delighted grin, Bram in the background with hands over his eyes peeking through fingers, Chillworth beside Bram casually pouring tea from his teapot
     characters_present:
     - aria
     - sylfie
     - bram
     - chillworth
     alt: Aria challenges Sylfie to an ice duel at sunset, Sylfie grins with real delight
-    text_zone: lower third
     file: images/page-07.png
   layout:
     text_position: lower-third
@@ -236,19 +185,13 @@ pages:
     icon: 🌅
 - number: 8
   kind: story
-  text: The sun went down. The grass was gold. Aria shut her eyes. She did not rush. She did a snap. A
-    DRAGON came up from the frost! It had ice wings. Cold fire came from its mouth. The crowd went WOW!
-    Sylfie's eyes got big. Then she smiled. "Not bad."
+  text: The sun went down. The grass was gold. Aria shut her eyes. She did not rush. She did a snap. A DRAGON came up from the frost! It had ice wings. Cold fire came from its mouth. The crowd went WOW! Sylfie's eyes got big. Then she smiled. "Not bad."
   image:
-    prompt: A magnificent ice dragon rising from frost in the sunset meadow, wings spread, ice flames
-      curling from its mouth, scales glittering orange and blue in sunset light, Aria in front of it with
-      arms outstretched, exhausted and proud, Sylfie across from her with wide-eyed surprise and a genuine
-      smile, an unseen crowd's silhouettes on the edges
+    prompt: A magnificent ice dragon rising from frost in the sunset meadow, wings spread, ice flames curling from its mouth, scales glittering orange and blue in sunset light, Aria in front of it with arms outstretched, exhausted and proud, Sylfie across from her with wide-eyed surprise and a genuine smile, an unseen crowd's silhouettes on the edges
     characters_present:
     - aria
     - sylfie
     alt: Aria conjures a magnificent ice dragon that rises glittering into the sunset sky
-    text_zone: lower third
     file: images/page-08.png
   layout:
     text_position: lower-third
@@ -281,20 +224,13 @@ pages:
     icon: 🐉
 - number: 9
   kind: story
-  text: Sylfie put up one hand. No words. No trying. A CASTLE grew from the grass. Big walls went up.
-    A door swung open. Ice flags went flap-flap. A cold wind got Aria. It set her in a soft snow pile.
-    She had lost. But Sylfie ran to her — not to brag. Her eyes were so bright.
+  text: Sylfie put up one hand. No words. No trying. A CASTLE grew from the grass. Big walls went up. A door swung open. Ice flags went flap-flap. A cold wind got Aria. It set her in a soft snow pile. She had lost. But Sylfie ran to her — not to brag. Her eyes were so bright.
   image:
-    prompt: A full ice castle rising from the meadow with turrets, drawbridge, and tiny waving flags,
-      Sylfie standing before it with one hand raised calmly, an ice tornado gently depositing Aria into
-      a soft snowbank, Aria looking up, Sylfie running toward Aria with sparkling eyes and an amazed expression
-      — not gloating
+    prompt: A full ice castle rising from the meadow with turrets, drawbridge, and tiny waving flags, Sylfie standing before it with one hand raised calmly, an ice tornado gently depositing Aria into a soft snowbank, Aria looking up, Sylfie running toward Aria with sparkling eyes and an amazed expression — not gloating
     characters_present:
     - aria
     - sylfie
-    alt: Sylfie builds an ice castle and gently scoops Aria into a snowbank — then runs to her with sparkling
-      eyes
-    text_zone: lower third
+    alt: Sylfie builds an ice castle and gently scoops Aria into a snowbank — then runs to her with sparkling eyes
     file: images/page-09.png
   layout:
     text_position: lower-third
@@ -306,18 +242,13 @@ pages:
     icon: 🏰
 - number: 10
   kind: story
-  text: '"That dragon!" Sylfie got Aria''s hand. "How did you do that? I have never had to try so hard.
-    And you did it in one week!" Aria sat in the snow. "You liked it?" "Magic was so easy for me. But
-    you work and work. I want to learn how you do that."'
+  text: '"That dragon!" Sylfie got Aria''s hand. "How did you do that? I have never had to try so hard. And you did it in one week!" Aria sat in the snow. "You liked it?" "Magic was so easy for me. But you work and work. I want to learn how you do that."'
   image:
-    prompt: Close-up of Sylfie pulling Aria up from the snowbank by the hand, Sylfie's face full of genuine
-      excitement and admiration, Aria looking stunned and hopeful, snow still in Aria's hair, the ice
-      castle and dragon glowing behind them, warm sunset light on both their faces
+    prompt: Close-up of Sylfie pulling Aria up from the snowbank by the hand, Sylfie's face full of genuine excitement and admiration, Aria looking stunned and hopeful, snow still in Aria's hair, the ice castle and dragon glowing behind them, warm sunset light on both their faces
     characters_present:
     - aria
     - sylfie
     alt: Sylfie pulls Aria out of the snowbank, amazed by her ice dragon and her hard work
-    text_zone: lower third
     file: images/page-10.png
   layout:
     text_position: lower-third
@@ -326,23 +257,15 @@ pages:
   vocabulary: []
 - number: 11
   kind: story
-  text: They did it side by side. Sylfie let Aria see how to snap ice into sharp bits. Aria let Sylfie
-    see the hard part. You do it until your arms hurt. You keep on until your hair is white with frost.
-    Bram kept the score. Chillworth made tea. "Two warm hearts make the best ice." Sylfie did a big sigh.
-    But she did not go.
+  text: They did it side by side. Sylfie let Aria see how to snap ice into sharp bits. Aria let Sylfie see the hard part. You do it until your arms hurt. You keep on until your hair is white with frost. Bram kept the score. Chillworth made tea. "Two warm hearts make the best ice." Sylfie did a big sigh. But she did not go.
   image:
-    prompt: Aria and Sylfie training side by side in the meadow, Aria demonstrating with intense concentration,
-      Sylfie watching her hands carefully and copying, both with frost-dusted hair, Bram in the background
-      holding a scoreboard, Chillworth nearby pouring tea from his teapot with a contented smile, ice
-      sparks and frost swirls around both girls
+    prompt: Aria and Sylfie training side by side in the meadow, Aria demonstrating with intense concentration, Sylfie watching her hands carefully and copying, both with frost-dusted hair, Bram in the background holding a scoreboard, Chillworth nearby pouring tea from his teapot with a contented smile, ice sparks and frost swirls around both girls
     characters_present:
     - aria
     - sylfie
     - bram
     - chillworth
-    alt: Sylfie and Aria train together, sharing techniques while Bram keeps score and Chillworth pours
-      tea
-    text_zone: lower third
+    alt: Sylfie and Aria train together, sharing techniques while Bram keeps score and Chillworth pours tea
     file: images/page-11.png
   layout:
     text_position: lower-third
@@ -354,19 +277,13 @@ pages:
     icon: ❄️
 - number: 12
   kind: story
-  text: CRACK! A small frostling came up from the ice. It was round with flat feet. Its shell was melting
-    fast. "The guard stone is breaking! Help!" Aria and Sylfie ran. They did a big blast — Aria's strong
-    ice, Sylfie's sharp shield. The crack shut. The frostling gave their legs a hug.
+  text: CRACK! A small frostling came up from the ice. It was round with flat feet. Its shell was melting fast. "The guard stone is breaking! Help!" Aria and Sylfie ran. They did a big blast — Aria's strong ice, Sylfie's sharp shield. The crack shut. The frostling gave their legs a hug.
   image:
-    prompt: A small round frostling creature with flipper-feet bursting into the meadow, its icy shell
-      cracking and dripping, looking panicked, Aria and Sylfie side by side casting a combined ice spell
-      toward a glowing ward stone with a visible crack, blue and white magic joining together, the frostling
-      hugging their ankles as the crack seals
+    prompt: A small round frostling creature with flipper-feet bursting into the meadow, its icy shell cracking and dripping, looking panicked, Aria and Sylfie side by side casting a combined ice spell toward a glowing ward stone with a visible crack, blue and white magic joining together, the frostling hugging their ankles as the crack seals
     characters_present:
     - aria
     - sylfie
     alt: A panicked frostling warns of a cracking ward stone — Aria and Sylfie seal it together
-    text_zone: lower third
     file: images/page-12.png
   layout:
     text_position: lower-third
@@ -398,17 +315,12 @@ pages:
     icon: 🛡️
 - number: 13
   kind: end
-  text: 'That night, Aria sat in her room. Frost shapes she made were on the window. Her book was open.
-    She had made a drawing. It was her and Sylfie with arms up. One word: RIVALS. Sylfie had put her name
-    on it. Aria fell asleep with a smile. And a teapot went WHEEE.'
+  text: 'That night, Aria sat in her room. Frost shapes she made were on the window. Her book was open. She had made a drawing. It was her and Sylfie with arms up. One word: RIVALS. Sylfie had put her name on it. Aria fell asleep with a smile. And a teapot went WHEEE.'
   image:
-    prompt: Aria's cozy room at night, frost patterns on the window shaped like dragons and castles, spellbook
-      open on her bed showing a childlike drawing of her and Sylfie with the word RIVALS written underneath,
-      Aria asleep in bed with a peaceful smile, moonlight casting blue light through the frosty window
+    prompt: Aria's cozy room at night, frost patterns on the window shaped like dragons and castles, spellbook open on her bed showing a childlike drawing of her and Sylfie with the word RIVALS written underneath, Aria asleep in bed with a peaceful smile, moonlight casting blue light through the frosty window
     characters_present:
     - aria
     alt: Aria falls asleep smiling, frost patterns on her window, a drawing labeled RIVALS in her spellbook
-    text_zone: lower third
     file: images/page-13.png
   layout:
     text_position: lower-third
@@ -422,11 +334,9 @@ pages:
   kind: end
   text: For everyone who kept practicing until the ice sparkled.
   image:
-    prompt: A single perfect ice daisy glowing on a frosty windowsill, moonlight shining through its petals,
-      peaceful and still
+    prompt: A single perfect ice daisy glowing on a frosty windowsill, moonlight shining through its petals, peaceful and still
     characters_present: []
     alt: A single frozen daisy glows on a windowsill in moonlight
-    text_zone: lower third
     file: images/page-14.png
   layout:
     text_position: lower-third

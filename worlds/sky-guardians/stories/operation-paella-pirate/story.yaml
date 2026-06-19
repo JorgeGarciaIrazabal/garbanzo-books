@@ -1,15 +1,8 @@
 slug: operation-paella-pirate
 world: sky-guardians
 title: Operation PAELLA-PIRATE
-logline: Clara Garcia Kang and her worry-wart robot Gears race to Valencia to stop GlobeCorp's VP Paella
-  Police from trademarking "paella" and replacing it with Instant Powder Kits(TM) -- armed only with a
-  borrowed pan, a fierce abuela's secret recipe, and Gears's socarrat-detector built from a toaster.
-summary: GlobeCorp's VP Paella Police (Director Armando "Authenticity" Vale) lands in Valencia with a
-  scheme to trademark "paella" and sell Instant Paella Powder Kits(TM) in fourteen globally palatable
-  flavors. Clara and Gears team up with Abuela Carmen, guardian of the true recipe measured in puñados
-  (handfuls), to challenge him to a paella-off per Corporate Policy §12.9. VP's machine produces beige
-  discs; Clara's pan reveals golden socarrat. The crowd roars. The trademark falls. VP transfers to Icelandic
-  Fermented Shark Optimization.
+logline: Clara Garcia Kang and her worry-wart robot Gears race to Valencia to stop GlobeCorp's VP Paella Police from trademarking "paella" and replacing it with Instant Powder Kits(TM) -- armed only with a borrowed pan, a fierce abuela's secret recipe, and Gears's socarrat-detector built from a toaster.
+summary: GlobeCorp's VP Paella Police (Director Armando "Authenticity" Vale) lands in Valencia with a scheme to trademark "paella" and sell Instant Paella Powder Kits(TM) in fourteen globally palatable flavors. Clara and Gears team up with Abuela Carmen, guardian of the true recipe measured in puñados (handfuls), to challenge him to a paella-off per Corporate Policy §12.9. VP's machine produces beige discs; Clara's pan reveals golden socarrat. The crowd roars. The trademark falls. VP transfers to Icelandic Fermented Shark Optimization.
 age_band: 7-9
 reading_level:
   target_fk_grade: 3.0
@@ -36,61 +29,29 @@ characters:
   stage: base
   role_in_story: antagonist
 spine:
-  once_upon_a_time: 'Clara Garcia Kang narrates from a Valencia orange grove at dawn -- "Field note: the
-    air smells like saffron, wood smoke, and trouble." Gears calculates an 87.3% probability of paella-related
-    doom. His antenna wobbles. "Unacceptable," he beeps.'
-  every_day: 'GlobeCorp files Form 27-B for culinary optimization before breakfast. Today''s target: paella.
-    VP Paella Police arrives with a clipboard, a tape measure, and a pronunciation guide he absolutely
-    ignores. He says "Va-LEN-see-ah." The oranges shudder.'
-  until_one_day: 'VP Paella Police unveils the PAELLA(TM) OPTIMIZATION INITIATIVE -- trademark the word
-    "paella," replace wood fire with "synergy-heated nutrient slurry pods," and sell Instant Paella Powder
-    Kits(TM) in fourteen flavors: Original, Mild, Unseasoned Corporate Beige, and eleven varieties of
-    "globally compliant" dust.'
+  once_upon_a_time: 'Clara Garcia Kang narrates from a Valencia orange grove at dawn -- "Field note: the air smells like saffron, wood smoke, and trouble." Gears calculates an 87.3% probability of paella-related doom. His antenna wobbles. "Unacceptable," he beeps.'
+  every_day: 'GlobeCorp files Form 27-B for culinary optimization before breakfast. Today''s target: paella. VP Paella Police arrives with a clipboard, a tape measure, and a pronunciation guide he absolutely ignores. He says "Va-LEN-see-ah." The oranges shudder.'
+  until_one_day: 'VP Paella Police unveils the PAELLA(TM) OPTIMIZATION INITIATIVE -- trademark the word "paella," replace wood fire with "synergy-heated nutrient slurry pods," and sell Instant Paella Powder Kits(TM) in fourteen flavors: Original, Mild, Unseasoned Corporate Beige, and eleven varieties of "globally compliant" dust.'
   because_of_that:
-  - Clara and Gears land in Valencia's Central Market, where mountains of bomba rice gleam like pearls.
-    They meet Abuela Carmen, guardian of the true recipe -- handwritten, stained, measured in puñados
-    (handfuls). She peers over her glasses. "My paella has socarrat. Your powder has... dust."
-  - 'VP Paella Police deploys the SOCARRAT ERADICATION DRONE -- a hovering vacuum that sucks up the prized
-    crispy rice bottom. "Crust is inefficiency," he intones, measuring a socarrat with a ruler. Gears
-    panics: "Probability of deliciousness preservation: 0.04%! Initiating Panic Protocol 7-Alpha... wait,
-    that''s the snack protocol."'
-  - 'Clara challenges VP to a PAELLA-OFF. Corporate Policy §12.9: "Disputed culinary claims resolved by
-    public cook-off." VP accepts -- he has a MACHINE. Clara has Abuela''s pan (borrowed), Gears''s jury-rigged
-    fire control (a toaster, a coat hanger, and a dream), and a bag of bomba rice they "borrowed" from
-    a very confused vendor who still has their IOU.'
-  - 'The cook-off begins in Plaza de la Virgen. Orange trees shower petals. VP''s machine hums: beep,
-    whir, slurry dispensed. Clara cooks LIVE -- sofrito singing, stock ladled, rice scattered like stars,
-    NO STIRRING (Gears: "The physics demand stillness! The Maillard reaction requires patience!"). The
-    crowd gathers. A pigeon steals VP''s clipboard. He files a complaint against the pigeon.'
-  - 'VP''s machine produces... beige discs. Perfectly round. Flavor: cardboard optimism. Clara''s pan
-    reveals GOLDEN SOCARRAT -- the crown jewel, the crunchy treasure, the sound of a spoon cracking through
-    glory. The crowd gasps. Abuela tastes. Nods once. "This one has alma." VP checks his tablet: "Alma
-    is not a KPI. Requesting definition."'
-  - 'Clara serves the paella ON THE SPOT -- paper plates, wooden spoons, chaos, joy, saffron-stained fingers.
-    VP''s machine clogs on a chorizo chunk he insisted was "authentic" (Abuela: "Sacrilege!"). The trademark
-    application is rejected: "Prior art: Abuela Carmen, 1952–present. Also: your machine ate the paperwork."'
-  until_finally: VP Paella Police retreats to HQ, pronouncing "paella" correctly for the first time --
-    purely by accident. The Instant Powder Kits become very expensive cat litter. Abuela's recipe gets
-    a GlobeCorp watermark (she drew a mustache on the logo). Clara and Gears fly home over the Mediterranean,
-    paella-stained sneakers dangling -- best souvenir ever.
-  ever_since_then: 'GlobeCorp VPs now fear three things: Clara''s "why?", Gears''s worry-loops, and abuelas
-    with handwritten recipes. Somewhere in a Valencia market, a pigeon still has VP''s clipboard. It uses
-    it to line a very bureaucratic nest.'
+  - Clara and Gears land in Valencia's Central Market, where mountains of bomba rice gleam like pearls. They meet Abuela Carmen, guardian of the true recipe -- handwritten, stained, measured in puñados (handfuls). She peers over her glasses. "My paella has socarrat. Your powder has... dust."
+  - 'VP Paella Police deploys the SOCARRAT ERADICATION DRONE -- a hovering vacuum that sucks up the prized crispy rice bottom. "Crust is inefficiency," he intones, measuring a socarrat with a ruler. Gears panics: "Probability of deliciousness preservation: 0.04%! Initiating Panic Protocol 7-Alpha... wait, that''s the snack protocol."'
+  - 'Clara challenges VP to a PAELLA-OFF. Corporate Policy §12.9: "Disputed culinary claims resolved by public cook-off." VP accepts -- he has a MACHINE. Clara has Abuela''s pan (borrowed), Gears''s jury-rigged fire control (a toaster, a coat hanger, and a dream), and a bag of bomba rice they "borrowed" from a very confused vendor who still has their IOU.'
+  - 'The cook-off begins in Plaza de la Virgen. Orange trees shower petals. VP''s machine hums: beep, whir, slurry dispensed. Clara cooks LIVE -- sofrito singing, stock ladled, rice scattered like stars, NO STIRRING (Gears: "The physics demand stillness! The Maillard reaction requires patience!"). The crowd gathers. A pigeon steals VP''s clipboard. He files a complaint against the pigeon.'
+  - 'VP''s machine produces... beige discs. Perfectly round. Flavor: cardboard optimism. Clara''s pan reveals GOLDEN SOCARRAT -- the crown jewel, the crunchy treasure, the sound of a spoon cracking through glory. The crowd gasps. Abuela tastes. Nods once. "This one has alma." VP checks his tablet: "Alma is not a KPI. Requesting definition."'
+  - 'Clara serves the paella ON THE SPOT -- paper plates, wooden spoons, chaos, joy, saffron-stained fingers. VP''s machine clogs on a chorizo chunk he insisted was "authentic" (Abuela: "Sacrilege!"). The trademark application is rejected: "Prior art: Abuela Carmen, 1952–present. Also: your machine ate the paperwork."'
+  until_finally: VP Paella Police retreats to HQ, pronouncing "paella" correctly for the first time -- purely by accident. The Instant Powder Kits become very expensive cat litter. Abuela's recipe gets a GlobeCorp watermark (she drew a mustache on the logo). Clara and Gears fly home over the Mediterranean, paella-stained sneakers dangling -- best souvenir ever.
+  ever_since_then: 'GlobeCorp VPs now fear three things: Clara''s "why?", Gears''s worry-loops, and abuelas with handwritten recipes. Somewhere in a Valencia market, a pigeon still has VP''s clipboard. It uses it to line a very bureaucratic nest.'
 pages:
 - number: 0
   kind: title
   text: Operation PAELLA-PIRATE
   image:
-    prompt: Clara flying heroically over Valencia at golden hour, Gears in reinforced backpack (antenna
-      wobbling), Plaza de la Virgen with giant paella pan center stage, VP Paella Police on platform with
-      clipboard and tape measure, sleek eradication drone hovering, orange trees showering petals, Abuela
-      Carmen arms crossed judging, bold gouache style
+    prompt: Clara flying heroically over Valencia at golden hour, Gears in reinforced backpack (antenna wobbling), Plaza de la Virgen with giant paella pan center stage, VP Paella Police on platform with clipboard and tape measure, sleek eradication drone hovering, orange trees showering petals, Abuela Carmen arms crossed judging, bold gouache style
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: Title page - Clara flying over Valencia paella showdown
-    text_zone: center
     file: images/page-00.png
   layout:
     text_position: center
@@ -98,18 +59,13 @@ pages:
     scrim: true
 - number: 1
   kind: story
-  text: Clara lives on a windy hill. And Clara can fly! She talks like a nature show. "Observe the wild
-    girl in her habitat," she whispers. She zooms past a cloud. Her best friend Gears is a tin robot.
-    He worries about everything. Even the cloud might break!
+  text: Clara lives on a windy hill. And Clara can fly! She talks like a nature show. "Observe the wild girl in her habitat," she whispers. She zooms past a cloud. Her best friend Gears is a tin robot. He worries about everything. Even the cloud might break!
   image:
-    prompt: Clara's hilltop hideout - wonky warm house, rooftop landing pad, telescope aimed at clouds,
-      Clara mid-leap flying pose, Gears on roof with tool chest open, probability numbers floating (12%,
-      99%, 0.0003%), wind mussing her bangs
+    prompt: Clara's hilltop hideout - wonky warm house, rooftop landing pad, telescope aimed at clouds, Clara mid-leap flying pose, Gears on roof with tool chest open, probability numbers floating (12%, 99%, 0.0003%), wind mussing her bangs
     characters_present:
     - clara-garcia-kang
     - gears
     alt: Clara's hilltop home with Clara flying and Gears worrying
-    text_zone: lower third
     file: images/page-01.png
   layout:
     text_position: lower-third
@@ -141,18 +97,13 @@ pages:
       id: explorer-badge
 - number: 2
   kind: story
-  text: 'Today the air smells different. Saffron. Wood smoke. Orange blossoms. "Field note: Valencia,"
-    Clara says. She lands in a grove at dawn. Gears wobbles his antenna. "Probability of paella doom:
-    87.3%!" he beeps. "Also, probability of deliciousness: 99.9%. Unacceptable. The doom should be higher."'
+  text: 'Today the air smells different. Saffron. Wood smoke. Orange blossoms. "Field note: Valencia," Clara says. She lands in a grove at dawn. Gears wobbles his antenna. "Probability of paella doom: 87.3%!" he beeps. "Also, probability of deliciousness: 99.9%. Unacceptable. The doom should be higher."'
   image:
-    prompt: Valencia orange grove at dawn - Clara perched on a branch, Gears on her shoulder (antenna
-      wobbling), mist rising, orange blossoms glowing, holographic 87.3% doom number, holographic 99.9%
-      deliciousness number, Clara grinning
+    prompt: Valencia orange grove at dawn - Clara perched on a branch, Gears on her shoulder (antenna wobbling), mist rising, orange blossoms glowing, holographic 87.3% doom number, holographic 99.9% deliciousness number, Clara grinning
     characters_present:
     - clara-garcia-kang
     - gears
     alt: Clara and Gears arrive in Valencia orange grove
-    text_zone: lower third
     file: images/page-02.png
   layout:
     text_position: lower-third
@@ -164,19 +115,14 @@ pages:
   - unacceptable
 - number: 3
   kind: story
-  text: A sleek box lands beside them. GLOBECORP is stamped on it in gray letters. Out steps a man in
-    a bad suit. He holds a clipboard and a tape measure. "Director Armando 'Authenticity' Vale," he says.
-    "VP Paella Police. You may call me VP." He says "Va-LEN-see-ah." The oranges shudder.
+  text: A sleek box lands beside them. GLOBECORP is stamped on it in gray letters. Out steps a man in a bad suit. He holds a clipboard and a tape measure. "Director Armando 'Authenticity' Vale," he says. "VP Paella Police. You may call me VP." He says "Va-LEN-see-ah." The oranges shudder.
   image:
-    prompt: Valencia grove - VP Paella Police (Director Armando Vale) in charcoal polyester suit, clipboard,
-      tape measure extended toward a paella pan, measuring socarrat with ruler, Sentinel-style drone hovering
-      behind him, Clara and Gears watching, orange trees, morning light
+    prompt: Valencia grove - VP Paella Police (Director Armando Vale) in charcoal polyester suit, clipboard, tape measure extended toward a paella pan, measuring socarrat with ruler, Sentinel-style drone hovering behind him, Clara and Gears watching, orange trees, morning light
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: VP Paella Police arrives and measures paella
-    text_zone: lower third
     file: images/page-03.png
   layout:
     text_position: lower-third
@@ -212,20 +158,14 @@ pages:
       id: bureaucracy-buster
 - number: 4
   kind: story
-  text: 'VP shows his plan with seventy-three slides. Slide one: trademark "paella." Slide twelve: replace
-    wood fire with "synergy-heated nutrient slurry pods." Slide forty-seven: Instant Paella Powder Kits.
-    Fourteen flavors. Original. Mild. Unseasoned Corporate Beige. "Flavor is a variable," VP says. "We
-    are eliminating it."'
+  text: 'VP shows his plan with seventy-three slides. Slide one: trademark "paella." Slide twelve: replace wood fire with "synergy-heated nutrient slurry pods." Slide forty-seven: Instant Paella Powder Kits. Fourteen flavors. Original. Mild. Unseasoned Corporate Beige. "Flavor is a variable," VP says. "We are eliminating it."'
   image:
-    prompt: Plaza presentation - large holographic slides showing PAELLA OPTIMIZATION INITIATIVE, VP gesturing
-      to "Instant Powder Kits" flavors, slurry pods diagram, Clara reading fine print upside-down on a
-      lamp post, Gears's eyes 🔵 data mode, crowd of confused Valencians, orange trees
+    prompt: Plaza presentation - large holographic slides showing PAELLA OPTIMIZATION INITIATIVE, VP gesturing to "Instant Powder Kits" flavors, slurry pods diagram, Clara reading fine print upside-down on a lamp post, Gears's eyes 🔵 data mode, crowd of confused Valencians, orange trees
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: VP presenting the evil plan with powder flavors
-    text_zone: lower third
     file: images/page-04.png
   layout:
     text_position: lower-third
@@ -239,20 +179,14 @@ pages:
   - variable
 - number: 5
   kind: story
-  text: '"Optimize THIS," Clara says. She drags Gears to Central Market. Bomba rice shines like pearls.
-    Saffron glows red-gold. And there is Abuela Carmen. Her hair is white as snow. Her eyes are black
-    as obsidian. Her recipe card has forty years of stains. She measures in handfuls. "My paella has socarrat,"
-    she tells VP. "Your powder has dust."'
+  text: '"Optimize THIS," Clara says. She drags Gears to Central Market. Bomba rice shines like pearls. Saffron glows red-gold. And there is Abuela Carmen. Her hair is white as snow. Her eyes are black as obsidian. Her recipe card has forty years of stains. She measures in handfuls. "My paella has socarrat," she tells VP. "Your powder has dust."'
   image:
-    prompt: Valencia Central Market - Abuela Carmen at stall with bomba rice, saffron, handwritten recipe
-      card, VP Paella Police with clipboard looking offended, Clara and Gears approaching, market stalls,
-      morning light, dust motes dancing
+    prompt: Valencia Central Market - Abuela Carmen at stall with bomba rice, saffron, handwritten recipe card, VP Paella Police with clipboard looking offended, Clara and Gears approaching, market stalls, morning light, dust motes dancing
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: Abuela Carmen confronts VP with her recipe
-    text_zone: lower third
     file: images/page-05.png
   layout:
     text_position: lower-third
@@ -266,20 +200,14 @@ pages:
   - socarrat
 - number: 6
   kind: story
-  text: 'VP sends the SOCARRAT ERADICATION DRONE. It is a flying vacuum with a badge. It SUCKS UP the
-    crispy rice bottom. "Crust is inefficiency," VP says. Gears spirals. "Probability of deliciousness
-    saved: 0.04%! Starting Panic Protocol... wait, that is the snack protocol!" He pulls a churro from
-    his chest.'
+  text: 'VP sends the SOCARRAT ERADICATION DRONE. It is a flying vacuum with a badge. It SUCKS UP the crispy rice bottom. "Crust is inefficiency," VP says. Gears spirals. "Probability of deliciousness saved: 0.04%! Starting Panic Protocol... wait, that is the snack protocol!" He pulls a churro from his chest.'
   image:
-    prompt: Market chaos - SOCARRAT ERADICATION DRONE (sleek white, corporate logo) vacuuming socarrat
-      from pans, VP watching proudly, Gears panic-spiral (eyes 😰, antenna wild), churro halfway to mouth,
-      Clara grabbing Abuela's pan, vendors shouting, saffron flying
+    prompt: Market chaos - SOCARRAT ERADICATION DRONE (sleek white, corporate logo) vacuuming socarrat from pans, VP watching proudly, Gears panic-spiral (eyes 😰, antenna wild), churro halfway to mouth, Clara grabbing Abuela's pan, vendors shouting, saffron flying
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: Drone sucks up socarrat, Gears panics with churro
-    text_zone: lower third
     file: images/page-06.png
   layout:
     text_position: lower-third
@@ -316,19 +244,14 @@ pages:
       id: crust-guardian
 - number: 7
   kind: story
-  text: Clara grins. "Corporate Policy §12.9," she says. "Food fights are settled by a cook-off." VP fixes
-    his tie. "This VP accepts. This VP has a MACHINE." Clara has Abuela's pan. Gears has a toaster, a
-    coat hanger, and a dream. They borrowed rice from a vendor who still has their IOU on a napkin.
+  text: Clara grins. "Corporate Policy §12.9," she says. "Food fights are settled by a cook-off." VP fixes his tie. "This VP accepts. This VP has a MACHINE." Clara has Abuela's pan. Gears has a toaster, a coat hanger, and a dream. They borrowed rice from a vendor who still has their IOU on a napkin.
   image:
-    prompt: Plaza de la Virgen - VP with massive PAELLA-OPTIMIZER 3000 machine (chrome, tubes, corporate
-      logo), Clara with Abuela's battered pan, Gears welding toaster-coat-hanger contraption, Abuela supervising,
-      bomba rice sack, orange trees showering petals, crowd gathering
+    prompt: Plaza de la Virgen - VP with massive PAELLA-OPTIMIZER 3000 machine (chrome, tubes, corporate logo), Clara with Abuela's battered pan, Gears welding toaster-coat-hanger contraption, Abuela supervising, bomba rice sack, orange trees showering petals, crowd gathering
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: Cook-off setup - VP's machine vs Clara's pan
-    text_zone: lower third
     file: images/page-07.png
   layout:
     text_position: lower-third
@@ -341,20 +264,14 @@ pages:
   - IOU
 - number: 8
   kind: story
-  text: 'The cook-off starts. VP''s machine: BEEP. WHIR. SLURRY OUT. Perfect beige discs slide out. Clara
-    cooks LIVE. Sofrito sings. Stock kisses rice. Bomba scatters like stars. NO STIRRING. "The physics
-    need stillness!" Gears says. "The Maillard reaction needs PATIENCE!" A pigeon steals VP''s clipboard.
-    He files a form against the pigeon.'
+  text: 'The cook-off starts. VP''s machine: BEEP. WHIR. SLURRY OUT. Perfect beige discs slide out. Clara cooks LIVE. Sofrito sings. Stock kisses rice. Bomba scatters like stars. NO STIRRING. "The physics need stillness!" Gears says. "The Maillard reaction needs PATIENCE!" A pigeon steals VP''s clipboard. He files a form against the pigeon.'
   image:
-    prompt: Cook-off in progress - VP's machine extruding beige discs, Clara's pan with golden rice, sofrito
-      bubbling, Gears adjusting toaster-coat-hanger fire controller (holographic temperature readouts),
-      pigeon flying away with clipboard, Abuela nodding, crowd watching, orange petals falling
+    prompt: Cook-off in progress - VP's machine extruding beige discs, Clara's pan with golden rice, sofrito bubbling, Gears adjusting toaster-coat-hanger fire controller (holographic temperature readouts), pigeon flying away with clipboard, Abuela nodding, crowd watching, orange petals falling
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: Cook-off - machine vs traditional method
-    text_zone: lower third
     file: images/page-08.png
   layout:
     text_position: lower-third
@@ -398,19 +315,14 @@ pages:
       id: paella-master
 - number: 9
   kind: story
-  text: VP's machine makes... beige discs. They taste like cardboard. Clara's pan shows GOLDEN SOCARRAT.
-    The crown jewel. The crunchy treasure. The sound of a spoon cracking through glory. The crowd GASPS.
-    Abuela tastes. Nods once. "This one has alma." VP checks his tablet. "Alma is not a KPI. Define it."
+  text: VP's machine makes... beige discs. They taste like cardboard. Clara's pan shows GOLDEN SOCARRAT. The crown jewel. The crunchy treasure. The sound of a spoon cracking through glory. The crowd GASPS. Abuela tastes. Nods once. "This one has alma." VP checks his tablet. "Alma is not a KPI. Define it."
   image:
-    prompt: The reveal - VP's beige disc on white plate vs Clara's pan with golden socarrat cracking,
-      Abuela tasting with nod, crowd gasping (mouths open), VP checking tablet confused, Gears eyes ❤️
-      proud, orange petals like confetti
+    prompt: The reveal - VP's beige disc on white plate vs Clara's pan with golden socarrat cracking, Abuela tasting with nod, crowd gasping (mouths open), VP checking tablet confused, Gears eyes ❤️ proud, orange petals like confetti
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: Socarrat reveal - beige disc vs golden glory
-    text_zone: lower third
     file: images/page-09.png
   layout:
     text_position: lower-third
@@ -423,19 +335,14 @@ pages:
   - KPI
 - number: 10
   kind: story
-  text: 'Clara serves paella NOW. Paper plates. Wooden spoons. Chaos. Joy. Saffron fingers. VP''s machine
-    CLANKS. A chorizo chunk jams it. VP said it was "authentic." Abuela: "Sacrilege!" The trademark is
-    REJECTED. Stamped: "Prior art: Abuela Carmen, 1952 to now. Also: your machine ate the paperwork."'
+  text: 'Clara serves paella NOW. Paper plates. Wooden spoons. Chaos. Joy. Saffron fingers. VP''s machine CLANKS. A chorizo chunk jams it. VP said it was "authentic." Abuela: "Sacrilege!" The trademark is REJECTED. Stamped: "Prior art: Abuela Carmen, 1952 to now. Also: your machine ate the paperwork."'
   image:
-    prompt: Feeding the crowd - Clara serving paella on paper plates, kids with saffron fingers, VP's
-      machine smoking with chorizo chunk jammed in gears, Abuela stamping REJECTED on trademark form,
-      pigeon nesting in clipboard, orange trees, sunset, pure chaos and joy
+    prompt: Feeding the crowd - Clara serving paella on paper plates, kids with saffron fingers, VP's machine smoking with chorizo chunk jammed in gears, Abuela stamping REJECTED on trademark form, pigeon nesting in clipboard, orange trees, sunset, pure chaos and joy
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paella-police
     alt: Crowd eating paella, VP's machine broken
-    text_zone: lower third
     file: images/page-10.png
   layout:
     text_position: lower-third
@@ -497,18 +404,13 @@ pages:
       id: paella-server
 - number: 11
   kind: story
-  text: 'VP leaves. He says "paella" right for the first time -- by accident! The powder kits become cat
-    litter. Cats love them. Three paws up. Abuela''s recipe gets a GlobeCorp stamp. She draws a mustache
-    on it. Gears calculates: "VP learning chance: 0%. Mustache chance: 100%. Acceptable."'
+  text: 'VP leaves. He says "paella" right for the first time -- by accident! The powder kits become cat litter. Cats love them. Three paws up. Abuela''s recipe gets a GlobeCorp stamp. She draws a mustache on it. Gears calculates: "VP learning chance: 0%. Mustache chance: 100%. Acceptable."'
   image:
-    prompt: VP leaving - VP walking away with clipboard, pronouncing "paella" correctly by accident, Instant
-      Powder Kits boxes labeled "CAT LITTER - PREMIUM," Abuela holding recipe with mustache on GlobeCorp
-      logo, Gears eyes 💡 idea mode, pigeon on clipboard, sunset
+    prompt: VP leaving - VP walking away with clipboard, pronouncing "paella" correctly by accident, Instant Powder Kits boxes labeled "CAT LITTER - PREMIUM," Abuela holding recipe with mustache on GlobeCorp logo, Gears eyes 💡 idea mode, pigeon on clipboard, sunset
     characters_present:
     - vp-paella-police
     - gears
     alt: VP defeated, powder becomes cat litter, Abuela's mustache
-    text_zone: lower third
     file: images/page-11.png
   layout:
     text_position: lower-third
@@ -521,19 +423,13 @@ pages:
   - acceptable
 - number: 12
   kind: story
-  text: 'Clara and Gears fly home over the sea. Paella sneakers dangle. Best souvenir ever. Below, Valencia
-    glows. Markets. Orange trees. Abuelas with wooden spoons. Socarrat cracking in a thousand pans. "Field
-    note," Clara whispers. "The world is too weird to optimize. Also: Gears, you have saffron on your
-    antenna."'
+  text: 'Clara and Gears fly home over the sea. Paella sneakers dangle. Best souvenir ever. Below, Valencia glows. Markets. Orange trees. Abuelas with wooden spoons. Socarrat cracking in a thousand pans. "Field note," Clara whispers. "The world is too weird to optimize. Also: Gears, you have saffron on your antenna."'
   image:
-    prompt: Flying home - Clara and Gears over Mediterranean at sunset, paella-stained sneakers, Valencia
-      glowing below (markets, orange trees, pans), Gears with saffron on antenna tip, Clara's cloud backpack
-      full, peaceful heroic flight
+    prompt: Flying home - Clara and Gears over Mediterranean at sunset, paella-stained sneakers, Valencia glowing below (markets, orange trees, pans), Gears with saffron on antenna tip, Clara's cloud backpack full, peaceful heroic flight
     characters_present:
     - clara-garcia-kang
     - gears
     alt: Clara and Gears flying home over Valencia
-    text_zone: lower third
     file: images/page-12.png
   layout:
     text_position: lower-third
@@ -545,18 +441,13 @@ pages:
   - souvenir
 - number: 13
   kind: story
-  text: GlobeCorp VPs now fear three things. Clara's "why?" Gears's worry-loops. Abuelas with handwritten
-    recipes. A pigeon in Valencia still has VP's clipboard. It lines a nest with it. The nest has Form
-    27-B. The pigeon filed it three times.
+  text: GlobeCorp VPs now fear three things. Clara's "why?" Gears's worry-loops. Abuelas with handwritten recipes. A pigeon in Valencia still has VP's clipboard. It lines a nest with it. The nest has Form 27-B. The pigeon filed it three times.
   image:
-    prompt: Epilogue - Valencia market pigeon nest made of corporate forms (Form 27-B visible), pigeon
-      wearing tiny tie, Abuela's pan hanging on wall with new pin badge, Clara's sneaker wing design visible
-      (paella pan), Gears's antenna bell, warm evening
+    prompt: Epilogue - Valencia market pigeon nest made of corporate forms (Form 27-B visible), pigeon wearing tiny tie, Abuela's pan hanging on wall with new pin badge, Clara's sneaker wing design visible (paella pan), Gears's antenna bell, warm evening
     characters_present:
     - clara-garcia-kang
     - gears
     alt: Pigeon nest with corporate forms, Abuela's pan with pin
-    text_zone: lower third
     file: images/page-13.png
   layout:
     text_position: lower-third
@@ -590,14 +481,11 @@ pages:
   kind: end
   text: The End. (But somewhere, a pigeon is filing Form 27-B in triplicate.)
   image:
-    prompt: Simple end page - cloud-shaped 'THE END' in sky, Clara's paella-pan sneaker wings flying away,
-      Gears's antenna with tiny bell, single saffron thread drifting, bold gouache brushstrokes, orange
-      blossom petals
+    prompt: Simple end page - cloud-shaped 'THE END' in sky, Clara's paella-pan sneaker wings flying away, Gears's antenna with tiny bell, single saffron thread drifting, bold gouache brushstrokes, orange blossom petals
     characters_present:
     - clara-garcia-kang
     - gears
     alt: The End page with saffron thread
-    text_zone: center
     file: images/page-14.png
   layout:
     text_position: center
@@ -642,8 +530,5 @@ tags:
 - smart-protagonist
 cover:
   image: images/page-00.png
-  image_prompt: Clara flying heroically over Valencia at golden hour, Gears in backpack (antenna wobbling),
-    Plaza de la Virgen with giant paella pan center stage, VP Paella Police on platform with clipboard
-    and tape measure, sleek eradication drone hovering, orange trees showering petals, Abuela Carmen arms
-    crossed judging, 'Operation PAELLA-PIRATE' title space, bold gouache, dynamic low angle
+  image_prompt: Clara flying heroically over Valencia at golden hour, Gears in backpack (antenna wobbling), Plaza de la Virgen with giant paella pan center stage, VP Paella Police on platform with clipboard and tape measure, sleek eradication drone hovering, orange trees showering petals, Abuela Carmen arms crossed judging, 'Operation PAELLA-PIRATE' title space, bold gouache, dynamic low angle
   alt: Cover - Clara flying over Valencia paella showdown

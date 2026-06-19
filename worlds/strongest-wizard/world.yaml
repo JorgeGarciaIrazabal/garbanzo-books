@@ -1,14 +1,7 @@
 slug: strongest-wizard
 title: The Strongest Wizard
-tagline: A determined girl wizard trains tirelessly to become the strongest and protect her friends from
-  rival wizards and monsters.
-premise: In a world where magic flows through ancient spellbooks and wild creatures roam, young Aria dreams
-  of becoming the strongest wizard — not for glory, but to shield her friends from dangerous rival wizards
-  and the monsters that lurk beyond the village walls. She learns by copying spells from grimoires, watching
-  dueling wizards, and practicing relentlessly with her companions. Every scraped knee, every fizzled
-  incantation, every midnight study session brings her closer to her goal. But the path to strength isn't
-  just about power — it's about the friends who fight beside you, the mentors who see your potential,
-  and the courage to keep casting when every spell fails.
+tagline: A determined girl wizard trains tirelessly to become the strongest and protect her friends from rival wizards and monsters.
+premise: In a world where magic flows through ancient spellbooks and wild creatures roam, young Aria dreams of becoming the strongest wizard — not for glory, but to shield her friends from dangerous rival wizards and the monsters that lurk beyond the village walls. She learns by copying spells from grimoires, watching dueling wizards, and practicing relentlessly with her companions. Every scraped knee, every fizzled incantation, every midnight study session brings her closer to her goal. But the path to strength isn't just about power — it's about the friends who fight beside you, the mentors who see your potential, and the courage to keep casting when every spell fails.
 tone:
 - adventurous
 - determined
@@ -20,35 +13,27 @@ target_age_bands:
 languages:
 - en
 geography:
-  overview: A rolling countryside of pastel hills, ancient libraries tucked into tree trunks, and a cozy
-    village where young wizards train. Beyond the protective ward stones lie the Wilds — misty forests,
-    crystalline caves, and ruins where monsters and rival wizards dwell.
+  overview: A rolling countryside of pastel hills, ancient libraries tucked into tree trunks, and a cozy village where young wizards train. Beyond the protective ward stones lie the Wilds — misty forests, crystalline caves, and ruins where monsters and rival wizards dwell.
   locations:
   - name: Whisper Village
-    description: A sleepy hamlet of cobblestone paths, thatched cottages, and the great oak library where
-      Aria studies. Ward stones glow softly at its borders.
+    description: A sleepy hamlet of cobblestone paths, thatched cottages, and the great oak library where Aria studies. Ward stones glow softly at its borders.
     mood: cozy
     recurring: true
   - name: The Great Oak Library
-    description: A massive hollowed-out tree filled with floating spellbooks, glowing scrolls, and quiet
-      nooks. The heart of Aria's magical education.
+    description: A massive hollowed-out tree filled with floating spellbooks, glowing scrolls, and quiet nooks. The heart of Aria's magical education.
     mood: wondrous
     recurring: true
   - name: Practice Meadow
-    description: A sun-dappled field where Aria and her friends practice spells on target dummies, duel
-      each other, and collapse laughing in the grass.
+    description: A sun-dappled field where Aria and her friends practice spells on target dummies, duel each other, and collapse laughing in the grass.
     mood: playful
     recurring: true
   - name: The Wild Woods
-    description: 'Beyond the ward stones: mist-shrouded forests, singing crystal caves, and crumbling
-      towers where rival wizards and monsters make their lairs.'
+    description: 'Beyond the ward stones: mist-shrouded forests, singing crystal caves, and crumbling towers where rival wizards and monsters make their lairs.'
     mood: mysterious
     recurring: false
 rules:
-- Magic requires practice — no shortcuts, no chosen ones. Spells are learned through repetition, observation,
-  and experimentation.
-- Ward stones protect settlements but fade over time; they must be recharged by wizard duels or ancient
-  rituals.
+- Magic requires practice — no shortcuts, no chosen ones. Spells are learned through repetition, observation, and experimentation.
+- Ward stones protect settlements but fade over time; they must be recharged by wizard duels or ancient rituals.
 - Monsters are drawn to raw, unfocused magic. Controlled practice is safe; wild casting attracts danger.
 - A wizard's true strength is measured by who they protect, not how many they defeat.
 - Spellbooks cannot be copied perfectly — each wizard must make the spell their own through practice.
@@ -92,14 +77,11 @@ art_style:
   - Studio Ghibli pastel backgrounds
   - Rebecca Sugar's Steven Universe color styling
   - classic 90s picture book watercolor
-  prompt_style_block: dreamy pastel children's book illustration, soft blush and mint palette, whisper-thin
-    rounded lines, golden-hour glow with floating magic motes, ethereal gradients, hand-painted paper
-    texture, cozy whimsical mood, no text
-  negative_prompt: photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra
-    fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
+  prompt_style_block: dreamy pastel children's book illustration, soft blush and mint palette, whisper-thin rounded lines, golden-hour glow with floating magic motes, ethereal gradients, hand-painted paper texture, cozy whimsical mood, no text
+  negative_prompt: photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
   aspect_ratio: '4:3'
   text_treatment:
-    placement: lower third
+    placement: lower-third
     scrim: soft cream rounded panel at 85% opacity with lavender edge glow
     font_family: Andika
     dyslexia_friendly: true

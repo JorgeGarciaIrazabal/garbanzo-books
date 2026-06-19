@@ -1,14 +1,8 @@
 slug: strongest-wizard
 world: strongest-wizard
 title: The Strongest Wizard
-logline: Aria practices messy spells every day to become the strongest wizard and protect her friends
-  — when a monster breaches the village wards, her chaotic training becomes their only hope.
-summary: Aria isn't the best wizard. Her spells fizzle, backfire, and turn practice dummies into flower
-  bushes. But she practices harder than anyone — copying spells from books, watching duels, drilling with
-  Bram and Sylfie until her fingers are stained and her robe is singed. When a ward stone fails and a
-  bumbling but dangerous monster stumbles into Whisper Village, Aria's 'messy' magic — the weird combinations
-  only she would think to try — saves the day. She learns the strongest wizard isn't the one with the
-  perfect spells, but the one who never stops trying.
+logline: Aria practices messy spells every day to become the strongest wizard and protect her friends — when a monster breaches the village wards, her chaotic training becomes their only hope.
+summary: Aria isn't the best wizard. Her spells fizzle, backfire, and turn practice dummies into flower bushes. But she practices harder than anyone — copying spells from books, watching duels, drilling with Bram and Sylfie until her fingers are stained and her robe is singed. When a ward stone fails and a bumbling but dangerous monster stumbles into Whisper Village, Aria's 'messy' magic — the weird combinations only she would think to try — saves the day. She learns the strongest wizard isn't the one with the perfect spells, but the one who never stops trying.
 age_band: 5-7
 target_year: 6
 reading_level:
@@ -22,8 +16,7 @@ reading_level:
   decodable: false
 themes:
 - friendship
-moral: Strength comes from persistent practice and the friends who practice beside you — not from perfect
-  spells.
+moral: Strength comes from persistent practice and the friends who practice beside you — not from perfect spells.
 characters:
 - slug: aria
   stage: base
@@ -35,41 +28,25 @@ characters:
   stage: base
   role_in_story: rival-friend
 spine:
-  once_upon_a_time: Aria wanted to be the strongest wizard in the world — not for trophies, but so no
-    monster could ever hurt her friends.
-  every_day: She practiced in Practice Meadow until sunset. She copied spells from the Great Oak Library's
-    floating books. She dueled Sylfie (and lost). She fizzled fire into flowers, froze her own boots,
-    and levitated Bram's scarf instead of the target. Bram counted on fingers. Sylfie twirled her wand
-    and nailed it first try. Aria just kept going.
-  until_one_day: A ward stone at Whisper Village's edge flickered and died. A clumsy, hungry Grumblebeast
-    — all wobbling legs and too many teeth — lumbered through the gap, sniffing for magic.
+  once_upon_a_time: Aria wanted to be the strongest wizard in the world — not for trophies, but so no monster could ever hurt her friends.
+  every_day: She practiced in Practice Meadow until sunset. She copied spells from the Great Oak Library's floating books. She dueled Sylfie (and lost). She fizzled fire into flowers, froze her own boots, and levitated Bram's scarf instead of the target. Bram counted on fingers. Sylfie twirled her wand and nailed it first try. Aria just kept going.
+  until_one_day: A ward stone at Whisper Village's edge flickered and died. A clumsy, hungry Grumblebeast — all wobbling legs and too many teeth — lumbered through the gap, sniffing for magic.
   because_of_that:
-  - The village wizards rushed to recharge the ward, but the ritual takes time. The Grumblebeast spotted
-    Aria's glowing practice dummy and charged.
-  - Sylfie's perfect shield spell bounced off its hide. Bram's calculated freeze ray missed. Aria stood
-    between the monster and her friends, heart hammering.
-  until_finally: Aria didn't cast a perfect spell. She mashed together every failed attempt — fire+flowers,
-    ice+levitation, light+ink — into a chaotic, sparkling, silly-looking burst that tangled the Grumblebeast
-    in glowing vines, lifted it gently, and deposited it back in the Wild Woods with a confused hiccup.
-  ever_since_then: 'Aria still isn''t the ''best'' wizard. Her spells still fizzle. But the Grumblebeast
-    visits for snacks sometimes, the ward stones glow brighter when she''s near, and her friends know:
-    if trouble comes, Aria''s messy magic will be ready.'
+  - The village wizards rushed to recharge the ward, but the ritual takes time. The Grumblebeast spotted Aria's glowing practice dummy and charged.
+  - Sylfie's perfect shield spell bounced off its hide. Bram's calculated freeze ray missed. Aria stood between the monster and her friends, heart hammering.
+  until_finally: Aria didn't cast a perfect spell. She mashed together every failed attempt — fire+flowers, ice+levitation, light+ink — into a chaotic, sparkling, silly-looking burst that tangled the Grumblebeast in glowing vines, lifted it gently, and deposited it back in the Wild Woods with a confused hiccup.
+  ever_since_then: 'Aria still isn''t the ''best'' wizard. Her spells still fizzle. But the Grumblebeast visits for snacks sometimes, the ward stones glow brighter when she''s near, and her friends know: if trouble comes, Aria''s messy magic will be ready.'
 pages:
 - number: 0
   kind: title
   text: The Strongest Wizard
   image:
-    prompt: Aria stands on Practice Meadow at golden hour, oversized blush-pink robe glowing, messy chestnut
-      bob with lavender streak catching light, determined grin, mint satchel at hip, charred and flowered
-      practice dummies behind her, Bram counting on fingers nearby, Sylfie floating effortlessly with
-      sparkles, ward stones pulsing at village edge in background
+    prompt: Aria stands on Practice Meadow at golden hour, oversized blush-pink robe glowing, messy chestnut bob with lavender streak catching light, determined grin, mint satchel at hip, charred and flowered practice dummies behind her, Bram counting on fingers nearby, Sylfie floating effortlessly with sparkles, ward stones pulsing at village edge in background
     characters_present:
     - aria
     - bram
     - sylfie
-    alt: Aria the determined girl wizard on Practice Meadow with her friends Bram and Sylfie, practice
-      dummies showing messy spell results
-    text_zone: center
+    alt: Aria the determined girl wizard on Practice Meadow with her friends Bram and Sylfie, practice dummies showing messy spell results
     file: images/page-00.png
   layout:
     text_position: center
@@ -77,15 +54,12 @@ pages:
     scrim: true
 - number: 1
   kind: story
-  text: Aria wanted to be the strongest wizard. Not for crowns or cheers. She wanted to be strong so no
-    bad thing could hurt her friends.
+  text: Aria wanted to be the strongest wizard. Not for crowns or cheers. She wanted to be strong so no bad thing could hurt her friends.
   image:
-    prompt: Close-up of Aria's determined face, amber-gold eyes bright, tongue peeking in concentration,
-      ink smudge on nose, lavender hair streak glowing softly, blurred Practice Meadow behind her
+    prompt: Close-up of Aria's determined face, amber-gold eyes bright, tongue peeking in concentration, ink smudge on nose, lavender hair streak glowing softly, blurred Practice Meadow behind her
     characters_present:
     - aria
     alt: Aria's determined face close-up, amber-gold eyes, ink smudge on nose, lavender hair streak
-    text_zone: lower third
     file: images/page-01.png
   layout:
     text_position: lower-third
@@ -100,17 +74,12 @@ pages:
   kind: story
   text: Every morning Aria ran to the meadow, and every night it looked surprising.
   image:
-    prompt: 'Practice Meadow wide shot at sunset: practice dummies — one charred black, one frozen in
-      ice, one sprouting wild flowers, one floating upside down, one wearing a sock hat. Aria''s small
-      figure in center, robe singed at hem, Bram nearby with clipboard, Sylfie''s perfect dummy glowing
-      softly in background'
+    prompt: 'Practice Meadow wide shot at sunset: practice dummies — one charred black, one frozen in ice, one sprouting wild flowers, one floating upside down, one wearing a sock hat. Aria''s small figure in center, robe singed at hem, Bram nearby with clipboard, Sylfie''s perfect dummy glowing softly in background'
     characters_present:
     - aria
     - bram
     - sylfie
-    alt: Practice Meadow at sunset with Aria's messy spell results on dummies — charred, frozen, flowered,
-      floating
-    text_zone: lower third
+    alt: Practice Meadow at sunset with Aria's messy spell results on dummies — charred, frozen, flowered, floating
     file: images/page-02.png
   layout:
     text_position: lower-third
@@ -125,15 +94,12 @@ pages:
   kind: story
   text: '"Fireball!" Aria shouted. Poof -- pink petals burst out, and the dummy smelled like strawberries.'
   image:
-    prompt: Aria casting fireball spell — instead of flames, a joyful explosion of pink flower petals
-      and strawberry-scented sparkles engulfs a practice dummy. Aria looks delighted-surprised, tongue
-      out. Bram writing notes furiously. Sylfie watching with curious head tilt, sparkles at her fingertips
+    prompt: Aria casting fireball spell — instead of flames, a joyful explosion of pink flower petals and strawberry-scented sparkles engulfs a practice dummy. Aria looks delighted-surprised, tongue out. Bram writing notes furiously. Sylfie watching with curious head tilt, sparkles at her fingertips
     characters_present:
     - aria
     - bram
     - sylfie
     alt: Aria's fireball spell turns into pink flower petals and strawberry sparkles on a dummy
-    text_zone: lower third
     file: images/page-03.png
   layout:
     text_position: lower-third
@@ -168,15 +134,12 @@ pages:
   kind: story
   text: '"Ice shard!" Crack. Aria''s boots froze to the grass, so Bram gave her a cup. "Hot cocoa."'
   image:
-    prompt: Aria's feet frozen in clear ice blocks on grass, looking down sheepish. Bram tall and lanky
-      offering a thermos, glasses glinting, pockets bulging. Sylfie in background skating effortlessly
-      on a frozen puddle, ribbons floating. Golden hour light.
+    prompt: Aria's feet frozen in clear ice blocks on grass, looking down sheepish. Bram tall and lanky offering a thermos, glasses glinting, pockets bulging. Sylfie in background skating effortlessly on a frozen puddle, ribbons floating. Golden hour light.
     characters_present:
     - aria
     - bram
     - sylfie
     alt: Aria's boots frozen to grass, Bram offering hot cocoa, Sylfie skating on a puddle
-    text_zone: lower third
     file: images/page-04.png
   layout:
     text_position: lower-third
@@ -191,15 +154,12 @@ pages:
   kind: story
   text: '"Levitate!" The dummy stayed put, but Bram''s scarf floated up. He blinked. "Huh. Close enough."'
   image:
-    prompt: Aria concentrating hard, wand pointed at a practice dummy that hasn't moved. Bram's lavender
-      scarf floating upward like a snake, one sleeve rolled higher than the other. Aria's ink-smudged
-      fingers. Sylfie covering a giggle, golden sparkles at her lips. Warm afternoon light.
+    prompt: Aria concentrating hard, wand pointed at a practice dummy that hasn't moved. Bram's lavender scarf floating upward like a snake, one sleeve rolled higher than the other. Aria's ink-smudged fingers. Sylfie covering a giggle, golden sparkles at her lips. Warm afternoon light.
     characters_present:
     - aria
     - bram
     - sylfie
     alt: Aria's levitate spell hits Bram's scarf instead of the dummy, scarf floating like a snake
-    text_zone: lower third
     file: images/page-05.png
   layout:
     text_position: lower-third
@@ -232,19 +192,14 @@ pages:
       try_again: Scarves are wiggly. One more try!
 - number: 6
   kind: story
-  text: Sylfie twirled. "Fireball." Whoosh -- perfect fire. "Ice shard." Shing -- clear ice. "Levitate."
-    Hum -- the dummy floated like a feather.
+  text: Sylfie twirled. "Fireball." Whoosh -- perfect fire. "Ice shard." Shing -- clear ice. "Levitate." Hum -- the dummy floated like a feather.
   image:
-    prompt: 'Sylfie demonstrating perfect spells: a clean fireball, a perfect ice crystal, a dummy floating
-      gracefully. Her silver-blonde hair floats weightlessly, violet-blue eyes sparkling, lavender dress-robe
-      flowing, golden sparkles trailing. Aria watching with wide amber-gold eyes — not jealous, studying.
-      Bram taking notes fast.'
+    prompt: 'Sylfie demonstrating perfect spells: a clean fireball, a perfect ice crystal, a dummy floating gracefully. Her silver-blonde hair floats weightlessly, violet-blue eyes sparkling, lavender dress-robe flowing, golden sparkles trailing. Aria watching with wide amber-gold eyes — not jealous, studying. Bram taking notes fast.'
     characters_present:
     - aria
     - bram
     - sylfie
     alt: Sylfie casting perfect spells — fireball, ice shard, levitate — while Aria watches and studies
-    text_zone: lower third
     file: images/page-06.png
   layout:
     text_position: lower-third
@@ -257,18 +212,12 @@ pages:
   - feather
 - number: 7
   kind: story
-  text: Aria didn't mind. She took notes and tried again. Her book got sticky, and her robe got burn marks
-    like badges.
+  text: Aria didn't mind. She took notes and tried again. Her book got sticky, and her robe got burn marks like badges.
   image:
-    prompt: 'Aria''s spellbook open — pages ripple like water, covered in jam stains, ink smudges, pressed
-      flowers, messy notes in child handwriting. Aria''s hands writing, ink-stained fingers. Her robe
-      hem visible: charred edges, frost patterns, flower stems growing from fabric. Warm cozy library
-      light from floating candles.'
+    prompt: 'Aria''s spellbook open — pages ripple like water, covered in jam stains, ink smudges, pressed flowers, messy notes in child handwriting. Aria''s hands writing, ink-stained fingers. Her robe hem visible: charred edges, frost patterns, flower stems growing from fabric. Warm cozy library light from floating candles.'
     characters_present:
     - aria
-    alt: Aria's messy spellbook with jam stains, ink smudges, pressed flowers, and her singed robe hem
-      with badges of practice
-    text_zone: lower third
+    alt: Aria's messy spellbook with jam stains, ink smudges, pressed flowers, and her singed robe hem with badges of practice
     file: images/page-07.png
   layout:
     text_position: lower-third
@@ -282,16 +231,12 @@ pages:
   - badges
 - number: 8
   kind: story
-  text: At the Great Oak Library, books floated and whispered. Aria climbed twisty stairs, looking for
-    a new spell.
+  text: At the Great Oak Library, books floated and whispered. Aria climbed twisty stairs, looking for a new spell.
   image:
-    prompt: Great Oak Library interior — massive hollow tree, spiral staircase winding up, floating spellbooks
-      glowing softly, golden light shafts through leaves. Aria small on stairs, mint satchel bouncing,
-      lavender hair streak catching light. Books ripple like water as she passes.
+    prompt: Great Oak Library interior — massive hollow tree, spiral staircase winding up, floating spellbooks glowing softly, golden light shafts through leaves. Aria small on stairs, mint satchel bouncing, lavender hair streak catching light. Books ripple like water as she passes.
     characters_present:
     - aria
     alt: Aria climbing spiral stairs in Great Oak Library, floating glowing books all around
-    text_zone: lower third
     file: images/page-08.png
   layout:
     text_position: lower-third
@@ -305,15 +250,11 @@ pages:
   - whispered
 - number: 9
   kind: story
-  text: That night a ward stone at the village edge flickered. Puff -- it went dark, and the Wild Woods
-    held their breath.
+  text: That night a ward stone at the village edge flickered. Puff -- it went dark, and the Wild Woods held their breath.
   image:
-    prompt: Whisper Village at twilight — a ward stone at the border fading from gentle pulse to dark
-      stone. Mist creeping from Wild Woods beyond. One ward stone dark, others glowing warm. Silhouette
-      of something large and wobbling at tree line. Ominous but not terrifying — dreamy pastel tension.
+    prompt: Whisper Village at twilight — a ward stone at the border fading from gentle pulse to dark stone. Mist creeping from Wild Woods beyond. One ward stone dark, others glowing warm. Silhouette of something large and wobbling at tree line. Ominous but not terrifying — dreamy pastel tension.
     characters_present: []
     alt: A ward stone at village edge fading to dark, mist from Wild Woods, shadowy shape approaching
-    text_zone: lower third
     file: images/page-09.png
   layout:
     text_position: lower-third
@@ -327,16 +268,11 @@ pages:
   - breath
 - number: 10
   kind: story
-  text: A Grumblebeast came through. Wobbling legs, too many teeth, hungry for magic. It sniffed and turned
-    to the meadow.
+  text: A Grumblebeast came through. Wobbling legs, too many teeth, hungry for magic. It sniffed and turned to the meadow.
   image:
-    prompt: A Grumblebeast — large, clumsy, round creature with wobbling legs, shaggy fur in dusk-lavender,
-      too many blunt teeth in a goofy grin, glowing eyes. Not scary, just dangerous and hungry. Sniffing
-      air, turning toward Practice Meadow where a dummy glows with residual magic. Village rooftops in
-      background.
+    prompt: A Grumblebeast — large, clumsy, round creature with wobbling legs, shaggy fur in dusk-lavender, too many blunt teeth in a goofy grin, glowing eyes. Not scary, just dangerous and hungry. Sniffing air, turning toward Practice Meadow where a dummy glows with residual magic. Village rooftops in background.
     characters_present: []
     alt: A Grumblebeast — round, wobbling, shaggy, too many teeth — sniffing toward Practice Meadow
-    text_zone: lower third
     file: images/page-10.png
   layout:
     text_position: lower-third
@@ -350,20 +286,14 @@ pages:
   - magic
 - number: 11
   kind: story
-  text: Village wizards ran to the ward. "Fixing it takes time!" they said. The Grumblebeast charged,
-    and Aria stepped up.
+  text: Village wizards ran to the ward. "Fixing it takes time!" they said. The Grumblebeast charged, and Aria stepped up.
   image:
-    prompt: Village wizards (adults in robes) at dark ward stone, hands raised in complex ritual. Grumblebeast
-      charging across meadow — wobbling fast. Aria small but planted firm in oversized blush-pink robe,
-      lavender streak bright, amber-gold eyes fierce. Bram and Sylfie beside her — Bram counting fingers
-      fast, Sylfie's sparkles flaring protective.
+    prompt: Village wizards (adults in robes) at dark ward stone, hands raised in complex ritual. Grumblebeast charging across meadow — wobbling fast. Aria small but planted firm in oversized blush-pink robe, lavender streak bright, amber-gold eyes fierce. Bram and Sylfie beside her — Bram counting fingers fast, Sylfie's sparkles flaring protective.
     characters_present:
     - aria
     - bram
     - sylfie
-    alt: Adult wizards doing ward ritual, Grumblebeast charging, Aria stepping forward with Bram and Sylfie
-      beside her
-    text_zone: lower third
+    alt: Adult wizards doing ward ritual, Grumblebeast charging, Aria stepping forward with Bram and Sylfie beside her
     file: images/page-11.png
   layout:
     text_position: lower-third
@@ -397,19 +327,14 @@ pages:
       try_again: The wind is tricky. Run again!
 - number: 12
   kind: story
-  text: Sylfie shouted "Shield!" Ping -- her bubble bounced off. Bram said "Freeze!" Zzip -- missed. The
-    beast kept coming.
+  text: Sylfie shouted "Shield!" Ping -- her bubble bounced off. Bram said "Freeze!" Zzip -- missed. The beast kept coming.
   image:
-    prompt: Sylfie's perfect spherical shield spell (lavender-gold) bouncing harmlessly off Grumblebeast's
-      shaggy side. Bram's thin blue freeze ray zipping past. Grumblebeast wobbling closer, goofy grin
-      wide. Aria center frame, wand raised, face fierce-concentrated, ink-smudged, singed hem, lavender
-      streak glowing.
+    prompt: Sylfie's perfect spherical shield spell (lavender-gold) bouncing harmlessly off Grumblebeast's shaggy side. Bram's thin blue freeze ray zipping past. Grumblebeast wobbling closer, goofy grin wide. Aria center frame, wand raised, face fierce-concentrated, ink-smudged, singed hem, lavender streak glowing.
     characters_present:
     - aria
     - bram
     - sylfie
     alt: Sylfie's shield bouncing off Grumblebeast, Bram's freeze ray missing, Aria preparing her spell
-    text_zone: lower third
     file: images/page-12.png
   layout:
     text_position: lower-third
@@ -423,21 +348,14 @@ pages:
   - missed
 - number: 13
   kind: story
-  text: Aria didn't do a perfect spell. She mashed them all -- fire and flowers, ice and lift, light and
-    ink. KABLOOM!
+  text: Aria didn't do a perfect spell. She mashed them all -- fire and flowers, ice and lift, light and ink. KABLOOM!
   image:
-    prompt: 'Aria casting chaotic combined spell — swirling mix of pink flower petals, blue ice crystals,
-      golden light ribbons, dark ink tendrils all spiraling together from her wand. Grumblebeast caught
-      in center, tangled in glowing vines, lifting gently off ground. Aria''s face: fierce joy, tongue
-      out, lavender streak blazing. Bram and Sylfie shielding eyes from sparkles. Explosion of color in
-      dreamy pastel palette.'
+    prompt: 'Aria casting chaotic combined spell — swirling mix of pink flower petals, blue ice crystals, golden light ribbons, dark ink tendrils all spiraling together from her wand. Grumblebeast caught in center, tangled in glowing vines, lifting gently off ground. Aria''s face: fierce joy, tongue out, lavender streak blazing. Bram and Sylfie shielding eyes from sparkles. Explosion of color in dreamy pastel palette.'
     characters_present:
     - aria
     - bram
     - sylfie
-    alt: Aria's chaotic combined spell — fire, flowers, ice, lift, light, ink all spiraling — tangling
-      Grumblebeast in glowing vines
-    text_zone: lower third
+    alt: Aria's chaotic combined spell — fire, flowers, ice, lift, light, ink all spiraling — tangling Grumblebeast in glowing vines
     file: images/page-13.png
   layout:
     text_position: lower-third
@@ -479,20 +397,14 @@ pages:
       try_again: Spell mixing takes practice. Again?
 - number: 14
   kind: story
-  text: The beast hiccuped, caught in sparkly vines. Aria's messy magic lifted it -- whoosh -- back to
-    the woods. Plop.
+  text: The beast hiccuped, caught in sparkly vines. Aria's messy magic lifted it -- whoosh -- back to the woods. Plop.
   image:
-    prompt: Grumblebeast gently floating away over Practice Meadow, tangled in beautiful glowing vines
-      (pink flowers, blue ice, gold light, ink ribbons), looking confused but not hurt. Aria lowering
-      wand, exhausted but beaming, singed robe hem, ink-smudged nose. Bram and Sylfie rushing to her —
-      Bram's scarf trailing, Sylfie's ribbons dancing. Ward stones in background pulsing bright again.
+    prompt: Grumblebeast gently floating away over Practice Meadow, tangled in beautiful glowing vines (pink flowers, blue ice, gold light, ink ribbons), looking confused but not hurt. Aria lowering wand, exhausted but beaming, singed robe hem, ink-smudged nose. Bram and Sylfie rushing to her — Bram's scarf trailing, Sylfie's ribbons dancing. Ward stones in background pulsing bright again.
     characters_present:
     - aria
     - bram
     - sylfie
-    alt: Grumblebeast floating away tangled in glowing vines back to Wild Woods, Aria exhausted but beaming,
-      Bram and Sylfie rushing to her
-    text_zone: lower third
+    alt: Grumblebeast floating away tangled in glowing vines back to Wild Woods, Aria exhausted but beaming, Bram and Sylfie rushing to her
     file: images/page-14.png
   layout:
     text_position: lower-third
@@ -505,21 +417,14 @@ pages:
   - vines
   - Wild Woods
 - number: 15
-  text: 'Aria still isn''t the best wizard. Her spells still fizzle. But the beast visits for berries,
-    and the stones glow bright when she''s near. Her friends know: if trouble comes, Aria''s messy magic
-    will be ready.'
+  text: 'Aria still isn''t the best wizard. Her spells still fizzle. But the beast visits for berries, and the stones glow bright when she''s near. Her friends know: if trouble comes, Aria''s messy magic will be ready.'
   image:
-    prompt: Peaceful Practice Meadow at golden hour — Grumblebeast sitting contentedly eating strawberries
-      from Aria's hand. Aria's robe singed but she's beaming. Bram reading a book nearby, scarf neat.
-      Sylfie braiding a new friendship bracelet, ribbons floating. Ward stones pulsing bright in background.
-      All three friends together, messy and perfect.
+    prompt: Peaceful Practice Meadow at golden hour — Grumblebeast sitting contentedly eating strawberries from Aria's hand. Aria's robe singed but she's beaming. Bram reading a book nearby, scarf neat. Sylfie braiding a new friendship bracelet, ribbons floating. Ward stones pulsing bright in background. All three friends together, messy and perfect.
     characters_present:
     - aria
     - bram
     - sylfie
-    alt: Aria feeding strawberries to Grumblebeast, Bram reading, Sylfie braiding bracelet, ward stones
-      glowing bright, all three friends together
-    text_zone: lower third
+    alt: Aria feeding strawberries to Grumblebeast, Bram reading, Sylfie braiding bracelet, ward stones glowing bright, all three friends together
     file: images/page-15.png
   layout:
     text_position: lower-third
@@ -540,10 +445,6 @@ status: published
 tags: []
 cover:
   image: images/page-00.png
-  image_prompt: Aria stands on Practice Meadow at golden hour, oversized blush-pink robe glowing, messy
-    chestnut bob with lavender streak catching light, determined grin, mint satchel at hip, charred and
-    flowered practice dummies behind her, Bram counting on fingers nearby, Sylfie floating effortlessly
-    with sparkles, ward stones pulsing at village edge in background
-  alt: Aria stands on Practice Meadow at golden hour in her oversized pink robe, determined grin, friends
-    nearby
+  image_prompt: Aria stands on Practice Meadow at golden hour, oversized blush-pink robe glowing, messy chestnut bob with lavender streak catching light, determined grin, mint satchel at hip, charred and flowered practice dummies behind her, Bram counting on fingers nearby, Sylfie floating effortlessly with sparkles, ward stones pulsing at village edge in background
+  alt: Aria stands on Practice Meadow at golden hour in her oversized pink robe, determined grin, friends nearby
 affirms_rules: []

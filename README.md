@@ -79,9 +79,9 @@ interactive reader per story, and `tags/` pages). Push to `main` and the include
 enable **Settings → Pages → Source: GitHub Actions** once.
 
 ## The included example
-`worlds/whispering-woods/` ships a full, validated world (locked watercolor art style; two
-characters with appearance tokens, palettes & an evolution track) and a 16-page illustrated,
-interactive early-reader, *Pip and the Lost Star* — proof the whole pipeline runs end-to-end.
+`worlds/magical-forest/` ships a full, validated world (locked watercolor art style; two
+characters with appearance tokens, palettes & an evolution track) and an illustrated,
+interactive early-reader, *Pip and the Hidden Honey* — proof the whole pipeline runs end-to-end.
 Illustrations use Google's **"Nano Banana"** (Gemini `gemini-2.5-flash-image`) by default —
 set a free `GEMINI_API_KEY` from [Google AI Studio](https://aistudio.google.com/apikey) and
 it anchors each page to the character's reference sheet for consistency. With no key set it

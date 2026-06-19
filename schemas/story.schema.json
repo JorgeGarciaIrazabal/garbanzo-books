@@ -145,15 +145,15 @@
             "characters_present": { "type": "array", "items": { "type": "string" }, "description": "slugs of characters in frame; their appearance_tokens get injected." },
             "seed": { "type": "integer" },
             "file": { "type": "string", "description": "Relative path to the generated image." },
-            "alt": { "type": "string", "description": "Accessibility alt text." },
-            "text_zone": { "type": "string", "description": "Where to keep the composition clear for embedded text (overrides world default)." }
+            "alt": { "type": "string", "description": "Accessibility alt text." }
           }
         },
         "layout": {
           "type": "object",
           "additionalProperties": false,
+          "description": "Text-on-image treatment. text_position is the SINGLE source of truth for where text sits — it drives BOTH the reader render and the image prompt's reserved calm zone, so the two can never drift.",
           "properties": {
-            "text_position": { "type": "string", "enum": ["top", "bottom", "left", "right", "center", "lower-third", "upper-third"], "default": "lower-third" },
+            "text_position": { "type": "string", "enum": ["top", "bottom", "left", "right", "center", "lower-third", "upper-third"], "default": "lower-third", "description": "Where the embedded text sits on the page. The image generator keeps this zone calm; the reader renders the text here. One value, one meaning." },
             "text_align": { "type": "string", "enum": ["left", "center", "right"], "default": "center" },
             "scrim": { "type": "boolean", "default": true }
           }

@@ -75,7 +75,8 @@ def _qc_candidate(cand_path: Path, *, world: World, story: dict, page: dict, qc_
         tokens=[world.characters.get(s, {}).get("appearance_token", "") for s in (img.get("characters_present") or []) if world.characters.get(s)],
         art_style_block=art.get("prompt_style_block", ""),
         palette=palette,
-        text_zone=img.get("text_zone") or (art.get("text_treatment", {}) or {}).get("placement", "lower third"),
+        text_zone=(page.get("layout") or {}).get("text_position")
+            or (art.get("text_treatment", {}) or {}).get("placement", "lower-third"),
         model=qc_model,
         verbose=verbose,
     )

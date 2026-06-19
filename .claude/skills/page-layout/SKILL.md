@@ -1,6 +1,6 @@
 ---
 name: page-layout
-description: Compose full-page (full-bleed) illustrations with text embedded legibly on top — choosing the text zone, scrim, alignment, and font treatment per page so words stay readable over art and meet kids' accessibility needs. Use when setting page layout, fixing text legibility over images, or designing the text-on-image treatment. Reads methodology/accessibility.md; sets layout + image.text_zone per page.
+description: Compose full-page (full-bleed) illustrations with text embedded legibly on top — choosing the text position, scrim, alignment, and font treatment per page so words stay readable over art and meet kids' accessibility needs. Use when setting page layout, fixing text legibility over images, or designing the text-on-image treatment. Reads methodology/accessibility.md; sets layout per page.
 ---
 
 # Page layout (text on the image)
@@ -9,13 +9,13 @@ Our books are **full-page images with the text inside them**. This skill makes t
 always legible. Read `methodology/accessibility.md` first.
 
 ## Procedure
-1. **Reserve a text zone in the art.** For each page, choose where text lives and tell the
-   illustrator to keep that area low-detail. Set `image.text_zone` (e.g. "lower third, calm
-   sky") — `illustration-consistency` injects it into the prompt so the composition leaves
-   room. Default zone comes from the world `art_style.text_treatment.placement`.
-2. **Set `layout` per page**: `text_position` (lower-third/top/center…), `text_align` (left
-   for body; center only for very short lines), `scrim: true` (a soft rounded panel behind
-   the text for contrast).
+1. **Pick the text position per page.** Set `layout.text_position` — this is the SINGLE
+   source of truth for where text sits. It drives BOTH the reader render AND the image
+   prompt's reserved calm zone (the generator keeps that area low-detail automatically),
+   so the two can never drift. The enum is: `top`, `bottom`, `left`, `right`, `center`,
+   `lower-third`, `upper-third`. Default comes from the world `art_style.text_treatment.placement`.
+2. **Set the rest of `layout`**: `text_align` (left for body; center only for very short
+   lines), `scrim: true` (a soft rounded panel behind the text for contrast).
 3. **Honour the type rules** (the site CSS enforces most, but design for them):
    - Sans-serif, open counters; offer a dyslexia-friendly toggle.
    - Font size scales with the reader's age (toddler 20–30pt → middle-grade 11–12pt; web base
@@ -28,11 +28,11 @@ always legible. Read `methodology/accessibility.md` first.
 
 ## Quality bar
 - [ ] Text never sits on busy art without a negative-space zone or scrim.
-- [ ] `image.text_zone` set and matches `layout.text_position`.
+- [ ] `layout.text_position` set on every page (it reserves the calm zone AND places the text).
 - [ ] Body text left-aligned; line length within range; contrast adequate.
 - [ ] Font size appropriate to the reader's age; dyslexia-friendly option available.
 - [ ] Every image has alt text.
 
 ## Output
-`layout` + `image.text_zone` (+ `image.alt`) on every page, ready for illustration and the
-site renderer. Next: `illustration-consistency`, then `/validate`.
+`layout` (+ `image.alt`) on every page, ready for illustration and the site renderer.
+Next: `illustration-consistency`, then `/validate`.

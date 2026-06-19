@@ -66,6 +66,7 @@ def report(story_yaml: Path) -> bool:
     tol = t["fk_tol"]
     max_wpp = t["max_words_per_page"]
     max_sent = t["max_sentence_words"]
+    avg_wpp = t.get("avg_words_per_page")  # advisory average for the youngest solo decoders
     fk_enforced = t["fk_enforced"]
     read_mode = t["read_mode"]
     telegraphic_relaxed = t["telegraphic_relaxed"]
@@ -112,8 +113,11 @@ def report(story_yaml: Path) -> bool:
               "words/page, sentence length, rhyme/repetition.)")
 
     # Per-page word caps + longest sentence. The cap is mode-aware: a solo reader (sounding out
-    # every word) gets a tighter page than a read-aloud book a grown-up voices.
+    # every word) gets a tighter page than a read-aloud book a grown-up voices. For the youngest
+    # solo decoders (where avg_wpp is set) the cap is ADVISORY — a WARN, not a fail — because a
+    # brand-new reader's page length is judgment, not a hard gate; for older ages it stays a fail.
     cap_note = " (solo reader)" if read_mode == "solo" else " (read-aloud)"
+    cap_advisory = avg_wpp is not None
     over_pages = []
     for pg in pages:
         if pg.get("kind") in ("title", "interaction"):
@@ -122,11 +126,30 @@ def report(story_yaml: Path) -> bool:
         if wc > max_wpp:
             over_pages.append((pg.get("number"), wc))
     if over_pages:
-        ok = False
-        print(f"  FAIL: {len(over_pages)} page(s) over the {max_wpp}-word cap{cap_note}: " +
-              ", ".join(f"p{n}={c}" for n, c in over_pages))
+        if cap_advisory:
+            print(f"  WARN: {len(over_pages)} page(s) over the {max_wpp}-word cap{cap_note}: " +
+                  ", ".join(f"p{n}={c}" for n, c in over_pages) +
+                  " — advisory for this age; trim if a young solo reader would struggle.")
+        else:
+            ok = False
+            print(f"  FAIL: {len(over_pages)} page(s) over the {max_wpp}-word cap{cap_note}: " +
+                  ", ".join(f"p{n}={c}" for n, c in over_pages))
     else:
         print(f"  PASS: all pages within the {max_wpp}-word cap{cap_note}.")
+
+    # Advisory AVERAGE words/page for the youngest solo decoders: the cap above is the ceiling,
+    # but a brand-new reader's typical page should sit well under it (e.g. age 5 solo: aim ~15,
+    # max 25). This is a recommendation, never a hard gate — a few denser pages are fine.
+    if avg_wpp:
+        text_pages = [pg for pg in pages if pg.get("kind") not in ("title", "interaction")]
+        if text_pages:
+            counts = [len(words(pg.get("text") or "")) for pg in text_pages]
+            mean_wpp = sum(counts) / len(counts)
+            if mean_wpp > avg_wpp:
+                print(f"  note: avg {mean_wpp:.0f} words/page (aim ~{avg_wpp}, max {max_wpp}){cap_note} — "
+                      "a brand-new solo reader does best with shorter typical pages.")
+            else:
+                print(f"  PASS: avg {mean_wpp:.0f} words/page (aim ~{avg_wpp}, max {max_wpp}){cap_note}.")
 
     if longest > max_sent:
         ok = False

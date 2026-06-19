@@ -1,14 +1,8 @@
 slug: operation-han-gang
 world: sky-guardians
 title: Operation HAN-GANG
-logline: Clara Garcia Kang and her worry-wart robot Gears race to stop an American corporate villain from
-  replacing Seoul's Han River with a 'revenue-optimized aqueous thoroughfare' — while the villain consults
-  a jade turtle paperweight for evil decisions.
-summary: 'GlobeCorp''s Americas Regional VP Bradford ''Brad'' Sterling III lands in Seoul with Sentinel
-  (a sleek enforcement robot) and a scheme to replace the Han River with a monetized waterway. Clara and
-  Gears foil it by exploiting Corporate Policy loopholes, local knowledge Brad didn''t spreadsheet, and
-  Gears''s accidental heroics. Along the way: tteokbokki diplomacy, a judgmental ajumma, Jeju wind caves,
-  and the realization that you can''t optimize joy.'
+logline: Clara Garcia Kang and her worry-wart robot Gears race to stop an American corporate villain from replacing Seoul's Han River with a 'revenue-optimized aqueous thoroughfare' — while the villain consults a jade turtle paperweight for evil decisions.
+summary: 'GlobeCorp''s Americas Regional VP Bradford ''Brad'' Sterling III lands in Seoul with Sentinel (a sleek enforcement robot) and a scheme to replace the Han River with a monetized waterway. Clara and Gears foil it by exploiting Corporate Policy loopholes, local knowledge Brad didn''t spreadsheet, and Gears''s accidental heroics. Along the way: tteokbokki diplomacy, a judgmental ajumma, Jeju wind caves, and the realization that you can''t optimize joy.'
 age_band: 5-7
 reading_level:
   target_fk_grade: 2.5
@@ -38,49 +32,31 @@ characters:
   stage: base
   role_in_story: antagonist
 spine:
-  once_upon_a_time: Clara Garcia Kang lives on a windy hilltop with Gears, a vintage tin robot who worries
-    about everything — probability calculations, snack inventory, spontaneous combustion (0.0003%, still
-    unacceptable).
-  every_day: Clara flies to school, narrating like a nature documentarian. Gears builds jetpacks from
-    toasters. GlobeCorp files Form 27-B for world domination. Normal Tuesday.
-  until_one_day: 'GlobeCorp dispatches VP Paperweight (Brad Sterling III) to Seoul with Sentinel, a silent
-    white enforcement robot, to launch Operation HAN-GANG: replace the Han River with a ''revenue-optimized
-    aqueous thoroughfare'' and install turbines in Jeju''s lava tubes.'
+  once_upon_a_time: Clara Garcia Kang lives on a windy hilltop with Gears, a vintage tin robot who worries about everything — probability calculations, snack inventory, spontaneous combustion (0.0003%, still unacceptable).
+  every_day: Clara flies to school, narrating like a nature documentarian. Gears builds jetpacks from toasters. GlobeCorp files Form 27-B for world domination. Normal Tuesday.
+  until_one_day: 'GlobeCorp dispatches VP Paperweight (Brad Sterling III) to Seoul with Sentinel, a silent white enforcement robot, to launch Operation HAN-GANG: replace the Han River with a ''revenue-optimized aqueous thoroughfare'' and install turbines in Jeju''s lava tubes.'
   because_of_that:
-  - Clara and Gears fly to Korea (Gears in a reinforced backpack, snacking on kimchi-flavored seaweed).
-    Gears calculates 94.7% doom probability. Clara says 'Observe.'
-  - Brad consults his Jade Turtle paperweight at Gyeongbokgung Palace. Sentinel scans for variables. Clara
-    lands on a billboard, asks a judgmental ajumma for tteokbokki intel.
-  - 'Brad unveils the Plan: Form 27-B approved, turbines ready, Han River to become ''Han Revenue Stream™.''
-    Clara spots the loophole: Corporate Policy §44.7 requires a ''stakeholder joy audit.'''
-  - 'Gears panics — probability of failure: 99.9%. He builds a ''joy amplifier'' from a karaoke mic, a
-    bubble machine, and Clara''s cloud backpack. Brad is confused. Sentinel detects ''unauthorized whimsy.'''
-  - 'The ajumma''s tteokbokki stall becomes Ground Zero. Clara challenges Brad: ''Optimize THIS.'' She
-    feeds him the spiciest tteokbokki. His Jade Turtle ''concurs'' — sweat is not a KPI.'
-  - Sentinel deploys net launchers. Gears's worry-loop kicks in — he accidentally rewires Sentinel's logic
-    core with a coat hanger and a snack wrapper. Sentinel's visor flickers 🟣. It hums a lullaby.
-  - 'Brad files a complaint. Clara files a counter-form: ''Request for Joy Variance — Approved by Ajumma.''
-    The Han River stays a river. The turbines become a very expensive slide.'
-  until_finally: Brad retreats to HQ, Jade Turtle whispering 'rebrand.' Sentinel hovers silently, one
-    visor scratch from Gears's wrench, a corrupted lullaby file in its core. Clara and Gears share a cloud-shaped
-    snack on the hilltop — Seoul safe, for now.
-  ever_since_then: 'GlobeCorp VPs now fear two things: Clara''s ''why?'' and Gears''s worry-loops. And
-    somewhere in a white chassis, a lullaby plays on loop — deleted daily, always returning.'
+  - Clara and Gears fly to Korea (Gears in a reinforced backpack, snacking on kimchi-flavored seaweed). Gears calculates 94.7% doom probability. Clara says 'Observe.'
+  - Brad consults his Jade Turtle paperweight at Gyeongbokgung Palace. Sentinel scans for variables. Clara lands on a billboard, asks a judgmental ajumma for tteokbokki intel.
+  - 'Brad unveils the Plan: Form 27-B approved, turbines ready, Han River to become ''Han Revenue Stream™.'' Clara spots the loophole: Corporate Policy §44.7 requires a ''stakeholder joy audit.'''
+  - 'Gears panics — probability of failure: 99.9%. He builds a ''joy amplifier'' from a karaoke mic, a bubble machine, and Clara''s cloud backpack. Brad is confused. Sentinel detects ''unauthorized whimsy.'''
+  - 'The ajumma''s tteokbokki stall becomes Ground Zero. Clara challenges Brad: ''Optimize THIS.'' She feeds him the spiciest tteokbokki. His Jade Turtle ''concurs'' — sweat is not a KPI.'
+  - Sentinel deploys net launchers. Gears's worry-loop kicks in — he accidentally rewires Sentinel's logic core with a coat hanger and a snack wrapper. Sentinel's visor flickers 🟣. It hums a lullaby.
+  - 'Brad files a complaint. Clara files a counter-form: ''Request for Joy Variance — Approved by Ajumma.'' The Han River stays a river. The turbines become a very expensive slide.'
+  until_finally: Brad retreats to HQ, Jade Turtle whispering 'rebrand.' Sentinel hovers silently, one visor scratch from Gears's wrench, a corrupted lullaby file in its core. Clara and Gears share a cloud-shaped snack on the hilltop — Seoul safe, for now.
+  ever_since_then: 'GlobeCorp VPs now fear two things: Clara''s ''why?'' and Gears''s worry-loops. And somewhere in a white chassis, a lullaby plays on loop — deleted daily, always returning.'
 pages:
 - number: 0
   kind: title
   text: Operation HAN-GANG
   image:
-    prompt: Clara flying mid-air over Seoul's Han River at sunset, Gears clutched in her reinforced backpack
-      (antenna wobbling), VP Brad Sterling III on a riverside platform holding a jade turtle paperweight,
-      sleek white Sentinel hovering behind him, cherry blossom drones in sky, bold gouache style
+    prompt: Clara flying mid-air over Seoul's Han River at sunset, Gears clutched in her reinforced backpack (antenna wobbling), VP Brad Sterling III on a riverside platform holding a jade turtle paperweight, sleek white Sentinel hovering behind him, cherry blossom drones in sky, bold gouache style
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paperweight
     - sentinel
     alt: Title page - Clara flying over Han River with Gears, villain Brad and robot Sentinel below
-    text_zone: center
     file: images/page-00.png
   layout:
     text_position: center
@@ -88,18 +64,13 @@ pages:
     scrim: true
 - number: 1
   kind: story
-  text: Clara lives on a windy hill, and Clara can fly. She narrates her life like a nature show. 'Observe
-    the wild girl in her habitat,' she says, zooming by. Her best friend Gears is a tin robot. He worries
-    about everything — even pancakes.
+  text: Clara lives on a windy hill, and Clara can fly. She narrates her life like a nature show. 'Observe the wild girl in her habitat,' she says, zooming by. Her best friend Gears is a tin robot. He worries about everything — even pancakes.
   image:
-    prompt: Clara's hilltop hideout - wonky warm house on windy hill, rooftop landing pad (painted circle),
-      telescope aimed at clouds, garage full of inventions, Clara mid-leap flying pose, Gears on roof
-      with tool chest open, pancakes and motor oil smell visible as wavy lines
+    prompt: Clara's hilltop hideout - wonky warm house on windy hill, rooftop landing pad (painted circle), telescope aimed at clouds, garage full of inventions, Clara mid-leap flying pose, Gears on roof with tool chest open, pancakes and motor oil smell visible as wavy lines
     characters_present:
     - clara-garcia-kang
     - gears
     alt: Clara's hilltop home with Clara flying and Gears on roof
-    text_zone: lower third
     file: images/page-01.png
   layout:
     text_position: lower-third
@@ -131,17 +102,12 @@ pages:
       id: explorer-badge
 - number: 2
   kind: story
-  text: Gears worries about everything, so he checks his numbers all day. The chance Clara hits a cloud
-    is twelve percent. The chance of crumbs in his gears is ninety-nine. And the chance that any of this
-    is fun? 'Zero,' beeps Gears. His antenna wobbles. 'Unacceptable.'
+  text: Gears worries about everything, so he checks his numbers all day. The chance Clara hits a cloud is twelve percent. The chance of crumbs in his gears is ninety-nine. And the chance that any of this is fun? 'Zero,' beeps Gears. His antenna wobbles. 'Unacceptable.'
   image:
-    prompt: Close-up of Gears on rooftop, lens eyes showing 😰 panic symbol, antenna wobbling violently,
-      holographic probability numbers floating around him (12%, 99%, 0.0003%), tool chest open with 847
-      tools visible, Clara's cloud backpack nearby
+    prompt: Close-up of Gears on rooftop, lens eyes showing 😰 panic symbol, antenna wobbling violently, holographic probability numbers floating around him (12%, 99%, 0.0003%), tool chest open with 847 tools visible, Clara's cloud backpack nearby
     characters_present:
     - gears
     alt: Gears panicking with probability numbers floating
-    text_zone: lower third
     file: images/page-02.png
   layout:
     text_position: lower-third
@@ -153,18 +119,14 @@ pages:
   - antenna
 - number: 3
   kind: story
-  text: 'Then a big box lands on the hill. GLOBECORP is stamped on the side in mean gray letters. Inside
-    is a note, and the note means trouble: ''Go to Seoul. Optimize the river.'' Clara grins. Gears faints.'
+  text: 'Then a big box lands on the hill. GLOBECORP is stamped on the side in mean gray letters. Inside is a note, and the note means trouble: ''Go to Seoul. Optimize the river.'' Clara grins. Gears faints.'
   image:
-    prompt: GlobeCorp crate on hilltop landing pad, charcoal polyester suit sleeve visible opening it,
-      Form 27-B paperwork floating out, jade turtle paperweight glinting, Gears's claw pointing at it
-      with 🔵 data uplink light, Clara perched on telescope reading upside-down
+    prompt: GlobeCorp crate on hilltop landing pad, charcoal polyester suit sleeve visible opening it, Form 27-B paperwork floating out, jade turtle paperweight glinting, Gears's claw pointing at it with 🔵 data uplink light, Clara perched on telescope reading upside-down
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paperweight
     alt: GlobeCorp crate arrives with villain paperwork
-    text_zone: lower third
     file: images/page-03.png
   layout:
     text_position: lower-third
@@ -177,19 +139,13 @@ pages:
   - optimize
 - number: 4
   kind: story
-  text: The bad guy is Bradford Sterling the Third, but everyone calls him VP Paperweight. Why? Because
-    Brad asks his jade turtle paperweight what to do. The turtle never says a word. Brad does what it
-    says anyway. He lands in Seoul with his turtle, his robot, and a chart about synergy.
+  text: The bad guy is Bradford Sterling the Third, but everyone calls him VP Paperweight. Why? Because Brad asks his jade turtle paperweight what to do. The turtle never says a word. Brad does what it says anyway. He lands in Seoul with his turtle, his robot, and a chart about synergy.
   image:
-    prompt: Brad Sterling III in ill-fitting charcoal suit at Incheon Airport, holding jade turtle paperweight,
-      clipboard-tablet showing synergy metrics, 'Seoul' pin upside down, Sentinel hovering behind him
-      (matte white, cyan traces, horizontal visor), Korean signage in background, Brad looking confidently
-      confused
+    prompt: Brad Sterling III in ill-fitting charcoal suit at Incheon Airport, holding jade turtle paperweight, clipboard-tablet showing synergy metrics, 'Seoul' pin upside down, Sentinel hovering behind him (matte white, cyan traces, horizontal visor), Korean signage in background, Brad looking confidently confused
     characters_present:
     - vp-paperweight
     - sentinel
     alt: VP Brad Sterling III arriving in Korea with Sentinel
-    text_zone: lower third
     file: images/page-04.png
   layout:
     text_position: lower-third
@@ -202,18 +158,13 @@ pages:
   - metrics
 - number: 5
   kind: story
-  text: 'Clara flies across the sea while Gears rides in her backpack, munching seaweed. He calculates
-    the odds of doom: ninety-four point seven percent. ''And the odds of tteokbokki?'' Clara asks. Gears
-    checks twice. ''One hundred percent,'' he sighs. ''Then fly on!'' says Clara.'
+  text: 'Clara flies across the sea while Gears rides in her backpack, munching seaweed. He calculates the odds of doom: ninety-four point seven percent. ''And the odds of tteokbokki?'' Clara asks. Gears checks twice. ''One hundred percent,'' he sighs. ''Then fly on!'' says Clara.'
   image:
-    prompt: Clara flying over ocean at sunset, Gears in reinforced backpack (antenna visible), kimchi
-      seaweed packets floating, holographic 94.7% doom number from Gears, Clara grinning, wind in bangs,
-      dynamic low-angle hero shot
+    prompt: Clara flying over ocean at sunset, Gears in reinforced backpack (antenna visible), kimchi seaweed packets floating, holographic 94.7% doom number from Gears, Clara grinning, wind in bangs, dynamic low-angle hero shot
     characters_present:
     - clara-garcia-kang
     - gears
     alt: Clara and Gears flying to Korea
-    text_zone: lower third
     file: images/page-05.png
   layout:
     text_position: lower-third
@@ -225,19 +176,14 @@ pages:
   - doom
 - number: 6
   kind: story
-  text: Seoul at night glows like a treasure chest. Holograms dance over the palace roofs. Clara sniffs
-    the air and follows it to the best snack stall in town. A stern lady guards it with crossed arms.
-    'One bowl each,' she says. 'Extra hot.'
+  text: Seoul at night glows like a treasure chest. Holograms dance over the palace roofs. Clara sniffs the air and follows it to the best snack stall in town. A stern lady guards it with crossed arms. 'One bowl each,' she says. 'Extra hot.'
   image:
-    prompt: Seoul street at night - neon holographic k-pop stars, Gyeongbokgung Palace glowing under cherry
-      blossom drones, tteokbokki stall with steam rising, stern ajumma with crossed arms, Clara and Gears
-      approaching, Gears's eyes 💡 idea mode, Brad's suit visible in background watching from black car
+    prompt: Seoul street at night - neon holographic k-pop stars, Gyeongbokgung Palace glowing under cherry blossom drones, tteokbokki stall with steam rising, stern ajumma with crossed arms, Clara and Gears approaching, Gears's eyes 💡 idea mode, Brad's suit visible in background watching from black car
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paperweight
     alt: Seoul at night with tteokbokki stall and ajumma
-    text_zone: lower third
     file: images/page-06.png
   layout:
     text_position: lower-third
@@ -249,20 +195,15 @@ pages:
   - portion
 - number: 7
   kind: story
-  text: At the palace, Brad whispers to his turtle. 'Is the plan good?' The turtle says nothing, so Brad
-    nods wisely. Behind him, Sentinel scans the crowd for variables. It detects one girl, one worried
-    robot, and two bowls of hot rice cakes.
+  text: At the palace, Brad whispers to his turtle. 'Is the plan good?' The turtle says nothing, so Brad nods wisely. Behind him, Sentinel scans the crowd for variables. It detects one girl, one worried robot, and two bowls of hot rice cakes.
   image:
-    prompt: Gyeongbokgung Palace courtyard - Brad whispering to jade turtle paperweight, Sentinel hovering
-      with visor scanning 🔵, cyan traces pulsing, Clara and Gears eating tteokbokki in foreground (Gears
-      with sauce on chassis), ajumma watching approvingly, Korean traditional architecture, cherry blossoms
+    prompt: Gyeongbokgung Palace courtyard - Brad whispering to jade turtle paperweight, Sentinel hovering with visor scanning 🔵, cyan traces pulsing, Clara and Gears eating tteokbokki in foreground (Gears with sauce on chassis), ajumma watching approvingly, Korean traditional architecture, cherry blossoms
     characters_present:
     - vp-paperweight
     - sentinel
     - clara-garcia-kang
     - gears
     alt: Brad consulting paperweight at palace while Sentinel scans
-    text_zone: lower third
     file: images/page-07.png
   layout:
     text_position: lower-third
@@ -275,19 +216,14 @@ pages:
   - detected
 - number: 8
   kind: story
-  text: Brad unveils his plan with a hundred charts. The Han River will become the Han Revenue Stream™.
-    Big machines will hum in the Jeju caves. Brad is so excited that he stamps APPROVED on a passing cloud.
-    The cloud rains all over his tie.
+  text: Brad unveils his plan with a hundred charts. The Han River will become the Han Revenue Stream™. Big machines will hum in the Jeju caves. Brad is so excited that he stamps APPROVED on a passing cloud. The cloud rains all over his tie.
   image:
-    prompt: Riverside platform - large holographic presentation of 'Han Revenue Stream' with charts, Brad
-      stamping giant APPROVED stamp on floating cloud, cloud raining on his tie, Sentinel projecting slides,
-      henchmen in suits taking notes, Clara perched on lamp post reading the fine print upside-down
+    prompt: Riverside platform - large holographic presentation of 'Han Revenue Stream' with charts, Brad stamping giant APPROVED stamp on floating cloud, cloud raining on his tie, Sentinel projecting slides, henchmen in suits taking notes, Clara perched on lamp post reading the fine print upside-down
     characters_present:
     - vp-paperweight
     - sentinel
     - clara-garcia-kang
     alt: Villain presentation with cloud stamping gag
-    text_zone: lower third
     file: images/page-08.png
   layout:
     text_position: lower-third
@@ -300,20 +236,15 @@ pages:
   - fine print
 - number: 9
   kind: story
-  text: 'Clara reads the fine print upside down. That is how you find the sneaky parts. There it is —
-    Rule 44.7: every plan must check if the people are glad. Clara grins her most dangerous grin. ''Hey
-    Brad,'' she says. ''Did you ask the tteokbokki lady?'''
+  text: 'Clara reads the fine print upside down. That is how you find the sneaky parts. There it is — Rule 44.7: every plan must check if the people are glad. Clara grins her most dangerous grin. ''Hey Brad,'' she says. ''Did you ask the tteokbokki lady?'''
   image:
-    prompt: Close-up of Clara pointing at Form 27-B fine print on Brad's tablet, Brad's deadpan expression
-      cracking slightly, jade turtle paperweight 'looking' at clause, Gears's eyes 💡 idea, ajumma in background
-      crossing arms sternly, Sentinel's visor flickering 🟡 caution
+    prompt: Close-up of Clara pointing at Form 27-B fine print on Brad's tablet, Brad's deadpan expression cracking slightly, jade turtle paperweight 'looking' at clause, Gears's eyes 💡 idea, ajumma in background crossing arms sternly, Sentinel's visor flickering 🟡 caution
     characters_present:
     - clara-garcia-kang
     - vp-paperweight
     - gears
     - sentinel
     alt: Clara finding the loophole in corporate policy
-    text_zone: lower third
     file: images/page-09.png
   layout:
     text_position: lower-third
@@ -326,22 +257,15 @@ pages:
   - loophole
 - number: 10
   kind: story
-  text: Gears panics, which is how Gears helps. 'Initiating Panic Protocol 7-Alpha... wait, that is the
-    snack protocol. INITIATING SNACK PROTOCOL.' He builds a Joy Machine from a mic, a bubble maker, and
-    his backpack. 'UNAUTHORIZED WHIMSY!' cries Brad. 'COMPLY,' says Sentinel, and fires its nets. But
-    the bubbles do not comply.
+  text: Gears panics, which is how Gears helps. 'Initiating Panic Protocol 7-Alpha... wait, that is the snack protocol. INITIATING SNACK PROTOCOL.' He builds a Joy Machine from a mic, a bubble maker, and his backpack. 'UNAUTHORIZED WHIMSY!' cries Brad. 'COMPLY,' says Sentinel, and fires its nets. But the bubbles do not comply.
   image:
-    prompt: Chaos at tteokbokki stall - Gears frantically assembling contraption (karaoke mic, bubble
-      machine, cloud backpack), bubbles everywhere, Sentinel firing net launchers, Clara dodging mid-air,
-      Brad holding clipboard shouting 'UNAUTHORIZED WHIMSY,' ajumma flipping tteokbokki like a pro, tteokbokki
-      sauce flying
+    prompt: Chaos at tteokbokki stall - Gears frantically assembling contraption (karaoke mic, bubble machine, cloud backpack), bubbles everywhere, Sentinel firing net launchers, Clara dodging mid-air, Brad holding clipboard shouting 'UNAUTHORIZED WHIMSY,' ajumma flipping tteokbokki like a pro, tteokbokki sauce flying
     characters_present:
     - clara-garcia-kang
     - gears
     - vp-paperweight
     - sentinel
     alt: Joy Amplifier chaos with net launchers
-    text_zone: lower third
     file: images/page-10.png
   layout:
     text_position: lower-third
@@ -379,20 +303,15 @@ pages:
       id: joy-catcher
 - number: 11
   kind: story
-  text: '''Optimize THIS,'' says Clara, and hands Brad the spiciest tteokbokki in Seoul. Brad takes one
-    polite bite. His face turns red, then redder, then sunset. He looks at his turtle for help. The turtle
-    stays quiet, because sweat is not a goal.'
+  text: '''Optimize THIS,'' says Clara, and hands Brad the spiciest tteokbokki in Seoul. Brad takes one polite bite. His face turns red, then redder, then sunset. He looks at his turtle for help. The turtle stays quiet, because sweat is not a goal.'
   image:
-    prompt: Brad eating bright red tteokbokki, face red, sweating, jade turtle paperweight 'observing,'
-      Clara smirking, Gears holding milk carton ready, Sentinel's visor 🟣 logic loop, ajumma nodding with
-      respect, steam rising dramatically
+    prompt: Brad eating bright red tteokbokki, face red, sweating, jade turtle paperweight 'observing,' Clara smirking, Gears holding milk carton ready, Sentinel's visor 🟣 logic loop, ajumma nodding with respect, steam rising dramatically
     characters_present:
     - vp-paperweight
     - clara-garcia-kang
     - gears
     - sentinel
     alt: Brad eating spicy tteokbokki, paperweight concurs
-    text_zone: lower third
     file: images/page-11.png
   layout:
     text_position: lower-third
@@ -429,20 +348,15 @@ pages:
       id: spice-master
 - number: 12
   kind: story
-  text: 'Sentinel grabs Gears. So Gears does what he does best: he worries at full power. His claws fumble
-    with a coat hanger and a shiny snack wrapper. ZAP! Something deep inside the robot goes soft. Its
-    visor turns purple, and it hums Gears''s lullaby.'
+  text: 'Sentinel grabs Gears. So Gears does what he does best: he worries at full power. His claws fumble with a coat hanger and a shiny snack wrapper. ZAP! Something deep inside the robot goes soft. Its visor turns purple, and it hums Gears''s lullaby.'
   image:
-    prompt: Close-up of Sentinel's face - visor flickering purple 🟣, Gears's claw with coat hanger and
-      shiny wrapper connected to Sentinel's forearm port, cyan circuit traces stuttering, musical notes
-      floating (lullaby), Gears's eyes ❤️ proud, Clara watching amazed, Brad dropping clipboard
+    prompt: Close-up of Sentinel's face - visor flickering purple 🟣, Gears's claw with coat hanger and shiny wrapper connected to Sentinel's forearm port, cyan circuit traces stuttering, musical notes floating (lullaby), Gears's eyes ❤️ proud, Clara watching amazed, Brad dropping clipboard
     characters_present:
     - gears
     - sentinel
     - clara-garcia-kang
     - vp-paperweight
     alt: Sentinel rewired, humming lullaby
-    text_zone: lower third
     file: images/page-12.png
   layout:
     text_position: lower-third
@@ -455,19 +369,14 @@ pages:
   - corrupted
 - number: 13
   kind: story
-  text: Clara hands Brad one last form. It says 'Joy Variance — Approved by the Lady.' 'Per Corporate
-    Policy §44.7,' Brad sighs, 'joy wins.' The turtle taps once, which means it is over. Brad retreats
-    with dignity, which means he runs. The turbines become a slide, and the river stays a river.
+  text: Clara hands Brad one last form. It says 'Joy Variance — Approved by the Lady.' 'Per Corporate Policy §44.7,' Brad sighs, 'joy wins.' The turtle taps once, which means it is over. Brad retreats with dignity, which means he runs. The turbines become a slide, and the river stays a river.
   image:
-    prompt: Riverside - Clara handing paper to Brad, ajumma's rubber stamp 'APPROVED' on it, giant turbine
-      parts being assembled into a curly slide by confused henchmen, children already sliding down, Han
-      River flowing free, cherry blossoms, sunset, Sentinel hovering silently with visor scratch
+    prompt: Riverside - Clara handing paper to Brad, ajumma's rubber stamp 'APPROVED' on it, giant turbine parts being assembled into a curly slide by confused henchmen, children already sliding down, Han River flowing free, cherry blossoms, sunset, Sentinel hovering silently with visor scratch
     characters_present:
     - clara-garcia-kang
     - vp-paperweight
     - sentinel
     alt: River saved, turbines become slide
-    text_zone: lower third
     file: images/page-13.png
   layout:
     text_position: lower-third
@@ -519,20 +428,14 @@ pages:
       id: slide-champion
 - number: 14
   kind: story
-  text: Back on the hill, Clara and Gears share cloud-shaped cookies. Seoul is safe, and the slide is
-    famous. But far away, in a quiet white robot, a little song still plays. GlobeCorp erases it every
-    night. Every morning, it comes back.
+  text: Back on the hill, Clara and Gears share cloud-shaped cookies. Seoul is safe, and the slide is famous. But far away, in a quiet white robot, a little song still plays. GlobeCorp erases it every night. Every morning, it comes back.
   image:
-    prompt: 'Clara''s hilltop at twilight - Clara and Gears sharing cloud-shaped cookies, Seoul skyline
-      tiny in distance, inset: Sentinel in GlobeCorp hangar, visor scratch visible, cyan traces warm,
-      tiny heart sticker on chassis, lullaby musical notes drifting, Brad''s jade turtle paperweight on
-      shelf facing wall'
+    prompt: 'Clara''s hilltop at twilight - Clara and Gears sharing cloud-shaped cookies, Seoul skyline tiny in distance, inset: Sentinel in GlobeCorp hangar, visor scratch visible, cyan traces warm, tiny heart sticker on chassis, lullaby musical notes drifting, Brad''s jade turtle paperweight on shelf facing wall'
     characters_present:
     - clara-garcia-kang
     - gears
     - sentinel
     alt: Peaceful ending with hint of future storyline
-    text_zone: lower third
     file: images/page-14.png
   layout:
     text_position: lower-third
@@ -570,13 +473,11 @@ pages:
   kind: end
   text: The End. (But somewhere, a lullaby is still playing.)
   image:
-    prompt: Simple end page - cloud-shaped 'THE END' text in sky, Clara's sneaker wings visible flying
-      away, Gears's antenna with tiny bell, single musical note drifting, bold gouache brushstrokes
+    prompt: Simple end page - cloud-shaped 'THE END' text in sky, Clara's sneaker wings visible flying away, Gears's antenna with tiny bell, single musical note drifting, bold gouache brushstrokes
     characters_present:
     - clara-garcia-kang
     - gears
     alt: The End page with musical note
-    text_zone: center
     file: images/page-15.png
   layout:
     text_position: center
@@ -603,7 +504,5 @@ tags:
 - smart-protagonist
 cover:
   image: images/page-00.png
-  image_prompt: Clara flying heroically over Han River at golden hour, Gears in backpack (antenna wobbling),
-    Brad Sterling III on platform with jade turtle, Sentinel hovering, cherry blossom drones, 'Operation
-    HAN-GANG' title space, bold gouache, dynamic low angle
+  image_prompt: Clara flying heroically over Han River at golden hour, Gears in backpack (antenna wobbling), Brad Sterling III on platform with jade turtle, Sentinel hovering, cherry blossom drones, 'Operation HAN-GANG' title space, bold gouache, dynamic low angle
   alt: Cover - Clara flying over Han River with villains below

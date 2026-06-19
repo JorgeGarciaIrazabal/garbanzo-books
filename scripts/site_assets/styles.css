@@ -135,6 +135,11 @@ h1, h2, h3 { line-height: 1.2; }
 .pos-upper-third, .pos-top { top: 4%; }
 .pos-center { top: 50%; transform: translateY(-50%); text-align: center; }
 .pos-center .scrim { margin: 0 auto; }
+/* side panels — a narrow column hugging one edge so the opposite side of the
+   art stays fully visible. Overrides the default left:0/right:0 full-width band. */
+.pos-left { left: 4%; right: auto; top: 50%; transform: translateY(-50%); max-width: 46%; }
+.pos-right { right: 4%; left: auto; top: 50%; transform: translateY(-50%); max-width: 46%; }
+.pos-left .scrim, .pos-right .scrim { max-width: none; }
 .align-center { text-align: center; }
 .align-right { text-align: right; }
 .align-right .scrim { margin-left: auto; }
@@ -632,12 +637,17 @@ footer.site { text-align: center; color: var(--muted); padding: 40px 16px; }
     position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100svh;
     aspect-ratio: auto; border-radius: 0; box-shadow: none; z-index: 1;
   }
-  /* story text is a wide caption band pinned to the bottom — using most of the
-     page width keeps a long passage to a few lines so it never buries the art. */
-  .page-text { font-size: calc(var(--reader-base) * 1.25); padding: clamp(12px, 2vw, 28px);
-    top: auto; bottom: 4%; transform: none; text-align: center; }
+  /* story text is a wide caption band — but its vertical position still follows
+     the per-page layout class (pos-top / pos-center / pos-lower-third / pos-left /
+     pos-right). We only bump the font and widen the scrim here; we do NOT pin it
+     to the bottom, so an authored top/center/side placement is honored on the
+     tablet just as it is on a phone. */
+  .page-text { font-size: calc(var(--reader-base) * 1.25); padding: clamp(12px, 2vw, 28px); }
   .page-text .scrim { max-width: min(96vw, 82rem); font-size: 1.05em;
     padding: 18px clamp(40px, 9vw, 160px); margin-left: auto; margin-right: auto; }
+  /* side panels get a tighter scrim on the big screen so they stay a column */
+  .page-text.pos-left, .page-text.pos-right { max-width: 42%; }
+  .page-text.pos-left .scrim, .page-text.pos-right .scrim { max-width: none; }
 
   /* floating, auto-hiding controls */
   .reader-controls {

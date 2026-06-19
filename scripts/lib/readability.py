@@ -51,7 +51,7 @@ READING_BY_YEAR: dict[int, dict] = {
     2:  {"fk_lo": None, "fk_hi": None, "fk_enforced": False, "max_words_per_page": 8,   "max_sentence_words": 6,  "min_avg_sentence_words": 2.5,  "label": "Toddler / lap book"},
     3:  {"fk_lo": None, "fk_hi": None, "fk_enforced": False, "max_words_per_page": 18,  "max_sentence_words": 8,  "min_avg_sentence_words": 3.0,  "label": "Board book"},
     4:  {"fk_lo": 0.0,  "fk_hi": 0.4,  "fk_enforced": False, "max_words_per_page": 35,  "max_sentence_words": 10, "min_avg_sentence_words": 4.0,  "solo_max_words_per_page": 12, "solo_max_sentence_words": 7,  "label": "Pre-reader"},
-    5:  {"fk_lo": 0.0,  "fk_hi": 0.6,  "fk_enforced": False, "max_words_per_page": 55,  "max_sentence_words": 13, "min_avg_sentence_words": 4.5,  "solo_max_words_per_page": 25, "solo_max_sentence_words": 8,  "label": "Kindergarten"},
+    5:  {"fk_lo": 0.0,  "fk_hi": 0.6,  "fk_enforced": False, "max_words_per_page": 55,  "max_sentence_words": 13, "min_avg_sentence_words": 4.5,  "solo_max_words_per_page": 25, "solo_max_sentence_words": 8,  "solo_avg_words_per_page": 15, "label": "Kindergarten"},
     6:  {"fk_lo": 0.6,  "fk_hi": 1.3,  "fk_enforced": False, "max_words_per_page": 70,  "max_sentence_words": 15, "min_avg_sentence_words": 5.0,  "solo_max_words_per_page": 40, "solo_max_sentence_words": 11, "label": "Kindergarten / Grade 1"},
     7:  {"fk_lo": 1.5,  "fk_hi": 2.3,  "fk_enforced": True,  "max_words_per_page": 100, "max_sentence_words": 16, "min_avg_sentence_words": 6.0,  "solo_max_words_per_page": 65, "solo_max_sentence_words": 14, "label": "Grade 1-2"},
     8:  {"fk_lo": 2.5,  "fk_hi": 3.3,  "fk_enforced": True,  "max_words_per_page": 130, "max_sentence_words": 18, "min_avg_sentence_words": 6.5,  "solo_max_words_per_page": 100, "solo_max_sentence_words": 16, "label": "Grade 2-3"},
@@ -131,6 +131,10 @@ def targets_for_year(year: int, read_mode: str | None = None) -> dict:
     solo = mode == "solo"
     max_wpp = row["solo_max_words_per_page"] if solo and "solo_max_words_per_page" in row else row["max_words_per_page"]
     max_sent = row["solo_max_sentence_words"] if solo and "solo_max_sentence_words" in row else row["max_sentence_words"]
+    # Advisory AVERAGE words/page for the youngest solo decoders — the ceiling (max_wpp) is the
+    # most a page may carry, but a brand-new reader's TYPICAL page should sit well under it. Only
+    # set for the early solo years where the gap matters (e.g. age 5 solo: aim ~15, max 25).
+    avg_wpp = row.get("solo_avg_words_per_page") if solo else None
     return {
         "fk_target": fk_target, "fk_tol": fk_tol, "fk_lo": lo, "fk_hi": hi,
         "fk_enforced": row["fk_enforced"],
@@ -145,6 +149,7 @@ def targets_for_year(year: int, read_mode: str | None = None) -> dict:
         "max_words_per_page": max_wpp,
         "max_sentence_words": max_sent,
         "min_avg_sentence_words": row["min_avg_sentence_words"],
+        "avg_words_per_page": avg_wpp,
         "label": row["label"],
     }
 

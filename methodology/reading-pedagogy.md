@@ -43,12 +43,13 @@ words-per-page cap** for a solo reader:
   stretch words to **one or two a page at most**, and make them ones a 6-year-old could plausibly
   attack. **And cut the words-per-page right down** — a brand-new solo reader needs short lines
   and lots of white space (the solo caps in `scripts/lib/readability.py` are roughly half the
-  read-aloud cap for the young years; e.g. age 5 ≈ 25 words/page solo vs ≈ 55 read-aloud).
+  read-aloud cap for the young years; e.g. age 5 solo aims ~15 words/page typical / 25 max vs
+  ≈ 55 read-aloud — 25 is the ceiling, not the target).
 
 **A 5-year-old is the hinge case, and both books are real:** a *read-aloud* age-5 bedtime book
 (rich words a parent voices, ~55 words/page) and a *solo* age-5 early reader (decodable words the
-child sounds out, ~25 words/page, short repetitive sentences) are two genuinely different books at
-the same age. Pick one on purpose.
+child sounds out, ~15 words/page typical / 25 max, short repetitive sentences) are two genuinely
+different books at the same age. Pick one on purpose.
 
 So before you fit the words, **know which book you're writing.** If it isn't obvious from the
 request, *ask* — "is this one a grown-up reads aloud, or one the kid reads alone?" — set
@@ -78,8 +79,10 @@ relish — is a gift, not a problem.
 > *"Pip had a plan. It was a VERY big plan. He grinned and grabbed his hat."*
 Anchors: 6–9 words a sentence.
 > • **Read-aloud** (a grown-up voices it): ~55 words/page; reach for a rich, fun word or two.
-> • **Solo reader** (the child decodes it): ~25 words/page, short lines and white space;
->   high-frequency/decodable words, at most one stretch word a page.
+> • **Solo reader** (the child decodes it): aim **~15 words/page on a typical page, 25 max** —
+>   short lines and white space; high-frequency/decodable words, at most one stretch word a page.
+>   (25 is the *ceiling*, not the target — a brand-new 5-year-old decoder is closer to Fountas &
+>   Pinnell level A–B, ~5–15 words/page; 25 sits at level C, the top of kindergarten.)
 FK ~0–0.6 (don't chase it).
 
 **Age 6 — kindergarten / Grade 1.** Reading simple sentences with growing confidence. You

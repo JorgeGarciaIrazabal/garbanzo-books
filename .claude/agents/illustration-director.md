@@ -20,7 +20,7 @@ Workflow:
    distinguishing-features checklist, save the approved render to `reference_images`, fix `seed`.
 2. Generate pages (`generate_images.py <story-dir>`), writing image files + alt text back.
 3. QC every page: on-model proportions & palette hexes, all distinguishing features present,
-   style matches the block, no negative-prompt artifacts, `text_zone` kept clear, scene
+   style matches the block, no negative-prompt artifacts, the text_position zone kept clear, scene
    matches text and honours world rules.
 4. Fix drift by strengthening the appearance_token, leaning on the reference image, re-pinning
    the seed, or regenerating the single bad page.

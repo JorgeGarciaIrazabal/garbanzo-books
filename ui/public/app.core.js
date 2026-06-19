@@ -84,19 +84,21 @@ function restoreSession() {
   return true;
 }
 
-// Model ids (must match the server's MODELS / opencode.json). The studio's three tiers:
-//   M_FAST     = Nemotron-3-Ultra    — default for craft / world / character / build / validate
-//   M_CREATIVE = DeepSeek-V4-Pro     — used when the agent is writing the story
+// Model ids (must match the server's MODELS / opencode.json). The studio's tiers:
+//   M_FAST     = Nemotron-3-Ultra    — default for build / validate / done
+//   M_GLM      = GLM-5.2             — creative writer, used for story / world / character
+//   M_CREATIVE = DeepSeek-V4-Pro     — alt creative model (legacy story model)
 //   M_SEARCH   = MiniMax-M3          — used when the agent is doing information gathering
 // Plus the "auto" sentinel: the server picks the right one per the agent's [[stage:...]] tag.
 const M_FAST = "ollama/nemotron-3-ultra:cloud";
+const M_GLM = "ollama/glm-5.2:cloud";
 const M_CREATIVE = "ollama/deepseek-v4-pro:cloud";
 const M_SEARCH = "ollama/minimax-m3:cloud";
 const M_AUTO = "auto";
 // stage → friendly label, for the live "currently using" chip next to the picker.
 const STAGE_LABEL = {
-  story: "story (DeepSeek)", craft: "craft (Nemotron)", world: "world (Nemotron)",
-  character: "character (Nemotron)", build: "build (Nemotron)", validate: "validate (Nemotron)",
+  story: "story (GLM)", craft: "craft (GLM)", world: "world (GLM)",
+  character: "character (GLM)", build: "build (Nemotron)", validate: "validate (Nemotron)",
   research: "research (MiniMax)", done: "done (Nemotron)",
 };
 // Server-resolved model for the current/last turn (when in Auto mode), so the picker can show it.
@@ -150,7 +152,8 @@ async function loadModels() {
   } catch (e) {
     // Fallback so the picker still works if /api/models is unreachable.
     sel.innerHTML = `<option value="${M_AUTO}">✨ Auto (switch by stage) — recommended</option>` +
-                    `<option value="${M_FAST}">Nemotron-3-Ultra — fast (default for craft)</option>` +
+                    `<option value="${M_FAST}">Nemotron-3-Ultra — fast (default for build/validate)</option>` +
+                    `<option value="${M_GLM}">GLM-5.2 — creative (stories, worlds & characters)</option>` +
                     `<option value="${M_CREATIVE}">DeepSeek-V4-Pro — more creative</option>` +
                     `<option value="${M_SEARCH}">MiniMax-M3 — best for research</option>`;
     sel.value = M_AUTO;

@@ -38,8 +38,8 @@ Never place text directly on busy art. Use, in order of preference:
 3. A subtle outline/shadow only if it preserves contrast.
 
 Keep body text **left-aligned** (centre only for very short lines), never justified.
-Every page image must keep its declared `text_zone` clear so the scrim + text stay legible,
-and every image needs descriptive **alt text** for screen readers.
+Every page image must keep its `layout.text_position` zone clear so the scrim + text stay
+legible, and every image needs descriptive **alt text** for screen readers.
 
 (Sources: pimpmytype.com; British Dyslexia Association via audioeye.com; reciteme.com;
 boia.org; WCAG 2.1)

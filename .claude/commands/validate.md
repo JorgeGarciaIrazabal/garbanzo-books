@@ -13,7 +13,7 @@ Steps:
      `evolution.stage`; no contradiction of world `rules`/`timeline`; art style present.
    - Language roughly age-fit (`reading_level.py` as a soft guardrail) — words don't block the fun.
    - Interactivity: data shapes correct; branching `goto`s resolve; no dead ends; games are varied.
-   - Accessibility/layout: `layout` + `text_zone` + alt text on every page.
+   - Accessibility/layout: `layout` (text_position) + alt text on every page.
    - Illustration: every page has a real Gemini `.png` (SVG placeholders = hard FAIL).
 3. Report an overall PASS/FAIL and an ordered, specific fix list. Offer to apply the fixes.
 4. For a finished book, also run `uv run python scripts/quality_report.py $ARGUMENTS` and

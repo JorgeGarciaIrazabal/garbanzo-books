@@ -15,7 +15,7 @@ PROMPT  = page image.prompt (scene/action/emotion)
         + appearance_token for each slug in characters_present
         + world art_style.prompt_style_block
         + "palette: " + world palette hexes (+ per-character color_palette)
-        + composition note that keeps the page's text_zone clear
+        + composition note that keeps the page's text_position zone clear
 NEGATIVE = world art_style.negative_prompt
 SEED     = character.seed (single hero) or a story-stable seed
 REFS     = character.reference_images (image-to-image / reference anchor)
@@ -50,7 +50,7 @@ ASPECT   = world art_style.aspect_ratio
 4. **Human QC** every page against the bible:
    - Each character on-model: proportions, palette hexes, all `distinguishing_features` present.
    - Style matches `prompt_style_block` (medium, line, lighting); no `negative_prompt` items.
-   - The `text_zone` is low-detail/clear so the scrim + text will be legible.
+   - The `text_position` zone is low-detail/clear so the scrim + text will be legible.
    - Scene matches the page text and emotion; honours world `rules` (no anachronisms).
    - The per-page `page-NN.qc.json` log is clean (no `style_inconsistent`,
      `wrong_characters`, or `anatomy_issue` flags on the winning attempt).

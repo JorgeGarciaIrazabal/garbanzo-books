@@ -1,14 +1,9 @@
 slug: clara-cloud-islands
 title: Clara's Cloud Islands
 tagline: A bossy, giggly, super-smart girl chases the most beautiful Pokemon across floating sky islands.
-premise: >
-  High above the world, a chain of fluffy cloud islands floats in the sunrise.
-  Clara is a funny, bossy, super-smart little Pokemon trainer who never gives up
-  and loves to make friends. She is on a mission to find and catch the most
-  beautiful Pokemon on every island. Each island hides a different gorgeous
-  Pokemon, silly obstacles, and a tiny logic game. With her clumsy, never-quit
-  sidekick at her side, Clara stumbles, laughs, plots clever plans, and always
-  comes back for more.
+premise: 'High above the world, a chain of fluffy cloud islands floats in the sunrise. Clara is a funny, bossy, super-smart little Pokemon trainer who never gives up and loves to make friends. She is on a mission to find and catch the most beautiful Pokemon on every island. Each island hides a different gorgeous Pokemon, silly obstacles, and a tiny logic game. With her clumsy, never-quit sidekick at her side, Clara stumbles, laughs, plots clever plans, and always comes back for more.
+
+  '
 tone:
 - very funny
 - warm
@@ -23,11 +18,9 @@ target_age_bands:
 languages:
 - en
 geography:
-  overview: >
-    A chain of floating cloud islands held up by giant puffy clouds and slow
-    breezes. Each island has its own weather, plants, and a "special" kind of
-    beautiful Pokemon. Islands are connected by rainbow rope-bridges, drifting
-    lily-pad gondolas, and friendly bird-Pokemon.
+  overview: 'A chain of floating cloud islands held up by giant puffy clouds and slow breezes. Each island has its own weather, plants, and a "special" kind of beautiful Pokemon. Islands are connected by rainbow rope-bridges, drifting lily-pad gondolas, and friendly bird-Pokemon.
+
+    '
   locations:
   - name: Sunny Meadow Island
     description: A bright top-island with candy-pink grass and berry bushes.
@@ -102,11 +95,11 @@ art_style:
   - Pokemon official anime
   - bright shoujo manga
   - Studio Ghibli skies
-  prompt_style_block: "bright Pokemon anime-style children's book illustration, clean bold ink lines, cel-shaded with soft gradients, big expressive eyes, sunny sky lighting with pink sunset rim light, fluffy clouds, sparkling magic effects, vibrant pastel palette, full-bleed, no text, no watermark"
-  negative_prompt: "photorealism, 3D render, dark moody, scary faces, horror, extra fingers, deformed hands, text artifacts, watermark, blurry, low quality, chibi with no eyes, ugly"
+  prompt_style_block: bright Pokemon anime-style children's book illustration, clean bold ink lines, cel-shaded with soft gradients, big expressive eyes, sunny sky lighting with pink sunset rim light, fluffy clouds, sparkling magic effects, vibrant pastel palette, full-bleed, no text, no watermark
+  negative_prompt: photorealism, 3D render, dark moody, scary faces, horror, extra fingers, deformed hands, text artifacts, watermark, blurry, low quality, chibi with no eyes, ugly
   aspect_ratio: '4:3'
   text_treatment:
-    placement: lower third
+    placement: lower-third
     scrim: soft cloud-cream rounded panel at 85% opacity
     font_family: Andika
     dyslexia_friendly: true

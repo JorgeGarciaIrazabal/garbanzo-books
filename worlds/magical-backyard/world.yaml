@@ -1,10 +1,7 @@
 slug: magical-backyard
 title: The Magical Backyard
 tagline: A perfectly ordinary backyard — except nothing in it is ordinary.
-premise: 'Hunter''s backyard looks normal: a patch of grass, a fence, a garden shed. But the dirt has
-  opinions, the plants throw parties at midnight, and anything you bury might just come back as your best
-  friend. Gross, hilarious, and a little bit dangerous — the kind of place where a kid can dig a hole
-  and change their life.'
+premise: 'Hunter''s backyard looks normal: a patch of grass, a fence, a garden shed. But the dirt has opinions, the plants throw parties at midnight, and anything you bury might just come back as your best friend. Gross, hilarious, and a little bit dangerous — the kind of place where a kid can dig a hole and change their life.'
 tone:
 - madcap
 - mischievous
@@ -22,18 +19,14 @@ target_age_bands:
 languages:
 - en
 geography:
-  overview: A suburban backyard that's secretly alive. The grass whispers gossip. The garden shed is bigger
-    on the inside. The fence posts have faces — and opinions. And the dirt? The dirt remembers everything
-    you put in it.
+  overview: A suburban backyard that's secretly alive. The grass whispers gossip. The garden shed is bigger on the inside. The fence posts have faces — and opinions. And the dirt? The dirt remembers everything you put in it.
   locations:
   - name: The Patch
-    description: A circle of extra-dark dirt in the middle of the yard where things grow... differently.
-      Anything buried here comes back changed.
+    description: A circle of extra-dark dirt in the middle of the yard where things grow... differently. Anything buried here comes back changed.
     mood: mysterious
     recurring: true
   - name: The Shed
-    description: A rickety garden shed that's way bigger inside. Full of weird tools, talking plants,
-      and a ladder that goes somewhere it shouldn't.
+    description: A rickety garden shed that's way bigger inside. Full of weird tools, talking plants, and a ladder that goes somewhere it shouldn't.
     mood: chaotic
     recurring: true
   - name: The Fence
@@ -41,20 +34,16 @@ geography:
     mood: nosy
     recurring: true
   - name: The Compost Heap
-    description: A steaming pile that occasionally burps and once spat out a fully-formed opinion about
-      the weather.
+    description: A steaming pile that occasionally burps and once spat out a fully-formed opinion about the weather.
     mood: gross
     recurring: false
 rules:
 - id: dirt-remembers
-  text: Anything buried in The Patch comes back the next day — alive, friendly, and slightly different
-    from what you put in.
+  text: Anything buried in The Patch comes back the next day — alive, friendly, and slightly different from what you put in.
 - id: night-awakening
-  text: At night, the backyard wakes up. Plants walk around. The fence posts argue louder. Things that
-    were buried start looking for their bury-er.
+  text: At night, the backyard wakes up. Plants walk around. The fence posts argue louder. Things that were buried start looking for their bury-er.
 - id: dragon-visits
-  text: A huge, clumsy dragon visits the backyard at night. It has terrible aim and a habit of throwing
-    things up — but it means well.
+  text: A huge, clumsy dragon visits the backyard at night. It has terrible aim and a habit of throwing things up — but it means well.
 factions: []
 timeline: []
 motifs:
@@ -95,15 +84,11 @@ art_style:
   - Dav Pilkey
   - kid's own drawings
   - Quentin Blake
-  prompt_style_block: 'scribbly children''s book illustration, colored pencil and marker on crumpled paper
-    texture, loose energetic lines, deliberately messy kid-art style, wonky exaggerated perspective, bright
-    punchy colors (#7ec850 grass-green, #8b5e3c dirt-brown, #5ba0d0 sky-blue, #9b59b6 dragon-purple, #f9e076
-    moon-yellow), scribble-hatched shading, Dav Pilkey energy, no text'
-  negative_prompt: photorealism, clean polished lines, smooth digital art, realistic proportions, soft
-    watercolor, cute big-eyes anime, text artifacts, watermark, scary faces
+  prompt_style_block: 'scribbly children''s book illustration, colored pencil and marker on crumpled paper texture, loose energetic lines, deliberately messy kid-art style, wonky exaggerated perspective, bright punchy colors (#7ec850 grass-green, #8b5e3c dirt-brown, #5ba0d0 sky-blue, #9b59b6 dragon-purple, #f9e076 moon-yellow), scribble-hatched shading, Dav Pilkey energy, no text'
+  negative_prompt: photorealism, clean polished lines, smooth digital art, realistic proportions, soft watercolor, cute big-eyes anime, text artifacts, watermark, scary faces
   aspect_ratio: '4:3'
   text_treatment:
-    placement: lower third
+    placement: lower-third
     scrim: scribbly torn-paper panel at 85% opacity
     font_family: Andika
     dyslexia_friendly: true

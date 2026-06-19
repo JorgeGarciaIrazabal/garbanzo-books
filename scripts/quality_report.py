@@ -81,19 +81,30 @@ def _gate_spine(story: dict) -> Gate:
 def _gate_manuscript(story: dict, band_id: str) -> Gate:
     pages = story.get("pages", []) or []
     total = sum(len(words(p.get("text") or "")) for p in pages)
-    cap = story_targets(story)["max_words_per_page"]
+    t = story_targets(story)
+    cap = t["max_words_per_page"]
+    # For the youngest solo decoders (where avg_wpp is set) the per-page cap is advisory, not a
+    # hard gate — a brand-new reader's page length is judgment. Over-cap pages become a note on a
+    # passing gate rather than a fail; the total-words sprawl check still gates as before.
+    cap_advisory = t.get("avg_words_per_page") is not None
     over = [p.get("number") for p in pages
             if p.get("kind") not in ("title", "interaction")
             and len(words(p.get("text") or "")) > cap]
     max_total = MAX_TOTAL_WORDS.get(band_id, 1500)
-    if not over and total <= max_total:
+    sprawl = total > max_total
+    if not over and not sprawl:
         return Gate("Manuscript length", True, f"{total} words; all pages within the {cap}-word cap")
     problems = []
     if over:
-        problems.append(f"pages over {cap}-word cap: {over}")
-    if total > max_total:
+        if cap_advisory:
+            problems.append(f"pages over {cap}-word cap (advisory for this age): {over}")
+        else:
+            problems.append(f"pages over {cap}-word cap: {over}")
+    if sprawl:
         problems.append(f"{total} words exceeds ~{max_total} for {band_id} (risk of sprawl)")
-    return Gate("Manuscript length", False, "; ".join(problems))
+    # Advisory cap overages don't fail the gate; only the sprawl check (or a hard cap) does.
+    fail = (not cap_advisory and over) or sprawl
+    return Gate("Manuscript length", not fail, "; ".join(problems))
 
 
 def _gate_pacing(story: dict) -> Gate:

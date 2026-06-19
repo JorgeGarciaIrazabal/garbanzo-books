@@ -387,9 +387,11 @@
       const stageH = stage.clientHeight;
       if (!stageH) return; // no layout yet (e.g. early render): start size is enough
 
-      // 2) Geometry cap. Centered title text gets a little less room than a
-      //    bottom/top caption so it never buries the focal art.
-      const share = overlay.classList.contains("pos-center") ? 0.42 : 0.48;
+      // 2) Geometry cap. Centered title text and side columns get less room than
+      //    a bottom/top caption so they never bury the focal art.
+      const isCenter = overlay.classList.contains("pos-center");
+      const isSide = overlay.classList.contains("pos-left") || overlay.classList.contains("pos-right");
+      const share = (isCenter || isSide) ? 0.42 : 0.48;
       const cap = Math.round(stageH * share);
       const min = Math.max(12, base * 0.55);
 

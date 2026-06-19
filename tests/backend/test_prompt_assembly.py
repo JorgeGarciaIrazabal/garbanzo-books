@@ -23,7 +23,7 @@ def _world(factories, character_slug="hero"):
     return World(slug="ww", data=wdata, path=None, characters={character_slug: char})
 
 
-def _page(prompt="hero stands in the meadow", characters_present=None, **extras):
+def _page(prompt="hero stands in the meadow", characters_present=None, text_position=None, **extras):
     p = {
         "number": 1,
         "text": "Hero stood in the meadow.",
@@ -33,6 +33,8 @@ def _page(prompt="hero stands in the meadow", characters_present=None, **extras)
             **extras,
         },
     }
+    if text_position is not None:
+        p["layout"] = {"text_position": text_position}
     return p
 
 
@@ -95,20 +97,22 @@ def test_page_prompt_reserves_a_text_zone_for_caption(factories):
     assert "low-detail" in ap.prompt.lower() or "negative space" in ap.prompt.lower()
 
 
-def test_page_prompt_respects_per_page_text_zone_override(factories):
-    """A page can override the world default — e.g. a centred title splash."""
+def test_page_prompt_respects_per_page_text_position(factories):
+    """A page's layout.text_position overrides the world default — e.g. an upper-third
+    caption. text_position is the single source of truth: it drives the reserved calm
+    zone in the image prompt AND the reader render, so they can never drift."""
     w = _world(factories)
-    p = _page(text_zone="upper third")
+    p = _page(text_position="upper-third")
     ap = assemble_page_prompt(w, factories.story(), p)
     assert "upper third" in ap.prompt
 
 
-def test_page_prompt_falls_back_to_world_text_treatment_zone(factories):
-    """No per-page override → use the world's text_treatment placement."""
+def test_page_prompt_falls_back_to_world_text_treatment_placement(factories):
+    """No per-page layout.text_position → use the world's text_treatment.placement."""
     w = _world(factories)
-    w.data["art_style"]["text_treatment"]["placement"] = "left margin"
+    w.data["art_style"]["text_treatment"]["placement"] = "left"
     ap = assemble_page_prompt(w, factories.story(), _page())
-    assert "left margin" in ap.prompt
+    assert "left" in ap.prompt.lower()
 
 
 def test_page_prompt_uses_world_aspect_ratio(factories):
