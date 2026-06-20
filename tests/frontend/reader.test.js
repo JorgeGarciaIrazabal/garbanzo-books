@@ -147,15 +147,7 @@ describe("navigation", () => {
 });
 
 
-describe("extras strip (vocabulary + reading notes)", () => {
-  it("renders vocabulary chips when the page has any", () => {
-    loadReaderWith(makeStory());
-    document.getElementById("next").click();  // page 2 — has vocabulary: ['once']
-    const gl = document.querySelector(".glossary");
-    expect(gl).toBeTruthy();
-    expect(gl.textContent).toContain("once");
-  });
-
+describe("extras strip (reading notes)", () => {
   it("renders a reading note when present", () => {
     loadReaderWith(makeStory());
     document.getElementById("next").click();
@@ -164,9 +156,9 @@ describe("extras strip (vocabulary + reading notes)", () => {
     expect(note.textContent).toContain("Pause on the rhyme");
   });
 
-  it("does not render a glossary when vocabulary is empty", () => {
+  it("never renders a glossary strip (vocab lives in-text only now)", () => {
     loadReaderWith(makeStory());
-    // page 1 has no vocabulary
+    document.getElementById("next").click();  // page 2 has vocabulary
     expect(document.querySelector(".glossary")).toBeFalsy();
   });
 });
