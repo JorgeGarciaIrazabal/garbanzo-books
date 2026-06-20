@@ -1,0 +1,85 @@
+slug: pikachu
+world: the-baby-luka
+name: Pikachu
+role: sidekick
+species: Pikachu (Gen 1, Kanto)
+pronouns: she/her
+one_liner: A tiny electric mouse Pokémon who runs the snack economy under Luka's high chair — cheeky,
+  fast, and loyal to whoever pays in Cheerios.
+personality:
+  traits:
+  - cheeky
+  - fast-talking
+  - loyal
+  - brave
+  - greedy-for-snacks
+  - show-offy
+  motivation: To keep the snack trade flowing and stay one zap ahead of Mom's broom — and to be Luka's
+    most trusted partner in mischief.
+  fears:
+  - TODO
+  flaws:
+  - can't resist a dropped Cheerio even when hiding
+  - cheek-sparks crackle when excited — a dead giveaway
+  - thinks every problem is solved with a quick zap
+  strengths:
+  - fast
+  - brave when it counts
+  - loyal to Luka
+  quirks:
+  - deals in Cheerios like currency
+  - cheeks spark when lying or excited
+  values:
+  - friendship
+voice:
+  speech_style: Bright, snappy, a little cocky — calls everyone 'pal' or 'boss'. Talks fast, deals fast.
+    Drops into earnest only when Luka's in real trouble.
+  catchphrases:
+  - Pika-pika!
+  - Snack's on, pal!
+  - Zap first, ask later!
+  - Two Cheerios, that's my final offer.
+  vocabulary_level: snappy kid-buddy
+appearance:
+  age_appearance: toddler-scale Pokémon
+  build: chubby round mouse
+  height: sits in the palm of a hand
+  skin: TODO
+  hair: TODO
+  eyes: big shiny black eyes
+  outfit: 'TODO: signature outfit'
+  distinguishing_features:
+  - long black-tipped ears
+  - lightning-bolt-shaped tail
+  - red circle cheeks that spark
+  color_palette:
+  - part: body
+    hex: f9d423
+  - part: cheeks
+    hex: e74c3c
+  - part: ear-tips
+    hex: 1a1a1a
+  - part: eyes
+    hex: 1a1a1a
+  silhouette_notes: round yellow body, two tall ears, zigzag lightning tail
+appearance_token: 'PIKACHU: tiny chubby yellow mouse Pokémon (#f9d423 body) with long black-tipped ears,
+  lightning-bolt-shaped tail, red circle cheeks (#e74c3c) that spark, big shiny black eyes, small zigzag
+  mouth, stubby arms and feet, toddler-scale (sits in palm of a hand), bold flat vector cartoon with cel-shading,
+  anime-influenced storybook style'
+reference_images:
+- characters/pikachu.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: luka
+  relation: best buddy and snack supplier
+- character: oddish
+  relation: nervous neighbor under the high chair — Pikachu protects it
+evolution:
+- stage: snack-broker
+  order: 1
+  summary: Runs the Cheerio economy under the high chair — deals, trades, stays hidden from adults.
+- stage: partner-in-mischief
+  order: 2
+  summary: Joins Luka on a real scheme outside the high chair — loyal through danger, not just deals.
+  unlocked_by: luka-snack-heist
+tags: []

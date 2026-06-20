@@ -1,0 +1,514 @@
+slug: luka-snack-heist
+world: the-baby-luka
+title: Luka's Great Snack Heist
+logline: When Mom hides the Cheerios on the top shelf to stop Luka's 'throwing food' phase, Luka and Pikachu
+  assemble a heist crew of backyard Pokémon to pull off the greatest snack rescue in baby history.
+summary: 'Luka''s snack supply dries up when Mom, tired of flying Cheerios, puts the box on the highest
+  shelf in the pantry. Under the high chair, Pikachu the snack-broker panics — the whole Pokémon snack
+  economy is collapsing. Luka and Pikachu recruit Oddish (a distraction), a crafty Squirtle (the climber),
+  and a tiny Jigglypuff (the cute decoy) for a baby-scale heist. Every step is a baby-workaround: stacking
+  blocks, wobbling on a stool, using a blanket-cape as a rope. Close calls with Mom and Dad pile up. The
+  Cheerios are recovered, the snack economy is restored, and no adult ever notices a thing — except the
+  mysterious disappearance of every Cheerio in the house.'
+age_band: 5-7
+target_year: 6
+reading_level:
+  read_mode: read_aloud
+  target_fk_grade: 0.95
+  fk_grade_tolerance: 0.35
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 70
+  max_sentence_words: 15
+  decoding_focus: ''
+  decodable: false
+themes:
+- mischief
+- friendship
+- heist
+- snacks
+- misunderstanding
+moral: 'TODO: shown, not told.'
+characters:
+- slug: luka
+  stage: first-friend
+  role_in_story: the mastermind
+- slug: pikachu
+  stage: partner-in-mischief
+  role_in_story: the partner
+- slug: oddish
+  stage: friend
+  role_in_story: the distraction
+- slug: mom
+  stage: oblivious
+  role_in_story: the obstacle
+spine:
+  once_upon_a_time: Luka was a one-year-old with a secret Pokémon life and an endless supply of dropped
+    Cheerios that kept his Pokémon friends happy.
+  every_day: Pikachu ran the snack trade under the high chair — a Cheerio here, a mushed pea there — and
+    the backyard Pokémon adored Luka for it.
+  until_one_day: Mom decided Luka was throwing too much food and put the Cheerios on the very top shelf
+    of the pantry — out of reach for a baby AND a toddler-scale Pikachu.
+  because_of_that:
+  - The snack economy collapsed. Oddish wouldn't come out from underground. Squirtle sulked in the bathtub.
+    Pikachu begged Luka for a plan.
+  - Luka assembled a heist crew — Oddish as distraction, Squirtle as climber, Jigglypuff as cute decoy
+    — and they staged a wobbly, baby-scale raid on the pantry.
+  - Mid-heist, Dad walked in for a midnight snack of his own. The crew froze. Jigglypuff sang. Dad nodded
+    off on the kitchen floor.
+  until_finally: Luka grabbed the Cheerio box with both chubby hands, toppled backward in a glorious slow-motion
+    baby fall, and the box rained snacks across the kitchen — a Cheerio jackpot for every Pokémon.
+  ever_since_then: The snack economy was restored, Mom and Dad blamed the missing Cheerios on a pantry
+    mishap, and Luka gave the camera his very best 'shh.'
+pages:
+- number: 0
+  kind: title
+  text: Luka's Great Snack Heist
+  image:
+    prompt: 'Title card: a chubby baby in a high chair grinning slyly at the camera, a tiny yellow Pikachu
+      peeking from under the tray, Cheerios raining down like confetti, kitchen pantry in the background,
+      bold playful storybook title art'
+    characters_present:
+    - luka
+    - pikachu
+    alt: 'Title page: baby Luka and Pikachu under a Cheerio rain'
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: 'This is Luka. He is one year old, and he has a secret.
+
+    He talks to Pokémon! "Pika-pals!" says Luka.
+
+    Under his high chair, the Cheerios rain down like treasure. The Pokémon love it.'
+  image:
+    prompt: A giggling baby in a high chair deliberately dropping Cheerios over the edge, several tiny
+      Pokémon gathered below catching them in a sunny kitchen, warm afternoon light, lower third calm
+      for text
+    characters_present:
+    - luka
+    - pikachu
+    - oddish
+    alt: Luka dropping Cheerios to Pokémon under his high chair
+    file: images/page-01.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 2
+  kind: story
+  text: 'Pikachu runs the whole trade.
+
+    One Cheerio for a giggle. Two for a game.
+
+    "Snack''s on, pal! Pika-pika!" Pikachu chirps.
+
+    Luka drops them on purpose. Shh.'
+  image:
+    prompt: A tiny yellow Pikachu sitting cross-legged under a high chair like a market vendor, sorting
+      dropped Cheerios into little piles, a lineup of small Pokémon waiting to trade, cheeky grin, action
+      lines around the deals, lower third calm for text
+    characters_present:
+    - pikachu
+    - luka
+    alt: Pikachu brokering Cheerio trades under the high chair
+    file: images/page-02.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 3
+  kind: story
+  text: 'But Mom has had enough.
+
+    Cheerios in her shoe. In the couch. Everywhere.
+
+    "No more throwing food, munchkin!"
+
+    Mom puts the Cheerio box way up high on the top shelf.'
+  image:
+    prompt: A tired-but-loving mom standing on tiptoe placing a Cheerio box on the very top shelf of a
+      pantry, a baby on the floor looking up in horror, dramatic low angle emphasizing how high the shelf
+      is, lower third calm for text
+    characters_present:
+    - mom
+    - luka
+    alt: Mom putting Cheerios out of reach on the top shelf
+    file: images/page-03.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 4
+  kind: story
+  text: 'Now there are no Cheerios.
+
+    Pikachu''s cheeks droop.
+
+    Oddish pops underground and won''t come out.
+
+    A Squirtle in the bathtub blows one sad bubble.
+
+    The snack trade is dead.'
+  image:
+    prompt: A glum tiny yellow Pikachu with droopy cheeks sitting in an empty space under a high chair
+      with zero Cheerios, a small blue turtle-like Squirtle sadly blowing a single bubble in a bathtub
+      in the background, two leaf sprouts poking from the floor where an Oddish hid, sad comedy mood,
+      lower third calm for text
+    characters_present:
+    - pikachu
+    alt: Sad Pikachu and friends after the snack supply dries up
+    file: images/page-04.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-whack
+    prompt: Bop the sad Pokémon to cheer them up!
+    skill: engagement
+    difficulty: easy
+    data:
+      whack:
+      - emoji: 🐭
+        label: Pikachu
+      - emoji: 🌱
+        label: Oddish
+      - emoji: 🐢
+        label: Squirtle
+      goal: 6
+      speed: gentle
+      how: Bop each Pokémon as they pop up — cheer up the crew!
+    reward:
+      label: Cheer-Up Charm
+      emoji: ✨
+      id: cheer-up-charm
+    feedback:
+      correct: Yay! Feeling better!
+      try_again: Bop them again!
+- number: 5
+  kind: story
+  text: 'Pikachu scrambles up to Luka''s ear.
+
+    "Lu! We need a plan! The whole snack world is falling apart!"
+
+    Luka''s eyes go big.
+
+    A plan. He is one. But he has a plan.'
+  image:
+    prompt: A tiny yellow Pikachu perched on a baby's shoulder whispering urgently into his ear, the baby's
+      eyes wide with a scheming sparkle, pointing one chubby finger up toward a distant pantry shelf,
+      dramatic anime thinking lines, close warm framing, lower third calm for text
+    characters_present:
+    - luka
+    - pikachu
+    alt: Pikachu whispering a heist plan into Luka's ear
+    file: images/page-05.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 6
+  kind: story
+  text: 'Luka calls a meeting.
+
+    He bangs a rattle on the floor.
+
+    "Oddi-oddi!" Oddish peeks out. A Squirtle climbs out of the tub.
+
+    A round pink Jigglypuff bounces in from the garden.'
+  image:
+    prompt: A baby on the floor banging a rattle like a tiny boss at a meeting, a small yellow Pikachu
+      standing beside him as translator, a round blue Oddish poking from the carpet, a blue turtle Squirtle
+      dripping from the bath, a round pink balloon-like Jigglypuff bouncing in, all gathered in a circle
+      like a heist crew, warm comedic staging, lower third calm for text
+    characters_present:
+    - luka
+    - pikachu
+    - oddish
+    alt: Luka assembling his Pokémon heist crew
+    file: images/page-06.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 7
+  kind: story
+  text: 'The plan:
+
+    Oddish rolls past Mom — distraction!
+
+    Squirtle climbs the pantry shelves.
+
+    Jigglypuff stands by for cute emergencies.
+
+    Luka holds the blanket-rope.
+
+    Pikachu zaps anything that falls.
+
+    "Let''s DO this!" says Pikachu. ZAP. Oops. Too excited.'
+  image:
+    prompt: A baby pointing at a crayon-scribbled map on the floor showing a pantry shelf with an X, the
+      tiny Pokémon crew each posing in their role, Pikachu with sparking cheeks, Squirtle flexing little
+      arms, Jigglypuff puffing up cutely, Oddish looking brave, heist-planning comedy scene, lower third
+      calm for text
+    characters_present:
+    - luka
+    - pikachu
+    - oddish
+    alt: The heist crew planning the pantry raid
+    file: images/page-07.png
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 8
+  kind: story
+  text: 'Nighttime. The kitchen is dark.
+
+    Luka crawls in, blanket cape on his back.
+
+    Pikachu rides his shoulder like a parrot.
+
+    "Operation Cheerio is GO," Pikachu whispers.
+
+    The pantry door creakks open. Spooky. Exciting.'
+  image:
+    prompt: A baby crawling into a dark kitchen at night with a blanket tied as a cape, a tiny yellow
+      Pikachu on his shoulder, moonlight through a window, the pantry door cracked open with a sliver
+      of light, adventurous sneaky atmosphere, lower third calm for text
+    characters_present:
+    - luka
+    - pikachu
+    alt: Luka and Pikachu creeping into the dark kitchen at night
+    file: images/page-08.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 9
+  kind: story
+  text: 'Squirtle stacks the stool. Then a box. Then a book. Then a block.
+
+    Up, up, up the shelves he goes.
+
+    Almost there… his foot slips!
+
+    "I got it!" Pikachu zaps the block back in place.
+
+    Tiny sparks. The Cheerio box is RIGHT THERE.'
+  image:
+    prompt: A small blue turtle Pokémon precariously climbing a wobbly tower of stacked household items
+      (stool, box, book, block) up tall pantry shelves toward a Cheerio box on the top shelf, a tiny yellow
+      Pikachu at the bottom shooting a small spark to steady a slipping block, tense comedic heist scene,
+      vertical composition, lower third calm for text
+    characters_present:
+    - pikachu
+    alt: Squirtle climbing a wobbly tower to reach the Cheerio box
+    file: images/page-09.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-build
+    prompt: Stack the tower so Squirtle can reach the shelf!
+    skill: engagement
+    difficulty: easy
+    data:
+      blocks:
+      - emoji: 📦
+        label: Box
+      - emoji: 📚
+        label: Books
+      - emoji: 🧱
+        label: Block
+      goal: 5
+      speed: gentle
+      how: Tap to drop each swinging piece — stack them into a wobbly tower!
+    reward:
+      label: Tower Block
+      emoji: 🧱
+      id: tower-block
+    feedback:
+      correct: Steady! Almost there!
+      try_again: Wobble! Try again!
+- number: 10
+  kind: story
+  text: 'Then — FOOTSTEPS.
+
+    Dad. Midnight snack run.
+
+    The crew FREEZES.
+
+    "Hide!" hisses Pikachu.
+
+    Oddish ducks behind a cereal bowl.
+
+    Squirtle pulls into his shell.
+
+    Luka sits on the floor and grins like nothing is happening.
+
+    "Ba ba ba!" he says.'
+  image:
+    prompt: A baby sitting innocently on a dark kitchen floor grinning up at a sleepy dad in pajamas opening
+      the fridge light, while tiny Pokémon freeze and hide in panic around the pantry (a yellow Pikachu
+      pressed flat against a wall, a blue turtle in its shell, leaf sprouts behind a cereal bowl), comedic
+      near-discovery scene, lower third calm for text
+    characters_present:
+    - luka
+    - pikachu
+    - oddish
+    alt: Dad walking in while the heist crew freezes and hides
+    file: images/page-10.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 11
+  kind: story
+  text: 'Dad opens the fridge. He hums.
+
+    But he turns. He looks right at the pantry.
+
+    The crew holds its breath.
+
+    Then Jigglypuff steps out and sings.
+
+    A soft, sweet, sleepy song.
+
+    Dad''s eyes go heavy. He yawns. He sits down. He snores on the kitchen floor.'
+  image:
+    prompt: A round pink balloon-like Jigglypuff singing with little music notes floating in a dark kitchen,
+      a sleepy dad in pajamas slumping and nodding off against the kitchen cabinets, musical notes drifting,
+      soft glowing lullaby atmosphere, the hidden Pokémon peeking out amazed, lower third calm for text
+    characters_present:
+    - luka
+    alt: Jigglypuff singing Dad to sleep on the kitchen floor
+    file: images/page-11.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 12
+  kind: story
+  text: 'Now! Squirtle scrambles up one more shelf.
+
+    Luka wobbles onto his tip-toes, both chubby arms up.
+
+    He grabs the box!
+
+    But the box is heavy. TOO heavy.
+
+    Luka tips backward — slow motion — and DOWN he goes.
+
+    CRASH! The box bursts open.'
+  image:
+    prompt: A baby tipping backward in dramatic slow-motion with a Cheerio box in both hands at the top
+      of a pantry, a blue turtle Pokémon beside him reaching, the box bursting open and Cheerios exploding
+      outward in a glorious freeze-frame, anime action lines, comedic climax, lower third calm for text
+    characters_present:
+    - luka
+    - pikachu
+    alt: Luka falling backward as the Cheerio box bursts open
+    file: images/page-12.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 13
+  kind: story
+  text: 'CHEERIOS EVERYWHERE!
+
+    A golden rain on the kitchen floor.
+
+    Pikachu cheers. Oddish pops up to feast. Squirtle slides through them on his shell.
+
+    Jigglypuff rolls in a pile, giggling.
+
+    Luka sits in the middle, Cheerios in his hair, grinning.
+
+    Best. Heist. Ever.'
+  image:
+    prompt: A kitchen floor covered in a golden rain of Cheerios with tiny Pokémon celebrating everywhere,
+      a yellow Pikachu cheering with sparking cheeks, a blue Oddish popping up to nibble, a turtle Squirtle
+      sliding on his shell through the cereal, a round pink Jigglypuff rolling giggling in a pile, a baby
+      sitting in the middle of it all with Cheerios in his hair grinning hugely, triumphant joyous chaotic
+      climax, lower third calm for text
+    characters_present:
+    - luka
+    - pikachu
+    - oddish
+    alt: Cheerios raining across the kitchen as the Pokémon crew celebrates
+    file: images/page-13.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-catch
+    prompt: Catch the raining Cheerios! Don't miss the snack jackpot.
+    skill: engagement
+    difficulty: easy
+    data:
+      player:
+        emoji: 👶
+        label: Luka
+      catch:
+      - emoji: 🟡
+        label: Cheerio
+      avoid:
+      - emoji: 🥦
+        label: Broccoli
+      goal: 8
+      speed: gentle
+      how: Move Luka to catch the falling Cheerios — dodge the broccoli!
+      avoid_line: YUCK! Broccoli!
+    reward:
+      label: Golden Cheerio
+      emoji: 🟡
+      id: golden-cheerio
+    feedback:
+      correct: Snack jackpot!
+      try_again: Catch the Cheerios!
+- number: 14
+  kind: end
+  text: 'In the morning, Mom finds the pantry open.
+
+    The Cheerio box is empty on the floor.
+
+    "Here comes the airplane! Vroom!" Mom says — but there''s nothing to fly.
+
+    Dad shrugs, still yawning.
+
+    Luka eats his mashed peas. Pikachu is full under the chair.
+
+    And Luka looks at the camera.
+
+    "Shh."'
+  image:
+    prompt: Morning kitchen, a confused mom holding an empty Cheerio box, a yawning dad still sleepy,
+      a baby in a high chair grinning secretly at the viewer with one finger to his lips in a shh gesture,
+      a tiny Pikachu stuffed and content under the chair, warm morning light, final mischievous fourth-wall
+      moment, lower third calm for text
+    characters_present:
+    - luka
+    - pikachu
+    - mom
+    alt: Mom finding the empty box as Luka shushes the camera
+    file: images/page-14.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+interactions_summary: []
+status: draft
+tags: []
+cover:
+  image: images/page-12.png
+  image_prompt: A baby tipping backward in dramatic slow-motion with a Cheerio box in both hands, Cheerios
+    exploding outward in a golden rain, anime action lines, comedic heist climax
+  alt: Luka falling backward as the Cheerio box bursts open

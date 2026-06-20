@@ -109,40 +109,132 @@ h1, h2, h3 { line-height: 1.2; }
 .page-text {
   position: absolute; left: 0; right: 0; padding: 22px clamp(18px, 5vw, 60px);
   font-size: var(--reader-base); color: var(--ink); text-align: left; z-index: 2;
+  /* Kid-friendly typography: generous line-height so the words breathe, a hair
+     of letter-spacing (raising it alone hurts speed — always pair with the
+     line-height lift), and a slightly heavier weight for confidence. */
+  line-height: 1.75; letter-spacing: 0.01em; font-weight: 500;
+  /* The scrim is a LOCALIZED cloud hugging just the text, not a full-width band.
+     Shrink-wrap the text block so the glassy effect is only around the words and
+     fades out radially from the text's own center. height: fit-content keeps the
+     positioned band tight to the scrim (no dead space above/below), and
+     align-items/justify-content center the cloud within it. The 22px vertical
+     padding keeps top/bottom-placed text off the page edge (pos-top/pos-bottom). */
+  display: flex; align-items: center; justify-content: flex-start;
+  height: fit-content;
 }
 .page-text .scrim {
-  /* Feathered backdrop that melts into the illustration: opaque in the middle to
-     carry the words, fading out toward the edges so there's no hard box — but a
-     faint rounded base layer underneath keeps the soft, rounded silhouette. The
-     generous horizontal padding gives the side-fade room to happen OUTSIDE the
-     text; a soft light halo keeps the words legible where the backdrop fades. */
+  /* Frosted glass — the art shows THROUGH the panel, just softened, so the
+     picture is never blocked. A light cream tint + blur kills detail behind the
+     words for legibility while keeping the scene alive underneath.
+
+     LOCALIZED CLOUD: the scrim shrink-wraps the text (width: max-content via the
+     flex parent) so the glassy effect is only around the words — NOT a full-width
+     band. The radial gradient + mask fade the glass out from the text center, so
+     it's strongest behind the words and dissolves into the art further out.
+
+     THE BORDERLESS TRICK: backdrop-filter blur has a hard edge at the element
+     box, and mask does NOT clip backdrop-filter in most browsers. So we make
+     the element OVERSIZED (negative margins push it ~60px beyond the text on
+     every side) — the blur edge is pushed far outside the visible area. Then
+     the mask crops the oversized element down to a soft cloud, so the only part
+     you see is the smooth interior of the blur, never its edge. */
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
   background:
-    radial-gradient(ellipse 80% 74% at 50% 50%,
-      rgba(255, 253, 247, 0.94) 0%,
-      rgba(255, 253, 247, 0.90) 42%,
-      rgba(255, 253, 247, 0.42) 78%,
-      rgba(255, 253, 247, 0) 100%),
-    rgba(255, 253, 247, 0.16);
-  border-radius: 26px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  padding: 16px clamp(26px, 6vw, 90px); max-width: 70ch;
-  text-shadow: 0 1px 2px rgba(255, 253, 247, 0.95), 0 0 12px rgba(255, 253, 247, 0.6);
+    radial-gradient(ellipse 60% 56% at 50% 50%,
+      rgba(255, 252, 244, 0.60) 0%,
+      rgba(255, 250, 235, 0.44) 45%,
+      rgba(255, 248, 228, 0.18) 72%,
+      rgba(255, 248, 228, 0) 100%);
+  border-radius: 24px; /* rounded cloud corners — the mask still fades the edge softly */
+  box-shadow: none; /* no shadow — it would draw a visible edge too */
+  /* Shrink-wrap the text block so the cloud is only as wide as the words.
+     max-width caps it so a long passage doesn't span the whole page. */
+  width: max-content; max-width: 100%;
+  /* Oversize the element FAR beyond the text so the backdrop-filter blur edge
+     (which mask cannot clip) is well outside the visible cloud. -90px on every
+     side pushes the hard blur edge 90px out; the mask then crops a soft cloud
+     that never reaches that edge. Padding is TIGHT — the cloud size comes from
+     the margin + mask, not padding, so a short line gets a small cloud. */
+  margin: -90px -90px;
+  padding: 14px 22px 16px;
+  text-shadow: 0 1px 2px rgba(255, 253, 247, 0.85), 0 0 10px rgba(255, 253, 247, 0.45);
+  /* Mask crops the oversized element to a soft cloud with a LONG, smooth fade —
+     no visible edge. Solid only for the inner 38% (just past the text), then a
+     gradual fade through 52% / 68% / 82% to fully transparent at 100%. The
+     extra -90px margin guarantees the blur's hard edge (at 100% = 90px out) is
+     fully masked away. The fade is RADIAL from the text center, so the glass is
+     strongest at the words and dissolves smoothly into the art further out. */
+  -webkit-mask: radial-gradient(ellipse 92% 88% at 50% 50%,
+      #000 0%, #000 38%, rgba(0,0,0,0.86) 52%, rgba(0,0,0,0.6) 68%, rgba(0,0,0,0.28) 82%, rgba(0,0,0,0) 100%);
+  mask: radial-gradient(ellipse 92% 88% at 50% 50%,
+      #000 0%, #000 38%, rgba(0,0,0,0.86) 52%, rgba(0,0,0,0.6) 68%, rgba(0,0,0,0.28) 82%, rgba(0,0,0,0) 100%);
   /* font-size + max-height are tuned per page by fitText() in reader.core.js so a
      long passage shrinks to fit instead of burying the art; this is the scroll
      fallback for the rare page that's still too big at the minimum size. */
   overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
 }
+/* Auto dark variant — applied by reader.js when the art behind the text zone is
+   dark (night scenes, deep shadow). Frosted indigo glass: the night art glows
+   softly through the panel while light text stays crisp on top. A faint warm
+   rim + starlight text-glow keeps it magical. Contrast ≥ 4.5:1 (WCAG AA). */
+.page-text .scrim.scrim-dark {
+  -webkit-backdrop-filter: blur(16px) saturate(1.2) brightness(0.85);
+  backdrop-filter: blur(16px) saturate(1.2) brightness(0.85);
+  background:
+    radial-gradient(ellipse 60% 56% at 50% 50%,
+      rgba(22, 20, 38, 0.56) 0%,
+      rgba(22, 20, 38, 0.40) 45%,
+      rgba(22, 20, 38, 0.16) 72%,
+      rgba(22, 20, 38, 0) 100%);
+  color: #f6f1e6;
+  border-radius: 24px; /* rounded cloud corners — the mask still fades the edge softly */
+  box-shadow: none;
+  margin: -90px -90px;
+  padding: 14px 22px 16px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 0 14px rgba(255, 230, 180, 0.22);
+  /* Same oversized + long-smooth-mask approach as the light variant. */
+  -webkit-mask: radial-gradient(ellipse 92% 88% at 50% 50%,
+      #000 0%, #000 38%, rgba(0,0,0,0.86) 52%, rgba(0,0,0,0.6) 68%, rgba(0,0,0,0.28) 82%, rgba(0,0,0,0) 100%);
+  mask: radial-gradient(ellipse 92% 88% at 50% 50%,
+      #000 0%, #000 38%, rgba(0,0,0,0.86) 52%, rgba(0,0,0,0.6) 68%, rgba(0,0,0,0.28) 82%, rgba(0,0,0,0) 100%);
+}
+/* Fallback: where backdrop-filter is NOT supported, restore an opaque panel so
+   the text stays legible (no blur = no frosted glass = need a solid backdrop).
+   This is the original cream-card / slate-card behavior, kept as a safety net. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .page-text .scrim {
+    background:
+      radial-gradient(ellipse 76% 70% at 50% 50%,
+        rgba(255, 252, 242, 0.94) 0%, rgba(255, 250, 235, 0.88) 48%,
+        rgba(255, 248, 228, 0.40) 76%, rgba(255, 248, 228, 0) 100%),
+      rgba(255, 252, 242, 0.18);
+    box-shadow: 0 4px 20px rgba(45, 42, 38, 0.08);
+  }
+  .page-text .scrim.scrim-dark {
+    background:
+      radial-gradient(ellipse 76% 70% at 50% 50%,
+        rgba(28, 26, 45, 0.90) 0%, rgba(28, 26, 45, 0.84) 48%,
+        rgba(28, 26, 45, 0.40) 76%, rgba(28, 26, 45, 0) 100%),
+      rgba(28, 26, 45, 0.18);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
+  }
+}
 .pos-lower-third, .pos-bottom { bottom: 4%; }
 .pos-upper-third, .pos-top { top: 4%; }
 .pos-center { top: 50%; transform: translateY(-50%); text-align: center; }
-.pos-center .scrim { margin: 0 auto; }
+.pos-center .scrim { margin: -90px -90px; }
 /* side panels — a narrow column hugging one edge so the opposite side of the
    art stays fully visible. Overrides the default left:0/right:0 full-width band. */
 .pos-left { left: 4%; right: auto; top: 50%; transform: translateY(-50%); max-width: 46%; }
 .pos-right { right: 4%; left: auto; top: 50%; transform: translateY(-50%); max-width: 46%; }
 .pos-left .scrim, .pos-right .scrim { max-width: none; }
-.align-center { text-align: center; }
-.align-right { text-align: right; }
-.align-right .scrim { margin-left: auto; }
+/* Text alignment now also positions the localized scrim cloud within the flex
+   parent: left (default), center, or right — so the glass hugs the words, not
+   the page edge. */
+.align-center { text-align: center; justify-content: center; }
+.align-right { text-align: right; justify-content: flex-end; }
+.align-right .scrim { margin: -90px -90px; }
 
 .reader-controls {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -642,9 +734,20 @@ footer.site { text-align: center; color: var(--muted); padding: 40px 16px; }
      pos-right). We only bump the font and widen the scrim here; we do NOT pin it
      to the bottom, so an authored top/center/side placement is honored on the
      tablet just as it is on a phone. */
-  .page-text { font-size: calc(var(--reader-base) * 1.25); padding: clamp(12px, 2vw, 28px); }
-  .page-text .scrim { max-width: min(96vw, 82rem); font-size: 1.05em;
-    padding: 18px clamp(40px, 9vw, 160px); margin-left: auto; margin-right: auto; }
+  .page-text { font-size: calc(var(--reader-base) * 1.25); padding: 22px clamp(18px, 5vw, 60px); }
+  /* In immersive mode the stage is fixed:inset 0 (full viewport), so pos-top/pos-bottom
+     must clear the floating topbar (~56px) and the floating controls (bottom: 22px + ~44px).
+     The scrim's -90px negative margin pulls its box outside the band, so the inset needs
+     overlay height + margin to keep the TEXT (not just the box) below the topbar / above
+     the controls. These auto-hide while reading, so we use a moderate inset that clears
+     them when visible without wasting space when they're gone. */
+  .page-text.pos-top, .page-text.pos-upper-third { top: 70px; }
+  .page-text.pos-bottom, .page-text.pos-lower-third { bottom: 80px; }
+  .page-text .scrim { font-size: 1.05em;
+    /* Keep the oversized margin/padding pattern from the base rule so the blur
+       edge stays outside the mask crop on the big screen too. */
+    margin: -90px -90px;
+    padding: 14px 22px 16px; }
   /* side panels get a tighter scrim on the big screen so they stay a column */
   .page-text.pos-left, .page-text.pos-right { max-width: 42%; }
   .page-text.pos-left .scrim, .page-text.pos-right .scrim { max-width: none; }

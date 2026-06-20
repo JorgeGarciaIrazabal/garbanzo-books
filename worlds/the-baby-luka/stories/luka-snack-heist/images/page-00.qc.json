@@ -1,0 +1,20 @@
+{
+  "page": 0,
+  "prompt_seed": 992086357,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely adheres to the specified style and character tokens, with only minor inconsistencies.",
+      "flags": [
+        "style_inconsistent",
+        "duplicate_characters"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-00-992086357.png"
+    }
+  ],
+  "winner": "page-00.png"
+}

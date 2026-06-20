@@ -1,0 +1,10 @@
+PROMPT:
+A glum tiny yellow Pikachu with droopy cheeks sitting in an empty space under a high chair with zero Cheerios, a small blue turtle-like Squirtle sadly blowing a single bubble in a bathtub in the background, two leaf sprouts poking from the floor where an Oddish hid, sad comedy mood, lower third calm for text. Characters: PIKACHU: tiny chubby yellow mouse Pokémon (#f9d423 body) with long black-tipped ears, lightning-bolt-shaped tail, red circle cheeks (#e74c3c) that spark, big shiny black eyes, small zigzag mouth, stubby arms and feet, toddler-scale (sits in palm of a hand), bold flat vector cartoon with cel-shading, anime-influenced storybook style. bold flat vector cartoon, anime-style cel-shading with crisp 2-3 tone flats, thick confident black outlines, bright punchy Pokémon-anime palette (#FFD23F sunshine yellow, #EE1515 pokeball red, #FFA52B pikachu orange, #3B9BE0 kanto sky blue, #5BCB5F bulba green, #5B4A8A soft shadow purple, #FFF4E0 cream paper), graphic sunburst lighting motifs, dynamic baby-eye-low POV, clean uncluttered composition with generous negative space, storybook-meets-anime-key-art mood, playful and funny, no text, no photorealism. palette: sunshine yellow #ffd23f, pokeball red #ee1515, pikachu orange #ffa52b, kanto sky blue #3b9be0, bulba green #5bcb5f, soft shadow purple #5b4a8a, cream paper #fff4e0. character colors: pikachu body #f9d423, pikachu cheeks #e74c3c, pikachu ear-tips #1a1a1a, pikachu eyes #1a1a1a. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, 3D render, soft watercolor, gradient shading, blurry edges, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, dark mood, realistic proportions, gore, weapons
+
+SEED: 1234
+ASPECT: 4:3
+CHARACTERS: pikachu
+REFERENCES: characters/pikachu.refs/model-sheet.png

@@ -209,8 +209,63 @@
         decorateVocab(inner, page.vocabulary);
         overlay.appendChild(inner);
         figure.appendChild(overlay);
+        // Auto dark scrim: sample the art behind the text zone and flip to a dark
+        // panel when it's too dark for a cream bubble to stay legible (night
+        // scenes, deep shadow). Skipped when scrim is disabled or sampling fails
+        // (tainted canvas / no decode) — the light bubble is the safe default.
+        if (layout.scrim !== false) {
+          const apply = () => maybeDarkenScrim(img, inner, overlay);
+          if (img.complete && img.naturalWidth) apply();
+          else img.addEventListener("load", apply, { once: true });
+        }
       }
       return figure;
+    }
+
+    // Sample the average luminance of the pixels under the text zone and add a
+    // `scrim-dark` class when the art there is dark. We draw a downscaled crop of
+    // the image into an offscreen canvas covering only the overlay's box, so a
+    // bright sky with a dark text band still gets the right call. Tainted/cross-
+    // origin canvases throw — we catch and leave the light scrim in place.
+    function maybeDarkenScrim(img, inner, overlay) {
+      if (!img || !img.naturalWidth || !inner.classList.contains("scrim")) return;
+      const box = inner.getBoundingClientRect();
+      const ir = img.getBoundingClientRect();
+      if (!box.width || !box.height || !ir.width || !ir.height) return;
+      // Map the scrim box into image-pixel space (object-fit: contain → letterbox).
+      const scale = Math.min(ir.width / img.naturalWidth, ir.height / img.naturalHeight);
+      const drawnW = img.naturalWidth * scale;
+      const drawnH = img.naturalHeight * scale;
+      const offX = ir.left + (ir.width - drawnW) / 2;
+      const offY = ir.top + (ir.height - drawnH) / 2;
+      const sx = (box.left - offX) / scale;
+      const sy = (box.top - offY) / scale;
+      const sw = box.width / scale;
+      const sh = box.height / scale;
+      if (sw <= 0 || sh <= 0) return;
+      const cv = document.createElement("canvas");
+      const STEP = 32; // sample into a 32×32 grid — cheap and robust
+      cv.width = STEP; cv.height = STEP;
+      const ctx = cv.getContext("2d");
+      if (!ctx) return;
+      let data;
+      try {
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, STEP, STEP);
+        data = ctx.getImageData(0, 0, STEP, STEP).data;
+      } catch (e) {
+        return; // cross-origin/tainted canvas — keep the light scrim
+      }
+      let lum = 0, n = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        // Rec. 709 luminance over sRGB bytes (good-enough approximation).
+        lum += 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+        n++;
+      }
+      const avg = lum / Math.max(1, n); // 0–255
+      // Threshold tuned for "cream text on cream art would vanish": below ~110
+      // the art is dim enough that a dark panel reads better. Hysteresis-free on
+      // purpose — each page is judged independently.
+      if (avg < 110) inner.classList.add("scrim-dark");
     }
 
     // ---------- in-text vocabulary hints ----------
@@ -395,8 +450,18 @@
       const cap = Math.round(stageH * share);
       const min = Math.max(12, base * 0.55);
 
+      // The scrim uses oversized padding (negative margins + extra padding) to
+      // push the backdrop-filter blur edge outside the mask crop. That padding
+      // inflates scrollHeight, so subtract it before comparing to the cap —
+      // otherwise fitText shrinks fonts for the padding, not the text.
+      const padY = box.classList.contains("scrim")
+        ? (parseFloat(getComputedStyle(box).paddingTop) +
+           parseFloat(getComputedStyle(box).paddingBottom))
+        : 0;
+      const contentH = box.scrollHeight - padY;
+
       let guard = 0;
-      while (box.scrollHeight > cap && size > min && guard < 60) {
+      while (contentH > cap && size > min && guard < 60) {
         size = Math.max(min, size - 1);
         overlay.style.fontSize = size + "px";
         guard++;

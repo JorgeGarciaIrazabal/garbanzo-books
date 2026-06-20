@@ -1,0 +1,19 @@
+{
+  "page": 4,
+  "prompt_seed": 1234,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely captures the scene and Pikachu's expression, but some minor adjustments could improve consistency.",
+      "flags": [
+        "style_inconsistent"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-04-1234.png"
+    }
+  ],
+  "winner": "page-04.png"
+}

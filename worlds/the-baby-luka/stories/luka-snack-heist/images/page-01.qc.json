@@ -1,0 +1,20 @@
+{
+  "page": 1,
+  "prompt_seed": 136427767,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "The illustration largely matches the specifications, with minor inconsistencies in the Pikachu's pose and a slight detail issue with the sock.",
+      "flags": [
+        "style_inconsistent",
+        "anatomy_issue"
+      ],
+      "model": "gemma3:4b",
+      "attempt": 0,
+      "path": "page-01-136427767.png"
+    }
+  ],
+  "winner": "page-01.png"
+}

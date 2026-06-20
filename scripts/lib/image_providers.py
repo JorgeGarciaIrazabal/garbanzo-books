@@ -25,6 +25,10 @@ DEFAULT_MAX_EDGE = 1184
 _RASTER_EXT = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}
 _warned_nokey: set[str] = set()
 _warned_antigravity: set[str] = set()
+# Run-scoped flags. Once antigravity's image quota is exhausted (429) we stop calling it and
+# route the rest of the run's images through the nano-banana fallback — one wasted 429 per page
+# adds up across a book.
+_antigravity_state: set[str] = set()
 
 
 def _cap_image_bytes(data: bytes, max_edge: int) -> bytes:
@@ -173,6 +177,7 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     consistency therefore depends on the dense appearance_token text in the assembled prompt.
     """
     import base64
+    import hashlib
     import re
     import subprocess
     import time
@@ -180,7 +185,7 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     agy = Path.home() / ".local" / "bin" / "agy"
     if not agy.exists():
         agy = Path("agy")
-    cmd = [str(agy), "--print", "--dangerously-skip-permissions"]
+    cmd = [str(agy), "--dangerously-skip-permissions"]
     timeout_s = os.getenv("ANTIGRAVITY_TIMEOUT", "240s")
     cmd += ["--print-timeout", timeout_s]
 
@@ -199,7 +204,7 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
         f"Use the generate_image tool to create the following image. "
         f"Size {size}, PNG format. Save the final PNG file.\n\n{text}"
     )
-    cmd.append(agent_prompt)
+    cmd += ["--print", agent_prompt]
 
     out_png.parent.mkdir(parents=True, exist_ok=True)
     # Run agy from a scratch directory so the project repo is not its workspace context.
@@ -207,7 +212,46 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     scratch_dir.mkdir(parents=True, exist_ok=True)
 
     brain = Path.home() / ".gemini" / "antigravity-cli" / "brain"
-    before = {p for p in brain.rglob("*") if p.is_file()} if brain.exists() else set()
+
+    def _md5_file(p: Path) -> str | None:
+        try:
+            return hashlib.md5(p.read_bytes()).hexdigest()
+        except OSError:
+            return None
+
+    # Snapshot what exists BEFORE the run so we can tell a freshly-generated image apart from
+    # the recurring sample/temp art that already litters agy's brain/ tree (every session drops
+    # identical copies of a few stock pictures into .tempmediaStorage). Index pre-existing
+    # rasters by byte-size — a cheap stat — and only hash on a size collision, so this stays fast.
+    before_by_size: dict[int, list[Path]] = {}
+    if brain.exists():
+        for p in brain.rglob("*"):
+            if p.is_file() and p.suffix.lower() in _RASTER_EXT:
+                try:
+                    before_by_size.setdefault(p.stat().st_size, []).append(p)
+                except OSError:
+                    pass
+    before = {p for grp in before_by_size.values() for p in grp}
+
+    # Reference images we attach must never be mistaken for generated output either.
+    ref_hashes = {h for h in (_md5_file(r) for r in _raster_refs(ap, ref_base)) if h}
+    _pre_hashes_by_size: dict[int, set[str]] = {}
+
+    def _is_recycled(candidate: Path) -> bool:
+        """True if this file is a reference image, or content that already existed before the
+        run (agy's recurring sample art) — i.e. NOT a fresh, prompt-driven render. This is the
+        guard against every page being saved as the same stale stock image."""
+        ch = _md5_file(candidate)
+        if ch is None or ch in ref_hashes:
+            return True
+        try:
+            size = candidate.stat().st_size
+        except OSError:
+            return True
+        if size not in _pre_hashes_by_size:
+            _pre_hashes_by_size[size] = {
+                h for h in (_md5_file(q) for q in before_by_size.get(size, [])) if h}
+        return ch in _pre_hashes_by_size[size]
 
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=360, cwd=scratch_dir,
@@ -233,30 +277,53 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     # Wait briefly for the agent to flush the artifact to disk.
     time.sleep(0.5)
 
-    # The agent may write the file to a path it mentions in stdout; prefer that.
-    for pattern in (r'\[([^\]]+)\]\(file://([^)]+)\)', r'!\[([^\]]*)\]\(([^)]+)\)'):
-        for _label, file_url in re.findall(pattern, stdout):
-            candidate = Path(file_url.replace("file://", ""))
-            if candidate.exists() and candidate.suffix.lower() in _RASTER_EXT:
-                out_png.write_bytes(_cap_image_bytes(candidate.read_bytes(), cap_edge))
-                return True
+    # The agent reports what it wrote as markdown links. Those paths live under THIS
+    # invocation's own brain/<session>/ tree, so they are the only race-safe signal: when
+    # several pages render concurrently they share the brain/ root, and scanning it wholesale
+    # lets one page pick up another's fresh output (that cross-talk collapsed many pages onto a
+    # single image). So we trust the links, and otherwise scan only this run's session dir.
+    linked: list[Path] = []
+    for pattern in (r'\]\(file://([^)]+)\)', r'!\[[^\]]*\]\(([^)]+)\)'):
+        for url in re.findall(pattern, stdout):
+            linked.append(Path(url.replace("file://", "")))
 
-    # Fall back: pick the newest raster artifact created under ~/.gemini/antigravity-cli/brain.
-    after = {p for p in brain.rglob("*") if p.is_file()}
-    new_files = after - before
-    raster = [p for p in new_files if p.suffix.lower() in _RASTER_EXT]
-    if raster:
-        newest = max(raster, key=lambda p: p.stat().st_mtime)
-        out_png.write_bytes(_cap_image_bytes(newest.read_bytes(), cap_edge))
-        return True
+    # 1) Prefer a raster the agent explicitly says it saved (and that is a genuine fresh render,
+    #    not a reference image or the recurring stock art that already litters brain/).
+    for candidate in linked:
+        if (candidate.exists() and candidate.suffix.lower() in _RASTER_EXT
+                and not _is_recycled(candidate)):
+            out_png.write_bytes(_cap_image_bytes(candidate.read_bytes(), cap_edge))
+            return True
 
-    # Last resort: embedded base64 image in the text output.
+    # 2) Otherwise scan ONLY this invocation's own session dir(s) — never the shared brain/ root.
+    #    The session id appears in any path the agent mentioned.
+    for sid in set(re.findall(r'/brain/([0-9a-fA-F-]{36})\b', stdout)):
+        sess = brain / sid
+        if not sess.exists():
+            continue
+        cands = [p for p in sess.rglob("*")
+                 if p.is_file() and p.suffix.lower() in _RASTER_EXT and p not in before]
+        for candidate in sorted(cands, key=lambda p: p.stat().st_mtime, reverse=True):
+            if _is_recycled(candidate):
+                continue
+            out_png.write_bytes(_cap_image_bytes(candidate.read_bytes(), cap_edge))
+            return True
+
+    # 3) Last resort: an embedded base64 image in the text output.
     b64_match = re.search(r'data:image/(?:png|jpeg|jpg|webp);base64,([A-Za-z0-9+/=]+)', stdout)
     if b64_match:
-        out_png.write_bytes(_cap_image_bytes(base64.b64decode(b64_match.group(1)), cap_edge))
-        return True
+        raw = base64.b64decode(b64_match.group(1))
+        if hashlib.md5(raw).hexdigest() not in ref_hashes:
+            out_png.write_bytes(_cap_image_bytes(raw, cap_edge))
+            return True
 
-    print("  ! antigravity did not return or save a usable image", file=sys.stderr)
+    if re.search(r'\b429\b|RESOURCE_EXHAUSTED|quota', stdout + stderr, re.I):
+        _antigravity_state.add("exhausted")
+        print("  ! antigravity image quota exhausted (HTTP 429 RESOURCE_EXHAUSTED) — no image "
+              "generated.", file=sys.stderr)
+    else:
+        print("  ! antigravity returned no fresh, prompt-driven image; treating as a failed "
+              "render.", file=sys.stderr)
     return False
 
 
@@ -270,7 +337,30 @@ def try_real_provider(provider: str, ap: AssembledPrompt, out_png: Path,
         if provider == "openai":
             return _gen_openai(ap, out_png)
         if provider == "antigravity":
-            return _gen_antigravity(ap, out_png, ref_base)
+            return _gen_antigravity_or_fallback(ap, out_png, ref_base)
     except Exception as e:  # noqa: BLE001 — never let image gen break the pipeline
         print(f"  ! provider '{provider}' failed ({e}); using placeholder.", file=sys.stderr)
     return False
+
+
+def _gen_antigravity_or_fallback(ap: AssembledPrompt, out_png: Path,
+                                 ref_base: Path | None) -> bool:
+    """Try antigravity; if its image quota is exhausted (or it otherwise can't produce) and a
+    GEMINI_API_KEY is available, fall back to nano-banana so a book still renders end-to-end.
+    Once exhausted in this run, skip antigravity entirely to avoid a wasted 429 per page."""
+    if "exhausted" not in _antigravity_state:
+        if _gen_antigravity(ap, out_png, ref_base):
+            return True
+
+    # Antigravity couldn't deliver. Fall back to the nano-banana API if a key is configured.
+    if not _gemini_key():
+        return False
+    if "exhausted" in _antigravity_state and "fellback" not in _antigravity_state:
+        _antigravity_state.add("fellback")
+        print("  → antigravity quota exhausted; rendering remaining images with nano-banana "
+              "(Gemini API).", file=sys.stderr)
+    try:
+        return _gen_nano_banana(ap, out_png, ref_base)
+    except Exception as e:  # noqa: BLE001
+        print(f"  ! nano-banana fallback failed ({e}); using placeholder.", file=sys.stderr)
+        return False

@@ -163,6 +163,13 @@ def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int
     done_count = [0]
     if work:
         _progress_report("illustrating", 0, len(work), story.get("title", ""))
+    # The antigravity (agy) CLI funnels every concurrent invocation through one shared
+    # brain/ artifact tree, so parallel page renders race over each other's output (pages end
+    # up sharing an image). Force it serial regardless of --jobs; other providers are safe.
+    if provider == "antigravity" and jobs > 1:
+        print("  · antigravity provider: rendering serially (--jobs ignored) to avoid the "
+              "shared-brain race.")
+        jobs = 1
     try:
         if jobs > 1 and len(work) > 1 and provider != "placeholder":
             from concurrent.futures import ThreadPoolExecutor
