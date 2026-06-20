@@ -556,16 +556,6 @@
 
     function renderExtras(page) {
       extrasBox.innerHTML = "";
-      const vocabEntries = GB.normalizeVocab(page.vocabulary);
-      if (vocabEntries.length) {
-        const g = h("div", "glossary");
-        g.appendChild(h("span", "glossary-label", "New words: "));
-        vocabEntries.forEach((e) => {
-          const label = e.icon ? `${e.icon} ${e.word}` : e.word;
-          g.appendChild(h("span", "chip", esc(label)));
-        });
-        extrasBox.appendChild(g);
-      }
       if (page.reading_notes) {
         extrasBox.appendChild(h("div", "reading-note", "Grown-up tip: " + esc(page.reading_notes)));
       }
