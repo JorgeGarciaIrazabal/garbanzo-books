@@ -24,6 +24,7 @@ import mimetypes
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
@@ -33,12 +34,17 @@ from typing import Any
 # Default Ollama endpoint. Matches the Makefile (OLLAMA_HOST=http://localhost:11434) and
 # opencode.json (baseURL http://localhost:11434/v1). Override with OLLAMA_HOST env.
 DEFAULT_OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
-# Default model: small, fast, vision-capable, almost certainly already pulled on this host.
-# Auto-detected at runtime (see _pick_vision_model) — this is just the fallback.
-DEFAULT_VISION_MODEL = os.environ.get("VISION_QC_MODEL", "gemma3:4b")
-# Models known to be vision-capable on Ollama. We pick the first one that's already pulled
-# so we never auto-pull a multi-GB model behind the user's back.
+# Default evaluator: MiniMax-M3 — a strong multimodal model, reached through Ollama's cloud
+# tier (the ":cloud" tag). It reads embedded text and judges character/scene consistency far
+# better than the small local vision models, so it's the preferred reviewer for the
+# generate→evaluate→edit loop. Override with VISION_QC_MODEL. Auto-detected at runtime
+# (_pick_vision_model) against what's actually pulled, with local models as the offline fallback.
+DEFAULT_VISION_MODEL = os.environ.get("VISION_QC_MODEL", "minimax-m3:cloud")
+# Vision-capable models in preference order. We pick the first one that's already pulled so we
+# never auto-pull a multi-GB model behind the user's back. MiniMax-M3 leads; small local
+# gemma/llava models are the no-network fallback.
 _KNOWN_VISION_MODELS = [
+    "minimax-m3:cloud", "minimax-m3",
     "gemma3:4b", "gemma3:12b", "gemma3:27b",
     "gemma4:e2b", "gemma4:9b",
     "llama3.2-vision:11b", "llama3.2-vision:90b",
@@ -49,6 +55,9 @@ _KNOWN_VISION_MODELS = [
 # Hard timeout per call. Vision on a 1K PNG is usually a few seconds on CPU; we leave
 # generous headroom for first-time model load.
 _TIMEOUT = 120.0
+# Token budget for the verdict. Reasoning models emit a long <think> block before the JSON,
+# so this must be large enough to cover the reasoning + the JSON. Override with VISION_QC_TOKENS.
+_NUM_PREDICT = int(os.environ.get("VISION_QC_TOKENS", "3000"))
 
 
 @dataclass
@@ -78,8 +87,13 @@ def _list_pulled_models(host: str) -> list[str]:
 
 
 def _pick_vision_model(host: str = DEFAULT_OLLAMA_HOST) -> str | None:
-    """Pick the best vision-capable model that's already pulled on this host. Returns None
-    if Ollama is unreachable or no vision model is pulled (so the caller can skip QC)."""
+    """Pick the best vision-capable model to evaluate with. An explicit ``VISION_QC_MODEL`` env
+    wins outright (the user knows what they want, even a cloud model not in /api/tags). Otherwise
+    pick the first preferred model that's actually pulled. Returns None if Ollama is unreachable
+    and nothing is forced (so the caller can skip QC)."""
+    forced = os.environ.get("VISION_QC_MODEL")
+    if forced:
+        return forced
     pulled = _list_pulled_models(host)
     if not pulled:
         return None
@@ -87,10 +101,28 @@ def _pick_vision_model(host: str = DEFAULT_OLLAMA_HOST) -> str | None:
     for cand in _KNOWN_VISION_MODELS:
         if cand.lower() in pulled_lower:
             return pulled_lower[cand.lower()]
-    # Last-resort heuristic: if a model name mentions gemma/llava/llama3.2-vision, use it.
+    # Last-resort heuristic: if a model name mentions a known vision family, use it.
     for p in pulled:
         lp = p.lower()
-        if any(t in lp for t in ("gemma", "llava", "llama3.2-vision", "vision", "minicpm-v")):
+        if any(t in lp for t in ("minimax", "gemma", "llava", "llama3.2-vision", "vision", "minicpm-v")):
+            return p
+    return None
+
+
+def _local_fallback_model(host: str, *, exclude: str | None = None) -> str | None:
+    """The first LOCAL (non-cloud) vision model pulled on this host, for when the preferred
+    reviewer is a flaky cloud model. ':cloud' models are skipped so the fallback always runs
+    on-box. Returns None if no local vision model is available."""
+    pulled = [p for p in _list_pulled_models(host) if not p.lower().endswith(":cloud")]
+    pulled_lower = {p.lower(): p for p in pulled}
+    for cand in _KNOWN_VISION_MODELS:
+        if cand.endswith(":cloud"):
+            continue
+        m = pulled_lower.get(cand.lower())
+        if m and m != exclude:
+            return m
+    for p in pulled:
+        if p != exclude and any(t in p.lower() for t in ("gemma", "llava", "vision", "minicpm-v")):
             return p
     return None
 
@@ -171,6 +203,11 @@ def _parse_model_json(text: str) -> dict[str, Any] | None:
     if not text:
         return None
     s = text.strip()
+    # Reasoning models (minimax-m3, kimi, …) emit a <think>…</think> block before the answer.
+    # Drop it so the JSON underneath is what we parse (and so a long chain-of-thought doesn't
+    # look like "no JSON"). Tolerate an unclosed tag from a truncated response.
+    s = re.sub(r"<think>.*?</think>", "", s, flags=re.DOTALL)
+    s = re.sub(r"<think>.*$", "", s, flags=re.DOTALL).strip()
     # Strip ```json ... ``` fences if present.
     fence = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", s, re.DOTALL)
     if fence:
@@ -233,34 +270,48 @@ def score_image(image_path: Path, *, page_text: str, characters: list[str],
 
     prompt = _build_prompt(page_text, characters, tokens, art_style_block, palette or [], text_zone)
     img_b64 = base64.b64encode(image_path.read_bytes()).decode()
-    body = {
-        "model": chosen_model,
-        "prompt": prompt,
-        "images": [img_b64],
-        "stream": False,
-        "options": {"temperature": 0.0, "num_predict": 400},
-    }
-    req = urllib.request.Request(
-        f"{host}/api/generate", data=json.dumps(body).encode(),
-        headers={"Content-Type": "application/json"},
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=_TIMEOUT) as r:
-            payload = json.loads(r.read())
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
-        if verbose:
-            print(f"  · qc: ollama call failed ({e.__class__.__name__}: {e})", file=sys.stderr)
-        return _unavailable(f"ollama {e.__class__.__name__}")
-    except Exception as e:  # noqa: BLE001
-        if verbose:
-            print(f"  · qc: unexpected error ({type(e).__name__}: {e})", file=sys.stderr)
-        return _unavailable(f"{type(e).__name__}")
 
-    raw = (payload.get("response") or "").strip()
-    parsed = _parse_model_json(raw)
-    if not parsed:
-        if verbose:
-            print(f"  · qc: model returned unparseable text ({raw[:120]!r})", file=sys.stderr)
-        return _unavailable("model returned non-JSON")
+    def _ask(model_name: str) -> tuple[QCR | None, str]:
+        """Up to two attempts at one model. Returns (QCR, "") on success, else (None, reason).
+        Cloud models (minimax-m3:cloud) sometimes return an empty body on a cold call, so we
+        re-ask once with a short pause before giving up on this model."""
+        # num_predict is generous: reasoning models (minimax-m3, kimi) spend most tokens in a
+        # <think> block before the JSON, and a tight cap truncates them to an empty verdict.
+        body = {"model": model_name, "prompt": prompt, "images": [img_b64], "stream": False,
+                "options": {"temperature": 0.0, "num_predict": _NUM_PREDICT}}
+        reason = ""
+        for attempt in range(2):
+            req = urllib.request.Request(f"{host}/api/generate", data=json.dumps(body).encode(),
+                                         headers={"Content-Type": "application/json"})
+            try:
+                with urllib.request.urlopen(req, timeout=_TIMEOUT) as r:
+                    payload = json.loads(r.read())
+            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+                reason = f"ollama {e.__class__.__name__}"
+                if verbose:
+                    print(f"  · qc[{model_name}]: call failed ({e})", file=sys.stderr)
+            else:
+                raw = (payload.get("response") or "").strip()
+                parsed = _parse_model_json(raw)
+                if parsed:
+                    return _score_to_qcr(parsed, model=model_name, raw=raw), ""
+                reason = "empty response" if not raw else "non-JSON response"
+                if verbose:
+                    print(f"  · qc[{model_name}]: {reason} (try {attempt+1}/2, {raw[:60]!r})",
+                          file=sys.stderr)
+            time.sleep(1.0)
+        return None, reason
 
-    return _score_to_qcr(parsed, model=chosen_model, raw=raw)
+    # Try the preferred model; if it can't produce a usable verdict (e.g. a flaky cloud model),
+    # fall back to a reliable LOCAL vision model so QC — and the edit-fix it gates — still runs.
+    last_err = ""
+    tried: list[str] = []
+    for cand in [chosen_model, _local_fallback_model(host, exclude=chosen_model)]:
+        if not cand or cand in tried:
+            continue
+        tried.append(cand)
+        qcr, err = _ask(cand)
+        if qcr is not None:
+            return qcr
+        last_err = f"{cand}: {err}"
+    return _unavailable(last_err or "no usable QC response")

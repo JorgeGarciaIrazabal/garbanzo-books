@@ -80,23 +80,34 @@ ENV_STATUS = load_env_file()
 def print_env_check() -> None:
     """Startup self-check so the user knows up front whether real illustrations will render.
 
-    The default image provider is now antigravity (the local agy CLI via Google OAuth — no
-    API key needed), so we check for the CLI first and treat the Gemini key as the fallback
-    path for the nano-banana provider."""
+    The default image provider is now "local": Qwen-Image on the iGPU via a local ComfyUI
+    server (no API key). We check that the server is reachable first; antigravity (agy) and
+    the Gemini key are cloud fallbacks."""
     import shutil
+    provider = os.getenv("IMAGE_PROVIDER", "local")
+    try:
+        sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+        from lib.comfyui_client import HOST as COMFY_HOST, is_available as comfy_up  # noqa: E402
+    except Exception:  # noqa: BLE001
+        COMFY_HOST, comfy_up = "127.0.0.1:8188", lambda: False
+
+    if provider in ("local", "qwen", "qwen-image", "flux2"):
+        if comfy_up():
+            print(f"  image provider: local ComfyUI ✓ at {COMFY_HOST} — rendering on the iGPU "
+                  "(MiniMax-M3 visual QC + Qwen-Image-Edit auto-fix)")
+        else:
+            print(f"  ⚠ image provider 'local' but no ComfyUI server at {COMFY_HOST}.")
+            print("    start it: experiments/qwen-image-edit/docker_comfyui.sh  (or set "
+                  "COMFYUI_HOST / IMAGE_PROVIDER=antigravity).")
+        return
     agy_path = shutil.which("agy") or str(Path.home() / ".local" / "bin" / "agy")
     agy_present = shutil.which("agy") is not None or Path(agy_path).exists()
     if agy_present:
         print("  image provider: antigravity (agy CLI) ✓ — illustrations will render via OAuth")
     elif ENV_STATUS["gemini"]:
         print("  image provider: no agy CLI found — falling back to nano-banana (GEMINI_API_KEY ✓)")
-        print("    install agy to use the antigravity path, or set IMAGE_PROVIDER=nano-banana.")
-    elif not ENV_STATUS["env_exists"]:
-        print("  ⚠ no .env file and no agy CLI — image generation will use labeled placeholders.")
     else:
-        print("  ⚠ no agy CLI and .env has no GEMINI_API_KEY/GOOGLE_API_KEY — illustrations will be placeholders.")
-        print("    install agy (no key needed), or get a free key at https://aistudio.google.com/apikey,")
-        print("    add it to .env, and restart.")
+        print("  ⚠ no local ComfyUI / agy CLI / GEMINI key — illustrations will be placeholders.")
 
 
 @asynccontextmanager

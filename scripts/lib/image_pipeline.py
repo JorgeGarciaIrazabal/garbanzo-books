@@ -8,15 +8,23 @@ sibling modules; this module is the orchestration that picks the best frame.
 """
 from __future__ import annotations
 
+import os
 import random
 from pathlib import Path
 
 from .colors import palette_hexes
 from .image_placeholder import write_placeholder_svg
-from .image_providers import try_real_provider
+from .image_providers import _cap_image_bytes, try_real_provider
 from .model import World
 from .prompt_assembly import AssembledPrompt
 from .vision_qc import score_image as _qc_score
+
+# QC flags an edit pass can plausibly repair in place (vs. structural problems like duplicated
+# characters or melted anatomy, which are re-rolled with a fresh seed instead).
+_EDIT_FIXABLE_FLAGS = {
+    "scene_mismatch", "wrong_characters", "missing_characters",
+    "text_zone_cluttered", "style_inconsistent", "too_dark", "low_detail",
+}
 
 
 def _write_prompt_sidecar(image_path: Path, ap: AssembledPrompt) -> None:
@@ -83,10 +91,76 @@ def _qc_candidate(cand_path: Path, *, world: World, story: dict, page: dict, qc_
     return res.to_dict()
 
 
+def _page_tokens(world: World, page: dict) -> list[str]:
+    """The locked appearance tokens for the characters expected on this page."""
+    present = (page.get("image", {}) or {}).get("characters_present", []) or []
+    return [world.characters[s].get("appearance_token", "")
+            for s in present if world.characters.get(s)]
+
+
+def _build_edit_instruction(verdict: dict, page: dict, tokens: list[str]) -> str:
+    """Turn a QC verdict into a concrete Qwen-Image-Edit instruction. We lead with the specific
+    defect the reviewer named, then re-state what the page should show and the locked character
+    look, so the edit corrects the inconsistency without redrawing the whole scene."""
+    flags = verdict.get("flags") or []
+    reason = (verdict.get("reason") or "").strip()
+    page_text = (page.get("text") or "").strip()
+    tok = "; ".join(t for t in tokens if t)
+    parts = [f"Fix this illustration: {reason}" if reason else "Fix this illustration."]
+    if "scene_mismatch" in flags and page_text:
+        parts.append(f"It must clearly show: {page_text}")
+    if {"wrong_characters", "missing_characters"} & set(flags) and tok:
+        parts.append(f"Make the characters exactly match: {tok}")
+    if "text_zone_cluttered" in flags:
+        parts.append("Clear the caption zone into calm, low-detail space.")
+    if "too_dark" in flags:
+        parts.append("Brighten the image and lift the shadows.")
+    parts.append("Keep the existing art style, palette, and composition.")
+    return " ".join(parts)
+
+
+def _try_qwen_edit_fix(winner: Path, best_verdict: dict, images_dir: Path, world: World,
+                       story: dict, page: dict, num: int, *, qc_model: str | None,
+                       verbose: bool) -> tuple[Path, list[dict]]:
+    """If the kept frame still has a fixable inconsistency, run ONE Qwen-Image-Edit pass to
+    repair it, re-QC, and keep the edit only if it scores at least as well. Returns the
+    (possibly replaced) winner path plus any QC log entries to append. No-op (returns winner
+    unchanged) when the frame is already ok, the flags aren't edit-fixable, or ComfyUI is down."""
+    flags = set(best_verdict.get("flags") or [])
+    if best_verdict.get("ok") or not (flags & _EDIT_FIXABLE_FLAGS):
+        return winner, []
+    from . import comfyui_client as cc
+    if not cc.is_available():
+        return winner, []
+
+    tokens = _page_tokens(world, page)
+    instruction = _build_edit_instruction(best_verdict, page, tokens)
+    edited = images_dir / f"page-{num:02d}-edit{winner.suffix}"
+    try:
+        data = cc.edit(instruction, winner)
+        edited.write_bytes(_cap_image_bytes(data, int(os.getenv("GEMINI_MAX_EDGE", "1184"))))
+    except Exception as e:  # noqa: BLE001 — edit is best-effort; keep the original on failure
+        if verbose:
+            print(f"    edit-fix: qwen-edit failed ({type(e).__name__}: {e}); keeping original")
+        return winner, []
+
+    verdict = _qc_candidate(edited, world=world, story=story, page=page,
+                            qc_model=qc_model, verbose=verbose)
+    verdict["attempt"] = "edit-fix"
+    verdict["path"] = edited.name
+    verdict["instruction"] = instruction
+    before, after = best_verdict.get("score", 0.0) or 0.0, verdict.get("score", 0.0) or 0.0
+    print(f"    edit-fix: {before:.1f} → {after:.1f}  ({', '.join(flags & _EDIT_FIXABLE_FLAGS)})")
+    if after >= before:
+        return edited, [verdict]
+    edited.unlink(missing_ok=True)  # edit didn't help; keep the original, but log the attempt
+    return winner, [verdict]
+
+
 def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base: Path,
                    story: dict, page: dict, provider: str, num: int, title: str,
                    *, qc_retries: int, qc_threshold: float, qc_model: str | None,
-                   qc_off: bool, verbose: bool) -> tuple[Path, list[dict]]:
+                   qc_off: bool, qc_edit_fix: bool, verbose: bool) -> tuple[Path, list[dict]]:
     """Generate one or more candidates, QC them with local Ollama vision, and pick the best.
 
     Returns ``(winner_path, qc_log)`` where ``qc_log`` is the per-attempt record (one entry
@@ -104,6 +178,7 @@ def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base
 
     best_path: Path | None = None
     best_score: float = -1.0
+    best_verdict: dict = {}
     max_attempts = max(1, qc_retries + 1)  # qc_retries=2 → up to 3 candidates
 
     for attempt in range(max_attempts):
@@ -130,6 +205,7 @@ def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base
         if score > best_score:
             best_score = score
             best_path = cand
+            best_verdict = verdict
         # Hard stops: duplicate characters, anatomy, or empty/blank image are not salvageable
         # by trying again with a different seed — they reflect a prompt issue. We let the
         # outer loop continue (we don't waste another API call) but break the local loop.
@@ -143,6 +219,14 @@ def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base
     if best_path is None:
         # Every attempt failed to even render. Re-raise so the caller surfaces it.
         raise RuntimeError(f"p{num}: no candidate rendered after {max_attempts} attempt(s)")
+
+    # If the best frame still reads as inconsistent, try a single targeted Qwen-Image-Edit
+    # repair (cheaper and more faithful than another full re-roll) and keep it if it's better.
+    if qc_edit_fix:
+        best_path, edit_log = _try_qwen_edit_fix(
+            best_path, best_verdict, images_dir, world, story, page, num,
+            qc_model=qc_model, verbose=verbose)
+        qc_log.extend(edit_log)
     return best_path, qc_log
 
 

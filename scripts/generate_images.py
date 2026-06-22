@@ -108,8 +108,8 @@ def gen_character_sheet(ref: str, provider: str, print_only: bool) -> None:
 
 def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int | None,
               print_only: bool, *, qc_retries: int, qc_threshold: float,
-              qc_model: str | None, qc_off: bool, verbose: bool = False,
-              jobs: int = 1) -> None:
+              qc_model: str | None, qc_off: bool, qc_edit_fix: bool = True,
+              verbose: bool = False, jobs: int = 1) -> None:
     world_slug, story_slug = _resolve_story(ref)
     world = load_world(world_slug, with_stories=False)
     spath = ROOT / "worlds" / world_slug / "stories" / story_slug / "story.yaml"
@@ -139,7 +139,7 @@ def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int
         winner, qc_log = _run_best_of_n(
             ap, images_dir, world, world.dir, story, page, provider, num, title,
             qc_retries=qc_retries, qc_threshold=qc_threshold, qc_model=qc_model,
-            qc_off=qc_off, verbose=verbose,
+            qc_off=qc_off, qc_edit_fix=qc_edit_fix, verbose=verbose,
         )
         canonical = _finalize_winner(winner, images_dir, num)
         # Persist the QC log sidecar.
@@ -169,6 +169,11 @@ def gen_story(ref: str, provider: str, only_page: int | None, seed_override: int
     if provider == "antigravity" and jobs > 1:
         print("  · antigravity provider: rendering serially (--jobs ignored) to avoid the "
               "shared-brain race.")
+        jobs = 1
+    # Local ComfyUI providers share ONE iGPU; parallel renders would contend for the same
+    # unified-memory bus (slower, and a known instability on Strix Halo). Render serially.
+    if provider in ("local", "qwen", "qwen-image", "flux2") and jobs > 1:
+        print("  · local ComfyUI provider: rendering serially (--jobs ignored) — single GPU.")
         jobs = 1
     try:
         if jobs > 1 and len(work) > 1 and provider != "placeholder":
@@ -262,11 +267,12 @@ def main() -> int:
     ap.add_argument("--character", help="<world>/<char> — generate a model sheet instead")
     ap.add_argument("--page", type=int, help="only this page number")
     ap.add_argument("--seed", type=int, help="override seed")
-    ap.add_argument("--provider", default=os.getenv("IMAGE_PROVIDER", "antigravity"),
-                    choices=["nano-banana", "gemini", "openai", "antigravity", "placeholder"],
-                    help="default: antigravity (local agy CLI via Google OAuth, no API key); "
-                         "nano-banana/gemini use GEMINI_API_KEY and fall back to placeholders "
-                         "if no key is set")
+    ap.add_argument("--provider", default=os.getenv("IMAGE_PROVIDER", "local"),
+                    choices=["local", "qwen", "qwen-image", "flux2", "nano-banana", "gemini",
+                             "openai", "antigravity", "placeholder"],
+                    help="default: local (Qwen-Image via the local ComfyUI server on the iGPU, "
+                         "no API key); 'flux2' for FLUX.2-dev (slower, higher fidelity); "
+                         "antigravity/nano-banana/gemini/openai are cloud fallbacks")
     ap.add_argument("--print-prompts", action="store_true", help="dry run: only print prompts")
     ap.add_argument("--verify", action="store_true",
                     help="check render-readiness invariants (tokens/seeds/refs) without "
@@ -278,7 +284,11 @@ def main() -> int:
     ap.add_argument("--qc-threshold", type=float, default=7.0,
                     help="minimum QC score (0-10) for a render to be accepted (default 7.0)")
     ap.add_argument("--qc-model", default=None,
-                    help="Ollama vision model for QC (default: first vision-capable model pulled)")
+                    help="Ollama vision model for QC (default: minimax-m3, else first vision "
+                         "model pulled; override with VISION_QC_MODEL)")
+    ap.add_argument("--no-qc-edit", action="store_true",
+                    help="disable the Qwen-Image-Edit repair pass on inconsistent frames "
+                         "(by default a flagged frame gets one targeted local edit)")
     ap.add_argument("--qc-verbose", action="store_true",
                     help="print extra diagnostic info when QC calls fail")
     ap.add_argument("--jobs", type=int, default=int(os.getenv("IMAGE_JOBS", "4")),
@@ -300,8 +310,8 @@ def main() -> int:
         return verify_story(args.target)
     gen_story(args.target, args.provider, args.page, args.seed, args.print_prompts,
               qc_retries=args.qc_retries, qc_threshold=args.qc_threshold,
-              qc_model=args.qc_model, qc_off=args.qc_off, verbose=args.qc_verbose,
-              jobs=max(1, args.jobs))
+              qc_model=args.qc_model, qc_off=args.qc_off, qc_edit_fix=not args.no_qc_edit,
+              verbose=args.qc_verbose, jobs=max(1, args.jobs))
     return 0
 
 

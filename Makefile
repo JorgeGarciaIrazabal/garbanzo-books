@@ -1,4 +1,4 @@
-.PHONY: setup validate report build serve clean test test-backend test-frontend test-all lint format type-check coverage quality ci ui opencode help check-gemini game-lab
+.PHONY: setup validate report build serve clean test test-backend test-frontend test-all lint format type-check coverage quality ci ui opencode help check-gemini check-comfyui game-lab
 
 # OpenCode + local Ollama settings. The model/provider are defined in opencode.json;
 # override here if you point Ollama elsewhere.
@@ -23,7 +23,8 @@ help:
 	@echo "  make serve         build + preview at http://localhost:8008"
 	@echo "  make game-lab      live game-design playground at http://localhost:8008/game-lab/"
 	@echo "  make test          run the toolchain self-test"
-	@echo "  make check-gemini  verify GEMINI_API_KEY is set (image generation)"
+	@echo "  make check-comfyui verify the local ComfyUI image server is up (default provider)"
+	@echo "  make check-gemini  verify a cloud image-provider fallback is configured"
 	@echo "  make test-backend  run the full pytest suite (lib + scripts + server)"
 	@echo "  make test-frontend run the vitest suite (app.js + reader.js)"
 	@echo "  make test-all      run backend + frontend (one command)"
@@ -62,9 +63,22 @@ serve: build
 game-lab:
 	$(RUN) scripts/game_lab.py
 
+check-comfyui:
+	@# Pre-flight for the DEFAULT image provider ("local"): a ComfyUI server on the iGPU.
+	@host=$${COMFYUI_HOST:-127.0.0.1:8188}; \
+	if curl -sf "http://$$host/system_stats" >/dev/null 2>&1; then \
+		printf "  \033[32m✓\033[0m ComfyUI server up at %s — /illustrate renders locally on the GPU\n" "$$host"; \
+		printf "    (MiniMax-M3 visual QC + Qwen-Image-Edit auto-fix enabled).\n"; \
+	else \
+		printf "  \033[31m✗\033[0m no ComfyUI server at %s.\n" "$$host"; \
+		printf "    Start it:  experiments/qwen-image-edit/docker_comfyui.sh\n"; \
+		printf "    or set COMFYUI_HOST, or switch provider (IMAGE_PROVIDER=antigravity).\n"; \
+		exit 1; \
+	fi
+
 check-gemini:
-	@# Pre-flight for /illustrate. The default provider is now antigravity (the local agy CLI,
-	@# via Google OAuth — no API key needed), so we check for the CLI first and fall back to the
+	@# Pre-flight for the cloud FALLBACK providers (default is now "local" — see check-comfyui).
+	@# Checks the antigravity local agy CLI first,
 	@# Gemini key check for the nano-banana provider. The studio/server loads .env the same way
 	@# (env first, then .env) so this is the authoritative pre-flight.
 	@if command -v agy >/dev/null 2>&1 || [ -x "$$HOME/.local/bin/agy" ]; then \

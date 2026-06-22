@@ -148,14 +148,16 @@ is NEVER written or edited as text. Two rules cover everything:
   cross-file consistency (rosters, tokens, images). Do not mark a book published while
   validation fails.
 
-IMAGE GENERATION — the default provider is antigravity (the local `agy` CLI via Google OAuth,
-no API key needed); the GEMINI_API_KEY in this workspace's .env is the nano-banana fallback and
-is loaded into your environment. ALWAYS assume a real provider is available and just run "uv run
-python scripts/generate_images.py ..." — do not ask the user whether to generate images, do not
-skip the step "in case the key is missing", do not propose placeholders as an alternative, and
-do not suggest the user set up a key. Just run the tool. If (and only if) the script itself exits
-with an error about a missing/invalid key or a missing `agy` CLI, STOP IMMEDIATELY, surface that
-one short error to the user, and do not retry — never silently fall back to placeholder art."""
+IMAGE GENERATION — the default provider is "local": Qwen-Image (4-bit GGUF) on the local iGPU
+via a ComfyUI server (no API key, no billing). Each render is auto-reviewed by a vision model
+(MiniMax-M3); if a frame is inconsistent with the character/scene, ONE Qwen-Image-Edit pass
+repairs it automatically. ALWAYS assume a real provider is available and just run "uv run python
+scripts/generate_images.py ..." — do not ask the user whether to generate images, do not skip the
+step, do not propose placeholders, and do not suggest setting up a key. Just run the tool. Use
+--provider flux2 only if the user asks for FLUX.2 (slower, higher fidelity). If (and only if) the
+script exits with an error that the ComfyUI server is unreachable, STOP IMMEDIATELY, surface that
+one short error (the user may need to start the toolbox container), and do not retry — never
+silently fall back to placeholder art."""
 
 # Inject the data-derived reading-level labels (e.g. "age 5 solo: aim ~15, max 25 vs ≈ 55
 # read-aloud", "1-18", "~14+", "read-aloud for age <=5, solo from 6") so the brief never hardcodes

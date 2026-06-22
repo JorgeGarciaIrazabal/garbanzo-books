@@ -327,11 +327,36 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     return False
 
 
+def _gen_comfyui(ap: AssembledPrompt, out_png: Path, kind: str) -> bool:
+    """Generate locally via a ComfyUI server (the Strix-Halo container), with ``kind`` in
+    {"qwen", "flux2"}. No API key, no network — runs on the local iGPU. Reference images are
+    not forwarded (these t2i graphs have no image input); character consistency rides on the
+    dense appearance_token text already in ``ap.prompt``, same as the antigravity path."""
+    from . import comfyui_client as cc
+    if not cc.is_available():
+        if "comfyui" not in _warned_nokey:
+            _warned_nokey.add("comfyui")
+            print(f"  ! no ComfyUI server at {cc.HOST} — start the toolbox container "
+                  "(experiments/qwen-image-edit/docker_comfyui.sh) or set COMFYUI_HOST.",
+                  file=sys.stderr)
+        return False
+    data = cc.generate(kind, ap.prompt, negative=ap.negative or "", seed=ap.seed,
+                       aspect_ratio=ap.aspect_ratio or "4:3")
+    data = _cap_image_bytes(data, int(os.getenv("GEMINI_MAX_EDGE", DEFAULT_MAX_EDGE)))
+    out_png.parent.mkdir(parents=True, exist_ok=True)
+    out_png.write_bytes(data)
+    return True
+
+
 def try_real_provider(provider: str, ap: AssembledPrompt, out_png: Path,
                       ref_base: Path | None = None) -> bool:
     """Generate a real image with the chosen provider. Returns True on success, False to fall
     back to a placeholder. Guarded so the toolchain never hard-depends on a network/API."""
     try:
+        if provider in ("local", "qwen", "qwen-image"):
+            return _gen_comfyui(ap, out_png, "qwen")
+        if provider == "flux2":
+            return _gen_comfyui(ap, out_png, "flux2")
         if provider in ("gemini", "nano-banana"):
             return _gen_nano_banana(ap, out_png, ref_base)
         if provider == "openai":

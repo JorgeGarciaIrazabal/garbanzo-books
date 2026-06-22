@@ -29,3 +29,6 @@ tests/frontend/coverage/
 
 # OS
 .DS_Store
+
+# Local image-gen experiments: multi-GB models, venv, HF cache, ComfyUI outputs — never commit
+experiments/
