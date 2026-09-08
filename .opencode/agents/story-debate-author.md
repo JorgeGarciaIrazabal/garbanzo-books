@@ -1,7 +1,7 @@
 ---
 description: The author in a multi-LLM debate loop. Reads a story draft + three critic critiques, agrees/disagrees/partially agrees with each, and produces a revised story.yaml. Defends choices that should stand; does not soften the story to satisfy a weak critique. Schema-valid output.
 mode: subagent
-model: ollama/nemotron-3-ultra:cloud
+model: ollama/glm-5.3:cloud
 temperature: 0.4
 permission:
   edit: allow

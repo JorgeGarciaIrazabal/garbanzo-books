@@ -6,6 +6,7 @@ the canonical ``page-NN.png`` (recording every attempt in ``page-NN.qc.json``). 
 best-effort: if Ollama is unreachable the first render wins. Providers/placeholders live in
 sibling modules; this module is the orchestration that picks the best frame.
 """
+
 from __future__ import annotations
 
 import os
@@ -15,16 +16,25 @@ from pathlib import Path
 from .colors import palette_hexes
 from .image_placeholder import write_placeholder_svg
 from .image_providers import _cap_image_bytes, try_real_provider
-from .model import World
-from .prompt_assembly import AssembledPrompt
+from .model import World, character_with_stage as _char_with_stage
+from .prompt_assembly import AssembledPrompt, assemble_page_prompt  # noqa: F401 — re-exported
 from .vision_qc import score_image as _qc_score
 
 # QC flags an edit pass can plausibly repair in place (vs. structural problems like duplicated
 # characters or melted anatomy, which are re-rolled with a fresh seed instead).
 _EDIT_FIXABLE_FLAGS = {
-    "scene_mismatch", "wrong_characters", "missing_characters",
-    "text_zone_cluttered", "style_inconsistent", "too_dark", "low_detail",
+    "scene_mismatch",
+    "wrong_characters",
+    "missing_characters",
+    "text_zone_cluttered",
+    "style_inconsistent",
+    "too_dark",
+    "low_detail",
 }
+
+# Grid mode (one big sheet cut into per-page tiles) needs tiles big enough for a full-bleed
+# page. This is the longest edge a grid tile is allowed to keep after slicing.
+GRID_TILE_MAX_EDGE = 1184
 
 
 def _write_prompt_sidecar(image_path: Path, ap: AssembledPrompt) -> None:
@@ -47,8 +57,15 @@ def _write_prompt_sidecar(image_path: Path, ap: AssembledPrompt) -> None:
     )
 
 
-def _generate_one_candidate(ap: AssembledPrompt, images_dir: Path, world: World, ref_base: Path,
-                            provider: str, num: int, title: str) -> Path | None:
+def _generate_one_candidate(
+    ap: AssembledPrompt,
+    images_dir: Path,
+    world: World,
+    ref_base: Path,
+    provider: str,
+    num: int,
+    title: str,
+) -> Path | None:
     """Render exactly one candidate image. Returns the on-disk path of the real PNG (with the
     final ``page-NN-K.png`` suffix) or None if the provider failed. The image prompt sidecar
     is written next to it either way so each candidate is auditable."""
@@ -68,8 +85,9 @@ def _generate_one_candidate(ap: AssembledPrompt, images_dir: Path, world: World,
     return out_svg
 
 
-def _qc_candidate(cand_path: Path, *, world: World, story: dict, page: dict, qc_model: str | None,
-                  verbose: bool) -> dict:
+def _qc_candidate(
+    cand_path: Path, *, world: World, story: dict, page: dict, qc_model: str | None, verbose: bool
+) -> dict:
     """Score one rendered candidate against the page spec via local Ollama vision. Returns
     a JSON-serialisable record. ``qc_score`` degrades to a permissive verdict if the local
     model is unreachable, so the rest of the loop can still pick a winner."""
@@ -80,11 +98,15 @@ def _qc_candidate(cand_path: Path, *, world: World, story: dict, page: dict, qc_
         cand_path,
         page_text=page.get("text", ""),
         characters=img.get("characters_present", []) or [],
-        tokens=[world.characters.get(s, {}).get("appearance_token", "") for s in (img.get("characters_present") or []) if world.characters.get(s)],
+        tokens=[
+            world.characters.get(s, {}).get("appearance_token", "")
+            for s in (img.get("characters_present") or [])
+            if world.characters.get(s)
+        ],
         art_style_block=art.get("prompt_style_block", ""),
         palette=palette,
         text_zone=(page.get("layout") or {}).get("text_position")
-            or (art.get("text_treatment", {}) or {}).get("placement", "lower-third"),
+        or (art.get("text_treatment", {}) or {}).get("placement", "lower-third"),
         model=qc_model,
         verbose=verbose,
     )
@@ -94,8 +116,9 @@ def _qc_candidate(cand_path: Path, *, world: World, story: dict, page: dict, qc_
 def _page_tokens(world: World, page: dict) -> list[str]:
     """The locked appearance tokens for the characters expected on this page."""
     present = (page.get("image", {}) or {}).get("characters_present", []) or []
-    return [world.characters[s].get("appearance_token", "")
-            for s in present if world.characters.get(s)]
+    return [
+        world.characters[s].get("appearance_token", "") for s in present if world.characters.get(s)
+    ]
 
 
 def _build_edit_instruction(verdict: dict, page: dict, tokens: list[str]) -> str:
@@ -119,9 +142,18 @@ def _build_edit_instruction(verdict: dict, page: dict, tokens: list[str]) -> str
     return " ".join(parts)
 
 
-def _try_qwen_edit_fix(winner: Path, best_verdict: dict, images_dir: Path, world: World,
-                       story: dict, page: dict, num: int, *, qc_model: str | None,
-                       verbose: bool) -> tuple[Path, list[dict]]:
+def _try_qwen_edit_fix(
+    winner: Path,
+    best_verdict: dict,
+    images_dir: Path,
+    world: World,
+    story: dict,
+    page: dict,
+    num: int,
+    *,
+    qc_model: str | None,
+    verbose: bool,
+) -> tuple[Path, list[dict]]:
     """If the kept frame still has a fixable inconsistency, run ONE Qwen-Image-Edit pass to
     repair it, re-QC, and keep the edit only if it scores at least as well. Returns the
     (possibly replaced) winner path plus any QC log entries to append. No-op (returns winner
@@ -130,6 +162,7 @@ def _try_qwen_edit_fix(winner: Path, best_verdict: dict, images_dir: Path, world
     if best_verdict.get("ok") or not (flags & _EDIT_FIXABLE_FLAGS):
         return winner, []
     from . import comfyui_client as cc
+
     if not cc.is_available():
         return winner, []
 
@@ -144,8 +177,9 @@ def _try_qwen_edit_fix(winner: Path, best_verdict: dict, images_dir: Path, world
             print(f"    edit-fix: qwen-edit failed ({type(e).__name__}: {e}); keeping original")
         return winner, []
 
-    verdict = _qc_candidate(edited, world=world, story=story, page=page,
-                            qc_model=qc_model, verbose=verbose)
+    verdict = _qc_candidate(
+        edited, world=world, story=story, page=page, qc_model=qc_model, verbose=verbose
+    )
     verdict["attempt"] = "edit-fix"
     verdict["path"] = edited.name
     verdict["instruction"] = instruction
@@ -157,10 +191,24 @@ def _try_qwen_edit_fix(winner: Path, best_verdict: dict, images_dir: Path, world
     return winner, [verdict]
 
 
-def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base: Path,
-                   story: dict, page: dict, provider: str, num: int, title: str,
-                   *, qc_retries: int, qc_threshold: float, qc_model: str | None,
-                   qc_off: bool, qc_edit_fix: bool, verbose: bool) -> tuple[Path, list[dict]]:
+def _run_best_of_n(
+    ap: AssembledPrompt,
+    images_dir: Path,
+    world: World,
+    ref_base: Path,
+    story: dict,
+    page: dict,
+    provider: str,
+    num: int,
+    title: str,
+    *,
+    qc_retries: int,
+    qc_threshold: float,
+    qc_model: str | None,
+    qc_off: bool,
+    qc_edit_fix: bool,
+    verbose: bool,
+) -> tuple[Path, list[dict]]:
     """Generate one or more candidates, QC them with local Ollama vision, and pick the best.
 
     Returns ``(winner_path, qc_log)`` where ``qc_log`` is the per-attempt record (one entry
@@ -172,8 +220,16 @@ def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base
         cand = _generate_one_candidate(ap, images_dir, world, ref_base, provider, num, title)
         if cand is None:
             raise RuntimeError(f"p{num}: image provider failed (no candidate rendered)")
-        qc_log.append({"attempt": 0, "path": cand.name, "ok": True, "score": 10.0,
-                        "reason": "qc disabled", "flags": ["qc_disabled"]})
+        qc_log.append(
+            {
+                "attempt": 0,
+                "path": cand.name,
+                "ok": True,
+                "score": 10.0,
+                "reason": "qc disabled",
+                "flags": ["qc_disabled"],
+            }
+        )
         return cand, qc_log
 
     best_path: Path | None = None
@@ -191,17 +247,28 @@ def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base
         ap.seed = attempt_seed
         cand = _generate_one_candidate(ap, images_dir, world, ref_base, provider, num, title)
         if cand is None:
-            qc_log.append({"attempt": attempt, "path": None, "ok": False, "score": 0.0,
-                            "reason": "provider failed", "flags": ["provider_failed"]})
+            qc_log.append(
+                {
+                    "attempt": attempt,
+                    "path": None,
+                    "ok": False,
+                    "score": 0.0,
+                    "reason": "provider failed",
+                    "flags": ["provider_failed"],
+                }
+            )
             continue
-        verdict = _qc_candidate(cand, world=world, story=story, page=page,
-                                qc_model=qc_model, verbose=verbose)
+        verdict = _qc_candidate(
+            cand, world=world, story=story, page=page, qc_model=qc_model, verbose=verbose
+        )
         verdict["attempt"] = attempt
         verdict["path"] = cand.name
         qc_log.append(verdict)
         score = verdict.get("score", 0.0) or 0.0
-        print(f"    qc attempt {attempt + 1}/{max_attempts}: score={score:.1f} "
-              f"ok={verdict.get('ok')} flags={verdict.get('flags', [])} — {verdict.get('reason','')[:80]}")
+        print(
+            f"    qc attempt {attempt + 1}/{max_attempts}: score={score:.1f} "
+            f"ok={verdict.get('ok')} flags={verdict.get('flags', [])} — {verdict.get('reason', '')[:80]}"
+        )
         if score > best_score:
             best_score = score
             best_path = cand
@@ -224,8 +291,16 @@ def _run_best_of_n(ap: AssembledPrompt, images_dir: Path, world: World, ref_base
     # repair (cheaper and more faithful than another full re-roll) and keep it if it's better.
     if qc_edit_fix:
         best_path, edit_log = _try_qwen_edit_fix(
-            best_path, best_verdict, images_dir, world, story, page, num,
-            qc_model=qc_model, verbose=verbose)
+            best_path,
+            best_verdict,
+            images_dir,
+            world,
+            story,
+            page,
+            num,
+            qc_model=qc_model,
+            verbose=verbose,
+        )
         qc_log.extend(edit_log)
     return best_path, qc_log
 
@@ -253,3 +328,103 @@ def _finalize_winner(winner: Path, images_dir: Path, num: int) -> Path:
             sibling.unlink()
             sibling.with_suffix(".prompt.txt").unlink(missing_ok=True)
     return canonical
+
+
+def slice_grid_sheet(
+    sheet_png: Path, images_dir: Path, page_nums: list[int], max_edge: int = GRID_TILE_MAX_EDGE
+) -> list[Path]:
+    """Cut a 3x3 grid sheet into per-page tiles, in reading order (row-major).
+
+    Tile i (0-based) lands at ``page-<page_nums[i]>.png`` in ``images_dir``. The canvas is
+    divided by exact thirds (no margins assumed). Returns the list of written tile paths.
+    Raises ValueError if the sheet isn't a raster Pillow can open.
+    """
+    from PIL import Image
+
+    sheet: Image.Image = Image.open(sheet_png)
+    if sheet.mode not in ("RGB", "RGBA"):
+        sheet = sheet.convert("RGB")
+    w, h = sheet.size
+    cols, rows = 3, 3
+    tw, th = w / cols, h / rows
+    tiles: list[Path] = []
+    for i, num in enumerate(page_nums):
+        r, c = divmod(i, cols)
+        box = (round(c * tw), round(r * th), round((c + 1) * tw), round((r + 1) * th))
+        tile = sheet.crop(box)
+        if max(tile.size) > max_edge:
+            tile.thumbnail((max_edge, max_edge))
+        out = images_dir / f"page-{num:02d}.png"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        tile.save(out, format="PNG")
+        tiles.append(out)
+    return tiles
+
+
+def build_grid_prompt(world: World, story: dict, pages: list[dict]) -> AssembledPrompt:
+    """Assemble ONE prompt for a 3x3 story contact sheet covering the given pages.
+
+    Each panel gets: the scene + that page's character tokens (with evolution deltas), so
+    every cell is a complete self-contained illustration. The world style block / palette /
+    negative are shared by all panels of a book, so they're stated once. The sheet is 1:1
+    (3x3 grid of square panels); per-page seeds are averaged out — one seed (the first
+    character's) anchors the sheet, and all reference images are forwarded so providers
+    that accept them (nano-banana) still get the anchors.
+    """
+    if not pages:
+        raise ValueError("no pages to put on the grid")
+    art = world.data.get("art_style", {}) or {}
+    stage_map = {c.get("slug"): c.get("stage") for c in story.get("characters", []) or []}
+    cells: list[str] = []
+    tokens: list[str] = []
+    refs: list[str] = []
+    chars: list[str] = []
+    seed: int | None = None
+    for page in pages:
+        ap = assemble_page_prompt(world, story, page)
+        scene = ((page.get("image", {}) or {}).get("prompt") or "").strip().rstrip(".")
+        num = page.get("number", 0)
+        cells.append(f"Panel for page {num}: {scene}")
+        for slug in ap.characters:
+            if slug not in chars:
+                chars.append(slug)
+                char = world.characters.get(slug, {})
+                view = _char_with_stage(char, stage_map.get(slug))
+                tok = view.get("appearance_token") or ""
+                if tok:
+                    tokens.append(f"{slug}: {tok}")
+                for r in char.get("reference_images", []) or []:
+                    if r not in refs:
+                        refs.append(r)
+                if seed is None and char.get("seed") is not None:
+                    seed = char["seed"]
+    style = art.get("prompt_style_block", "") or ""
+    neg = art.get("negative_prompt", "") or ""
+    from .colors import palette_hexes
+
+    palette = ", ".join(palette_hexes(art)[:8])
+    prompt = (
+        f"A 3x3 grid contact sheet for the children's picture book "
+        f"'{story.get('title', 'the book')}': nine equal square panels arranged in three rows "
+        "of three with clean thin white gutters, each panel a complete self-contained "
+        "full-bleed storybook illustration. ABSOLUTELY NO text, letters, numbers, labels, "
+        "watermarks, captions, or page numbers anywhere in the image.\n\n"
+        + "\n".join(cells)
+        + (
+            "\n\nCharacters — each character must look IDENTICAL in every panel they appear "
+            "in (same face, same outfit, same proportions):\n" + "\n".join(tokens)
+            if tokens
+            else ""
+        )
+        + (f"\n\nStyle for every panel: {style}." if style else "")
+        + (f"\nPalette: {palette}." if palette else "")
+        + "\nLeave the lower third of every panel as calm, low-detail negative space."
+    )
+    return AssembledPrompt(
+        prompt=prompt,
+        negative=neg,
+        seed=seed,
+        aspect_ratio="1:1",
+        reference_images=refs,
+        characters=chars,
+    )

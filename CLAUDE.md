@@ -267,7 +267,7 @@ make check-gemini
   can't actually be marked `published` without the user adding a key or installing `agy`
 
 The default provider is **antigravity** (the local `agy` CLI via Google OAuth — no key
-required). The fallback is **nano-banana** (Google Gemini `gemini-2.5-flash-image`), which
+required). The fallback is **nano-banana** (Google Gemini `gemini-3-pro-image`, "Nano Banana Pro"), which
 needs `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in `.env`. A real exported env var beats the
 .env value. A blank exported value is treated as unset, so the .env value always fills in.
 
@@ -286,7 +286,7 @@ generate placeholders for now?").
 `uv sync` (or `make setup`) creates the `.venv` from `pyproject.toml`/`uv.lock`; run tools with
 `uv run python scripts/...`. (No uv? `pip install -r requirements.txt` + `python3` works too.)
 Image generation defaults to the **Antigravity** CLI (`agy`, via Google OAuth — no key
-needed); the fallback is Google's **Nano Banana** (Gemini `gemini-2.5-flash-image`) — set a
+needed); the fallback is Google's **Nano Banana** (Gemini `gemini-3-pro-image`, "Nano Banana Pro") — set a
 free `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) from Google AI Studio. Without either it emits
 labeled placeholder art so the whole pipeline still runs and validates offline. See
 `.env.example`.

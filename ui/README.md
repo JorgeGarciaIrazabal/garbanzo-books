@@ -2,7 +2,7 @@
 
 A web console that drives this whole workspace through an AI agent — **no API key required**.
 The agent is **[OpenCode](https://opencode.ai)** running a **local Ollama model**
-(`minimax-m3:cloud` by default). Type what you want ("make a book for ages 5–7 about a shy
+(`glm-5.3-flash:cloud` by default). Type what you want ("make a book for ages 5–7 about a shy
 dragon"), and the studio runs the skills, scripts, and tools in the repo to build it — then you
 browse the result and preview the live site, all in one screen.
 
@@ -11,7 +11,7 @@ The studio is a Python FastAPI server (`server.py`); there is no Node toolchain 
 ## Prerequisites (one-time)
 - **Ollama** running locally, with the model pulled:
   ```bash
-  ollama pull minimax-m3:cloud      # a free Ollama cloud account is enough; no API key in this app
+  ollama pull glm-5.3-flash:cloud   # a free Ollama cloud account is enough; no API key in this app
   ```
 - **OpenCode** installed and on your PATH: https://opencode.ai (`opencode --version`).
 
@@ -86,7 +86,7 @@ outlive the UI). Image generation (when the agent calls `generate_images.py`) st
 ## Config (env)
 | Var | Default | Purpose |
 |---|---|---|
-| `OPENCODE_MODEL` | `ollama/minimax-m3:cloud` | provider/model OpenCode uses for chat |
+| `OPENCODE_MODEL` | `ollama/glm-5.3-flash:cloud` | provider/model OpenCode uses for chat |
 | `PORT` | `4317` | UI server port |
 | `PY_CMD` | `uv run python` | how the server runs the Python tools (set `python3` if you don't use uv) |
 | `OPENCODE_BIN` | `opencode` | path to the `opencode` binary (for testing, point at a no-op shim) |

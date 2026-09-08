@@ -4,9 +4,10 @@ Each ``_gen_*`` returns True after writing ``out_png``, or False to fall back to
 ``try_real_provider`` picks the provider and swallows any exception (network/API/CLI), so the
 toolchain has no hard dependency on a key being present or a service being up. Providers:
   - nano-banana / gemini : Google Gemini image model (GEMINI_API_KEY / GOOGLE_API_KEY)
-  - openai               : OpenAI Images, gpt-image-1 (OPENAI_API_KEY)
+  - openai               : OpenAI Images, gpt-image-2 (OPENAI_API_KEY)
   - antigravity          : the local agy CLI's generate_image tool, via Google OAuth (no key)
 """
+
 from __future__ import annotations
 
 import os
@@ -15,14 +16,21 @@ from pathlib import Path
 
 from .prompt_assembly import AssembledPrompt
 
-# Google "Nano Banana". gemini-2.5-flash-image is the original; gemini-3-pro-image is
-# "Nano Banana Pro"; gemini-3.1-flash-image is the newer flash. Override via GEMINI_IMAGE_MODEL.
-DEFAULT_NANO_BANANA_MODEL = "gemini-2.5-flash-image"
+# Google "Nano Banana" family. gemini-3-pro-image is "Nano Banana Pro" (best quality,
+# best-in-class text rendering); gemini-3.1-flash-image is the newer fast tier; the legacy
+# gemini-2.5-flash-image is the original. Override via GEMINI_IMAGE_MODEL.
+DEFAULT_NANO_BANANA_MODEL = "gemini-3-pro-image"
+DEFAULT_ANTIGRAVITY_MODEL = "gemini-3-pro-image"
 # Longest-edge cap for generated images. Nano Banana's native 1K 4:3 output is 1184x864, so
 # this keeps the full 4:3 frame (a little past 1024 by design) while blocking 2K/4K. Anything
 # larger is downscaled, preserving aspect ratio. Override with GEMINI_MAX_EDGE.
 DEFAULT_MAX_EDGE = 1184
-_RASTER_EXT = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}
+_RASTER_EXT = {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".webp": "image/webp",
+}
 _warned_nokey: set[str] = set()
 _warned_antigravity: set[str] = set()
 # Run-scoped flags. Once antigravity's image quota is exhausted (429) we stop calling it and
@@ -38,8 +46,10 @@ def _cap_image_bytes(data: bytes, max_edge: int) -> bytes:
         from io import BytesIO
         from PIL import Image
     except ImportError:
-        print("  ! Pillow not installed — cannot enforce max image size "
-              "(uv add pillow).", file=sys.stderr)
+        print(
+            "  ! Pillow not installed — cannot enforce max image size (uv add pillow).",
+            file=sys.stderr,
+        )
         return data
     img = Image.open(BytesIO(data))
     if max(img.size) <= max_edge:
@@ -61,7 +71,7 @@ def _raster_refs(ap: AssembledPrompt, ref_base: Path | None) -> list[Path]:
     if not ref_base:
         return out
     for rel in ap.reference_images or []:
-        p = (ref_base / rel)
+        p = ref_base / rel
         if p.exists() and p.suffix.lower() in _RASTER_EXT:
             out.append(p)
     return out
@@ -78,8 +88,11 @@ def _gen_nano_banana(ap: AssembledPrompt, out_png: Path, ref_base: Path | None) 
     if not key:
         if "gemini" not in _warned_nokey:
             _warned_nokey.add("gemini")
-            print("  ! no GEMINI_API_KEY/GOOGLE_API_KEY set — using placeholders. "
-                  "Get a free key at https://aistudio.google.com/apikey", file=sys.stderr)
+            print(
+                "  ! no GEMINI_API_KEY/GOOGLE_API_KEY set — using placeholders. "
+                "Get a free key at https://aistudio.google.com/apikey",
+                file=sys.stderr,
+            )
         return False
     import base64
     import json
@@ -91,10 +104,14 @@ def _gen_nano_banana(ap: AssembledPrompt, out_png: Path, ref_base: Path | None) 
         text += f"\nAvoid: {ap.negative}."
     parts: list[dict] = [{"text": text}]
     for ref in _raster_refs(ap, ref_base):
-        parts.append({"inline_data": {
-            "mime_type": _RASTER_EXT[ref.suffix.lower()],
-            "data": base64.b64encode(ref.read_bytes()).decode(),
-        }})
+        parts.append(
+            {
+                "inline_data": {
+                    "mime_type": _RASTER_EXT[ref.suffix.lower()],
+                    "data": base64.b64encode(ref.read_bytes()).decode(),
+                }
+            }
+        )
 
     body = {
         "contents": [{"parts": parts}],
@@ -104,12 +121,17 @@ def _gen_nano_banana(ap: AssembledPrompt, out_png: Path, ref_base: Path | None) 
             "imageConfig": {"aspectRatio": ap.aspect_ratio or "4:3", "imageSize": "1K"},
         },
     }
+    # Nano Banana Pro (gemini-3-pro-image) accepts 1K/2K/4K; older flash models only 1K.
+    image_size = os.getenv("GEMINI_IMAGE_SIZE")
+    if image_size:
+        image_config: dict = body["generationConfig"]["imageConfig"]  # type: ignore[index]
+        image_config["imageSize"] = image_size
     model = os.getenv("GEMINI_IMAGE_MODEL", DEFAULT_NANO_BANANA_MODEL)
     # Image generation + responseModalities require the v1beta endpoint (v1 rejects them).
-    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
-           f"{model}:generateContent")
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
     req = urllib.request.Request(
-        url, data=json.dumps(body).encode(),
+        url,
+        data=json.dumps(body).encode(),
         headers={"x-goog-api-key": key, "Content-Type": "application/json"},
     )
     try:
@@ -123,12 +145,16 @@ def _gen_nano_banana(ap: AssembledPrompt, out_png: Path, ref_base: Path | None) 
             pass
         hint = ""
         if e.code == 429 and "limit: 0" in detail:
-            hint = (f"  → '{model}' image generation isn't available on the Gemini FREE tier "
-                    "(free quota is 0). Enable billing on your Google Cloud project, or try a "
-                    "different model via GEMINI_IMAGE_MODEL.")
+            hint = (
+                f"  → '{model}' image generation isn't available on the Gemini FREE tier "
+                "(free quota is 0). Enable billing on your Google Cloud project, or try a "
+                "different model via GEMINI_IMAGE_MODEL."
+            )
         elif e.code == 429:
             hint = "  → rate-limited; wait and retry, or enable billing for higher limits."
-        raise RuntimeError(f"HTTP {e.code}: {detail.strip()[:300]}{(chr(10) + hint) if hint else ''}")
+        raise RuntimeError(
+            f"HTTP {e.code}: {detail.strip()[:300]}{(chr(10) + hint) if hint else ''}"
+        )
     for cand in payload.get("candidates", []):
         for part in cand.get("content", {}).get("parts", []):
             blob = part.get("inline_data") or part.get("inlineData")
@@ -147,16 +173,21 @@ def _gen_openai(ap: AssembledPrompt, out_png: Path) -> bool:
     import base64
     import json
     import urllib.request
+
     req = urllib.request.Request(
         "https://api.openai.com/v1/images/generations",
-        data=json.dumps({
-            "model": os.getenv("OPENAI_API_MODEL", "gpt-image-1"),
-            "prompt": ap.prompt + "\nAvoid: " + ap.negative,
-            "size": "1024x768" if ap.aspect_ratio == "4:3" else "1024x1024",
-            "n": 1,
-        }).encode(),
-        headers={"Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}",
-                 "Content-Type": "application/json"},
+        data=json.dumps(
+            {
+                "model": os.getenv("OPENAI_API_MODEL", "gpt-image-2"),
+                "prompt": ap.prompt + "\nAvoid: " + ap.negative,
+                "size": "1024x768" if ap.aspect_ratio == "4:3" else "1024x1024",
+                "n": 1,
+            }
+        ).encode(),
+        headers={
+            "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}",
+            "Content-Type": "application/json",
+        },
     )
     with urllib.request.urlopen(req, timeout=180) as r:
         payload = json.loads(r.read())
@@ -197,6 +228,12 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     if ap.negative:
         text += f"\nAvoid: {ap.negative}."
     size = "1024x768" if ap.aspect_ratio == "4:3" else "1024x1024"
+    aspect = ap.aspect_ratio or "4:3"
+    # gpt-image-2 supports up to 1536 on the long edge; keep aspect via landscape sizes.
+    if aspect in ("3:2", "4:3", "16:9", "3:1"):
+        size = "1536x1024"
+    elif aspect in ("2:3", "9:16"):
+        size = "1024x1536"
 
     agent_prompt = (
         "You are an image-generation assistant. Do NOT edit files, write code, or run tests. "
@@ -232,6 +269,11 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
                 except OSError:
                     pass
     before = {p for grp in before_by_size.values() for p in grp}
+    # Session dirs that exist BEFORE the run — a NEW one appearing during the run is this
+    # invocation's own brain/<uuid>/ tree even when the agent's reply mentions no path
+    # (it saves the image but prints only prose). Diffing the dir set keeps concurrent
+    # invocations from reading each other's output.
+    pre_session_dirs = {p.name for p in brain.iterdir()} if brain.exists() else set()
 
     # Reference images we attach must never be mistaken for generated output either.
     ref_hashes = {h for h in (_md5_file(r) for r in _raster_refs(ap, ref_base)) if h}
@@ -250,13 +292,22 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
             return True
         if size not in _pre_hashes_by_size:
             _pre_hashes_by_size[size] = {
-                h for h in (_md5_file(q) for q in before_by_size.get(size, [])) if h}
+                h for h in (_md5_file(q) for q in before_by_size.get(size, [])) if h
+            }
         return ch in _pre_hashes_by_size[size]
 
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=360, cwd=scratch_dir,
-                                env={**os.environ, "ANTIGRAVITY_MODEL":
-                                     os.getenv("ANTIGRAVITY_MODEL", "gemini-3.1-flash-image")})
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=360,
+            cwd=scratch_dir,
+            env={
+                **os.environ,
+                "ANTIGRAVITY_MODEL": os.getenv("ANTIGRAVITY_MODEL", DEFAULT_ANTIGRAVITY_MODEL),
+            },
+        )
     except FileNotFoundError:
         print("  ! antigravity CLI (agy) not found at ~/.local/bin/agy", file=sys.stderr)
         return False
@@ -268,8 +319,10 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     stderr = result.stderr or ""
 
     if result.returncode != 0:
-        print(f"  ! antigravity CLI failed (exit {result.returncode}): {stderr[:400]}",
-              file=sys.stderr)
+        print(
+            f"  ! antigravity CLI failed (exit {result.returncode}): {stderr[:400]}",
+            file=sys.stderr,
+        )
         return False
 
     cap_edge = int(os.getenv("GEMINI_MAX_EDGE", DEFAULT_MAX_EDGE))
@@ -283,26 +336,39 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     # lets one page pick up another's fresh output (that cross-talk collapsed many pages onto a
     # single image). So we trust the links, and otherwise scan only this run's session dir.
     linked: list[Path] = []
-    for pattern in (r'\]\(file://([^)]+)\)', r'!\[[^\]]*\]\(([^)]+)\)'):
+    for pattern in (r"\]\(file://([^)]+)\)", r"!\[[^\]]*\]\(([^)]+)\)"):
         for url in re.findall(pattern, stdout):
             linked.append(Path(url.replace("file://", "")))
 
     # 1) Prefer a raster the agent explicitly says it saved (and that is a genuine fresh render,
     #    not a reference image or the recurring stock art that already litters brain/).
     for candidate in linked:
-        if (candidate.exists() and candidate.suffix.lower() in _RASTER_EXT
-                and not _is_recycled(candidate)):
+        if (
+            candidate.exists()
+            and candidate.suffix.lower() in _RASTER_EXT
+            and not _is_recycled(candidate)
+        ):
             out_png.write_bytes(_cap_image_bytes(candidate.read_bytes(), cap_edge))
             return True
 
     # 2) Otherwise scan ONLY this invocation's own session dir(s) — never the shared brain/ root.
     #    The session id appears in any path the agent mentioned.
-    for sid in set(re.findall(r'/brain/([0-9a-fA-F-]{36})\b', stdout)):
+    session_ids = set(re.findall(r"/brain/([0-9a-fA-F-]{36})\b", stdout))
+    # Fallback: session dirs that appeared DURING this run (the agent saved its image but
+    # printed only prose — no file:// link, no brain path). These are fresh by definition.
+    if brain.exists():
+        for d in brain.iterdir():
+            if d.name not in pre_session_dirs and d.is_dir():
+                session_ids.add(d.name)
+    for sid in session_ids:
         sess = brain / sid
         if not sess.exists():
             continue
-        cands = [p for p in sess.rglob("*")
-                 if p.is_file() and p.suffix.lower() in _RASTER_EXT and p not in before]
+        cands = [
+            p
+            for p in sess.rglob("*")
+            if p.is_file() and p.suffix.lower() in _RASTER_EXT and p not in before
+        ]
         for candidate in sorted(cands, key=lambda p: p.stat().st_mtime, reverse=True):
             if _is_recycled(candidate):
                 continue
@@ -310,20 +376,25 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
             return True
 
     # 3) Last resort: an embedded base64 image in the text output.
-    b64_match = re.search(r'data:image/(?:png|jpeg|jpg|webp);base64,([A-Za-z0-9+/=]+)', stdout)
+    b64_match = re.search(r"data:image/(?:png|jpeg|jpg|webp);base64,([A-Za-z0-9+/=]+)", stdout)
     if b64_match:
         raw = base64.b64decode(b64_match.group(1))
         if hashlib.md5(raw).hexdigest() not in ref_hashes:
             out_png.write_bytes(_cap_image_bytes(raw, cap_edge))
             return True
 
-    if re.search(r'\b429\b|RESOURCE_EXHAUSTED|quota', stdout + stderr, re.I):
+    if re.search(r"\b429\b|RESOURCE_EXHAUSTED|quota", stdout + stderr, re.I):
         _antigravity_state.add("exhausted")
-        print("  ! antigravity image quota exhausted (HTTP 429 RESOURCE_EXHAUSTED) — no image "
-              "generated.", file=sys.stderr)
+        print(
+            "  ! antigravity image quota exhausted (HTTP 429 RESOURCE_EXHAUSTED) — no image "
+            "generated.",
+            file=sys.stderr,
+        )
     else:
-        print("  ! antigravity returned no fresh, prompt-driven image; treating as a failed "
-              "render.", file=sys.stderr)
+        print(
+            "  ! antigravity returned no fresh, prompt-driven image; treating as a failed render.",
+            file=sys.stderr,
+        )
     return False
 
 
@@ -333,23 +404,32 @@ def _gen_comfyui(ap: AssembledPrompt, out_png: Path, kind: str) -> bool:
     not forwarded (these t2i graphs have no image input); character consistency rides on the
     dense appearance_token text already in ``ap.prompt``, same as the antigravity path."""
     from . import comfyui_client as cc
+
     if not cc.is_available():
         if "comfyui" not in _warned_nokey:
             _warned_nokey.add("comfyui")
-            print(f"  ! no ComfyUI server at {cc.HOST} — start the toolbox container "
-                  "(experiments/qwen-image-edit/docker_comfyui.sh) or set COMFYUI_HOST.",
-                  file=sys.stderr)
+            print(
+                f"  ! no ComfyUI server at {cc.HOST} — start the toolbox container "
+                "(experiments/qwen-image-edit/docker_comfyui.sh) or set COMFYUI_HOST.",
+                file=sys.stderr,
+            )
         return False
-    data = cc.generate(kind, ap.prompt, negative=ap.negative or "", seed=ap.seed,
-                       aspect_ratio=ap.aspect_ratio or "4:3")
+    data = cc.generate(
+        kind,
+        ap.prompt,
+        negative=ap.negative or "",
+        seed=ap.seed,
+        aspect_ratio=ap.aspect_ratio or "4:3",
+    )
     data = _cap_image_bytes(data, int(os.getenv("GEMINI_MAX_EDGE", DEFAULT_MAX_EDGE)))
     out_png.parent.mkdir(parents=True, exist_ok=True)
     out_png.write_bytes(data)
     return True
 
 
-def try_real_provider(provider: str, ap: AssembledPrompt, out_png: Path,
-                      ref_base: Path | None = None) -> bool:
+def try_real_provider(
+    provider: str, ap: AssembledPrompt, out_png: Path, ref_base: Path | None = None
+) -> bool:
     """Generate a real image with the chosen provider. Returns True on success, False to fall
     back to a placeholder. Guarded so the toolchain never hard-depends on a network/API."""
     try:
@@ -368,8 +448,7 @@ def try_real_provider(provider: str, ap: AssembledPrompt, out_png: Path,
     return False
 
 
-def _gen_antigravity_or_fallback(ap: AssembledPrompt, out_png: Path,
-                                 ref_base: Path | None) -> bool:
+def _gen_antigravity_or_fallback(ap: AssembledPrompt, out_png: Path, ref_base: Path | None) -> bool:
     """Try antigravity; if its image quota is exhausted (or it otherwise can't produce) and a
     GEMINI_API_KEY is available, fall back to nano-banana so a book still renders end-to-end.
     Once exhausted in this run, skip antigravity entirely to avoid a wasted 429 per page."""
@@ -382,8 +461,11 @@ def _gen_antigravity_or_fallback(ap: AssembledPrompt, out_png: Path,
         return False
     if "exhausted" in _antigravity_state and "fellback" not in _antigravity_state:
         _antigravity_state.add("fellback")
-        print("  → antigravity quota exhausted; rendering remaining images with nano-banana "
-              "(Gemini API).", file=sys.stderr)
+        print(
+            "  → antigravity quota exhausted; rendering remaining images with nano-banana "
+            "(Gemini API).",
+            file=sys.stderr,
+        )
     try:
         return _gen_nano_banana(ap, out_png, ref_base)
     except Exception as e:  # noqa: BLE001

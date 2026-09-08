@@ -82,7 +82,7 @@ enable **Settings → Pages → Source: GitHub Actions** once.
 `worlds/magical-forest/` ships a full, validated world (locked watercolor art style; two
 characters with appearance tokens, palettes & an evolution track) and an illustrated,
 interactive early-reader, *Pip and the Hidden Honey* — proof the whole pipeline runs end-to-end.
-Illustrations use Google's **"Nano Banana"** (Gemini `gemini-2.5-flash-image`) by default —
+Illustrations use Google's **"Nano Banana Pro"** (Gemini `gemini-3-pro-image`) by default —
 set a free `GEMINI_API_KEY` from [Google AI Studio](https://aistudio.google.com/apikey) and
 it anchors each page to the character's reference sheet for consistency. With no key set it
 falls back to dependency-free SVG placeholders so everything still runs offline. Every

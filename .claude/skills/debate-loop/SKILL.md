@@ -29,9 +29,9 @@ kids actually want to re-read. This skill defines the protocol.
 | Critic | Lens | Model (Ollama) | What they push for |
 |---|---|---|---|
 | **`story-heckler`** | Chaos & mischief (Dahl/Pilkey/Adventure Time) | `ollama/deepseek-v4-pro:cloud` | Raise the stakes, add real danger, find the boring pages, kill the lessons, defend the mischief |
-| **`story-minimalist`** | Craft & economy (Mo Willems / Sendak) | `ollama/nemotron-3-ultra:cloud` | Cut pages, tighten prose, kill the cute, make every spread earn its turn |
-| **`story-kid-reader`** | The 6-year-old at bedtime | `ollama/minimax-m3:cloud` | Would a kid this age laugh? Would they turn the page? Is the joke at the right altitude? |
-| **`story-debate-author`** | The author (writes & revises) | `ollama/nemotron-3-ultra:cloud` | Reads the critiques, revises, defends choices that should stand |
+| **`story-minimalist`** | Craft & economy (Mo Willems / Sendak) | `ollama/glm-5.3-flash:cloud` | Cut pages, tighten prose, kill the cute, make every spread earn its turn |
+| **`story-kid-reader`** | The 6-year-old at bedtime | `ollama/glm-5.3-flash:cloud` | Would a kid this age laugh? Would they turn the page? Is the joke at the right altitude? |
+| **`story-debate-author`** | The author (writes & revises) | `ollama/glm-5.3:cloud` | Reads the critiques, revises, defends choices that should stand |
 
 The orchestrator (this skill, run by the primary agent — i.e. you) sequences them. Each is a
 *separate* subagent invocation with its own context window and its own model. Their prompts

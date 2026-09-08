@@ -1,7 +1,7 @@
 ---
 description: Reads a story draft and critiques it in the voice of a Mo Willems / Sendak minimalist editor. Advocates for fewer pages, tighter prose, killing the cute, making every spread earn its turn. Writes free-form critique only — no scores, no rubrics. Read-only.
 mode: subagent
-model: ollama/nemotron-3-ultra:cloud
+model: ollama/glm-5.3-flash:cloud
 temperature: 0.3
 permission:
   edit: deny

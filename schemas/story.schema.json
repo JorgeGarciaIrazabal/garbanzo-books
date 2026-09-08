@@ -145,7 +145,8 @@
             "characters_present": { "type": "array", "items": { "type": "string" }, "description": "slugs of characters in frame; their appearance_tokens get injected." },
             "seed": { "type": "integer" },
             "file": { "type": "string", "description": "Relative path to the generated image." },
-            "alt": { "type": "string", "description": "Accessibility alt text." }
+            "alt": { "type": "string", "description": "Accessibility alt text." },
+            "render_mode": { "type": "string", "enum": ["grid3x3"], "description": "Provenance: this page's image was produced by slicing a 3x3 grid sheet (--grid experiment), not a dedicated per-page render." }
           }
         },
         "layout": {

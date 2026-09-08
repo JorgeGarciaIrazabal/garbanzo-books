@@ -15,9 +15,9 @@ story slug. Optional `--rounds N` (default 3) caps the number of rounds; max is 
 1. Read `.claude/skills/debate-loop/SKILL.md` end to end. Follow it.
 2. Confirm the four subagent persona files exist in `.opencode/agents/`:
    - `story-heckler.md` (model: deepseek-v4-pro:cloud, chaos lens)
-   - `story-minimalist.md` (model: nemotron-3-ultra:cloud, craft lens)
-   - `story-kid-reader.md` (model: minimax-m3:cloud, kid-voice lens)
-   - `story-debate-author.md` (model: nemotron-3-ultra:cloud, writes revisions)
+   - `story-minimalist.md` (model: glm-5.3-flash:cloud, craft lens)
+   - `story-kid-reader.md` (model: glm-5.3-flash:cloud, kid-voice lens)
+   - `story-debate-author.md` (model: glm-5.3:cloud, writes revisions)
    If any are missing, stop and tell the user to set them up and restart opencode.
 3. Confirm `worlds/<w>/world.yaml` and the `characters/*.yaml` referenced in the story
    exist and are valid. Read them so the author can inherit tone, art style, and

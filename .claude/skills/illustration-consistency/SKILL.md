@@ -79,15 +79,16 @@ so the QC decision is reproducible and reviewable.
 `generate_images.py` defaults to `--provider antigravity` — the local Antigravity CLI (`agy`)
 via your Google OAuth session, so **no API key is needed**. Install `agy` and sign in with
 Google before illustrating. Override the model with `ANTIGRAVITY_MODEL` (default
-`gemini-3.1-flash-image`). Note: agy's tool interface doesn't accept inline reference images,
-so on-model consistency relies on the dense `appearance_token` text in the assembled prompt.
+`gemini-3-pro-image`, "Nano Banana Pro"). Note: agy's tool interface doesn't accept inline
+reference images, so on-model consistency relies on the dense `appearance_token` text in
+the assembled prompt.
 
-Fallback: `--provider nano-banana` (Google Gemini's image model, `gemini-2.5-flash-image`).
+Fallback: `--provider nano-banana` (Google Gemini's image model, `gemini-3-pro-image`).
 Get a **free** key at https://aistudio.google.com/apikey and set `GEMINI_API_KEY` (or
 `GOOGLE_API_KEY`). Nano Banana's superpower for us: it accepts each character's **reference
 image as input**, so once you've approved a character sheet, every page can be anchored to
 it — the single best lever for character consistency. Override the model with
-`GEMINI_IMAGE_MODEL` (e.g. `gemini-3-pro-image` = "Nano Banana Pro"). Note: Gemini images
+`GEMINI_IMAGE_MODEL` (e.g. `gemini-3.1-flash-image` for the fast tier). Note: Gemini images
 carry an invisible SynthID watermark.
 
 ## Never accept placeholders

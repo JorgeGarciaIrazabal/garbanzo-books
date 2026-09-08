@@ -34,17 +34,18 @@ from typing import Any
 # Default Ollama endpoint. Matches the Makefile (OLLAMA_HOST=http://localhost:11434) and
 # opencode.json (baseURL http://localhost:11434/v1). Override with OLLAMA_HOST env.
 DEFAULT_OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
-# Default evaluator: MiniMax-M3 — a strong multimodal model, reached through Ollama's cloud
-# tier (the ":cloud" tag). It reads embedded text and judges character/scene consistency far
-# better than the small local vision models, so it's the preferred reviewer for the
-# generate→evaluate→edit loop. Override with VISION_QC_MODEL. Auto-detected at runtime
-# (_pick_vision_model) against what's actually pulled, with local models as the offline fallback.
-DEFAULT_VISION_MODEL = os.environ.get("VISION_QC_MODEL", "minimax-m3:cloud")
+# Default evaluator: GLM-5.3-Flash — a natively multimodal model, reached through Ollama's
+# cloud tier (the ":cloud" tag). It reads embedded text and judges character/scene consistency
+# (and is cheap + fast, so best-of-N QC loops stay affordable). Override with VISION_QC_MODEL.
+# Auto-detected at runtime (_pick_vision_model) against what's actually pulled, with local
+# models as the offline fallback.
+DEFAULT_VISION_MODEL = os.environ.get("VISION_QC_MODEL", "glm-5.3-flash:cloud")
 # Vision-capable models in preference order. We pick the first one that's already pulled so we
-# never auto-pull a multi-GB model behind the user's back. MiniMax-M3 leads; small local
-# gemma/llava models are the no-network fallback.
+# never auto-pull a multi-GB model behind the user's back. GLM-5.3-Flash leads (multimodal +
+# cheap); small local gemma/llava models are the no-network fallback.
 _KNOWN_VISION_MODELS = [
-    "minimax-m3:cloud", "minimax-m3",
+    "glm-5.3-flash:cloud",
+    "gemma4:31b-cloud", "gemma4:cloud",
     "gemma3:4b", "gemma3:12b", "gemma3:27b",
     "gemma4:e2b", "gemma4:9b",
     "llama3.2-vision:11b", "llama3.2-vision:90b",
@@ -104,7 +105,7 @@ def _pick_vision_model(host: str = DEFAULT_OLLAMA_HOST) -> str | None:
     # Last-resort heuristic: if a model name mentions a known vision family, use it.
     for p in pulled:
         lp = p.lower()
-        if any(t in lp for t in ("minimax", "gemma", "llava", "llama3.2-vision", "vision", "minicpm-v")):
+        if any(t in lp for t in ("glm-5.3-flash", "minimax", "gemma", "llava", "llama3.2-vision", "vision", "minicpm-v")):
             return p
     return None
 
@@ -273,9 +274,9 @@ def score_image(image_path: Path, *, page_text: str, characters: list[str],
 
     def _ask(model_name: str) -> tuple[QCR | None, str]:
         """Up to two attempts at one model. Returns (QCR, "") on success, else (None, reason).
-        Cloud models (minimax-m3:cloud) sometimes return an empty body on a cold call, so we
+        Cloud models (glm-5.3-flash:cloud etc.) sometimes return an empty body on a cold call, so we
         re-ask once with a short pause before giving up on this model."""
-        # num_predict is generous: reasoning models (minimax-m3, kimi) spend most tokens in a
+        # num_predict is generous: reasoning models spend most tokens in a
         # <think> block before the JSON, and a tight cap truncates them to an empty verdict.
         body = {"model": model_name, "prompt": prompt, "images": [img_b64], "stream": False,
                 "options": {"temperature": 0.0, "num_predict": _NUM_PREDICT}}

@@ -562,6 +562,132 @@ def test_raster_refs_empty_when_ref_base_is_none():
     assert gi._raster_refs(ap, None) == []
 
 
+# ============================================================================ grid mode (3x3 sheet)
+def test_build_grid_prompt_lists_every_panel_and_locks_style(workspace, write_world, factories):
+    """The grid prompt must name every page's scene, state the shared style ONCE, demand
+    identical characters across panels, and forbid text (the tiles get their text rendered
+    on top by the reader, so any baked-in text would collide)."""
+    from lib.model import load_world
+    from lib.image_pipeline import build_grid_prompt
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    w = load_world("ww")
+    story = w.stories[0].data
+    pages = story["pages"]
+    grid_ap = build_grid_prompt(w, story, pages)
+    low = grid_ap.prompt.lower()
+    # every page scene appears
+    for p in pages:
+        assert p["image"]["prompt"].lower() in low
+    # 3x3 grid + no-text demands are present
+    assert "3x3" in low and "no text" in low
+    # the shared world style block is stated
+    assert "soft watercolor" in low
+    # character tokens included (appearance_token from the character bible)
+    assert "hero" in low.lower()
+    # inherits world negative + is square (3x3 of equal panels)
+    assert grid_ap.negative
+    assert grid_ap.aspect_ratio == "1:1"
+
+
+def test_slice_grid_sheet_cuts_nine_tiles_row_major(tmp_path):
+    """A 3024x3024 sheet must cut into 9 tiles in reading order (row-major): tile i ↔
+    page_nums[i], each roughly a third of the sheet, and each tile must be a real PNG."""
+    from PIL import Image
+
+    from lib.image_pipeline import slice_grid_sheet
+    sheet = Image.new("RGB", (3024, 3024))
+    # paint each cell a distinct flat color so we can verify the mapping survived the cut
+    colors = [(i * 7 % 256, i * 13 % 256, i * 29 % 256) for i in range(9)]
+    for i, col in enumerate(colors):
+        r, c = divmod(i, 3)
+        for y in range(r * 1008, (r + 1) * 1008, 7):
+            for x in range(c * 1008, (c + 1) * 1008, 7):
+                sheet.putpixel((x, y), col)
+    sheet_path = tmp_path / "sheet.png"
+    sheet.save(sheet_path)
+    nums = [11, 12, 13, 14, 15, 16, 17, 18, 19]
+    out_dir = tmp_path / "images"
+    tiles = slice_grid_sheet(sheet_path, out_dir, nums, max_edge=4096)
+    assert [t.name for t in tiles] == [f"page-{n:02d}.png" for n in nums]
+    for i, t in enumerate(tiles):
+        tile = Image.open(t)
+        assert tile.size == (1008, 1008)
+        # center pixel carries the cell's flat color → row-major mapping is correct
+        assert tile.getpixel((504, 504)) == colors[i]
+
+
+def test_slice_grid_sheet_batches_shorter_lists(tmp_path):
+    """A grid for fewer than 9 pages still slices only the cells we asked for."""
+    from PIL import Image
+
+    from lib.image_pipeline import slice_grid_sheet
+    sheet = Image.new("RGB", (1024, 1024), (255, 0, 0))
+    sheet_path = tmp_path / "sheet.png"
+    sheet.save(sheet_path)
+    tiles = slice_grid_sheet(sheet_path, tmp_path / "images", [1, 2, 3])
+    assert len(tiles) == 3
+    assert all(t.name.startswith("page-0") for t in tiles)
+
+
+def test_gen_story_grid_placeholder_refuses(tmp_path, workspace, write_world, factories):
+    """Grid mode needs a REAL raster provider — a placeholder sheet can't be sliced. The
+    function must refuse loudly (SystemExit) rather than write junk tiles."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    with pytest.raises(SystemExit):
+        gi._gen_story_grid("ww/s1", provider="placeholder", only_page=None,
+                           print_only=False, qc_off=True)
+
+
+def test_gen_story_grid_print_only_prints_and_writes_nothing(workspace, write_world,
+                                                              factories, capsys):
+    """Dry run: the grid prompt is printed (auditability) and no files are written."""
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    gi._gen_story_grid("ww/s1", provider="antigravity", only_page=None,
+                       print_only=True, qc_off=True)
+    sdir = workspace.worlds / "ww" / "stories" / "s1"
+    out = capsys.readouterr().out
+    assert "grid sheet 0" in out
+    assert "3x3" in out
+    assert not (sdir / "images").exists() or not any((sdir / "images").iterdir())
+
+
+def test_gen_story_grid_slices_and_updates_story_yaml(monkeypatch, workspace, write_world,
+                                                       factories):
+    """End-to-end grid flow with a stubbed provider: a fake sheet is 'rendered', sliced
+    into page-NN.png tiles, and story.yaml gets image.file + alt + render_mode per page."""
+    from PIL import Image
+
+    from lib.model import load_world
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    w = load_world("ww")
+
+    def fake_provider(provider, ap, out_png, ref_base=None):
+        Image.new("RGB", (1536, 1536), (10, 200, 30)).save(out_png)
+        return True
+
+    monkeypatch.setattr(gi, "try_real_provider", fake_provider)
+    gi._gen_story_grid("ww/s1", provider="antigravity", only_page=None,
+                       print_only=False, qc_off=True)
+    sdir = workspace.worlds / "ww" / "stories" / "s1"
+    story = load_yaml(sdir / "story.yaml")
+    for p in story["pages"]:
+        assert p["image"]["file"] == f"images/page-{p['number']:02d}.png"
+        assert p["image"].get("alt")
+        assert p["image"].get("render_mode") == "grid3x3"
+        assert (sdir / p["image"]["file"]).exists()
+    # the sheet itself is preserved as the audit trail + its prompt sidecar
+    assert (sdir / "images" / "grid-00.png").exists()
+    assert (sdir / "images" / "grid-00.prompt.txt").exists()
+
+
 # ============================================================================ CLI parsing
 def test_cli_print_timeout_sets_env_var(monkeypatch):
     import os

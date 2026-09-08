@@ -3,7 +3,7 @@
 # OpenCode + local Ollama settings. The model/provider are defined in opencode.json;
 # override here if you point Ollama elsewhere.
 OLLAMA_HOST ?= http://localhost:11434
-OPENCODE_MODEL ?= ollama/minimax-m3:cloud
+OPENCODE_MODEL ?= ollama/glm-5.3-flash:cloud
 
 # Port for the studio UI (ui/server.py also reads $PORT)
 UI_PORT ?= 4317

@@ -85,21 +85,23 @@ function restoreSession() {
 }
 
 // Model ids (must match the server's MODELS / opencode.json). The studio's tiers:
-//   M_FAST     = Nemotron-3-Ultra    — default for build / validate / done
-//   M_GLM      = GLM-5.2             — creative writer, used for story / world / character
-//   M_CREATIVE = DeepSeek-V4-Pro     — alt creative model (legacy story model)
-//   M_SEARCH   = MiniMax-M3          — used when the agent is doing information gathering
+//   M_FAST     = GLM-5.3-Flash       — natively multimodal + top agentic scores; default for
+//                                      orchestration, tool-heavy craft, games & QC
+//   M_GLM      = GLM-5.3             — best prose (creative-writing bench #2): story / world / character
+//   M_VALIDATE = DeepSeek-V4-Pro     — thinking mode, correctness gate for validate / QA
+//   M_SEARCH   = DeepSeek-V4-Flash   — fast research (web search, digesting long pages)
 // Plus the "auto" sentinel: the server picks the right one per the agent's [[stage:...]] tag.
-const M_FAST = "ollama/nemotron-3-ultra:cloud";
-const M_GLM = "ollama/glm-5.2:cloud";
-const M_CREATIVE = "ollama/deepseek-v4-pro:cloud";
-const M_SEARCH = "ollama/minimax-m3:cloud";
+const M_FAST = "ollama/glm-5.3-flash:cloud";
+const M_GLM = "ollama/glm-5.3:cloud";
+const M_VALIDATE = "ollama/deepseek-v4-pro:cloud";
+const M_SEARCH = "ollama/deepseek-v4-flash:cloud";
 const M_AUTO = "auto";
 // stage → friendly label, for the live "currently using" chip next to the picker.
 const STAGE_LABEL = {
-  story: "story (GLM)", craft: "craft (GLM)", world: "world (GLM)",
-  character: "character (GLM)", build: "build (Nemotron)", validate: "validate (Nemotron)",
-  research: "research (MiniMax)", done: "done (Nemotron)",
+  story: "story (GLM-5.3)", craft: "craft (GLM-Flash)", world: "world (GLM-5.3)",
+  character: "character (GLM-5.3)", build: "build (GLM-Flash)",
+  validate: "validate (DeepSeek-Pro)", research: "research (DeepSeek-Flash)",
+  done: "done (GLM-Flash)",
 };
 // Server-resolved model for the current/last turn (when in Auto mode), so the picker can show it.
 let resolvedModel = null;
@@ -152,10 +154,10 @@ async function loadModels() {
   } catch (e) {
     // Fallback so the picker still works if /api/models is unreachable.
     sel.innerHTML = `<option value="${M_AUTO}">✨ Auto (switch by stage) — recommended</option>` +
-                    `<option value="${M_FAST}">Nemotron-3-Ultra — fast (default for build/validate)</option>` +
-                    `<option value="${M_GLM}">GLM-5.2 — creative (stories, worlds & characters)</option>` +
-                    `<option value="${M_CREATIVE}">DeepSeek-V4-Pro — more creative</option>` +
-                    `<option value="${M_SEARCH}">MiniMax-M3 — best for research</option>`;
+                    `<option value="${M_FAST}">GLM-5.3-Flash — fast multimodal (default for orchestration, games & QC)</option>` +
+                    `<option value="${M_GLM}">GLM-5.3 — creative (stories, worlds & characters)</option>` +
+                    `<option value="${M_VALIDATE}">DeepSeek-V4-Pro — deep reasoning (validate / QA)</option>` +
+                    `<option value="${M_SEARCH}">DeepSeek-V4-Flash — fast research</option>`;
     sel.value = M_AUTO;
     paintStageChip();
   }
