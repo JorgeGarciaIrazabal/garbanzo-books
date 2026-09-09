@@ -1,0 +1,31 @@
+{
+  "page": 1,
+  "prompt_seed": 747727189,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 5.5,
+      "reason": "The ward stone shows no visible glow despite the text stating 'It glowed,' and the rendering style is more 3D/painterly than the locked dreamy pastel children's book style.",
+      "flags": [
+        "scene_mismatch",
+        "style_inconsistent"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 0,
+      "path": "page-01-884721.png"
+    },
+    {
+      "ok": true,
+      "score": 8.0,
+      "reason": "Aria matches her tokens well (freckles, lavender streak, gold eyes, pink robe, mint satchel, gold bracelets, scuffed boots, tattered hem, chin star), the ward stone glows at the village edge as written, and the dreamy pastel style with golden-hour motes is on-target, though the lower-third has some busy cobblestone/grass detail.",
+      "flags": [
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 1,
+      "path": "page-01-747727189.png"
+    }
+  ],
+  "winner": "page-01.png"
+}

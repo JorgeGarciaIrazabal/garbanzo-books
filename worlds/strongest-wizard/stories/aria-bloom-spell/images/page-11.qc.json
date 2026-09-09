@@ -1,0 +1,19 @@
+{
+  "page": 11,
+  "prompt_seed": 679855303,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.0,
+      "reason": "Both characters match their tokens and the scene shows Aria pointing at the smiling Bloom Sage with her rainbow-pouring can, in the locked pastel style with a calm lower-third.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-11-679855303.png"
+    }
+  ],
+  "winner": "page-11.png"
+}

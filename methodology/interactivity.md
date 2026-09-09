@@ -3,13 +3,17 @@
 > **Read `fun-first.md` first.** Interactions are *games*, full stop — a fun break that's
 > part of the romp. They are NOT hidden reading drills. If it feels like a worksheet, cut it.
 
-> **REAL GAMES ONLY.** Every game in a new book is an **arcade game** — a real-time game on
-> the embedded engine with a game loop, movement, and physics: the `arcade-*` family below.
-> No drag-and-drop chores, no find-in-the-picture, no tap boards, no quizzes, no `custom`
-> declarative boards. Those older minigame types still *play* in already-published books
-> (see "Legacy types" at the very end) but must never appear in a new story — the validator
-> warns on every one, and the quality gate counts them against the book. The one non-arcade
-> survivor is the branching **`choice`** — a narrative fork, not a minigame — used rarely.
+> **REAL GAMES ONLY — and now COMPOSED, not picked.** Every game in a new book is an
+> **arcade game** on the embedded engine. The flagship is **`arcade-quest` — the composer**:
+> you *design* a bespoke game for the page's beat (stage, hero, actor groups with roles &
+> motions, escalation waves, a finale), so no two books' games look alike. The twelve
+> single-mechanic presets (`arcade-catch` … `arcade-bounce`) remain for when one fits the
+> beat exactly. No drag-and-drop chores, no find-in-the-picture, no tap boards, no quizzes,
+> no `custom` declarative boards. Those older minigame types still *play* in already-published
+> books (see "Legacy types" at the very end) but must never appear in a new story — the
+> validator warns on every one, and the quality gate counts them against the book. The one
+> non-arcade survivor is the branching **`choice`** — a narrative fork, not a minigame —
+> used rarely.
 
 > **The story is the product. Games are optional add-ons — never the other way round.**
 > The book must be a complete, satisfying read for a kid who plays **zero** games. So:
@@ -39,10 +43,105 @@ beat, never mid-climax. Vary the *mechanics* across the book (the quality gate s
 different kinds when you do add games): a snake, then a maze, then a stacker reads as a romp;
 three catchers in a row reads as a level grind.
 
-## Pick the mechanic by the page's VERB
+## Compose the game for the page — `arcade-quest`
 
-The story hands you an action; the arcade family has a verb for it. Match the game's verb
-to the page's verb and the skin writes itself.
+**The headline move**: instead of picking a mechanic from a menu, you *describe the beat as
+a game*. A quest payload has five parts, and every noun is skinned from the page:
+
+1. **`stage`** — the world it plays in: `view: side | sky | topdown`, optional parallax
+   `bands` (cloud rows, seaweed, hills — near bands drift faster), a `floor` skin, and
+   `scroll` (default on for side/sky).
+2. **`hero`** — the page's protagonist: a `skin` + a `control` style:
+   `walk` (tap to jump) · `hop` (double-jump) · `flap` (tap for lift) · `steer` (drag to
+   steer — 2D in sky/topdown) · `drive` (drag steering, forward feel). Optional
+   `speed: 0.4–2.5` multiplier for little legs or rocket boots.
+3. **`actors`** — named groups YOU invent for this page ("sparks", "crones", "gulls",
+   "the extra-spicy chili"). Each group gets:
+   - a **role**: `collect` (grab, counts) · `rescue` (carry, counts) · `dodge` (bounces
+     the hero, never a penalty) · `bonk` (bop it away, counts) · `squash` (flatten it,
+     counts) · `decoy` (comically refuses) · `guard` (blocks the way, shoves back)
+   - a **motion**: `drift` · `fall` · `rise` · `sine` (butterfly bob) · `chase` (eases
+     toward the hero) · `flee` (eases away) · `hover` (bob at anchor) · `march` (edge-to-
+     edge patrol) · `still`
+   - `from: top|left|right|bottom|anywhere`, a default `count`, a `pace` multiplier, and
+     a `line` — the joke the kid hears when they meet one.
+4. **`waves`** — escalation beats: each wave spawns your mix of groups and shows its
+     story-written banner line ("The second gust — HOLD ON!"). The game RISES like the
+     page it belongs to. Omit for one wave of everything.
+5. **`finale`** — the beat's payoff: `reach` (touch the finish marker) · `clear` (pop the
+   last stragglers) · `bigOne` (tap the GIANT one when it flashes) · `tower` (stack the
+   swinging pieces skyward). With its own `skin` and banner `line`.
+
+`goal` (default: summed wave spawns) is the pip-count; the win is always the FINALE.
+
+```yaml
+# Page beat: the dumpling cart tips over and Nudo the noodle-dragon gives chase — in the air.
+interaction:
+  type: arcade-quest
+  prompt: Fly Nudo through the noodle-storm and rescue the runaway dumplings!
+  data:
+    stage:
+      view: sky
+      bands: ["☁️", "🏮"]        # parallax: clouds behind, lanterns nearer
+      floor: "🍜"                 # the noodle street far below
+    hero:
+      skin: { emoji: "🐉", label: "Nudo the noodle-dragon" }
+      control: flap
+    actors:
+      - name: dumplings
+        skin: ["🥟", "🥠"]
+        role: rescue              # touch to carry — counts
+        motion: fall
+        from: top
+        count: 3
+        line: "Gotcha, little dumpling!"
+      - name: chili
+        skin: { emoji: "🌶️", label: "the EXTRA-spicy chili" }
+        role: dodge               # touching it bounces Nudo — never a penalty
+        motion: sine
+        from: right
+        count: 2
+        line: "NOT the chili — too spicy to carry!"
+      - name: lantern
+        skin: "🏮"
+        role: decoy               # comically refuses to be a snack
+        motion: hover
+        from: anywhere
+        count: 1
+        line: "That's a lantern, not a snack!"
+    waves:
+      - line: "The cart tips — dumplings everywhere!"
+        spawn: [{ name: dumplings, count: 3 }]
+      - line: "The second gust — and the chili joins in!"
+        spawn: [{ name: dumplings, count: 3 }, { name: chili, count: 2 }, { name: lantern, count: 1 }]
+    finale:
+      kind: reach
+      skin: { emoji: "🍜", label: "the Great Noodle Bowl" }
+      line: "The Great Noodle Bowl — FLY FOR IT!"
+    goal: 6
+    speed: gentle
+    how: Tap to flap — scoop up every dumpling, dodge the chili!
+    avoid_line: "Not the chili! Nudo breathes enough fire already!"
+  feedback: { correct: "Every dumpling home in the bowl — Nudo is one very long, very happy dragon! 🐉", try_again: "Flap, Nudo, flap!" }
+  reward: { label: "Dumpling Rescuer", emoji: "🥟", id: "dumpling-rescuer" }
+```
+
+**Why compose?** A preset says "catch 8 things". A quest says "the SECOND gust is coming,
+the chili joins in, the lantern is definitely not a snack, and the Great Noodle Bowl is
+your finish line" — that's a page the kid *re-reads*. Roles give you comedy (decoys,
+guards), motions give you life (chasing crones, fleeing butterflies), waves give you
+rise, and the finale gives the beat its payoff. Two books can share a mechanic vocabulary
+and still feel like different games.
+
+**Keep it kid-sized:** 2–3 waves, 2–3 actor groups, `goal` ≤ 10 for under-7s (`speed:
+gentle`), a round still lands in 20–60 seconds. One-touch finales (`reach`, `clear`)
+reach down to ~4; `bigOne` wants timing (~6+); `tower` wants patience (~5+).
+
+## Or pick a preset — the twelve single-mechanic games
+
+When one mechanic fits the beat *exactly*, a preset is fewer knobs. The story hands you
+an action; the family has a verb for it. Match the game's verb to the page's verb and
+the skin writes itself.
 
 | What just happened on the page | Game | The kid… |
 |---|---|---|
@@ -59,7 +158,9 @@ to the page's verb and the skin writes itself.
 | Things keep popping up where they shouldn't | `arcade-whack` | bops them before they duck |
 | Breaking through a wall / barrier / shell | `arcade-bounce` | paddles a ball, smashes bricks |
 
-A genuine fork in the plot (rare!) → `choice`. That's the whole menu for a new book.
+A genuine fork in the plot (rare!) → `choice`. That's the whole menu for a new book:
+**compose an `arcade-quest` for the beat** (the default move), or pick one of the twelve
+presets below when one fits exactly.
 
 ## Age bands
 
@@ -67,7 +168,8 @@ A genuine fork in the plot (rare!) → `choice`. That's the whole menu for a new
 (things to get), `size` (maze), `rows` (bounce).
 
 | Game | 3–5 | 5–7 | 7–9 | 9–12 | Input |
-|---|:--:|:--:|:--:|:--:|---|
+|---|---:|:--:|:--:|:--:|---|
+| `arcade-quest` (composed) | ✓ (gentle, 1 touch) | ✓✓ | ✓✓ | ✓✓ | you choose the hero's control |
 | `arcade-catch` | ✓ (4+, gentle) | ✓✓ | ✓✓ | ✓ | drag left/right |
 | `arcade-pop` | ✓ (4+, gentle) | ✓✓ | ✓✓ | ✓ | tap |
 | `arcade-whack` | ✓ (4+, gentle) | ✓✓ | ✓✓ | ✓ | tap |
@@ -112,22 +214,23 @@ The arcade family runs on an embedded game engine (Kaplay, vendored — sprites,
 collisions, particles): a real game loop the child plays **fullscreen, backdropped by this
 page's own illustration**. The runtime provides — don't design around these:
 
-- **Always winnable, no fail states.** Touching an avoid-thing is a funny bonk (wobble +
-  silly sound + your `avoid_line`), never a game-over. Progress only goes up. Each game has
-  its own comic non-failure: the snake that bites its tail just ties itself in a knot 🪢 and
-  trims back; the bounce ball can't fall out — the floor is bouncy; a missed tower piece
-  tumbles off comically and a new one swings in; shooting a friendly just makes it wobble
-  indignantly.
+- **Always winnable, no fail states.** Touching a dodge-thing is a funny bonk (wobble +
+  silly sound + your `avoid_line` or the group's own `line`), never a game-over. Progress
+  only goes up. Each game has its own comic non-failure: the snake that bites its tail
+  just ties itself in a knot 🪢 and trims back; the bounce ball can't fall out — the floor
+  is bouncy; a missed tower piece tumbles off comically and a new one swings in; a decoy
+  just wiggles at you; a guard shoves you back like a bouncy doorman.
 - **The rubber-band assist ladder.** On a stall, "🪄 Easier!" slows the game and grows the
-  targets (in the maze it literally reveals the secret trail of dots to the exit), then
-  "✨ Finish it!" auto-wins. The arcade version of the hint ladder.
+  targets, then "✨ Finish it!" auto-wins. The arcade version of the hint ladder.
 - **Lazy + graceful.** The ~190KB engine loads only when the child taps ▶ Play. With no
   WebGL or `prefers-reduced-motion`, the same beat renders as a calm tap-board fallback —
   so design the skin to also read at a glance as static emoji.
-- **A goal HUD** (progress pips + count) and a win celebration are automatic.
+- **A goal HUD** (progress pips + count) and a win celebration are automatic. Quest games
+  add the **wave banners** (your story-written lines) automatically too.
 
-## Payload shapes — all 12 games, with skin ideas
+## Payload shapes — the twelve presets, with skin ideas
 
+(The composed `arcade-quest` shape is documented fully above, with its worked example.)
 Common keys on every game: nouns are `"🍎"` or `{emoji, label}`; optional `goal`,
 `speed: gentle|normal|wild`, `how` (control hint, in-voice), `avoid_line` (the bonk joke).
 Required keys are enforced by `scripts/lib/checks/interactivity.py`.

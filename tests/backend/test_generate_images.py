@@ -577,9 +577,10 @@ def test_build_grid_prompt_lists_every_panel_and_locks_style(workspace, write_wo
     pages = story["pages"]
     grid_ap = build_grid_prompt(w, story, pages)
     low = grid_ap.prompt.lower()
-    # every page scene appears
+    # every page scene appears, WITH its grid position (row-major placement aid)
     for p in pages:
         assert p["image"]["prompt"].lower() in low
+    assert "row 1, column 1" in low
     # 3x3 grid + no-text demands are present
     assert "3x3" in low and "no text" in low
     # the shared world style block is stated
@@ -589,6 +590,30 @@ def test_build_grid_prompt_lists_every_panel_and_locks_style(workspace, write_wo
     # inherits world negative + is square (3x3 of equal panels)
     assert grid_ap.negative
     assert grid_ap.aspect_ratio == "1:1"
+
+
+def test_build_grid_prompt_partial_batch_states_true_shape_and_filler(workspace, write_world,
+                                                                      factories):
+    """A PARTIAL batch (e.g. the second sheet of an 18-page book, or a 15-page book's last
+    6 pages) must state its REAL panel count/shape — never 'nine panels' — and explicitly
+    fill the empty cells with decorative filler so the model doesn't bleed a neighbouring
+    scene into them (which corrupts tile slicing)."""
+    from lib.model import load_world
+    from lib.image_pipeline import build_grid_prompt
+    write_world(slug="ww",
+                characters=[factories.character(slug="hero", world="ww")],
+                stories=[factories.story(slug="s1", world="ww")])
+    w = load_world("ww")
+    story = w.stories[0].data
+    partial = story["pages"][:2]  # any real count != 9 exercises the partial path
+    ap = build_grid_prompt(w, story, partial)
+    low = ap.prompt.lower()
+    n = len(partial)
+    assert "nine equal square panels" not in low
+    assert f"{n} story panels" in low
+    assert "filler" in low
+    # panel placement is by row-major grid position
+    assert "row 1, column 1" in low and "row 1, column 2" in low
 
 
 def test_slice_grid_sheet_cuts_nine_tiles_row_major(tmp_path):

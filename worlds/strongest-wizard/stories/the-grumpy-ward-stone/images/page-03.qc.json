@@ -1,0 +1,19 @@
+{
+  "page": 3,
+  "prompt_seed": 884721,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.0,
+      "reason": "Aria matches her tokens (lavender streak, amber eyes, mint satchel, bracelets, star chin mark) as she watches the dim, sputtering stone in the locked pastel style with a calm lower-third.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-03-884721.png"
+    }
+  ],
+  "winner": "page-03.png"
+}

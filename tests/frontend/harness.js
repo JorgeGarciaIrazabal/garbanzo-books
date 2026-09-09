@@ -33,7 +33,7 @@ export const APP_JS = resolve(PUBLIC_DIR, "app.core.js"); // kept for back-compa
 // at runtime and never executes in jsdom (no WebGL), so it is not part of the harness.
 const ASSET_DIR = resolve(__dirname, "..", "..", "scripts", "site_assets");
 export const READER_SCRIPTS = [
-  "reader.js", "gx.core.js", "gx.board.js", "gx.arcade.js", "reader.boot.js",
+  "reader.js", "gx.core.js", "gx.board.js", "gx.arcade.js", "gx.quest.js", "reader.boot.js",
 ];
 export const READER_JS = resolve(ASSET_DIR, "reader.js"); // kept for back-compat imports
 

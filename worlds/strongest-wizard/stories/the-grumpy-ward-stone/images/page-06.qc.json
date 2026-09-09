@@ -1,0 +1,30 @@
+{
+  "page": 6,
+  "prompt_seed": 1168810196,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 7.0,
+      "reason": "Characters and scene match well (flowers in Sylfie's hair, petal sneeze, Aria on-model), but the word 'POOF' is baked into the artwork despite the locked no-text style.",
+      "flags": [
+        "style_inconsistent"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-06-1356247371.png"
+    },
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "Both characters match their tokens and the scene clearly shows flowers blooming in Sylfie's hair as she sneezes petals while Aria reacts, in the locked pastel style with a calm lower-third.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 1,
+      "path": "page-06-1168810196.png"
+    }
+  ],
+  "winner": "page-06.png"
+}

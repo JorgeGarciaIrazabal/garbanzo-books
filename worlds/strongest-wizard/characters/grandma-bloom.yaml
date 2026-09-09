@@ -1,0 +1,78 @@
+slug: grandma-bloom
+world: strongest-wizard
+name: Grandma Bloom
+role: mentor
+species: human wizard
+pronouns: she/her
+one_liner: The legendary Bloom Sage who made a whole mountain flower in one night — now a tiny napping
+  grandma who rides a giant snail and waters everything, including boots.
+personality:
+  traits:
+  - sleepy
+  - cryptic
+  - warm
+  - mischievous
+  - unbothered
+  - wise
+  motivation: To find one young wizard with the heart to make magic their own — and to finish her nap.
+  fears:
+  - TODO
+  flaws:
+  - naps mid-sentence
+  - speaks in riddles that may just be garden advice
+  - waters things that do not need watering
+  strengths:
+  - sees a wizard's heart instantly
+  - legend-level bloom magic
+  quirks:
+  - rides a giant garden snail named Pip
+  - carries a tiny watering can that pours rainbows
+  - picks up cabbages and says 'my favorite'
+  values:
+  - friendship
+voice:
+  speech_style: Cozy, unhurried, half-riddle half-nonsense; trails off into naps; calls young wizards
+    'little sprout'.
+  catchphrases:
+  - Bloom is not copied, little sprout.
+  - My favorite.
+  - (yawn) The mountain can wait.
+  vocabulary_level: gentle riddle-speak
+appearance:
+  age_appearance: ancient but spry grandma
+  build: tiny and round
+  height: knee-high to an adult
+  skin: warm cream
+  hair: fluffy cloud of pink-white hair like a blossom
+  eyes: bright twinkling green eyes behind tiny round spectacles
+  outfit: mossy green robe covered in flower patches, tiny brown boots, a watering-can pendant
+  distinguishing_features:
+  - pink-white blossom cloud of hair
+  - tiny round spectacles
+  - tiny rainbow watering can
+  - rides a giant garden snail named Pip
+  color_palette:
+  - part: hair
+    hex: f7d4e8
+  - part: robe
+    hex: 7aa25c
+  - part: boots
+    hex: 8a5a3a
+  - part: spectacles
+    hex: c9a24b
+  silhouette_notes: tiny round silhouette with a huge blossom-cloud of hair, riding a giant snail
+appearance_token: 'GRANDMA BLOOM: a tiny knee-high ancient grandma wizard with a fluffy pink-white cloud
+  of hair (#f7d4e8), bright twinkling green eyes behind tiny round gold spectacles (#c9a24b), mossy green
+  robe covered in flower patches (#7aa25c), tiny brown boots (#8a5a3a), carries a tiny watering can that
+  pours rainbows, often napping on or riding a giant friendly garden snail, dreamy pastel with colored-pencil
+  texture'
+reference_images: []
+seed: 1234
+relationships:
+- character: aria
+  relation: the little sprout she chooses to teach
+evolution:
+- stage: legend-napping
+  order: 1
+  summary: The Bloom Sage incognito — tiny, napping, watering boots, nobody suspects she is the legend.
+tags: []

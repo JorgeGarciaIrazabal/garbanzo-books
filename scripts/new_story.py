@@ -113,10 +113,13 @@ def main() -> int:
                          "tighter word cap). Set it for ages ~4-8 where it's ambiguous (e.g. a "
                          "5-year-old solo reader). Default: " + read_mode_default_label() + ".")
     ap.add_argument("--slug", help="override the slug")
-    ap.add_argument("--pages", type=int, default=1, metavar="N",
-                    help="scaffold N story-page stubs (plus the title page) so the author "
-                         "only fills in text + scene prompts instead of generating all the "
-                         "page boilerplate — e.g. --pages 14 for a standard picture book")
+    ap.add_argument("--pages", type=int, default=8, metavar="N",
+                    help="scaffold N story-page stubs (plus the title page = N+1 total) so the "
+                         "author only fills in text + scene prompts instead of generating all "
+                         "the page boilerplate. Snapped UP to the 9-page grid convention "
+                         "(total pages incl. title = multiple of 9) so a book fits whole 3x3 "
+                         "grid sheets for --grid illustration: 8→9, 17→18, 26→27. "
+                         "e.g. --pages 8 for a one-sheet book, --pages 17 for two sheets")
     args = ap.parse_args()
 
     wdir = WORLDS / args.world
@@ -139,7 +142,20 @@ def main() -> int:
     # Read mode: explicit if given, else the age default (read-aloud for the youngest, solo later).
     read_mode = normalize_read_mode(args.read_mode, year) if args.read_mode else default_read_mode(year)
 
-    data = starter(slug, args.world, args.title, band_id, year, read_mode, n_pages=args.pages)
+    # 9-page grid convention: total pages (title + story pages) should be a multiple of 9 so
+    # --grid illustration renders whole 3x3 sheets with no part-empty rows. Snap UP to the
+    # next multiple; the extra stubs give the author room for a stronger ending, and any
+    # stub left unwritten is cut at draft review (grid fillers handle the remainder).
+    n_pages = args.pages
+    total = n_pages + 1  # + title page (page 0)
+    snapped = ((total + 8) // 9) * 9
+    if snapped != total:
+        print(f"  · snapping --pages {n_pages} → {snapped - 1} "
+              f"(total {total} → {snapped} pages: the 9-page grid convention, "
+              f"so --grid sheets come out whole)", file=sys.stderr)
+        n_pages = snapped - 1
+
+    data = starter(slug, args.world, args.title, band_id, year, read_mode, n_pages=n_pages)
     dump_yaml(data, sdir / "story.yaml")
     (sdir / "images").mkdir(parents=True, exist_ok=True)
     print(f"+ created story '{slug}' (age {year}, {read_mode.replace('_', '-')}) at {sdir}")

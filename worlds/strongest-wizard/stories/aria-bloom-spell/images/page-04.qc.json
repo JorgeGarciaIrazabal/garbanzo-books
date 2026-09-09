@@ -1,0 +1,19 @@
+{
+  "page": 4,
+  "prompt_seed": 884721,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.0,
+      "reason": "Aria matches her locked tokens (lavender-streaked bob, freckles, amber eyes, pink robe, mint satchel, singed hem) heading out with packed gear and wand toward town, in a consistent pastel golden-hour style with a clean lower-third for captions.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-04-884721.png"
+    }
+  ],
+  "winner": "page-04.png"
+}

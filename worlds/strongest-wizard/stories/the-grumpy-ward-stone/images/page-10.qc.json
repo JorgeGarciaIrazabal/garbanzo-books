@@ -1,0 +1,57 @@
+{
+  "page": 10,
+  "prompt_seed": 433021562,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 7.5,
+      "reason": "Characters match their tokens well and the scene fits the page text with sparks and flowers bursting, but the reserved upper-third text zone is heavily cluttered with fireworks, stars, and bright bursts making caption overlay difficult.",
+      "flags": [
+        "text_zone_cluttered",
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 0,
+      "path": "page-10-612071323.png"
+    },
+    {
+      "ok": false,
+      "score": 6.5,
+      "reason": "Characters match their tokens reasonably well and scene conveys sparks/flowers/burst, but the upper-third reserved text zone is heavily cluttered with bright sparks, stars and flowers, and the lighting is more dramatic/intense than the dreamy pastel golden-hour style.",
+      "flags": [
+        "text_zone_cluttered",
+        "style_inconsistent"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 1,
+      "path": "page-10-90100042.png"
+    },
+    {
+      "ok": false,
+      "score": 6.5,
+      "reason": "All three characters match their tokens well and the scene matches the BOOM/spark/flower/ward-stone text, but the reserved upper-third text zone is heavily cluttered with fireworks, stars, and the glowing ward stone, making caption overlay difficult.",
+      "flags": [
+        "text_zone_cluttered",
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 2,
+      "path": "page-10-433021562.png"
+    },
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "All three characters match their tokens well and the scene matches the burst of sparks and flowers, but the reserved upper-third text zone is heavily cluttered with bright fireworks and stars.",
+      "flags": [
+        "text_zone_cluttered",
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": "edit-fix",
+      "path": "page-10-edit.png",
+      "instruction": "Fix this illustration: Characters match their tokens well and the scene fits the page text with sparks and flowers bursting, but the reserved upper-third text zone is heavily cluttered with fireworks, stars, and bright bursts making caption overlay difficult. Clear the caption zone into calm, low-detail space. Keep the existing art style, palette, and composition."
+    }
+  ],
+  "winner": "page-10.png"
+}

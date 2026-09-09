@@ -1,0 +1,19 @@
+{
+  "page": 11,
+  "prompt_seed": 1137619796,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "Both characters match their tokens and the scene shows the shadow creature slinking away from the safe, glowing village in the locked pastel style with a calm lower-third text zone.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-11-1137619796.png"
+    }
+  ],
+  "winner": "page-11.png"
+}

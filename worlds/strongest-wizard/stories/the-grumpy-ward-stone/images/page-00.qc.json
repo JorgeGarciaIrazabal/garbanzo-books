@@ -1,0 +1,19 @@
+{
+  "page": 0,
+  "prompt_seed": 884721,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "Aria matches her tokens well (pink robe, mint satchel, lavender streak, amber eyes, freckles, gold bracelets, scuffed boots, star scar on chin) and the glowing ward stone scene fits the page text with consistent dreamy pastel style and golden-hour glow.",
+      "flags": [
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 0,
+      "path": "page-00-884721.png"
+    }
+  ],
+  "winner": "page-00.png"
+}

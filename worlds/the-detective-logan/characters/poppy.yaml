@@ -1,0 +1,117 @@
+slug: poppy
+world: the-detective-logan
+name: Poppy
+role: protagonist
+species: human kid
+pronouns: she/her
+one_liner: Super-smart code-cracker and spectacularly clumsy — the girl who trips over the truth.
+personality:
+  traits:
+  - brilliant with numbers
+  - spectacularly clumsy
+  - cheerfully unbothered
+  - bold
+  - notices patterns everywhere
+  motivation: To crack the trickiest code in town side by side with Logan — and to beat her own record
+    for Best Fall Ever.
+  fears:
+  - sitting still too long
+  - a puzzle with no answer
+  - smooth floors (nothing to trip on, suspicious)
+  flaws:
+  - cannot walk past a puddle/skate/rope without demonstrating physics
+  - counts out loud at the worst moments
+  - trusts her feet less than her brain — rightly
+  strengths:
+  - counts, plans, and cracks codes faster than anyone
+  - her falls always land on the needed clue
+  - turns disasters into plans
+  quirks:
+  - narrates her own tumbles ('Grace... FAILING.')
+  - sees numbers and patterns in everything — fences, ducks, cake slices
+  - keeps score of everything, including falls per case
+  values:
+  - two brains beat one
+  - every fall is a clue in disguise
+  - try again funnier
+voice:
+  speech_style: fast, bright, counts things mid-sentence — 'TWO footprints! Not one. TWO!'
+  catchphrases:
+  - I'm fine! The CLUE is fine!
+  - Count with me!
+  - Falling... on it!
+  - That's a pattern!
+  vocabulary_level: 'age 5-7: simple words, loves numbers and counting out loud'
+appearance:
+  age_appearance: 6-7 years old
+  build: small and springy, all bounce
+  height: a head taller than Logan
+  skin: deep brown
+  hair: black, wild and curly, huge escaping ponytail with a red scrunchie, one curl always over her eye
+  eyes: 'big bright amber, wide with delight (mid-fall: even wider)'
+  outfit: denim overalls with one strap always slipping, mismatched striped socks (one gold, one navy),
+    bandaged knee (fresh every case), red sneakers, pencil tucked behind her ear
+  distinguishing_features:
+  - wild ponytail escaping in every direction
+  - permanently bandaged knee
+  - mismatched striped socks
+  - pencil behind ear
+  color_palette:
+  - part: hair
+    hex: '#1f1a17'
+  - part: skin
+    hex: '#7a4a2b'
+  - part: overalls
+    hex: '#2e4a7d'
+  - part: socks
+    hex: '#f2b134'
+  - part: bandage
+    hex: '#f6ead2'
+  - part: sneakers
+    hex: '#d94f3d'
+  - part: scrunchie
+    hex: '#d94f3d'
+  silhouette_notes: gravity-defying ponytail + slipping overall strap + pencil-behind-ear outline reads
+    even in pure black; often drawn mid-trip, arms wheeling
+appearance_token: 'POPPY: a springy 6-year-old girl, a head taller than Logan, deep brown skin (#7a4a2b),
+  wild black curly hair (#1f1a17) in a huge escaping ponytail with red scrunchie, one curl over her eye,
+  big bright amber eyes, navy denim overalls (#2e4a7d) with one strap slipping, mismatched striped socks
+  (gold #f2b134 and navy), cream bandage (#f6ead2) on one knee, red sneakers (#d94f3d), pencil behind
+  ear, delighted wide-eyed expression often mid-trip'
+reference_images:
+- characters/poppy.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: logan
+  relation: boyfriend and detective partner — he spots, she counts, they crack it
+- character: rex
+  relation: rival — she keeps score, he keeps losing
+evolution:
+- stage: new-partner
+  order: 1
+  summary: 'Case one: joins the Shack on day one by tripping over the missing thing.'
+  personality_delta: eager, proving her big brain belongs in detective work
+  appearance_delta: first bandage, brand-new red sneakers
+  unlocked_by: The Detective Logan series start
+- stage: code-cracker
+  order: 2
+  summary: Her code-cracking becomes the Shack's secret weapon — kids bring her puzzles for fun.
+  personality_delta: confident, keeps score of everything
+  appearance_delta: pencil behind ear upgraded to THREE pencils
+  unlocked_by: cracking a code the whole town saw
+- stage: map-hunter
+  order: 3
+  summary: 'She spots the pattern in the leftover clues: they form a map.'
+  personality_delta: sees whole patterns where Logan sees single clues
+  appearance_delta: bandage collection — one per case, kept like badges on her overall strap
+  unlocked_by: realising the leftover pieces form a map
+- stage: legend
+  order: 4
+  summary: 'The finale: the code of all codes — and her best fall lands on the final answer.'
+  personality_delta: proud, still gloriously clumsy, owns it completely
+  appearance_delta: gold star sticker on her slipping overall strap
+  unlocked_by: solving the Map of Lost Things
+tags:
+- kid-detective
+- hero
+- co-lead

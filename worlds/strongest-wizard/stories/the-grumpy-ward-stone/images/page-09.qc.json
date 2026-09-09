@@ -1,0 +1,32 @@
+{
+  "page": 9,
+  "prompt_seed": 3389462,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 6.5,
+      "reason": "Aria's eyes are closed/downcast instead of her locked large bright amber-gold eyes, and the lower-third text zone has ground/boot detail that could crowd a caption.",
+      "flags": [
+        "wrong_characters",
+        "text_zone_cluttered"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 0,
+      "path": "page-09-628820798.png"
+    },
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "Scene matches the page text well with all three characters holding hands and casting a spell, but Aria's eyes appear closed rather than the locked large bright amber-gold, and her robe reads more like a pink coat than the oversized blush-pink wizard robe.",
+      "flags": [
+        "wrong_characters",
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 1,
+      "path": "page-09-3389462.png"
+    }
+  ],
+  "winner": "page-09.png"
+}

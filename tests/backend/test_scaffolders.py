@@ -178,6 +178,24 @@ def test_new_story_creates_story_yaml_with_images_dir(workspace, monkeypatch):
     assert (out.parent / "images").is_dir()
 
 
+def test_new_story_snaps_pages_to_nine_grid(workspace, monkeypatch):
+    """The 9-page grid convention: total pages (title + story) must be a multiple of 9 so
+    --grid illustration renders whole 3x3 sheets. --pages snaps UP (8→9 total, 14→18,
+    20→27); an exact grid multiple passes through unchanged."""
+    from lib.model import load_yaml
+    _make_world(workspace, monkeypatch)
+    import new_story
+
+    for asked, expected_total, slug in [(8, 9, "snap-up"), (14, 18, "snap-mid"),
+                                        (17, 18, "snap-one"), (20, 27, "snap-two")]:
+        monkeypatch.setattr("sys.argv",
+                            ["new_story.py", "ww", "T", "--slug", slug, "--pages", str(asked)])
+        new_story.main()
+        data = load_yaml(workspace.worlds / "ww" / "stories" / slug / "story.yaml")
+        assert len(data["pages"]) == expected_total, \
+            f"--pages {asked}: total {len(data['pages'])} != grid multiple {expected_total}"
+
+
 def test_new_story_default_year_is_6(workspace, monkeypatch):
     _make_world(workspace, monkeypatch)
     import new_story
@@ -278,16 +296,17 @@ def test_new_story_rejects_out_of_range_year(workspace, monkeypatch, capsys):
 
 def test_new_story_pages_flag_scaffolds_page_stubs(workspace, monkeypatch):
     """--pages N pre-builds the page boilerplate so the (slow) author model only fills in
-    text + scene prompts. Title page 0 + N consecutive story stubs, each schema-shaped."""
+    text + scene prompts. Title page 0 + N consecutive story stubs, each schema-shaped.
+    --pages 14 snaps UP to 18 total (9-page grid convention)."""
     _make_world(workspace, monkeypatch)
     import new_story
     monkeypatch.setattr("sys.argv", ["new_story.py", "ww", "Big", "--pages", "14"])
     new_story.main()
     data = load_yaml(workspace.worlds / "ww" / "stories" / "big" / "story.yaml")
     pages = data["pages"]
-    assert len(pages) == 15  # title + 14 story stubs
+    assert len(pages) == 18  # title + 17 story stubs, snapped to the 9-grid (14 → 17)
     assert pages[0]["kind"] == "title"
-    assert [p["number"] for p in pages] == list(range(15))
+    assert [p["number"] for p in pages] == list(range(18))
     for p in pages[1:]:
         assert p["kind"] == "story"
         assert p["layout"]["text_position"]   # layout boilerplate pre-filled

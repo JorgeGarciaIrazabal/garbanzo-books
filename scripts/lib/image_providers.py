@@ -3,9 +3,11 @@
 Each ``_gen_*`` returns True after writing ``out_png``, or False to fall back to a placeholder.
 ``try_real_provider`` picks the provider and swallows any exception (network/API/CLI), so the
 toolchain has no hard dependency on a key being present or a service being up. Providers:
+  - antigravity         : CLI image agents — codex exec first (default; built-in image tool,
+                          ChatGPT session), then the agy CLI (generate_image via OAuth)
+  - codex               : same chain, explicitly named
   - nano-banana / gemini : Google Gemini image model (GEMINI_API_KEY / GOOGLE_API_KEY)
   - openai               : OpenAI Images, gpt-image-2 (OPENAI_API_KEY)
-  - antigravity          : the local agy CLI's generate_image tool, via Google OAuth (no key)
 """
 
 from __future__ import annotations
@@ -33,8 +35,8 @@ _RASTER_EXT = {
 }
 _warned_nokey: set[str] = set()
 _warned_antigravity: set[str] = set()
-# Run-scoped flags. Once antigravity's image quota is exhausted (429) we stop calling it and
-# route the rest of the run's images through the nano-banana fallback — one wasted 429 per page
+# Run-scoped flags. Once the primary CLI image agent's quota is exhausted (429) we stop calling
+# it and route the rest of the run's images through the fallbacks — one wasted 429 per page
 # adds up across a book.
 _antigravity_state: set[str] = set()
 
@@ -398,6 +400,101 @@ def _gen_antigravity(ap: AssembledPrompt, out_png: Path, ref_base: Path | None =
     return False
 
 
+def _gen_codex(ap: AssembledPrompt, out_png: Path, ref_base: Path | None = None) -> bool:
+    """Generate a real image via the Codex CLI (codex exec) and its built-in image tool.
+
+    Codex runs non-interactively with the user's ChatGPT session (no API key) and saves the
+    generated PNG straight into its working directory, reporting the path as a markdown
+    link. We give each call its own unique scratch dir so concurrent renders can never pick
+    up each other's files — no shared-brain races like agy's. Reference images are not
+    forwarded (the tool takes a text prompt); on-model consistency rides on the dense
+    appearance_token text, same as the antigravity path. Override the model with CODEX_MODEL.
+    """
+    import re
+    import subprocess
+    import time
+    import uuid
+
+    codex = Path.home() / ".local" / "bin" / "codex"
+    if not codex.exists():
+        codex = Path("codex")
+    scratch_dir = Path("/tmp/opencode/codex-img") / uuid.uuid4().hex[:12]
+    scratch_dir.mkdir(parents=True, exist_ok=True)
+
+    if "codex" not in _warned_antigravity:
+        _warned_antigravity.add("codex")
+        print("  → using Codex CLI (codex exec) built-in image tool via ChatGPT session",
+              file=sys.stderr)
+
+    text = ap.prompt
+    if ap.negative:
+        text += f"\nAvoid: {ap.negative}."
+    aspect = ap.aspect_ratio or "4:3"
+    shape = ("landscape" if aspect in ("3:2", "4:3", "16:9", "3:1")
+             else "portrait" if aspect in ("2:3", "9:16") else "square")
+    agent_prompt = (
+        "You are an image-generation assistant. Do NOT edit other files, write code, or run "
+        "tests. Your ONLY job is to generate one image with the built-in image generation "
+        f"tool and save it to this directory.\n\n"
+        f"Create the following image: {shape} composition, PNG format. Save the final PNG "
+        f"file.\n\n{text}"
+    )
+    cmd = [
+        str(codex), "exec",
+        "--dangerously-bypass-approvals-and-sandbox",
+        "--skip-git-repo-check",
+        "-C", str(scratch_dir),
+    ]
+    model = os.getenv("CODEX_MODEL")
+    if model:
+        cmd += ["-m", model]
+    cmd.append(agent_prompt)
+
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=360,
+                                 cwd=scratch_dir)
+    except FileNotFoundError:
+        print("  ! codex CLI not found at ~/.local/bin/codex", file=sys.stderr)
+        return False
+    except subprocess.TimeoutExpired:
+        print("  ! codex CLI timed out", file=sys.stderr)
+        return False
+
+    stdout = result.stdout or ""
+    stderr = result.stderr or ""
+    if result.returncode != 0:
+        print(f"  ! codex CLI failed (exit {result.returncode}): {stderr[:400]}",
+              file=sys.stderr)
+        return False
+
+    time.sleep(0.5)
+    cap_edge = int(os.getenv("GEMINI_MAX_EDGE", DEFAULT_MAX_EDGE))
+
+    # 1) Paths the agent reported as markdown links.
+    linked: list[Path] = []
+    for pattern in (r"\]\(file://([^)]+)\)", r"!\[[^\]]*\]\(([^)]+)\)"):
+        for url in re.findall(pattern, stdout):
+            linked.append(Path(url.replace("file://", "")))
+
+    # 2) Any fresh raster that appeared in this call's OWN scratch dir (the agent saved the
+    #    image but printed only prose). The dir is call-private, so a hit is race-safe.
+    cands = [p for p in scratch_dir.rglob("*")
+             if p.is_file() and p.suffix.lower() in _RASTER_EXT]
+    candidates = [c for c in linked if c.exists() and c.suffix.lower() in _RASTER_EXT] + cands
+
+    for candidate in sorted(candidates, key=lambda p: p.stat().st_mtime, reverse=True):
+        out_png.write_bytes(_cap_image_bytes(candidate.read_bytes(), cap_edge))
+        return True
+
+    if re.search(r"\b429\b|RESOURCE_EXHAUSTED|quota|rate.?limit", stdout + stderr, re.I):
+        _antigravity_state.add("exhausted")
+        print("  ! codex image quota exhausted (rate limit) — no image generated.",
+              file=sys.stderr)
+    else:
+        print("  ! codex returned no image file; treating as a failed render.", file=sys.stderr)
+    return False
+
+
 def _gen_comfyui(ap: AssembledPrompt, out_png: Path, kind: str) -> bool:
     """Generate locally via a ComfyUI server (the Strix-Halo container), with ``kind`` in
     {"qwen", "flux2"}. No API key, no network — runs on the local iGPU. Reference images are
@@ -441,23 +538,52 @@ def try_real_provider(
             return _gen_nano_banana(ap, out_png, ref_base)
         if provider == "openai":
             return _gen_openai(ap, out_png)
-        if provider == "antigravity":
-            return _gen_antigravity_or_fallback(ap, out_png, ref_base)
+        if provider in ("antigravity", "codex"):
+            # The chain honours the provider NAME: "codex" renders codex-first, "antigravity"
+            # agy-first. CODEX_IMAGE_AGENT can flip the default order globally.
+            prefer_codex = provider == "codex"
+            return _gen_antigravity_or_fallback(ap, out_png, ref_base,
+                                                prefer_codex=prefer_codex)
     except Exception as e:  # noqa: BLE001 — never let image gen break the pipeline
         print(f"  ! provider '{provider}' failed ({e}); using placeholder.", file=sys.stderr)
     return False
 
 
-def _gen_antigravity_or_fallback(ap: AssembledPrompt, out_png: Path, ref_base: Path | None) -> bool:
-    """Try antigravity; if its image quota is exhausted (or it otherwise can't produce) and a
-    GEMINI_API_KEY is available, fall back to nano-banana so a book still renders end-to-end.
-    Once exhausted in this run, skip antigravity entirely to avoid a wasted 429 per page."""
+def _gen_antigravity_or_fallback(ap: AssembledPrompt, out_png: Path, ref_base: Path | None,
+                                 prefer_codex: bool = True) -> bool:
+    """Try the CLI image agents, then the nano-banana API, so a book renders end-to-end.
+
+    The chain order follows the provider NAME: "codex" (the default provider) renders
+    codex-first — its built-in image tool runs on the ChatGPT session and saves straight to a
+    call-private dir — then agy. "antigravity" flips it agy-first. A 429 is usually a burst
+    RATE limit, so the first exhaustion waits ~90s and retries the PRIMARY agent ONCE. Once
+    truly exhausted, it's skipped for the rest of the run to avoid a wasted 429 per page."""
+    # CODEX_IMAGE_AGENT=agy flips the order globally if codex ever misbehaves.
+    if os.getenv("CODEX_IMAGE_AGENT", "codex") == "agy":
+        prefer_codex = False
+    use_codex_first = prefer_codex
+
+    def _primary(ap_: AssembledPrompt, out_: Path) -> bool:
+        if use_codex_first:
+            return _gen_codex(ap_, out_, ref_base) or _gen_antigravity(ap_, out_, ref_base)
+        return _gen_antigravity(ap_, out_, ref_base) or _gen_codex(ap_, out_, ref_base)
+
     if "exhausted" not in _antigravity_state:
-        if _gen_antigravity(ap, out_png, ref_base):
+        if _primary(ap, out_png):
             return True
+        if "exhausted" in _antigravity_state and "retried" not in _antigravity_state:
+            _antigravity_state.add("retried")
+            wait_s = float(os.getenv("ANTIGRAVITY_RETRY_WAIT", "90"))
+            print(f"  → CLI image agent rate-limited; waiting {wait_s:.0f}s and retrying once…",
+                  file=sys.stderr)
+            import time
+            time.sleep(wait_s)
+            if _primary(ap, out_png):
+                _antigravity_state.discard("exhausted")  # the limit reset; keep using it
+                return True
 
     # Antigravity couldn't deliver. Fall back to the nano-banana API if a key is configured.
-    if not _gemini_key():
+    if not _gemini_key() or "apikey_dead" in _antigravity_state:
         return False
     if "exhausted" in _antigravity_state and "fellback" not in _antigravity_state:
         _antigravity_state.add("fellback")
@@ -469,5 +595,8 @@ def _gen_antigravity_or_fallback(ap: AssembledPrompt, out_png: Path, ref_base: P
     try:
         return _gen_nano_banana(ap, out_png, ref_base)
     except Exception as e:  # noqa: BLE001
-        print(f"  ! nano-banana fallback failed ({e}); using placeholder.", file=sys.stderr)
+        msg = str(e)
+        print(f"  ! nano-banana fallback failed ({msg}); using placeholder.", file=sys.stderr)
+        if "prepayment" in msg.lower() or "billing" in msg.lower():
+            _antigravity_state.add("apikey_dead")  # key has no credit — skip it henceforth
         return False

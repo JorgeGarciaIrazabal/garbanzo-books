@@ -23,8 +23,8 @@ help:
 	@echo "  make serve         build + preview at http://localhost:8008"
 	@echo "  make game-lab      live game-design playground at http://localhost:8008/game-lab/"
 	@echo "  make test          run the toolchain self-test"
-	@echo "  make check-comfyui verify the local ComfyUI image server is up (default provider)"
-	@echo "  make check-gemini  verify a cloud image-provider fallback is configured"
+	@echo "  make check-comfyui verify the local ComfyUI image server is up (offline provider)"
+	@echo "  make check-gemini  verify the default codex/agy/nano-banana image path is ready"
 	@echo "  make test-backend  run the full pytest suite (lib + scripts + server)"
 	@echo "  make test-frontend run the vitest suite (app.js + reader.js)"
 	@echo "  make test-all      run backend + frontend (one command)"
@@ -72,36 +72,38 @@ check-comfyui:
 	else \
 		printf "  \033[31m✗\033[0m no ComfyUI server at %s.\n" "$$host"; \
 		printf "    Start it:  experiments/qwen-image-edit/docker_comfyui.sh\n"; \
-		printf "    or set COMFYUI_HOST, or switch provider (IMAGE_PROVIDER=antigravity).\n"; \
+		printf "    or set COMFYUI_HOST, or switch provider (IMAGE_PROVIDER=codex).\n"; \
 		exit 1; \
 	fi
 
 check-gemini:
-	@# Pre-flight for the cloud FALLBACK providers (default is now "local" — see check-comfyui).
-	@# Checks the antigravity local agy CLI first,
+	@# Pre-flight for the DEFAULT image provider (codex — see check-comfyui for local).
+	@# Checks the codex CLI first, then agy,
 	@# Gemini key check for the nano-banana provider. The studio/server loads .env the same way
 	@# (env first, then .env) so this is the authoritative pre-flight.
-	@if command -v agy >/dev/null 2>&1 || [ -x "$$HOME/.local/bin/agy" ]; then \
+	@if command -v codex >/dev/null 2>&1 || [ -x "$$HOME/.local/bin/codex" ]; then \
+		[ -x "$$HOME/.local/bin/codex" ] && codex_path="$$HOME/.local/bin/codex" || codex_path=$$(command -v codex); \
+		printf "  \033[32m✓\033[0m Codex CLI found: %s\n" "$$codex_path"; \
+		printf "    /illustrate will render real images (provider: codex, via your ChatGPT session).\n"; \
+	elif command -v agy >/dev/null 2>&1 || [ -x "$$HOME/.local/bin/agy" ]; then \
 		[ -x "$$HOME/.local/bin/agy" ] && agy_path="$$HOME/.local/bin/agy" || agy_path=$$(command -v agy); \
-		printf "  \033[32m✓\033[0m Antigravity CLI found: %s\n" "$$agy_path"; \
+		printf "  \033[33m⚠\033[0m no codex CLI, but Antigravity CLI found: %s\n" "$$agy_path"; \
 		printf "    /illustrate will render real images (provider: antigravity, via OAuth).\n"; \
 	elif [ -n "$$GEMINI_API_KEY" ] || [ -n "$$GOOGLE_API_KEY" ]; then \
 		[ -n "$$GEMINI_API_KEY" ] && src="GEMINI_API_KEY (env, length=$${#GEMINI_API_KEY})" \
 			|| src="GOOGLE_API_KEY (env, length=$${#GOOGLE_API_KEY})"; \
-		printf "  \033[33m⚠\033[0m no agy CLI, but image key present: %s\n" "$$src"; \
+		printf "  \033[33m⚠\033[0m no codex/agy CLI, but image key present: %s\n" "$$src"; \
 		printf "    /illustrate will render real images (provider: nano-banana).\n"; \
-		printf "    Install agy to use the antigravity path, or set IMAGE_PROVIDER=nano-banana.\n"; \
 	else \
 		if [ -f .env ] && grep -qE '^(GEMINI_API_KEY|GOOGLE_API_KEY)=.+\S' .env; then \
 			val=$$(grep -E '^(GEMINI_API_KEY|GOOGLE_API_KEY)=' .env | head -1 | cut -d= -f2-); \
-			printf "  \033[33m⚠\033[0m no agy CLI, but image key present: .env (length=%d)\n" "$${#val}"; \
+			printf "  \033[33m⚠\033[0m no codex/agy CLI, but image key present: .env (length=%d)\n" "$${#val}"; \
 			printf "    /illustrate will render real images (provider: nano-banana).\n"; \
-			printf "    Install agy to use the antigravity path, or set IMAGE_PROVIDER=nano-banana.\n"; \
 		else \
-			printf "  \033[31m✗\033[0m no agy CLI and no image key found.\n"; \
+			printf "  \033[31m✗\033[0m no codex/agy CLI and no image key found.\n"; \
 			printf "    Image generation will fall back to labeled placeholders.\n"; \
 			printf "    To render real images (pick one):\n"; \
-			printf "      • Antigravity (default, no key): install the agy CLI and sign in with Google\n"; \
+			printf "      • Codex (default, no key): install the codex CLI and \`codex login\` with ChatGPT\n"; \
 			printf "      • Nano Banana: get a free key at https://aistudio.google.com/apikey,\n"; \
 			printf "        add GEMINI_API_KEY=your-key to .env, set IMAGE_PROVIDER=nano-banana,\n"; \
 			printf "        and run \`make ui\` again so the server reloads .env\n"; \

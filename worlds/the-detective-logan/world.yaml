@@ -1,0 +1,178 @@
+slug: the-detective-logan
+title: The Detective Logan
+tagline: Nobody believes Logan. Poppy trips on the truth. Every time.
+premise: 'Strange things happen in Maple Hollow. Socks vanish. A bell rings at 3:33. Tiny footprints appear
+  in the fog. Logan, kid detective, knows something is up — but grown-ups just say: ''Don''t be silly,
+  Logan.'' Nobody believes him. Nobody! Good thing Logan is super smart. He spots tiny things nobody else
+  sees. And his girlfriend Poppy is super smart too — she counts, she plans, she cracks codes, and her
+  big brain works even FASTER mid-fall. Because Poppy is also the clumsiest girl in town. She trips, she
+  tumbles... and lands right on the clue they needed. Every time! Together they set traps, follow footprints,
+  and crack secret codes until the truth pops out — BANG! Every case ends with one odd little clue that
+  does not fit. Logan keeps those in his Big Case folder. Piece by piece, they are building a giant secret:
+  the Map of Lost Things. Who is behind it? One day all the pieces will click together — and that last
+  mystery will be HUGE.'
+tone:
+- super-mysterious
+- madcap
+- adventurous
+- mischievous
+- laugh-out-loud
+genres:
+- mystery
+- comedy
+- detective
+target_years:
+- 5
+- 6
+- 7
+target_age_bands:
+- 3-5
+- 5-7
+languages:
+- en
+geography:
+  overview: 'Maple Hollow: a snug, slightly bonkers small town where every street corner hides a clue
+    and every grown-up is a suspect.'
+  locations:
+  - name: Logan's Detective Shack
+    description: A hand-painted lemonade-stand-turned-headquarters in Logan's backyard, stacked with case
+      files, magnifying glasses, and a wall of red string (that mostly connects to the fridge).
+    mood: proud and cluttered
+    recurring: true
+  - name: Maple Hollow Main Street
+    description: Cobbles, a bakery that smells like toast, and a notice board where every missing-pet
+      poster gets pinned. The centre of almost every mystery.
+    mood: busy and chatty
+    recurring: true
+  - name: The Old Windmill
+    description: A creaky windmill on Hollow Hill with a locked top room nobody has opened in years. Somewhere
+      in it, the Map of Lost Things hides.
+    mood: creaky and secret
+    recurring: true
+  - name: Hollow Park & Duck Pond
+    description: Ducks who steal hats, a bandstand that echoes whispers, and bushes big enough to hide
+      two spies.
+    mood: sunny with shady corners
+    recurring: true
+  - name: Mosswood Forest
+    description: The foggy woods at the edge of town where footprints appear and vanish. Where the trail
+      always leads when a mystery gets serious.
+    mood: foggy and hushy
+    recurring: true
+rules:
+- id: no-listening
+  text: Grown-ups never simply believe Logan — the fun is always in inventing a trick, a trap, or a spectacular
+    reveal that makes them SEE it. Evidence wins; words never do.
+- id: super-smart
+  text: Logan and Poppy are both super smart, each in their own way. Logan spots tiny things nobody else
+    sees — a crooked footprint, a fresh crumb, a face that says 'I did it'. Poppy thinks in numbers and
+    patterns — she counts, plans, and cracks codes faster than anyone. Their brains work best together,
+    and they know it.
+- id: poppy-luck
+  text: 'Poppy''s clumsiness is never wasted: at least once per case her tumble, trip, or dropped sandwich
+    accidentally uncovers the exact clue they needed. She is super smart AND super clumsy — and she lands
+    on the answer on purpose as often as by accident.'
+- id: fair-play
+  text: 'Every mystery is solvable: all clues needed are shown to the reader on the page. No magic explains
+    anything — sneaky, silly, or ingenious things do.'
+- id: puzzle-powered
+  text: 'Locks, codes, traps, and clues in this world run on kid-sized puzzles: counting, patterns, mazes,
+    simple codes, and math riddles — never on grown-up tools.'
+- id: clues-keep
+  text: Every case ends with one small odd clue that does not fit — and it goes into Logan's Big Case
+    folder. Those pieces are quietly building the Map of Lost Things.
+- id: shadows-not-scares
+  text: Mystery mood comes from fog, shadows, creaks, and 'who was THAT?' silhouettes — never from anything
+    truly scary. The creepy thing always turns out to be silly.
+- id: town-scale
+  text: 'The stakes are always town-sized and kid-solved: no police, no grown-up fixes it, no magic swoops
+    in. If Logan and his friends don''t crack it, it stays cracked-open.'
+factions:
+- name: The Detective Shack
+  description: 'Logan + Poppy: the kid detective who sees everything and the clumsy girl who trips over
+    the truth. Two chairs, one magnifying glass, endless snacks.'
+  values: evidence over opinions, snacks during stakeouts, never say never
+- name: The Grown-Up Council of No
+  description: The mayor, the principal, and other adults who pat Logan on the head, say 'Don't be silly',
+    and miss everything. Not villains — just gloriously wrong.
+  values: tidy explanations, bedtimes, absolutely no climbing fences
+- name: The Whisperers
+  description: Somebody unseen is leaving riddles, footprints, and tiny thefts all over town. WHO? Nobody
+    knows. Every case brings one new weird clue about them.
+  values: riddles first, reasons later
+timeline:
+- label: The First Case
+  description: Logan opens the Detective Shack and solves his first mystery. Poppy joins after tripping
+    over the missing thing on day one.
+- label: The Odd Clues
+  description: Case by case, clues that don't fit pile up in the Big Case folder. Strange. Very strange.
+    They seem to make a shape... a map?
+- label: The Map of Lost Things
+  description: 'The final epic case: every piece clicks, the windmill''s locked room opens, and the Whisperer
+    stands revealed in one spectacular night.'
+motifs:
+- Logan's red notebook — every clue gets scribbled in it, and pages flip back in later books
+- The magnifying glass that Poppy keeps dropping at exactly the wrong moment
+- Leftover clue pieces that don't fit — folded, pinned, and waiting in the Big Case folder
+- Red string on the Shack wall connecting clues (and occasionally fruit)
+- The number 3:33 — the time odd things keep happening
+- Missing-item posters on the Main Street board, one new one every case
+themes:
+- mystery
+- puzzles
+- sneaky cleverness
+- teamwork between a schemer and a klutz
+- small kids seeing what grown-ups miss
+art_style:
+  medium: waxy crayon and hand-drawn ink on textured paper, child-detective storybook style
+  line_quality: wobbly energetic hand-drawn lines, crayon pressure you can feel, sketchy double-outlines
+  shading: crayon-hatched shading with visible scribble texture, colors slightly outside the lines on
+    purpose
+  lighting: big flat storybook lighting with one warm light source — streetlamps, flashlight beams, sunny
+    windows
+  perspective: cozy wide scenes for town streets, dramatic low-angle close-ups for reveals, sneaky over-the-shoulder
+    spying shots
+  palette:
+  - name: Case-File Cream
+    hex: '#f6ead2'
+    role: primary
+  - name: Detective Navy
+    hex: '#2e4a7d'
+    role: primary
+  - name: Notebook Red
+    hex: '#d94f3d'
+    role: accent
+  - name: Maple Gold
+    hex: '#f2b134'
+    role: accent
+  - name: Mosswood Green
+    hex: '#6a994e'
+    role: support
+  - name: Foggy Dusk Blue
+    hex: '#8ecae6'
+    role: sky
+  - name: Crayon Charcoal
+    hex: '#4a423c'
+    role: shadow
+  influences:
+  - Crayon-shaded picture books like Drew Daywalt's 'The Day the Crayons Quit'
+  - hand-inked detective comics for kids
+  - cozy mystery cartoon title cards
+  prompt_style_block: 'waxy crayon and hand-drawn ink children''s storybook illustration on textured paper,
+    wobbly sketchy lines, visible crayon scribble shading, palette of cream #f6ead2, navy #2e4a7d, red
+    #d94f3d, gold #f2b134, green #6a994e, dusk blue #8ecae6, charcoal #4a423c, warm single-source storybook
+    lighting, cozy small-town mystery mood, playful kid-detective energy'
+  negative_prompt: photorealism, 3d render, smooth digital airbrush, scary faces, gore, sharp harsh shadows,
+    extra fingers, garbled text artifacts, watermark, blurry
+  aspect_ratio: '4:3'
+  text_treatment:
+    placement: lower-third
+    scrim: soft cream rounded panel, 85% opacity, slight paper texture
+    font_family: rounded hand-printed storybook font, generous letter spacing
+    dyslexia_friendly: true
+tags:
+- mystery
+- detective
+- puzzles
+- crayon-art
+- series

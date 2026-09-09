@@ -1,0 +1,10 @@
+PROMPT:
+Voidstalker's shadow shrinks and slinks back into the deep woods, grumbling, as the ward stone glows strong and golden. The friends watch it go, relieved and triumphant. Calm returns to the village. Characters: VOIDSTALKER: tall impossibly thin shadow-creature, void-black skin shimmering like oil, no hair only drifting darkness tendrils, two pinprick cold white eyes no pupils, tattered stitched-shadow cloak frayed hem, limbs bend at wrong angles, leaves momentary scorch marks not footprints, voice echoes from everywhere, menacing patient predator | ARIA: human girl 7-8, small stocky build, warm beige skin with nose freckles, messy chin-length chestnut bob (#5d4037) with single lavender streak (#c7b8ea), large bright amber-gold eyes (#ffb300), oversized blush-pink wizard robe (#f4c2c2) rolled sleeves, mint-green satchel (#a8e6cf), scuffed brown boots (#4e342e), golden friendship bracelets (#ffd93d) both wrists, ink-smudged fingers, singed robe hem, tiny star scar on chin. dreamy pastel children's book illustration, soft blush and mint palette, whisper-thin rounded lines, golden-hour glow with floating magic motes, ethereal gradients, hand-painted paper texture, cozy whimsical mood, no text. palette: cream #fdf6e3, blush-pink #f4c2c2, mint-green #a8e6cf, lavender #c7b8ea, golden-hour #ffd93d, dusk-lavender #6b5b95. character colors: voidstalker body #0a0a0f, voidstalker eyes #ffffff, voidstalker cloak #1a1a2e, voidstalker scorch_marks #ff3300, aria robe #f4c2c2, aria satchel #a8e6cf, aria hair #5d4037, aria hair_streak #c7b8ea, aria eyes #ffb300, aria boots #4e342e, aria bracelets #ffd93d. leave the lower third as calm, low-detail negative space for caption text; keep characters clear of that zone.
+
+NEGATIVE:
+photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
+
+SEED: 1137619796
+ASPECT: 4:3
+CHARACTERS: voidstalker, aria
+REFERENCES: characters/voidstalker.refs/model-sheet.png, characters/aria.refs/model-sheet.png, characters/aria.refs/model-sheet.svg

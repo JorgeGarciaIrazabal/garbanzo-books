@@ -1,0 +1,41 @@
+{
+  "page": 12,
+  "prompt_seed": 1504018958,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 6.5,
+      "reason": "Aria's hair is long and flowing instead of the locked chin-length chestnut bob, and her amber-gold eyes are closed, breaking character consistency despite a fitting scene and clean text zone.",
+      "flags": [
+        "wrong_characters"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-12-884721.png"
+    },
+    {
+      "ok": false,
+      "score": 6.5,
+      "reason": "Aria's hair is drawn long and flowing with a topknot instead of the locked chin-length chestnut bob, and her amber-gold eyes are closed, breaking her appearance tokens.",
+      "flags": [
+        "wrong_characters"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 1,
+      "path": "page-12-1925645304.png"
+    },
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "Aria matches her tokens (lavender streak, pink robe, mint satchel, gold bracelets, star chin mark) and the scene shows her mid-hop casting a wish over floating seeds, with a clean lower-third for text.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 2,
+      "path": "page-12-1504018958.png"
+    }
+  ],
+  "winner": "page-12.png"
+}

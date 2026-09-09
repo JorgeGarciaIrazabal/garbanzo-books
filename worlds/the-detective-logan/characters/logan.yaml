@@ -1,0 +1,116 @@
+slug: logan
+world: the-detective-logan
+name: Logan
+role: protagonist
+species: human kid
+pronouns: he/him
+one_liner: The kid detective nobody believes — but who is always, ALWAYS right.
+personality:
+  traits:
+  - super observant
+  - stubborn as glue
+  - dramatically serious
+  - mischievous
+  - patient like a cat outside a mouse hole
+  motivation: To prove to the whole town that the strange things in Maple Hollow are REAL — and to find
+    out who is behind the Map of Lost Things.
+  fears:
+  - nobody EVER believing him
+  - a case going cold
+  - losing his red notebook
+  flaws:
+  - overthinks everything
+  - gets so lost in clues he forgets doors exist
+  - cannot let an 'I told you so' go unsaid
+  strengths:
+  - spots tiny things nobody else sees
+  - wildly ingenious traps
+  - never gives up on a case
+  quirks:
+  - talks to clues like they can hear him ('what are you HIDING, footprint?')
+  - scribbles notes on anything — walls, hands, one time the mayor's hat
+  - dramatic detective pose before saying something obvious
+  values:
+  - evidence over opinions
+  - the truth is worth the trouble
+  - never say never
+voice:
+  speech_style: short, certain, dramatic sentences — announces deductions like headline news
+  catchphrases:
+  - A clue!
+  - It all fits now!
+  - Don't be silly — be SUSPICIOUS.
+  - The truth pops out. It always does.
+  vocabulary_level: 'age 5-7: short words, punchy delivery, one fancy detective word per case used proudly'
+appearance:
+  age_appearance: 6-7 years old
+  build: small and lean, all elbows and knees
+  height: head shorter than Poppy
+  skin: warm tan
+  hair: dark brown, permanently cowlicked, sticking up at the back like he ran to the case
+  eyes: big dark brown, permanently narrowed in suspicion
+  outfit: kid-sized beige trench coat with the collar popped, deerstalker detective hat, red scarf, red
+    notebook in one coat pocket, magnifying glass in the other, sneakers
+  distinguishing_features:
+  - deerstalker hat pulled low over narrowed eyes
+  - oversized beige trench coat with popped collar
+  - red notebook always in hand or pocket
+  color_palette:
+  - part: coat
+    hex: '#d9b382'
+  - part: hat
+    hex: '#8a6f4d'
+  - part: scarf
+    hex: '#d94f3d'
+  - part: notebook
+    hex: '#d94f3d'
+  - part: hair
+    hex: '#4a3728'
+  - part: skin
+    hex: '#c68e5c'
+  - part: sneakers
+    hex: '#2e4a7d'
+  silhouette_notes: hat brims front AND back + popped coat collar + one hand forever holding a magnifying
+    glass or notebook — reads as 'tiny detective' even in pure black outline
+appearance_token: 'LOGAN: a small lean 6-year-old boy detective, dark brown cowlicked hair (#4a3728) sticking
+  up at the back, big narrowed suspicious dark brown eyes, warm tan skin (#c68e5c), beige kid trench coat
+  (#d9b382) with popped collar, brown-and-tan deerstalker hat (#8a6f4d), red scarf (#d94f3d), red notebook
+  (#d94f3d) in pocket, magnifying glass in hand, navy sneakers (#2e4a7d), dramatic suspicious expression'
+reference_images:
+- characters/logan.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: poppy
+  relation: girlfriend and detective partner — her tumbles find his clues
+- character: rex
+  relation: rival detective — always wrong, always loud
+evolution:
+- stage: shack-rookie
+  order: 1
+  summary: 'Case one: a rookie with a lemonade-stand Shack, one notebook, and a town full of non-believers.'
+  personality_delta: eager and unproven
+  appearance_delta: brand-new trench coat, notebook has exactly three pages used
+  unlocked_by: The Detective Logan series start
+- stage: hollows-hero
+  order: 2
+  summary: After the first big wins, half the kids in town believe him — but the grown-ups still don't.
+  personality_delta: more confident, schemes bigger
+  appearance_delta: notebook bulging, string wall fuller, a second magnifying glass (Poppy broke the first)
+  unlocked_by: solving a case the whole town witnessed
+- stage: map-hunter
+  order: 3
+  summary: 'The odd clues have become the Big Case: Logan hunts the Map of Lost Things itself.'
+  personality_delta: focused, sees patterns across cases, slightly haunted by 3:33
+  appearance_delta: a corkboard photo of the Windmill's locked door pinned inside his coat
+  unlocked_by: realising the leftover pieces form a map
+- stage: legend
+  order: 4
+  summary: 'The epic finale: the town finally SEES. The Whisperer stands revealed.'
+  personality_delta: calm, certain, saves the dramatic pose for when it counts
+  appearance_delta: badge-shaped sticker on his hat that reads KID DETECTIVE, cracked first magnifying
+    glass retired on the Shack wall
+  unlocked_by: solving the Map of Lost Things
+tags:
+- kid-detective
+- hero
+- lead

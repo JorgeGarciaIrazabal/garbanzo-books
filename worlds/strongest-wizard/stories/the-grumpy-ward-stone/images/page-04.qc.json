@@ -1,0 +1,19 @@
+{
+  "page": 4,
+  "prompt_seed": 884721,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.0,
+      "reason": "Aria matches all locked tokens (pink robe, mint satchel, lavender streak, gold bracelets, ink-smudged fingers, singed hem, amber eyes) and is correctly zapping the stone wall in golden-hour magical glow.",
+      "flags": [
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 0,
+      "path": "page-04-884721.png"
+    }
+  ],
+  "winner": "page-04.png"
+}

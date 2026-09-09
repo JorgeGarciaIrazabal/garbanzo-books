@@ -1,0 +1,20 @@
+{
+  "page": 8,
+  "prompt_seed": 1477225539,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "Characters match their tokens well and the scene captures the spark and creeping shadow, but the lower-third text zone is occupied by legs, boots, and detailed grass, making it busy for caption overlay.",
+      "flags": [
+        "text_zone_cluttered",
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 0,
+      "path": "page-08-1477225539.png"
+    }
+  ],
+  "winner": "page-08.png"
+}

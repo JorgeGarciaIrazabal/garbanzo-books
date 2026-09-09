@@ -1,0 +1,26 @@
+PROMPT:
+A 3x3 grid contact sheet for the children's picture book 'Aria and the Bloom Spell': a 2-row grid of equal square panels, three per row, with 6 story panels (three panels in the final row) and 3 filler panels with clean thin white gutters, each story panel a complete self-contained full-bleed storybook illustration. ABSOLUTELY NO text, letters, numbers, labels, watermarks, captions, or page numbers anywhere in the image.
+
+row 1, column 1 — Panel for page 9: A village flower fair with banners and stalls, dozens of cabbages raining from the sky bouncing off tents and tables, villagers ducking and laughing, a young wizard girl standing in the middle with a spent wand, comedic chaos
+row 1, column 2 — Panel for page 10: A young wizard girl sitting in a pile of cabbages looking sad, the tiny blossom-haired grandma gently tapping her hat from the edge of the pile, quiet warm moment amid fair chaos, close emotional framing
+row 1, column 3 — Panel for page 11: A young wizard girl with wide eyes pointing at the tiny grandma, realization moment with a glow, the grandma mid-yawn with a peaceful smile, petals swirling around them, reveal scene energy
+row 2, column 1 — Panel for page 12: A young wizard girl mid-hop with wand swinging in a joyful arc, humming with eyes shut, a soft swirl of light gathering around the wand tip, seeds floating up around her, magical anticipation
+row 2, column 2 — Panel for page 13: The whole meadow erupting in glowing rainbow flowers, a village fair lit up with blossoms on every stall and banner, villagers cheering, a giant snail wearing a tiny flower crown, a young wizard girl at the center arms up in triumph, joyful climax with petals everywhere
+row 2, column 3 — Panel for page 14: Night scene, a young wizard girl writing in her own little glowing spellbook by floating candlelight, the tiny grandma asleep on a cabbage with a content smile, petals drifting, cozy warm ending
+The remaining 3 panel(s) (row-major after the 6 story panels) are DECORATIVE FILLER in the same style: small standalone vignettes of the book's world (scenery, tiny background props, no characters, no story action) — they are never used as book pages, so keep them simple and uncluttered.
+
+Characters — each character must look IDENTICAL in every panel they appear in (same face, same outfit, same proportions):
+aria: ARIA: human girl 7-8, small stocky build, warm beige skin with nose freckles, messy chin-length chestnut bob (#5d4037) with single lavender streak (#c7b8ea), large bright amber-gold eyes (#ffb300), oversized blush-pink wizard robe (#f4c2c2) rolled sleeves, mint-green satchel (#a8e6cf), scuffed brown boots (#4e342e), golden friendship bracelets (#ffd93d) both wrists, ink-smudged fingers, singed robe hem, tiny star scar on chin [spell-weaver: robe fits better, fewer singe marks, hair tie actually holds, faint glow around hands when casting]
+grandma-bloom: GRANDMA BLOOM: a tiny knee-high ancient grandma wizard with a fluffy pink-white cloud of hair (#f7d4e8), bright twinkling green eyes behind tiny round gold spectacles (#c9a24b), mossy green robe covered in flower patches (#7aa25c), tiny brown boots (#8a5a3a), carries a tiny watering can that pours rainbows, often napping on or riding a giant friendly garden snail, dreamy pastel with colored-pencil texture
+
+Style for every panel: dreamy pastel children's book illustration, soft blush and mint palette, whisper-thin rounded lines, golden-hour glow with floating magic motes, ethereal gradients, hand-painted paper texture, cozy whimsical mood, no text.
+Palette: #fdf6e3, #f4c2c2, #a8e6cf, #c7b8ea, #ffd93d, #6b5b95.
+Leave the lower third of every panel as calm, low-detail negative space.
+
+NEGATIVE:
+photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
+
+SEED: 884721
+ASPECT: 1:1
+CHARACTERS: aria, grandma-bloom
+REFERENCES: characters/aria.refs/model-sheet.png, characters/aria.refs/model-sheet.svg

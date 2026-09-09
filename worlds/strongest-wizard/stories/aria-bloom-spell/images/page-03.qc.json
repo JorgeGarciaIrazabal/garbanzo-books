@@ -1,0 +1,30 @@
+{
+  "page": 3,
+  "prompt_seed": 1453301302,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 7.0,
+      "reason": "Both characters appear in a fitting golden-hour pastel scene, but Aria's hair is long and wavy instead of the locked chin-length chestnut bob with a lavender streak.",
+      "flags": [
+        "wrong_characters"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-03-1657960564.png"
+    },
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "Both characters match their tokens and the running/gasping news scene fits the text, with a clean lower-third for captions.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 1,
+      "path": "page-03-1453301302.png"
+    }
+  ],
+  "winner": "page-03.png"
+}

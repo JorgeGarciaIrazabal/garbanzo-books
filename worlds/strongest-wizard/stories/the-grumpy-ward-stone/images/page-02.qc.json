@@ -1,0 +1,19 @@
+{
+  "page": 2,
+  "prompt_seed": 727643436,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 9.0,
+      "reason": "The glowing stone shining at twilight beside a cozy sleeping village matches the text, with a calm sky in the upper third and consistent pastel style.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-02-727643436.png"
+    }
+  ],
+  "winner": "page-02.png"
+}

@@ -1,0 +1,363 @@
+slug: the-grumpy-ward-stone
+world: strongest-wizard
+title: The Grumpy Ward Stone
+logline: When the village ward stone goes grumpy and dim, Aria's spells to relight it keep misfiring —
+  just as Voidstalker creeps back from the woods, and only a big messy burst of magic with her friends
+  can wake the stone before dark.
+summary: The old ward stone that keeps Whisper Village safe sputters out and won't light. Aria tries to
+  zap it bright again, but her spells go wonderfully wrong — frozen lunches, flowery hair — while the
+  scarred Voidstalker waits in the dark for the light to die. In the end Aria and her friends cast all
+  their messy magic together, and the joyful, sparking, flower-popping burst blazes the stone awake and
+  shoos the shadow off.
+age_band: 3-5
+target_year: 5
+reading_level:
+  read_mode: solo
+  target_fk_grade: 0.3
+  fk_grade_tolerance: 0.3
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 25
+  max_sentence_words: 8
+  decoding_focus: ''
+  decodable: false
+themes:
+- friendship
+- courage
+- magic-gone-wrong
+- funny
+moral: 'shown, not told: messy magic cast together is stronger than a perfect spell cast alone'
+characters:
+- slug: aria
+  stage: base
+- slug: sylfie
+  stage: base
+- slug: bram
+  stage: base
+- slug: voidstalker
+  stage: base
+spine:
+  once_upon_a_time: Aria loved the old ward stone that glowed at the edge of the village and kept the
+    dark out.
+  every_day: Every night it shone bright and warm, and the woods stayed quiet and safe.
+  until_one_day: One night the ward stone went dim. It sputtered, pfft, pfft, and would not light.
+  because_of_that:
+  - Aria zapped it with a spell — but missed and froze Bram's lunch into a block of ice.
+  - She tried again, and POOF, flowers grew all over Sylfie's hair until she sneezed petals.
+  - 'The sky went dark, and two cold white eyes blinked open in the woods: Voidstalker was back.'
+  until_finally: Aria's friends grabbed her hands and they all cast the spell at once, in one big silly
+    burst.
+  ever_since_then: The ward stone blazed bright, the dark slunk away grumbling, and every night they woke
+    the stone with a messy magic high-five.
+pages:
+- number: 0
+  kind: title
+  text: The Grumpy Ward Stone
+  image:
+    prompt: 'A warm dusk establishing shot of Whisper Village: cobblestone paths, thatched cottages, and
+      a single big glowing ward stone at the border. Aria stands by it, hand on the stone, smiling.'
+    characters_present:
+    - aria
+    alt: Aria by the glowing village ward stone at dusk
+    file: images/page-00.png
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: Aria loved the old ward stone. It glowed at the edge of the village.
+  image:
+    prompt: Aria sitting happily beside the tall ward stone at the village edge, the stone glowing soft
+      warm light, cottages behind her. Daytime, cozy.
+    characters_present:
+    - aria
+    alt: Aria sitting by the glowing ward stone
+    file: images/page-01.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 2
+  kind: story
+  text: Every night it shone bright. The dark stayed out. Everyone slept safe.
+  image:
+    prompt: 'Night scene: the ward stone glowing like a little sun, pushing back the dark woods. The village
+      cottages are cozy and asleep behind it.'
+    characters_present: []
+    alt: The ward stone glowing brightly at night, keeping the dark away
+    file: images/page-02.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+- number: 3
+  kind: story
+  text: But one night, the stone went dim. It sputtered. Pfft. Pfft. No light.
+  image:
+    prompt: The ward stone gone dim and grey, a few sad little sparks fizzling out of it. Aria stares
+      up at it worried, the woods behind a bit darker than before.
+    characters_present:
+    - aria
+    alt: The dim, sputtering ward stone with Aria looking worried
+    file: images/page-03.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 4
+  kind: story
+  text: '"I can fix it!" said Aria. She aimed her hands and zapped the stone.'
+  image:
+    prompt: Aria standing tall with both hands out, a bright bolt of sparkly magic shooting from her palms
+      toward the dim ward stone. Determined grin, magic motes everywhere.
+    characters_present:
+    - aria
+    alt: Aria zapping the ward stone with a spell
+    file: images/page-04.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-catch
+    prompt: Catch Aria's sparks and pour them into the ward stone!
+    data:
+      player:
+        emoji: 🪨
+        label: the ward stone
+      catch:
+      - emoji: ✨
+        label: magic spark
+      - emoji: 🌟
+        label: bright star
+      avoid:
+      - emoji: 🦋
+        label: night moth
+      goal: 6
+      speed: gentle
+      how: Drag the stone to catch every spark — let the moth flutter by!
+      avoid_line: Not the moth! She loves the night! 🦋
+    feedback:
+      correct: The stone drinks the sparks and flickers... almost! ✨
+      try_again: Catch the sparks — fill the stone!
+    reward:
+      label: Spark Catcher
+      emoji: 🪨
+      id: spark-catcher
+- number: 5
+  kind: story
+  text: But the spell missed! It froze Bram's lunch. His sandwich turned to ice.
+  image:
+    prompt: 'Aria''s misfired spell hits the wrong target: Bram holds up a sandwich that has turned into
+      a solid block of blue ice, frost puffing off it. Bram blinks calmly; Aria winces. Funny.'
+    characters_present:
+    - aria
+    - bram
+    alt: Bram holding a frozen sandwich after Aria's spell misfired
+    file: images/page-05.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+- number: 6
+  kind: story
+  text: Aria tried again. POOF! Flowers grew all over Sylfie's hair. Sylfie sneezed petals.
+  image:
+    prompt: 'A big POOF of magic: Sylfie''s floating hair is now sprouting bright daisies and tulips everywhere,
+      and she is mid-sneeze sending petals flying. Aria covers her mouth, half-sorry half-giggling. Silly
+      and warm.'
+    characters_present:
+    - aria
+    - sylfie
+    alt: Sylfie's hair sprouting flowers, sneezing petals, after Aria's spell
+    file: images/page-06.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-whack
+    prompt: Bop the flowers popping out of Sylfie's hair!
+    data:
+      whack:
+      - emoji: 🌼
+        label: daisy
+      - emoji: 🌷
+        label: tulip
+      avoid:
+      - emoji: 🐝
+        label: happy bee
+      goal: 6
+      speed: gentle
+      how: Tap the flowers as they pop up — don't bop the bee!
+      avoid_line: Not the bee! She wants the flowers! 🐝
+    feedback:
+      correct: Boop! Boop! The flowers puff away in petals. 🌼
+      try_again: Quick — bop the flowers before they bloom!
+    reward:
+      label: Flower Bopper
+      emoji: 🌷
+      id: flower-bopper
+- number: 7
+  kind: story
+  text: Then the sky went dark. "Tick, tock. Your time runs thin," hissed Voidstalker.
+  image:
+    prompt: The woods beyond the dim ward stone have gone inky dark. Low among the trees, the shadowy
+      shape of Voidstalker watches, two pinprick cold white eyes glowing. Creeping dread but storybook-gentle.
+      Aria's friends look toward it.
+    characters_present:
+    - voidstalker
+    - aria
+    alt: Voidstalker's cold white eyes blinking in the dark woods
+    file: images/page-07.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+- number: 8
+  kind: story
+  text: '"Hurry, Aria!" said Bram. The shadow crept close. The stone gave one spark.'
+  image:
+    prompt: 'Tense moment at the ward stone: Bram points urgently at dark shadow tendrils creeping across
+      the grass toward them. The dim stone manages one tiny hopeful spark. Aria braces, Sylfie close by.'
+    characters_present:
+    - aria
+    - bram
+    - sylfie
+    alt: Shadow tendrils creeping toward the friends as the stone barely sparks
+    file: images/page-08.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-maze
+    prompt: Guide the last spark through the dark to the ward stone!
+    data:
+      player:
+        emoji: ✨
+        label: the last spark
+      exit:
+        emoji: 🪨
+        label: the ward stone
+      collect:
+        emoji: 💫
+        label: glimmer
+      size: cozy
+      how: Swipe to weave the spark past the shadows to the stone!
+      avoid_line: Keep away from the creeping dark! 🕳️
+    feedback:
+      correct: The spark reaches the stone — it holds on! ✨
+      try_again: Wind through the dark — reach the stone!
+    reward:
+      label: Spark Guide
+      emoji: 💫
+      id: spark-guide
+- number: 9
+  kind: story
+  text: '"Together!" said Sylfie. They all grabbed hands. They said the spell as one.'
+  image:
+    prompt: Aria, Sylfie, and Bram stand in a ring holding hands around the dim ward stone, eyes shut,
+      mouths open mid-chant, magic light beginning to swirl up between them. The shadow looms but the
+      friends glow brighter. Hopeful, warm.
+    characters_present:
+    - aria
+    - sylfie
+    - bram
+    alt: Aria, Sylfie and Bram holding hands and casting together around the stone
+    file: images/page-09.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 10
+  kind: story
+  text: BOOM! Sparks and flowers burst out. The ward stone blazed bright!
+  image:
+    prompt: 'A huge joyful burst from the ward stone: sparks, stars, and flowers exploding outward in
+      every direction, the stone blazing like a sun. The three friends are lit gold, laughing, blown back
+      by the happy blast. The dark recoils.'
+    characters_present:
+    - aria
+    - sylfie
+    - bram
+    alt: The ward stone blazing bright in a burst of sparks and flowers
+    file: images/page-10.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-pop
+    prompt: Pop the burst of sparks and flowers as the stone blazes awake!
+    data:
+      pop:
+      - emoji: ✨
+        label: spark
+      - emoji: 🌼
+        label: flower burst
+      avoid:
+      - emoji: 🦋
+        label: night moth
+      goal: 8
+      speed: gentle
+      how: Tap the bursting sparks and flowers — skip the moth!
+      avoid_line: Let the moth dance in the new light! 🦋
+    feedback:
+      correct: POP POP POP! The stone roars awake, bright as day! 🌟
+      try_again: Pop the burst — wake the stone!
+    reward:
+      label: Burst Popper
+      emoji: 🌟
+      id: burst-popper
+- number: 11
+  kind: story
+  text: The dark slunk away, grumbling. The village was safe again.
+  image:
+    prompt: Voidstalker's shadow shrinks and slinks back into the deep woods, grumbling, as the ward stone
+      glows strong and golden. The friends watch it go, relieved and triumphant. Calm returns to the village.
+    characters_present:
+    - voidstalker
+    - aria
+    alt: Voidstalker slinking back into the woods as the stone glows bright
+    file: images/page-11.png
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 12
+  kind: story
+  text: Now every night, they wake the stone together. They do a big, messy magic high-five.
+  image:
+    prompt: 'Happy ending: Aria, Sylfie, and Bram leap to slap a glittering three-way high-five in front
+      of the bright ward stone at night, sparks and a stray flower puffing from their hands. Joyful, golden,
+      cozy.'
+    characters_present:
+    - aria
+    - sylfie
+    - bram
+    alt: Aria, Sylfie and Bram doing a sparkly three-way high-five by the glowing stone
+    file: images/page-12.png
+  layout:
+    text_position: upper-third
+    text_align: center
+    scrim: true
+interactions_summary:
+- 'Page 4 (arcade-catch): catch Aria''s sparks into the ward stone, spare the night moth'
+- 'Page 6 (arcade-whack): bop the flowers popping from Sylfie''s hair, spare the bee'
+- 'Page 8 (arcade-maze): guide the last spark through the dark to the stone'
+- 'Page 10 (arcade-pop): pop the burst of sparks and flowers as the stone blazes awake'
+status: draft
+tags:
+- friendship
+- courage
+- magic-gone-wrong
+- funny
+cover:
+  image: images/cover.png
+  image_prompt: Aria, Sylfie, and Bram together at the village edge at dusk, hands raised mid-spell, a
+    big joyful burst of sparks and flowers erupting from the glowing ward stone, with two cold shadow-eyes
+    shrinking back in the dark woods behind. Fun, warm, a little thrilling.
+  alt: 'Cover: Aria and friends casting a sparking, flowery burst to light the ward stone as a shadow
+    retreats'

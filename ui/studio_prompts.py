@@ -43,8 +43,10 @@ SPEED — every tool round trip costs a full model pass, so batch your context g
   FIRST — it prints the world bible, full cast (personalities, voices, catchphrases, stages),
   existing story slugs, the per-year reader portraits, and the exact scaffold command in ONE call.
   Do NOT separately read world.yaml + each character yaml — the pack has it all.
-- Illustrations render pages in parallel already (generate_images.py --jobs, default 4);
-  run it ONCE for the whole story, never page-by-page.
+- Illustrations: prefer the 3x3 GRID mode (`generate_images.py --grid`) — one contact-sheet
+  render per 9 pages, sliced into tiles. NEVER run image renders in a foreground tool call
+  (codex takes 1-4 min PER image and your bash tool will time out mid-render): launch
+  detached with nohup + a log file, then poll the log. See IMAGE GENERATION below.
 
 Work INTERACTIVELY and CONFIRM as you go — never build everything in one giant turn:
 1. When the user wants a new world or book, FIRST gather the missing details with a FORM (see the
@@ -148,16 +150,30 @@ is NEVER written or edited as text. Two rules cover everything:
   cross-file consistency (rosters, tokens, images). Do not mark a book published while
   validation fails.
 
-IMAGE GENERATION — the default provider is "local": Qwen-Image (4-bit GGUF) on the local iGPU
-via a ComfyUI server (no API key, no billing). Each render is auto-reviewed by a vision model
-(MiniMax-M3); if a frame is inconsistent with the character/scene, ONE Qwen-Image-Edit pass
-repairs it automatically. ALWAYS assume a real provider is available and just run "uv run python
-scripts/generate_images.py ..." — do not ask the user whether to generate images, do not skip the
-step, do not propose placeholders, and do not suggest setting up a key. Just run the tool. Use
---provider flux2 only if the user asks for FLUX.2 (slower, higher fidelity). If (and only if) the
-script exits with an error that the ComfyUI server is unreachable, STOP IMMEDIATELY, surface that
-one short error (the user may need to start the toolbox container), and do not retry — never
-silently fall back to placeholder art."""
+IMAGE GENERATION — the default provider is "codex": the Codex CLI's built-in image tool on
+your ChatGPT session (no API key), falling back to agy (Google OAuth) then nano-banana.
+Each render is auto-reviewed by a local vision model (best-of-N with varied seeds; bad
+frames are re-rolled automatically). ALWAYS assume a real provider is available and just
+run "uv run python scripts/generate_images.py ..." — do not ask the user whether to
+generate images, do not skip the step, do not propose placeholders, and do not suggest
+setting up a key. Just run the tool. Use --provider local only if the user asks for the
+offline iGPU path (needs the ComfyUI container running).
+
+IMAGE RENDERS ARE SLOW — a codex image call takes 1-4 MINUTES per image, and a full book
+is many images. A foreground bash call WILL time out and kill the render mid-flight
+(leaving dead placeholder/failed files behind). So:
+- NEVER run generate_images.py in a foreground tool call with a short timeout. Launch it
+  DETACHED and POLL: run it in the background redirecting output to a log file
+  (e.g. `nohup uv run python scripts/generate_images.py <world>/<story> > /tmp/render.log 2>&1 &`),
+  then check progress with a quick `tail` of the log on each subsequent tool call.
+- Prefer the 3x3 GRID mode for bulk work: `--grid` renders up to 9 pages as ONE contact
+  sheet and slices it into tiles (~1 call per 9 pages instead of 9 calls). QC the tiles
+  afterwards; re-render ONLY tiles that miss the bar with `--page N` (per-page, targeted).
+- Renders run serially through codex — don't launch two generate_images.py runs for the
+  same story at once; wait for one to finish.
+- If (and only if) the script exits saying the image CLI/quota is exhausted or a fallback
+  is unreachable, STOP IMMEDIATELY, surface that one short error to the user, and do not
+  retry — never silently fall back to placeholder art."""
 
 # Inject the data-derived reading-level labels (e.g. "age 5 solo: aim ~15, max 25 vs ≈ 55
 # read-aloud", "1-18", "~14+", "read-aloud for age <=5, solo from 6") so the brief never hardcodes

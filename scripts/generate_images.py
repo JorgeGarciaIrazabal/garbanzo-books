@@ -20,9 +20,10 @@ This module is the CLI + the story/character drivers; the moving parts live in l
   lib/image_pipeline.py   — best-of-N render + local-vision QC + winner finalisation
 
 Providers:
-  - "antigravity" (default) — Google Gemini image generation via the local Antigravity CLI
-    (agy) and its generate_image tool. Uses your existing Google OAuth session; no API key
-    required. Set ANTIGRAVITY_MODEL to override the default image model.
+  - "codex" (default) — the Codex CLI (codex exec) and its built-in image tool, running on
+    your ChatGPT session; no API key. Set CODEX_MODEL to override codex's model.
+  - "antigravity" — the same fallback chain, agy-first: the Antigravity CLI (agy) and its
+    generate_image tool via Google OAuth, then codex.
   - "nano-banana" — Google Gemini's "Nano Banana" image family (default gemini-3-pro-image,
     a.k.a. "Nano Banana Pro"; gemini-3.1-flash-image is the fast tier).
     Free to start: get a key at https://aistudio.google.com/apikey and set GEMINI_API_KEY (or
@@ -47,7 +48,9 @@ Env:
   GEMINI_IMAGE_MODEL                 override model (default gemini-3-pro-image = "Nano
                                      Banana Pro"; e.g. gemini-3.1-flash-image = fast tier)
   GEMINI_IMAGE_SIZE                 1K (default) | 2K | 4K — Nano Banana Pro resolution tier
-  IMAGE_PROVIDER                     default provider (default: antigravity)
+  IMAGE_PROVIDER                     default provider (default: codex)
+  CODEX_MODEL                        codex exec model override (default: codex config's model)
+  CODEX_IMAGE_AGENT                  "codex" (default) or "agy" — which CLI renders first
   OLLAMA_HOST                        Ollama endpoint (default http://localhost:11434)
   VISION_QC_MODEL                    override the auto-picked vision model
                                      (default: first vision-capable model pulled)
@@ -418,7 +421,7 @@ def main() -> int:
     ap.add_argument("--seed", type=int, help="override seed")
     ap.add_argument(
         "--provider",
-        default=os.getenv("IMAGE_PROVIDER", "local"),
+        default=os.getenv("IMAGE_PROVIDER", "codex"),
         choices=[
             "local",
             "qwen",
@@ -428,11 +431,13 @@ def main() -> int:
             "gemini",
             "openai",
             "antigravity",
+            "codex",
             "placeholder",
         ],
-        help="default: local (Qwen-Image via the local ComfyUI server on the iGPU, "
-        "no API key); 'flux2' for FLUX.2-dev (slower, higher fidelity); "
-        "antigravity/nano-banana/gemini/openai are cloud fallbacks",
+        help="default: codex — the Codex CLI's built-in image tool via your ChatGPT session "
+        "(no API key); 'antigravity' = agy-first then codex; 'local'/'qwen' for Qwen-Image "
+        "on a local ComfyUI server; 'flux2' for FLUX.2-dev (slower, higher fidelity); "
+        "nano-banana/gemini/openai are other cloud options",
     )
     ap.add_argument("--print-prompts", action="store_true", help="dry run: only print prompts")
     ap.add_argument(

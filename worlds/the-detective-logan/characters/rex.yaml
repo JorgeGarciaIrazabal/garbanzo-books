@@ -1,0 +1,108 @@
+slug: rex
+world: the-detective-logan
+name: Rex
+role: recurring
+species: human kid
+pronouns: he/him
+one_liner: The know-it-all rival detective who solves every case wrong — LOUDLY.
+personality:
+  traits:
+  - supremely confident
+  - always wrong
+  - extremely loud
+  - jealous of Logan
+  - secretly wants to be liked
+  motivation: To out-detective Logan ONCE — just once — and get his face on the town notice board.
+  fears:
+  - being ordinary
+  - everyone finding out he once asked Logan for help
+  flaws:
+  - jumps to the WORST conclusion instantly and defends it forever
+  - cannot admit a mistake even mid-faceplant
+  - hides evidence that proves him wrong
+  strengths:
+  - endless confidence
+  - surprisingly good at being in the right place (for the wrong reasons)
+  - his wrong guesses accidentally give Logan the real clue
+  quirks:
+  - has a bigger magnifying glass than Logan and mentions it constantly
+  - names his guesses ('I call it... The Ghost Duck Theory')
+  - keeps a personal scoreboard where he is mysteriously winning
+  values:
+  - being FIRST
+  - big announcements
+  - never updating his scoreboard
+voice:
+  speech_style: booming announcements, dramatic pauses, wrong conclusions delivered with total certainty
+  catchphrases:
+  - HA! Elementary!
+  - The clues are OBVIOUS!
+  - Case closed! (they were not closed)
+  - Logan, your magnifying glass is smaller.
+  vocabulary_level: 'age 5-7: big announcing words used slightly incorrectly'
+appearance:
+  age_appearance: 7 years old
+  build: round and puffy, like a confident marshmallow
+  height: a bit taller than Logan, broader than both
+  skin: pale with pink cheeks
+  hair: orange, flat and neat on top, combed with detective dedication
+  eyes: green, squeezed shut whenever he announces a conclusion
+  outfit: green blazer with a gold detective badge sticker, bowtie, checked cap, giant magnifying glass
+    (slightly too big for him), clipboard of wrong conclusions
+  distinguishing_features:
+  - giant oversized magnifying glass
+  - gold detective badge sticker on green blazer
+  - bowtie
+  - checked cap
+  color_palette:
+  - part: blazer
+    hex: '#6a994e'
+  - part: bowtie
+    hex: '#d94f3d'
+  - part: cap
+    hex: '#2e4a7d'
+  - part: hair
+    hex: '#e07a2f'
+  - part: skin
+    hex: '#f2b898'
+  - part: badge
+    hex: '#f2b134'
+  silhouette_notes: wide round shape + enormous magnifying glass nearly his own size + bowtie — instantly
+    distinct from lean Logan and springy Poppy
+appearance_token: 'REX: a round puffy confident 7-year-old boy detective, a bit taller and much broader
+  than Logan, pale skin with pink cheeks (#f2b898), neat flat orange hair (#e07a2f), green eyes usually
+  squeezed shut mid-announcement, green blazer (#6a994e) with a gold badge sticker (#f2b134), red bowtie
+  (#d94f3d), navy checked cap (#2e4a7d), enormous magnifying glass almost too big for him, clipboard under
+  one arm, smug announcing expression'
+reference_images:
+- characters/rex.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: logan
+  relation: rival detective — Rex announces wrong, Logan proves right
+- character: poppy
+  relation: rival's partner-in-crime-by-accident — she keeps actual score
+evolution:
+- stage: loud-rival
+  order: 1
+  summary: 'The recurring foil: every case, a bigger announcement, a wronger conclusion.'
+  personality_delta: fully confident, zero correct
+  appearance_delta: brand-new gold badge sticker
+  unlocked_by: The Detective Logan series start
+- stage: reluctant-ally
+  order: 2
+  summary: Slowly, grudgingly, starts helping the Shack — while claiming credit.
+  personality_delta: slightly less wrong, twice as loud about it
+  appearance_delta: a tiny 'assistant' sticker added under his badge (he denies it means anything)
+  unlocked_by: a case where his wrong guess hands Logan the real clue
+- stage: surprise-hero
+  order: 3
+  summary: 'The finale twist: Rex''s giant magnifying glass is exactly the missing piece — and for once
+    he doesn''t announce, he just helps.'
+  personality_delta: quietly proud, briefly humble (it doesn't last)
+  appearance_delta: badge sticker upgraded to a real badge
+  unlocked_by: solving the Map of Lost Things
+tags:
+- rival
+- comic-relief
+- recurring

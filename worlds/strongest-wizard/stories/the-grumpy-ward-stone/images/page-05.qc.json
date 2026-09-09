@@ -1,0 +1,19 @@
+{
+  "page": 5,
+  "prompt_seed": 158134082,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 7.5,
+      "reason": "Both characters match their tokens well, the frozen sandwich scene matches the page text, palette and dreamy mood are on-style, though lines are bolder than the 'whisper-thin' spec.",
+      "flags": [
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 0,
+      "path": "page-05-158134082.png"
+    }
+  ],
+  "winner": "page-05.png"
+}

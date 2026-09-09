@@ -1,19 +1,38 @@
 ---
 name: interactive-elements
-description: Design REAL arcade games that give kids an OPTIONAL fun break — real-time engine games (snake, space shooter, maze, tower builder, whack-a-mole, breakout, catch, flap, run, pop, toss, steer) skinned from the story, plus rare branching choices — matched to the reader's age. Games are add-ons that NEVER change the story text or art. Use when adding interactivity to a finished story. Writes interaction blocks onto pages per schemas/story.schema.json.
+description: Design REAL arcade games that give kids an OPTIONAL fun break — a composed arcade-quest DESIGNED for the page's beat (stage, hero, actor roles & motions, waves, finale) or one of the twelve single-mechanic presets (snake, shooter, maze, stacker, whack-a-mole, breakout, catch, flap, run, pop, toss, steer) skinned from the story, plus rare branching choices — matched to the reader's age. Games are add-ons that NEVER change the story text or art. Use when adding interactivity to a finished story. Writes interaction blocks onto pages per schemas/story.schema.json.
 ---
 
 # Interactive elements
 
 An interaction is a **REAL game** — a 20–60-second fun break where the child *plays* a
 real-time arcade game that is *about* what just happened in the story. It's part of the
-romp, not a hidden drill. Read `methodology/fun-first.md` (the north star), then
-`methodology/interactivity.md` (the verb→game map, payload shapes, and skin ideas).
+romp, not a drill. Read `methodology/fun-first.md` (the north star), then
+`methodology/interactivity.md` (the composer spec, the preset verb→game map, payload
+shapes, and skin ideas).
 
-## Real games only
+## Compose first: `arcade-quest` — the game is built for the book
 
-**Every game in a new book is from the `arcade-*` family** — twelve real engine games
-(game loop, movement, physics, fullscreen over the page art):
+**The default move is to COMPOSE a bespoke game for the page's beat**, not pick a preset.
+A quest is a little scripted scenario you write from the page:
+
+| Part | What you write |
+|---|---|
+| `stage` | view (`side`/`sky`/`topdown`), parallax `bands`, `floor`, `scroll` |
+| `hero` | the page's protagonist + `control` (`walk`/`hop`/`flap`/`steer`/`drive`) |
+| `actors` | freely-named groups — role (`collect`/`rescue`/`dodge`/`bonk`/`squash`/`decoy`/`guard`) + motion (`drift`/`fall`/`rise`/`sine`/`chase`/`flee`/`hover`/`march`/`still`) + `from` + `count` + a joke `line` |
+| `waves` | escalation beats with story-written banner lines |
+| `finale` | the beat's payoff: `reach`/`clear`/`bigOne`/`tower`, with its own skin + line |
+
+Roles are where the comedy lives: the `decoy` that comically refuses ("That's a lantern,
+not a snack!"), the `guard` that shoves the hero back like a bouncy doorman, the `dodge`
+chili that bounces everyone. Waves make the game RISE like the page. The finale gives the
+beat its payoff. See interactivity.md for the full worked example (Nudo's dumpling rescue).
+
+**Pick a preset instead ONLY when one mechanic fits the beat exactly** — then the twelve
+single-mechanic games:
+
+## The presets, when one fits exactly
 
 | The page's verb | Game | | The page's verb | Game |
 |---|---|---|---|---|
@@ -23,6 +42,8 @@ romp, not a hidden drill. Read `methodology/fun-first.md` (the north star), then
 | sky full of poppables | `arcade-pop` | | build / stack up | `arcade-build` |
 | throw / aim | `arcade-toss` | | things keep popping up | `arcade-whack` |
 | swoop & collect | `arcade-steer` | | break through a wall | `arcade-bounce` |
+
+…or **compose an `arcade-quest`** when the beat is richer than one verb (the default).
 
 **Never use the legacy types** (drag-and-drop, find-in-picture, tap boards, jigsaw, quizzes,
 `custom`, the static `maze`…). They survive in already-published books only; the validator
@@ -66,42 +87,54 @@ main path a complete story.)
    beat a game every other page. Put the game on the **story page it belongs to**, never on a
    blank-text page that breaks the read; never on an emotional climax. Note them in
    `interactions_summary`.
-2. **Pick the arcade verb that matches the page's verb** (table above; full payload shapes
-   and skin ideas per game in interactivity.md). A genuine plot fork (rare) → `choice`.
-3. **Skin it from *this* page.** Player, targets, decoys, blocks — all emoji from what the
-   art and text already show. The `avoid` decoy is a comedy opportunity: the ladybug who's
-   helping, the chili the dragon must NOT eat.
+2. **Sketch the beat as a game.** Ask: what does the page's world look like (stage), who does
+   the kid control (hero + control), what fills the field (actor groups: roles + motions + a
+   joke line each), how does it escalate (waves with banner lines), and what's the payoff
+   (finale kind + skin)? If one preset verb covers ALL of that, take the preset; otherwise
+   compose an `arcade-quest`. A genuine plot fork (rare) → `choice`.
+3. **Skin everything from *this* page.** Hero, actors, bands, floor, finale — all emoji from
+   what the art and text already show. The `decoy`/`dodge`/`guard` roles are comedy
+   opportunities: the ladybug who's helping, the chili the dragon must NOT eat, the cat who
+   guards the counter.
 4. **Write the block:** `type`, `prompt` (one clear, in-voice invitation), `data` (the
-   exact shape in interactivity.md: nouns + `goal` + `speed` + `how` + `avoid_line`), and
-   warm `feedback.correct` / `feedback.try_again`. Optional: `reward` (`{label,emoji,id}`
+   composed scenario or the preset's exact shape in interactivity.md), and warm
+   `feedback.correct` / `feedback.try_again`. Optional: `reward` (`{label,emoji,id}`
    to theme the sticker), `difficulty`. `skill` is an optional internal label (default
    `engagement`) — it must never leak into what the child sees.
-5. **Fit the knobs to the band:** `goal` 4–8 for 5–7s, 8–12 for 7+; `speed: gentle` under 7,
-   `wild` only 9+; maze `size: cozy|normal|big`; bounce `rows: 1–3`. A round lands in
-   20–60 seconds.
+5. **Fit the knobs to the band:** quests — 2–3 waves, 2–3 groups, `goal` ≤ 10 + `speed:
+   gentle` under 7; presets — `goal` 4–8 for 5–7s, 8–12 for 7+; maze `size: cozy|normal|big`;
+   bounce `rows: 1–3`. A round lands in 20–60 seconds.
 6. **Co-reader prompts.** For read-aloud bands, set page `reading_notes` with a question to ask.
 
 ## Match to the reader's age (`target_year`)
 
-- **~4:** one-touch only — `arcade-catch`, `arcade-pop`, `arcade-whack`,
-  `arcade-build` — at `speed: gentle`, small `goal` (4–6).
-- **~5–7:** all one-touch games shine; add steering (`arcade-flap`, `arcade-run`,
-  `arcade-steer`), aiming (`arcade-toss`), and gentle swipe games (`arcade-snake`,
+- **~4:** one-touch only — quests with `hero.control: walk/steer` at `speed: gentle`, 1–2
+  waves, small `goal` (4–6), one-touch finales (`reach`, `clear`); presets `arcade-catch`,
+  `arcade-pop`, `arcade-whack`, `arcade-build`.
+- **~5–7:** quests with `hop`/`flap`/`steer` heroes and comedic `decoy`/`guard` actors;
+  presets — all one-touch games plus steering (`arcade-flap`, `arcade-run`,
+  `arcade-steer`), aiming (`arcade-toss`), gentle swipe games (`arcade-snake`,
   `arcade-maze` at `size: cozy`), `gentle`/`normal`, goal 4–8.
-- **~7–12:** everything — `arcade-shoot`, `arcade-bounce` (`rows` up to 3), `arcade-maze`
-  at `normal`/`big`, branching `choice` — at `normal` (or `wild` for 9+), goal 8–12.
+- **~7–12:** everything — quests with `chase`/`flee` motions, `bigOne` timing finales and
+  multi-wave escalation; presets `arcade-shoot`, `arcade-bounce` (`rows` up to 3),
+  `arcade-maze` at `normal`/`big`, branching `choice` — at `normal` (or `wild` for 9+),
+  goal 8–12.
 
 ## Quality bar
 
 - [ ] The story still reads as a **complete, satisfying book with every game skipped** — games
       add nothing the text/art needed, and you changed **no** `page.text` or `image.prompt`.
-- [ ] **Every game is an `arcade-*` type** (or a rare `choice`). Zero legacy types.
+- [ ] **Every game is an `arcade-*` type** (composed quest or preset; or a rare `choice`).
+      Zero legacy types.
 - [ ] Each game would be **fun on its own** — a kid would play it even outside the book.
-- [ ] Each game's **verb matches its page's verb**, and every noun is **skinned from the
-      page** (no default stars-and-baskets); `how` and `avoid_line` are in the story's voice.
-- [ ] Mechanics are **varied** — ≥3 different arcade kinds across the book.
-- [ ] `goal`/`speed`/`size`/`rows` fit the reader's age; each round lands in 20–60 seconds.
-- [ ] Each `data` payload matches its `type`'s shape (the validator checks required keys).
+- [ ] Each game **belongs to its page**: composed for the beat (quest) or verb-matched
+      (preset), and every noun is **skinned from the page** (no default stars-and-baskets);
+      wave banners, `how` and actor `line`s are in the story's voice.
+- [ ] Mechanics are **varied** — ≥3 different games across the book (different quests count
+      as different games when their scenario differs: stage/roles/waves/finale).
+- [ ] `goal`/`speed`/knobs fit the reader's age; each round lands in 20–60 seconds.
+- [ ] Each `data` payload matches its `type`'s shape (the validator checks required keys,
+      quest wave references, roles/motions, and goal reachability).
 - [ ] Warm `feedback.correct` / `try_again` in the story's voice — the win is the story's
       victory lap.
 - [ ] Any `choice` `goto` resolves to a real page; no dead ends; the main path is a full story.
@@ -109,9 +142,10 @@ main path a complete story.)
 
 ## Preview while you design — the Game Lab
 
-`make game-lab` builds the studio preview and opens the **Game Lab**: pick any of the twelve
-arcade templates, pick a page image as the backdrop, edit the YAML, and play the game
-instantly on the real engine. Iterate there before writing the block into story.yaml.
+`make game-lab` builds the studio preview and opens the **Game Lab**: pick a composed-quest
+template (the rescue / the heist / minimal) or any of the twelve preset templates, pick a
+page image as the backdrop, edit the YAML, and play the game instantly on the real engine.
+Iterate there before writing the block into story.yaml.
 
 ## Saving a game — JSON patch, never YAML edits
 

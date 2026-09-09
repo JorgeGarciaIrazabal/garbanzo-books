@@ -1,0 +1,517 @@
+slug: aria-bloom-spell
+world: strongest-wizard
+title: Aria and the Bloom Spell
+logline: Aria wants to learn the famous Bloom Spell before the legendary Bloom Sage passes through Whisper
+  Village — but every cast fizzles into a cabbage, and the legend she seeks is a napping grandma on a
+  giant snail right behind her.
+summary: 'Aria finds the Bloom Spell in an old book and wants to cast it for the village flower fair —
+  but her copies keep fizzling into cabbages. The legendary Bloom Sage is said to be coming to town, so
+  Aria hunts the village for the great wizard to ask for the trick. Meanwhile a tiny grandma keeps watering
+  her boots, napping on her giant snail, and dropping cryptic garden riddles. After a fizzle floods the
+  fair with cabbages, Aria finally sees the truth: the grandma IS the Sage — and the spell is not in the
+  copying. Aria makes the spell her own (a hop, a hum, a wish for the seeds), and the whole meadow blooms
+  in a rainbow of light. The Sage picks up one leftover cabbage: ''My favorite.'''
+age_band: 5-7
+target_year: 6
+reading_level:
+  read_mode: solo
+  target_fk_grade: 0.95
+  fk_grade_tolerance: 0.35
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 40
+  max_sentence_words: 11
+  decoding_focus: ''
+  decodable: false
+themes:
+- practice
+- mischief
+- legend
+- surprise
+moral: 'TODO: shown, not told.'
+characters:
+- slug: aria
+  stage: spell-weaver
+  role_in_story: the young wizard who wants the spell
+- slug: grandma-bloom
+  stage: legend-napping
+  role_in_story: the legend in disguise
+- slug: bram
+  stage: base
+  role_in_story: the nervous friend keeping score
+spine:
+  once_upon_a_time: Aria was a young wizard who loved a good spell — and the Bloom Spell looked like the
+    best spell of all.
+  every_day: She copied the words exactly, waved, and hoped — but every single cast fizzled into a plain
+    little cabbage.
+  until_one_day: 'Bram burst in with news: the legendary Bloom Sage — the wizard who made a whole mountain
+    bloom in one night — was coming to Whisper Village for the flower fair.'
+  because_of_that:
+  - Aria raced all over town to find the great Sage and ask for the trick — while a tiny grandma on a
+    giant snail trailed behind her, watering her boots and mumbling riddles.
+  - Aria practiced harder and harder at the fair, copying the book word for word — until one giant fizzle
+    flooded the whole fair with hundreds of cabbages.
+  - Red-faced in the cabbage flood, Aria finally looked at the little grandma — and the blossom-cloud
+    hair, the rainbow watering can, and the nap told her the truth.
+  until_finally: Aria stopped copying. She added her own hop, her own hum, and a wish for the seeds —
+    and the entire meadow bloomed in a whoosh of rainbow light.
+  ever_since_then: Aria wrote the spell in her own little book — in her own words — while the Sage napped
+    on a cabbage and called it her favorite.
+pages:
+- number: 0
+  kind: title
+  text: Aria and the Bloom Spell
+  image:
+    prompt: 'Title card: a young wizard girl with a spellbook standing in a meadow, waving her wand as
+      one tiny flower pops into bright bloom and one plain cabbage sits beside it, petals drifting, warm
+      pastel storybook title art'
+    characters_present:
+    - aria
+    alt: 'Title page: Aria with a spellbook, a blooming flower and a cabbage'
+    file: images/page-00.png
+    render_mode: grid3x3
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: 'Aria loves a good spell.
+
+    The big red book has a spell made for blooms.
+
+    It is called the Bloom Spell.
+
+    Aria wants to get it just right.'
+  image:
+    prompt: A young wizard girl sitting under the great oak with a big red spellbook open on her lap,
+      eyes wide with wonder at a glowing page, petals drifting in warm light, upper area calm for text
+    characters_present:
+    - aria
+    alt: Aria reading the Bloom Spell in a big red book
+    file: images/page-01.png
+    render_mode: grid3x3
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 2
+  kind: story
+  text: 'She copies the words, and she waves her wand.
+
+    Fizz.
+
+    There are no flowers at all.
+
+    There is just one plain cabbage.
+
+    Aria sighs, but the cabbage does not mind.'
+  image:
+    prompt: A young wizard girl waving a wand over a garden patch with a fizzle of sparks, a single plain
+      green cabbage sitting where flowers should be, the girl looking at it with a disappointed pout,
+      the cabbage looking smug
+    characters_present:
+    - aria
+    alt: Aria's spell fizzling into a cabbage
+    file: images/page-02.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 3
+  kind: story
+  text: 'Bram runs up with big news.
+
+    He says the Bloom Sage is coming to town!
+
+    One spell from her made a whole mountain bloom.
+
+    Aria gasps. The Sage can help her!'
+  image:
+    prompt: A cautious boy wizard running toward a girl wizard waving a scroll overhead, excited news
+      energy, the village of Whisper Village behind them with ward stones glowing at the border, dynamic
+      pastel scene
+    characters_present:
+    - aria
+    - bram
+    alt: Bram running with the news that the Bloom Sage is coming
+    file: images/page-03.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 4
+  kind: story
+  text: 'Aria packs her book and her wand.
+
+    She will find the Sage first!
+
+    But where does a legend go?
+
+    Maybe someone in town has seen her.'
+  image:
+    prompt: A young wizard girl tiptoeing out of the village with a packed satchel, wand between her teeth,
+      looking determined and sneaky, morning light, a path leading toward the meadow, adventurous mood
+    characters_present:
+    - aria
+    alt: Aria sneaking out to find the Bloom Sage
+    file: images/page-04.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-run
+    prompt: Run to the village gate to find the legend!
+    skill: engagement
+    difficulty: easy
+    data:
+      player:
+        emoji: 🧙‍♀️
+        label: Aria
+      collect:
+        emoji: 🌸
+        label: petal
+      obstacles:
+      - emoji: 🥬
+        label: cabbage
+      - emoji: 🪵
+        label: log
+      finish:
+        emoji: 🐌
+        label: the snail
+      goal: 10
+      speed: gentle
+      how: Tap to jump over the cabbages — gather petals and reach the snail!
+    reward:
+      label: Bloom Petal
+      emoji: 🌸
+      id: bloom-petal
+    feedback:
+      correct: Great jump!
+      try_again: Hop again!
+- number: 5
+  kind: story
+  text: 'At the gate sits a tiny grandma on a giant snail.
+
+    She says hello to Aria.
+
+    But Aria runs on by, too fast to stop.
+
+    She must find a legend!'
+  image:
+    prompt: A tiny knee-high grandma with fluffy pink-white blossom hair sitting on a giant friendly garden
+      snail at the village gate, waving lazily at a young wizard girl rushing past, the girl mid-run looking
+      determined ahead, funny contrast of slow snail and hurrying child
+    characters_present:
+    - aria
+    - grandma-bloom
+    alt: Grandma Bloom on her giant snail greeting rushing Aria
+    file: images/page-05.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 6
+  kind: story
+  text: 'Aria asks the baker about the Sage.
+
+    The baker says there is no bread here.
+
+    She asks the gardener next.
+
+    The gardener says there are only weeds.
+
+    But the snail follows her all day.
+
+    Slow, slow, slow.'
+  image:
+    prompt: A young wizard girl asking a baker at a market stall, then a gardener with a watering can,
+      in a two-scene market street, while in the background a tiny grandma on a giant snail follows at
+      a snail's pace leaving a slimy trail, visual joke of the slow chase
+    characters_present:
+    - aria
+    - grandma-bloom
+    alt: Aria asking around town while the snail grandma follows
+    file: images/page-06.png
+    render_mode: grid3x3
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 7
+  kind: story
+  text: 'The tiny grandma waters Bram''s boot with her can.
+
+    She tells Aria that seeds want sun.
+
+    Bram hops on one foot and yells about his sock.
+
+    Aria does not see. She is too fast.'
+  image:
+    prompt: A tiny grandma with a rainbow watering can pouring on a boy wizard's boot, the boy hopping
+      on one foot in surprise, the girl wizard in the background rushing off, meadow path scene, warm
+      funny moment
+    characters_present:
+    - bram
+    - grandma-bloom
+    - aria
+    alt: Grandma Bloom watering Bram's boot
+    file: images/page-07.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 8
+  kind: story
+  text: 'Aria tries the spell on the hill.
+
+    She copies each word so fast.
+
+    Fizz, fizz, fizz!
+
+    The hill fills up with plain cabbages.
+
+    It is a whole mountain of them.'
+  image:
+    prompt: A hillside covered in dozens of plain green cabbages where flowers should grow, a young wizard
+      girl standing mid-spell amid them looking deflated, her wand drooping, comedic repetition gag
+    characters_present:
+    - aria
+    alt: A hillside of cabbages from Aria's fizzled spells
+    file: images/page-08.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-pop
+    prompt: Pop the fizzled cabbages!
+    skill: engagement
+    difficulty: easy
+    data:
+      player:
+        emoji: ✨
+        label: spark
+      pop:
+      - emoji: 🥬
+        label: cabbage
+      avoid:
+      - emoji: 🐛
+        label: bug
+      goal: 8
+      speed: gentle
+      how: Tap the cabbages to pop them — leave the bug alone!
+      avoid_line: Whoops! Not the bug!
+    reward:
+      label: Cabbage Cap
+      emoji: 🥬
+      id: cabbage-cap
+    feedback:
+      correct: Pop goes the cabbage!
+      try_again: Try the next one!
+- number: 9
+  kind: story
+  text: 'The flower fair is ready, and everyone waits.
+
+    Aria steps up for her last big try.
+
+    She says the words faster than ever.
+
+    FIZZ! Cabbages rain down on the fair!'
+  image:
+    prompt: A village flower fair with banners and stalls, dozens of cabbages raining from the sky bouncing
+      off tents and tables, villagers ducking and laughing, a young wizard girl standing in the middle
+      with a spent wand, comedic chaos
+    characters_present:
+    - aria
+    alt: Cabbages raining on the flower fair
+    file: images/page-09.png
+    render_mode: grid3x3
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-catch
+    prompt: Catch the falling cabbages before they bonk the fair!
+    skill: engagement
+    difficulty: easy
+    data:
+      player:
+        emoji: 🧺
+        label: basket
+      catch:
+      - emoji: 🥬
+        label: cabbage
+      avoid:
+      - emoji: 🍯
+        label: honey jar
+      goal: 10
+      speed: gentle
+      how: Move the basket — catch the cabbages, dodge the sticky honey!
+      avoid_line: Sticky fingers!
+    reward:
+      label: Fair Basket
+      emoji: 🧺
+      id: fair-basket
+    feedback:
+      correct: Got it!
+      try_again: Catch the next one!
+- number: 10
+  kind: story
+  text: 'The fair is full of cabbages now.
+
+    Aria sits down right in them.
+
+    Then the little grandma taps her hat.
+
+    "Bloom is not copied, little sprout."'
+  image:
+    prompt: A young wizard girl sitting in a pile of cabbages looking sad, the tiny blossom-haired grandma
+      gently tapping her hat from the edge of the pile, quiet warm moment amid fair chaos, close emotional
+      framing
+    characters_present:
+    - aria
+    - grandma-bloom
+    alt: Grandma Bloom comforting Aria in the cabbage pile
+    file: images/page-10.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 11
+  kind: story
+  text: 'Aria looks up at last.
+
+    She sees the hair that looks just like a blossom.
+
+    She sees the tiny rainbow can.
+
+    "You!" she says. "You are the Bloom Sage!"
+
+    The grandma smiles, and then she takes a little nap.'
+  image:
+    prompt: A young wizard girl with wide eyes pointing at the tiny grandma, realization moment with a
+      glow, the grandma mid-yawn with a peaceful smile, petals swirling around them, reveal scene energy
+    characters_present:
+    - aria
+    - grandma-bloom
+    alt: Aria realizing the grandma is the Bloom Sage
+    file: images/page-11.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 12
+  kind: story
+  text: 'So Aria tries the spell in her own way.
+
+    She adds one hop and one hum.
+
+    She makes a wish for the little seeds.
+
+    This time she does not copy the words.
+
+    The spell is hers now.'
+  image:
+    prompt: A young wizard girl mid-hop with wand swinging in a joyful arc, humming with eyes shut, a
+      soft swirl of light gathering around the wand tip, seeds floating up around her, magical anticipation
+    characters_present:
+    - aria
+    alt: Aria casting the Bloom Spell her own way
+    file: images/page-12.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 13
+  kind: story
+  text: 'WHOOSH! The whole meadow blooms in light!
+
+    Pink and gold and green and blue!
+
+    The fair glows with a hundred flowers.
+
+    Everyone cheers for Aria, and even the snail claps.'
+  image:
+    prompt: The whole meadow erupting in glowing rainbow flowers, a village fair lit up with blossoms
+      on every stall and banner, villagers cheering, a giant snail wearing a tiny flower crown, a young
+      wizard girl at the center arms up in triumph, joyful climax with petals everywhere
+    characters_present:
+    - aria
+    - grandma-bloom
+    alt: The meadow blooming in rainbow light at the fair
+    file: images/page-13.png
+    render_mode: grid3x3
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-toss
+    prompt: Toss the seed-sparks and make the meadow bloom!
+    skill: engagement
+    difficulty: easy
+    data:
+      player:
+        emoji: 🧙‍♀️
+        label: Aria
+      projectile:
+        emoji: ✨
+        label: seed-spark
+      target:
+        emoji: 🌼
+        label: bloom spot
+      goal: 6
+      speed: gentle
+      how: Pull back and let go — land a seed-spark on each bloom spot!
+    reward:
+      label: Bloom Badge
+      emoji: 🌼
+      id: bloom-badge
+    feedback:
+      correct: It blooms!
+      try_again: One more try!
+- number: 14
+  kind: end
+  text: 'That night, Aria writes her own little spellbook.
+
+    She puts the page in her very own words.
+
+    The Sage naps on one plain cabbage.
+
+    "My favorite," she says. And she means it.'
+  image:
+    prompt: Night scene, a young wizard girl writing in her own little glowing spellbook by floating candlelight,
+      the tiny grandma asleep on a cabbage with a content smile, petals drifting, cozy warm ending
+    characters_present:
+    - aria
+    - grandma-bloom
+    alt: Aria writing her spellbook while the Sage naps on a cabbage
+    file: images/page-14.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+interactions_summary: []
+status: draft
+tags: []
+cover:
+  image: ''
+  image_prompt: ''
+  alt: ''
+affirms_rules:
+- Magic requires practice — no shortcuts, no chosen ones. Spells are learned through repetition, observation,
+  and experimentation.
+- Spellbooks cannot be copied perfectly — each wizard must make the spell their own through practice.

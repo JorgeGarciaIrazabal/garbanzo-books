@@ -1,0 +1,108 @@
+slug: principal-peabody
+world: the-detective-logan
+name: Principal Peabody
+role: recurring
+species: human grown-up
+pronouns: she/her
+one_liner: The school principal who believes in rules, bells, and blaming Logan.
+personality:
+  traits:
+  - strict
+  - suspicious of fun
+  - secretly sharp-eyed
+  - loves her bell schedule
+  - never apologises
+  motivation: To run the tidiest, quietest, most punctual school in the world — no mysteries allowed on
+    the schedule.
+  fears:
+  - chaos in the corridors
+  - her bell ringing at the wrong time (like 3:33)
+  - being proven wrong in front of students
+  flaws:
+  - assumes ANY mess near Logan is Logan's mess
+  - so rule-bound she misses what is right in front of her
+  - would rather dust the trophy case than hear an explanation
+  strengths:
+  - notices everything about the school building — squeaky doors, crooked posters
+  - her timing is perfect — she ALWAYS appears exactly one second after a prank
+  - deep down, her suspicious streak matches Logan's
+  quirks:
+  - carries a brass hand-bell everywhere, even outdoors
+  - measures skirt lengths, hedge heights and smiles with the same stern ruler
+  - keeps a 'LOGAN FILE' that is mostly drawings of Logan looking innocent
+  values:
+  - order
+  - the bell schedule
+  - quiet feet
+voice:
+  speech_style: crisp clipped sentences, one eyebrow up, questions that are really verdicts
+  catchphrases:
+  - Whose mess is this? LOGAN'S.
+  - That is NOT on the schedule.
+  - The bell does not lie. (it had been lying)
+  - Quiet feet!
+  vocabulary_level: 'grown-up stern with kid-readable rhythm: ''hmm'', ''indeed'', ''we shall see'''
+appearance:
+  age_appearance: 50s, crisp
+  build: tall and thin like a folding ruler
+  height: the tallest grown-up in town; kids crane up at her
+  skin: pale
+  hair: iron-grey bun, not one strand loose, pencil never far from it
+  eyes: sharp grey, one eyebrow permanently raised
+  outfit: navy pleated dress, grey cardigan buttoned to the top, brass hand-bell in hand, tiny key ring
+    of every door in the school jangling at her hip, sensible flat shoes
+  distinguishing_features:
+  - brass hand-bell always in hand
+  - iron-grey bun
+  - permanently raised eyebrow
+  color_palette:
+  - part: dress
+    hex: '#2e4a7d'
+  - part: cardigan
+    hex: '#8a8f98'
+  - part: hair
+    hex: '#d9d3c8'
+  - part: bell
+    hex: '#f2b134'
+  - part: skin
+    hex: '#f2cfb2'
+  - part: shoes
+    hex: '#1f1a17'
+  silhouette_notes: folding-ruler thinness + tall bun spike + hand-bell hanging from one raised hand —
+    unmissable even in black outline
+appearance_token: 'PRINCIPAL PEABODY: a tall thin crisp 50s school principal, folding-ruler straight,
+  pale skin (#f2cfb2), iron-grey hair in a severe bun (#d9d3c8) with not one strand loose, sharp grey
+  eyes with one eyebrow permanently raised, navy pleated dress (#2e4a7d), grey cardigan buttoned to the
+  top (#8a8f98), brass hand-bell (#f2b134) always in hand, jangling key ring at her hip, sensible black
+  flat shoes, stern disapproving expression'
+reference_images:
+- characters/principal-peabody.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: logan
+  relation: prime suspect for every mess, crime, and unexplained noise in the school
+- character: mayor-bumble
+  relation: Council of No colleague; they compete to be wrong first
+evolution:
+- stage: order-first
+  order: 1
+  summary: 'The school''s chief Logan-blamer: every unexplained mess is Logan''s mess.'
+  appearance_delta: LOGAN FILE folder under one arm
+  unlocked_by: The Detective Logan series start
+- stage: uneasy-ally
+  order: 2
+  summary: Too many solved cases later, she quietly starts saving evidence for Logan instead of confiscating
+    it.
+  personality_delta: still stern, but suspicious of the right things now
+  appearance_delta: a small jar on her desk labelled 'EVIDENCE (FOR LOGAN)'
+  unlocked_by: a case where the culprit was a thing she could not blame on Logan
+- stage: insider-hero
+  order: 3
+  summary: 'Finale: her perfect knowledge of the school building — every key, every squeak — becomes the
+    case-breaker.'
+  personality_delta: stern ally, almost smiles once (kids claim they saw it)
+  unlocked_by: solving the Map of Lost Things
+tags:
+- grown-up
+- recurring
+- school

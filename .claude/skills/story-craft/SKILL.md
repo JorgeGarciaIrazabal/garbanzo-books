@@ -34,8 +34,11 @@ language, add games, lay out text, and illustrate.
    `once_upon_a_time / every_day / until_one_day / because_of_that[] / until_finally /
    ever_since_then`. Make sure each beat *causes* the next, and the protagonist's `flaw`
    drives the middle.
-4. **Storyboard the pages.** Aim for the **~14-spread rhythm** for a standard picture book
-   (fewer for younger bands). For each page set:
+4. **Storyboard the pages.** Aim for the **9-page grid convention**: a book's TOTAL page
+   count (title page + story pages) is a multiple of **9** — 9 for a short romp (one grid
+   sheet), **18** for the standard book (two sheets), 27 for an epic. The 14-spread rhythm
+   from print maps to ~18 pages here (title + 17 story pages); shorter is fine for the
+   youngest bands. For each page set:
    - `text` — the words on the page (aim near the age's words/page anchor — soft, not a cap).
    - `image.prompt` — **scene only** (who/where/action/emotion). Do NOT add style or character
      descriptions; the illustrator injects `appearance_token`s + world style automatically.
@@ -67,7 +70,8 @@ language, add games, lay out text, and illustrate.
    naughty hero get away with it (or earn a funnier comeuppance, never a moral one).
 7. **Front/back matter** — title page (page 0) and an end page; optional dedication.
 8. **Scaffold & save**: `uv run python scripts/new_story.py <world> "<Title>" --year 6
-   --pages 14` to create every page stub (`--year` = the reader's age; the band + advisory
+   --pages 17` to create every page stub (`--year` = the reader's age; `--pages` snaps UP
+   to the 9-page grid convention automatically — 8→9, 17→18; the band + advisory
    reading anchors derive from the per-year curve; ~14+ = adult reader), then
    fill the content with **JSON patches** — never edit the YAML text directly:
    ```bash

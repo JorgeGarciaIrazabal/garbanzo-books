@@ -1,0 +1,29 @@
+PROMPT:
+A 3x3 grid contact sheet for the children's picture book 'Aria and the Bloom Spell': nine equal square panels arranged in three rows of three with clean thin white gutters, each story panel a complete self-contained full-bleed storybook illustration. ABSOLUTELY NO text, letters, numbers, labels, watermarks, captions, or page numbers anywhere in the image.
+
+row 1, column 1 — Panel for page 0: Title card: a young wizard girl with a spellbook standing in a meadow, waving her wand as one tiny flower pops into bright bloom and one plain cabbage sits beside it, petals drifting, warm pastel storybook title art
+row 1, column 2 — Panel for page 1: A young wizard girl sitting under the great oak with a big red spellbook open on her lap, eyes wide with wonder at a glowing page, petals drifting in warm light, upper area calm for text
+row 1, column 3 — Panel for page 2: A young wizard girl waving a wand over a garden patch with a fizzle of sparks, a single plain green cabbage sitting where flowers should be, the girl looking at it with a disappointed pout, the cabbage looking smug
+row 2, column 1 — Panel for page 3: A cautious boy wizard running toward a girl wizard waving a scroll overhead, excited news energy, the village of Whisper Village behind them with ward stones glowing at the border, dynamic pastel scene
+row 2, column 2 — Panel for page 4: A young wizard girl tiptoeing out of the village with a packed satchel, wand between her teeth, looking determined and sneaky, morning light, a path leading toward the meadow, adventurous mood
+row 2, column 3 — Panel for page 5: A tiny knee-high grandma with fluffy pink-white blossom hair sitting on a giant friendly garden snail at the village gate, waving lazily at a young wizard girl rushing past, the girl mid-run looking determined ahead, funny contrast of slow snail and hurrying child
+row 3, column 1 — Panel for page 6: A young wizard girl asking a baker at a market stall, then a gardener with a watering can, in a two-scene market street, while in the background a tiny grandma on a giant snail follows at a snail's pace leaving a slimy trail, visual joke of the slow chase
+row 3, column 2 — Panel for page 7: A tiny grandma with a rainbow watering can pouring on a boy wizard's boot, the boy hopping on one foot in surprise, the girl wizard in the background rushing off, meadow path scene, warm funny moment
+row 3, column 3 — Panel for page 8: A hillside covered in dozens of plain green cabbages where flowers should grow, a young wizard girl standing mid-spell amid them looking deflated, her wand drooping, comedic repetition gag
+
+Characters — each character must look IDENTICAL in every panel they appear in (same face, same outfit, same proportions):
+aria: ARIA: human girl 7-8, small stocky build, warm beige skin with nose freckles, messy chin-length chestnut bob (#5d4037) with single lavender streak (#c7b8ea), large bright amber-gold eyes (#ffb300), oversized blush-pink wizard robe (#f4c2c2) rolled sleeves, mint-green satchel (#a8e6cf), scuffed brown boots (#4e342e), golden friendship bracelets (#ffd93d) both wrists, ink-smudged fingers, singed robe hem, tiny star scar on chin [spell-weaver: robe fits better, fewer singe marks, hair tie actually holds, faint glow around hands when casting]
+bram: BRAM: human boy 8, tall lanky build, pale olive skin, floppy dark brown curls (#3e2723), wide warm brown eyes (#6d4c41) behind round wire glasses (#d7ccc8), mint-green pocket-covered tunic (#a8e6cf), cream trousers (#fdf6e3), oversized lavender scarf (#c7b8ea) dragging, pockets bulging with jars/chalk/string, one sleeve rolled higher
+grandma-bloom: GRANDMA BLOOM: a tiny knee-high ancient grandma wizard with a fluffy pink-white cloud of hair (#f7d4e8), bright twinkling green eyes behind tiny round gold spectacles (#c9a24b), mossy green robe covered in flower patches (#7aa25c), tiny brown boots (#8a5a3a), carries a tiny watering can that pours rainbows, often napping on or riding a giant friendly garden snail, dreamy pastel with colored-pencil texture
+
+Style for every panel: dreamy pastel children's book illustration, soft blush and mint palette, whisper-thin rounded lines, golden-hour glow with floating magic motes, ethereal gradients, hand-painted paper texture, cozy whimsical mood, no text.
+Palette: #fdf6e3, #f4c2c2, #a8e6cf, #c7b8ea, #ffd93d, #6b5b95.
+Leave the lower third of every panel as calm, low-detail negative space.
+
+NEGATIVE:
+photorealism, harsh shadows, saturated neon colors, scary or distorted faces, extra fingers, text artifacts, watermark, cluttered composition, thick outlines, high contrast
+
+SEED: 884721
+ASPECT: 1:1
+CHARACTERS: aria, bram, grandma-bloom
+REFERENCES: characters/aria.refs/model-sheet.png, characters/aria.refs/model-sheet.svg, characters/bram.refs/model-sheet.png, characters/bram.refs/model-sheet.svg

@@ -44,7 +44,7 @@ ASPECT   = world art_style.aspect_ratio
    `page-NN.qc.json` sidecar recording every attempt's score, flags, and reason so the
    decision is auditable. `duplicate_characters` / `anatomy_issue` short-circuit the loop
    (a re-roll won't fix a prompt problem). Disable with `--qc-off`, override the model with
-   `--qc-model gemma3:4b` (or set `VISION_QC_MODEL`), and override the endpoint with
+   `--qc-model glm-5.3-flash:cloud` (or set `VISION_QC_MODEL`), and override the endpoint with
    `OLLAMA_HOST`. If Ollama is unreachable, QC degrades to a permissive verdict — the first
    render ships, and the `qc.json` records `qc_unavailable` so the audit trail is honest.
 4. **Human QC** every page against the bible:
@@ -61,12 +61,12 @@ ASPECT   = world art_style.aspect_ratio
 
 ## QC provider — Local Ollama vision (RECOMMENDED)
 The best-of-N loop above is powered by a local Ollama vision model so the whole pipeline
-stays **API-key-free for QC** (image renders go through antigravity/nano-banana, not Ollama).
-Any vision-capable model works; `gemma3:4b` is the default and is small enough to run on
-CPU in a few seconds per page. To set it up:
+stays **API-key-free for QC** (image renders go through codex/agy/nano-banana, not Ollama).
+Any vision-capable model works; `glm-5.3-flash:cloud` is the default (natively multimodal,
+cheap) with local `gemma` models as the offline fallback. To set it up:
 
 ```bash
-ollama pull gemma3:4b        # one-time, ~3 GB
+ollama pull glm-5.3-flash:cloud   # one-time; a free Ollama cloud account is enough
 # Ollama must be running on $OLLAMA_HOST (default http://localhost:11434)
 ```
 
@@ -75,13 +75,31 @@ duplicates, scene matches the page text, art style matches the world bible, text
 legible, and no clear anatomy issues. Each attempt's verdict is written to `page-NN.qc.json`
 so the QC decision is reproducible and reviewable.
 
-## Image provider — Antigravity (default) / Nano Banana (fallback)
-`generate_images.py` defaults to `--provider antigravity` — the local Antigravity CLI (`agy`)
-via your Google OAuth session, so **no API key is needed**. Install `agy` and sign in with
-Google before illustrating. Override the model with `ANTIGRAVITY_MODEL` (default
-`gemini-3-pro-image`, "Nano Banana Pro"). Note: agy's tool interface doesn't accept inline
-reference images, so on-model consistency relies on the dense `appearance_token` text in
-the assembled prompt.
+## Image provider — Codex (default) / agy / Nano Banana (fallbacks)
+`generate_images.py` defaults to `--provider codex` — the local Codex CLI (`codex exec`) and
+its built-in image tool, running on your ChatGPT session, so **no API key is needed**.
+Install `codex`, `codex login`, and you're illustrating. Override codex's model with
+`CODEX_MODEL`; the fallback chain is the `agy` CLI (Google OAuth) then nano-banana. Neither
+CLI's tool interface accepts inline reference images, so on-model consistency relies on the
+dense `appearance_token` text in the assembled prompt.
+
+### Long-render protocol (ALWAYS follow — a foreground call WILL time out)
+A codex image call takes **1–4 minutes PER image**, and the codex chain renders serially. A
+foreground bash tool call with a short timeout kills the render mid-flight and leaves dead
+files. Therefore:
+1. **Launch detached, poll the log.** Never await `generate_images.py` synchronously:
+   ```bash
+   nohup uv run python scripts/generate_images.py <world>/<story> > /tmp/render.log 2>&1 &
+   # then check progress on later calls:
+   tail -5 /tmp/render.log
+   ```
+2. **Prefer `--grid` for bulk page art**: one contact-sheet render covers up to 9 pages and
+   is sliced into tiles (~1 slow call instead of 9). QC the tiles; re-render ONLY failing
+   tiles with `--page N`.
+3. **One render at a time** — don't start a second generate_images.py run for the same
+   story while one is in flight.
+4. **Character sheets** (`--character`) are single images but still slow (1–4 min): same
+   detached-or-patient-call rule applies.
 
 Fallback: `--provider nano-banana` (Google Gemini's image model, `gemini-3-pro-image`).
 Get a **free** key at https://aistudio.google.com/apikey and set `GEMINI_API_KEY` (or
@@ -96,9 +114,10 @@ SVG placeholders are a **development-only** fallback baked into the script for o
 debugging. They are **NOT acceptable output**. If `generate_images.py` writes a `.svg` for any
 page or character sheet, treat it as a hard failure:
 1. Stop. Do not commit. Do not mark the story `published`.
-2. Fix the root cause — install/sign in to `agy` (antigravity), or set `GEMINI_API_KEY` and
-   run with `--provider nano-banana`, enable billing if the free quota was exhausted, or pick
-   a different model via `GEMINI_IMAGE_MODEL` — then re-run until every page has a real `.png`.
+2. Fix the root cause — install/sign in to `codex` (`codex login` with ChatGPT), or `agy`
+   (antigravity), or set `GEMINI_API_KEY` and run with `--provider nano-banana`, enable
+   billing if the free quota was exhausted, or pick a different model via
+   `GEMINI_IMAGE_MODEL` — then re-run until every page has a real `.png`.
 3. Delete any leftover `.svg` placeholders the script may have written and re-point the page
    `image.file` to the `.png` (the script does this for you when the real provider succeeds).
 Do **not** pass `--provider placeholder`. (`--provider openai` with `OPENAI_API_KEY` is the

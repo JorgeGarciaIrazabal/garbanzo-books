@@ -50,6 +50,14 @@ Our digital books aren't bound, so the count is flexible — but the **~14-sprea
 still an excellent pacing target for a standard picture book, and keeping a sensible,
 deliberate page count makes a better-paced read than sprawl.
 
+**Our grid convention (multiples of 9).** Because illustrations may be generated as one 3x3
+contact sheet per nine pages (`scripts/generate_images.py --grid`, sliced into per-page
+tiles), this workspace snaps total page counts (title page + story pages) to **multiples of
+9**: 9 for a short romp, **18** for the standard book (the ~14-spread rhythm maps to title +
+17 story pages), 27 for an epic. Whole sheets slice cleanly; a partial final sheet still
+renders (the empty cells become decorative filler panels), but whole sheets are cheaper and
+the model places panels more reliably.
+
 ## 5. Storyboard vs. dummy
 - **Storyboard** — a thumbnail grid showing the whole book at once, to plan pacing and the
   emotional arc. (In this workspace: the `pages[]` outline + the optional color script.)

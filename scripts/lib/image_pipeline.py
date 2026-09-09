@@ -403,13 +403,36 @@ def build_grid_prompt(world: World, story: dict, pages: list[dict]) -> Assembled
     from .colors import palette_hexes
 
     palette = ", ".join(palette_hexes(art)[:8])
+    # Panels are described by GRID POSITION (row-major) so the model can place them even if
+    # it ignores the exact count, and a PARTIAL batch (fewer than 9 pages) names its true
+    # shape. Empty cells are explicitly filled with decorative art — a blank cell invites
+    # the model to bleed a neighbouring scene into it, which corrupts the tile slicing.
+    n = len(pages)
+    rows_used = (n + 2) // 3
+    if n == 9:
+        shape = "nine equal square panels arranged in three rows of three"
+    else:
+        last = "one panel in the final row" if n % 3 == 1 else (
+            "two panels in the final row" if n % 3 == 2 else "three panels in the final row")
+        shape = f"a {rows_used}-row grid of equal square panels, three per row, with {n} " \
+                f"story panels ({last}) and {9 - n} filler panels"
+    filled = [f"row {i // 3 + 1}, column {i % 3 + 1}" for i in range(len(cells))]
+    placed = [f"{pos} — {cell}" for pos, cell in zip(filled, cells)]
+    filler = (
+        f"\nThe remaining {9 - n} panel(s) (row-major after the {n} story panels) are "
+        "DECORATIVE FILLER in the same style: small standalone vignettes of the book's "
+        "world (scenery, tiny background props, no characters, no story action) — they are "
+        "never used as book pages, so keep them simple and uncluttered."
+        if n < 9 else ""
+    )
     prompt = (
         f"A 3x3 grid contact sheet for the children's picture book "
-        f"'{story.get('title', 'the book')}': nine equal square panels arranged in three rows "
-        "of three with clean thin white gutters, each panel a complete self-contained "
-        "full-bleed storybook illustration. ABSOLUTELY NO text, letters, numbers, labels, "
-        "watermarks, captions, or page numbers anywhere in the image.\n\n"
-        + "\n".join(cells)
+        f"'{story.get('title', 'the book')}': {shape} with clean thin white gutters, each "
+        "story panel a complete self-contained full-bleed storybook illustration. ABSOLUTELY "
+        "NO text, letters, numbers, labels, watermarks, captions, or page numbers anywhere "
+        "in the image.\n\n"
+        + "\n".join(placed)
+        + filler
         + (
             "\n\nCharacters — each character must look IDENTICAL in every panel they appear "
             "in (same face, same outfit, same proportions):\n" + "\n".join(tokens)

@@ -1,0 +1,45 @@
+{
+  "page": 12,
+  "prompt_seed": 512280092,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 5.0,
+      "reason": "The stone being woken is completely absent from the scene, and only Aria and Sylfie are high-fiving while Bram stands apart, contradicting the 'they' (all three) doing it together.",
+      "flags": [
+        "scene_mismatch",
+        "text_zone_cluttered",
+        "wrong_characters"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 0,
+      "path": "page-12-321312483.png"
+    },
+    {
+      "ok": false,
+      "score": 6.5,
+      "reason": "The high-five is depicted between only two characters (Bram stands aside with hand in pocket), and the 'stone' from the page text is entirely absent from the scene.",
+      "flags": [
+        "scene_mismatch",
+        "wrong_characters",
+        "text_zone_cluttered"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 1,
+      "path": "page-12-420213082.png"
+    },
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "All three characters match their locked tokens well, the dreamy pastel style and golden-hour magic motes are on-brand, and the messy magic high-five between the two girls with Bram cheering beside them fits the page text.",
+      "flags": [
+        "good"
+      ],
+      "model": "minimax-m3:cloud",
+      "attempt": 2,
+      "path": "page-12-512280092.png"
+    }
+  ],
+  "winner": "page-12.png"
+}

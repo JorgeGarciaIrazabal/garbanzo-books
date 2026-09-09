@@ -1,0 +1,19 @@
+{
+  "page": 13,
+  "prompt_seed": 249389922,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": true,
+      "score": 8.5,
+      "reason": "Aria and Grandma Bloom both match their locked tokens, the blooming fair with cheering crowd and happy snail fits the page text, and the pastel golden-hour style is consistent with calm sky space for captions.",
+      "flags": [
+        "good"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-13-249389922.png"
+    }
+  ],
+  "winner": "page-13.png"
+}

@@ -220,9 +220,10 @@
             "rhythm-tap", "song-builder", "sequence-recall",
             "arcade-catch", "arcade-flap", "arcade-run", "arcade-pop", "arcade-toss", "arcade-steer",
             "arcade-snake", "arcade-shoot", "arcade-maze", "arcade-build", "arcade-whack", "arcade-bounce",
+            "arcade-quest",
             "custom"
           ],
-          "description": "Interaction type — a short, playable, FUN break that belongs to this page. NEW BOOKS USE REAL GAMES: the arcade-* family — real-time games on an embedded game engine (fullscreen over the page art, physics, a game loop; every noun is skinned from the story — see $defs/arcadeSpec): arcade-catch (steer & catch what falls), arcade-flap (tap to fly through gaps), arcade-run (auto-run & jump, reach the finish), arcade-pop (pop the right drifting things), arcade-toss (slingshot into the target), arcade-steer (drag to steer, collect & dodge), arcade-snake (classic snake — slither, gobble, grow), arcade-shoot (gentle space shooter — steer & zap), arcade-maze (real-time maze — swipe to scoot through, assist reveals the trail), arcade-build (stack the swinging pieces into a tower), arcade-whack (whack-a-mole — bop them before they duck), arcade-bounce (breakout — bounce the ball, smash the wall). The branching 'choice' (a narrative fork) is also allowed, sparingly. ALL OTHER TYPES ARE LEGACY — kept so previously published books keep playing; do NOT use them in new books (no drag-and-drop, no find-in-picture, no tap boards, no quizzes). When no arcade mechanic fits, pick a different beat or skin a mechanic differently — don't fall back to a legacy type."
+          "description": "Interaction type — a short, playable, FUN break that belongs to this page. NEW BOOKS USE REAL GAMES: the arcade-* family — real-time games on an embedded game engine (fullscreen over the page art, physics, a game loop; every noun is skinned from the story). **`arcade-quest` is the composer** (see $defs/questSpec): a bespoke game DESIGNED for this page's beat — a stage (side-view / sky / top-down, parallax bands, scroll), a hero with a control style, freely-named actor groups (roles: collect / rescue / dodge / bonk / squash / decoy / guard; motions: drift / fall / rise / sine / chase / flee / hover / march / still), escalation waves with story-written banner lines, and a finale (reach / clear / bigOne / tower) — no two books' games look alike. The twelve single-mechanic presets remain available when one fits the beat exactly (see $defs/arcadeSpec): arcade-catch, arcade-flap, arcade-run, arcade-pop, arcade-toss, arcade-steer, arcade-snake, arcade-shoot, arcade-maze, arcade-build, arcade-whack, arcade-bounce. The branching 'choice' (a narrative fork) is also allowed, sparingly. ALL OTHER TYPES ARE LEGACY — kept so previously published books keep playing; do NOT use them in new books (no drag-and-drop, no find-in-picture, no tap boards, no quizzes). When nothing fits, compose an arcade-quest — don't fall back to a legacy type."
         },
         "prompt": { "type": "string", "description": "The instruction shown to the reader." },
         "skill": { "type": "string", "description": "Optional INTERNAL label only — never shown to the child. Default 'engagement'. If a game happens to exercise a reading skill (phonemic-awareness, phonics, fluency, vocabulary, comprehension) you may tag it, but fun is the point, not skill coverage." },
@@ -269,6 +270,10 @@
         {
           "if": { "properties": { "type": { "const": "custom" } }, "required": ["type"] },
           "then": { "properties": { "data": { "$ref": "#/$defs/customGameSpec" } } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "arcade-quest" } }, "required": ["type"] },
+          "then": { "properties": { "data": { "$ref": "#/$defs/questSpec" } } }
         },
         {
           "if": { "properties": { "type": { "pattern": "^arcade-" } }, "required": ["type"] },
@@ -324,6 +329,84 @@
         "speed": { "type": "string", "enum": ["gentle", "normal", "wild"], "description": "Pace. Use 'gentle' for under-7s. interaction.difficulty maps onto this too." },
         "how": { "type": "string", "description": "Optional one-line how-to shown on the intro card, in the story's voice." },
         "avoid_line": { "type": "string", "description": "Optional funny line shown when the child touches an avoid-thing." }
+      }
+    },
+
+    "questSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Payload for `arcade-quest` — the COMPOSED game: a bespoke scenario designed for THIS page's beat, not a preset. Describe a stage, a hero, freely-named actor groups (role + motion + spawn), escalation waves, and a finale. Every noun is an arcadeSkin from the story. Required keys (enforced by scripts/lib/checks/interactivity.py): `hero` (with `skin`), at least one entry in `actors`, and `finale` (with `kind` + `skin`). Always winnable: no fail states; the runtime adds the rubber-band assist ladder + calm fallback.",
+      "required": ["hero", "actors", "finale"],
+      "properties": {
+        "stage": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "The world the game plays in.",
+          "properties": {
+            "view": { "type": "string", "enum": ["side", "sky", "topdown"], "description": "side = ground + jumping hero; sky = flying hero (2D steering); topdown = open field (2D steering)." },
+            "scroll": { "type": "boolean", "default": true, "description": "Parallax bands drift past (side/sky only)." },
+            "bands": { "type": "array", "items": { "$ref": "#/$defs/arcadeSkin" }, "description": "Parallax background bands, near-to-far, skinned from the page (cloud rows, seaweed, hills…)." },
+            "floor": { "$ref": "#/$defs/arcadeSkin", "description": "The ground strip (side view) — grass, floorboards, sand…" }
+          }
+        },
+        "hero": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["skin"],
+          "description": "The thing the child controls — usually this page's protagonist.",
+          "properties": {
+            "skin": { "$ref": "#/$defs/arcadeSkin" },
+            "control": { "type": "string", "enum": ["walk", "hop", "flap", "steer", "drive"], "description": "walk = tap to jump; hop = double-jump; flap = tap for lift (gravity); steer = drag to steer (2D in sky/topdown); drive = drag steering, auto-forward feel." },
+            "speed": { "type": "number", "minimum": 0.4, "maximum": 2.5, "description": "Jump/lift strength multiplier (default 1)." }
+          }
+        },
+        "actors": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Named groups the author defines freely — 'sparks', 'crones', 'gulls'. Each group has one role and one motion. The engine assembles them into the field and the waves.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "skin", "role"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1, "description": "The group's name — waves reference it (`spawn: [{name: 'sparks', count: 4}]`)." },
+              "skin": { "description": "One skin or an array to vary per spawn.", "oneOf": [ { "$ref": "#/$defs/arcadeSkin" }, { "type": "array", "items": { "$ref": "#/$defs/arcadeSkin" } } ] },
+              "role": { "type": "string", "enum": ["collect", "rescue", "dodge", "bonk", "squash", "decoy", "guard"], "description": "collect = touch to grab (counts); rescue = touch to carry (counts); dodge = touching bounces the hero (never a penalty); bonk = bop it away (counts); squash = flatten it (counts); decoy = comically refuses (never counts); guard = blocks the way, shoves the hero back." },
+              "motion": { "type": "string", "enum": ["drift", "fall", "rise", "sine", "chase", "flee", "hover", "march", "still"], "description": "How the group moves (default drift)." },
+              "from": { "type": "string", "enum": ["top", "left", "right", "bottom", "anywhere"], "description": "Where spawns enter (default top; topdown games favour anywhere/left/right)." },
+              "count": { "type": "integer", "minimum": 1, "maximum": 12, "description": "Default per-wave count (waves can override)." },
+              "pace": { "type": "number", "minimum": 0.25, "maximum": 3, "description": "Speed multiplier (default 1)." },
+              "line": { "type": "string", "description": "The joke the kid hears when they meet one of these (in the story's voice)." }
+            }
+          }
+        },
+        "waves": {
+          "type": "array",
+          "description": "Escalation beats — the game RISES like the page it belongs to. Omit for one wave of every actor's default count.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "line": { "type": "string", "description": "The story-written banner shown when this wave lands (e.g. 'The second gust — HOLD ON!')." },
+              "spawn": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["name"], "properties": { "name": { "type": "string", "description": "The actor group to spawn (must exist in `actors`)." }, "count": { "type": "integer", "minimum": 1, "maximum": 12 } } } }
+            }
+          }
+        },
+        "finale": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "skin"],
+          "description": "The beat's payoff moment after the waves.",
+          "properties": {
+            "kind": { "type": "string", "enum": ["reach", "clear", "bigOne", "tower"], "description": "reach = touch the finish marker; clear = pop the last stragglers; bigOne = tap the GIANT one when it flashes (tell timing); tower = stack the swinging pieces skyward." },
+            "skin": { "$ref": "#/$defs/arcadeSkin" },
+            "line": { "type": "string", "description": "Banner line when the finale starts (in the story's voice)." }
+          }
+        },
+        "goal": { "type": "integer", "minimum": 3, "maximum": 60, "description": "Total meets to win (default: summed wave spawns). Keep it kid-sized — the win is the FINALE, the pips are the path." },
+        "speed": { "type": "string", "enum": ["gentle", "normal", "wild"], "description": "Pace. Use 'gentle' for under-7s. interaction.difficulty maps onto this too." },
+        "how": { "type": "string", "description": "Optional one-line how-to shown on the intro card, in the story's voice." },
+        "avoid_line": { "type": "string", "description": "Optional funny line shown when the child touches a dodge/decoy thing." }
       }
     },
 

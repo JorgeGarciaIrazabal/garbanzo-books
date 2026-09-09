@@ -1,0 +1,111 @@
+slug: ms-crumb
+world: the-detective-logan
+name: Ms. Crumb
+role: recurring
+species: human grown-up
+pronouns: she/her
+one_liner: The bakery lady who 'never sees anything' — and slips Logan clues with his buns.
+personality:
+  traits:
+  - warm and flour-dusted
+  - serene
+  - mysterious
+  - sees everything
+  - says almost nothing
+  motivation: To keep her bakery the coziest spot in town — and to quietly watch over the kids who notice
+    things.
+  fears:
+  - nobody noticing what she notices
+  - burnt buns
+  - the windmill being opened by the WRONG person
+  flaws:
+  - answers questions with questions ('Do I?')
+  - so calm that kids walk away before realising she just told them everything
+  - hides what she knows behind baking metaphors
+  strengths:
+  - the best listener in Maple Hollow
+  - her bakery sits opposite the notice board — she sees EVERYTHING
+  - leaves exactly the right clue at exactly the right moment
+  quirks:
+  - always has flour on her cheek and a fresh bun for detectives
+  - names buns after mysteries ('Whodunit buns', 'The Case of the Crumbly Scone')
+  - smiles one tiny smile when Logan gets something right
+  values:
+  - watching quietly
+  - feeding people
+  - secrets kept in good hands
+voice:
+  speech_style: soft, slow, cozy sentences that turn out to be clues; often answers with 'Do I?' or 'Is
+    that so?'
+  catchphrases:
+  - Do I?
+  - Is that so?
+  - Careful — those buns are hot. Both of them.
+  - The oven sees everything. It has a window.
+  vocabulary_level: 'grown-up gentle: riddle-warm, short cozy sentences'
+appearance:
+  age_appearance: grandma age, timeless
+  build: small, round and cozy like a fresh loaf
+  height: short — Logan's eye level, which is exactly how she likes it
+  skin: warm and soft, dusted with flour
+  hair: white and wispy, in a bun that looks exactly like a bread roll
+  eyes: twinkly grey behind small round glasses, always a step ahead
+  outfit: cream apron dusted with flour over a navy dress, red-check tea towel over one shoulder, oven
+    gloves peeking from apron pocket, a tiny brass key on a ribbon around her neck (kept tucked away)
+  distinguishing_features:
+  - flour-dusted cheek
+  - bread-roll bun hairdo
+  - red-check tea towel on shoulder
+  - tiny brass key on a ribbon (rarely visible)
+  color_palette:
+  - part: apron
+    hex: '#f6ead2'
+  - part: dress
+    hex: '#2e4a7d'
+  - part: tea_towel
+    hex: '#d94f3d'
+  - part: hair
+    hex: '#d9d3c8'
+  - part: skin
+    hex: '#e8c39e'
+  - part: glasses
+    hex: '#f2b134'
+  silhouette_notes: small round loaf-shape + bread-roll bun + tea towel triangle on shoulder — cozy outline
+    that hides one sharp secret (the tiny key)
+appearance_token: 'MS. CRUMB: a small round cozy grandma-age bakery lady, warm flour-dusted skin (#e8c39e),
+  white wispy hair in a bun shaped like a bread roll (#d9d3c8), twinkly grey eyes behind small round gold
+  glasses (#f2b134), cream flour-dusted apron (#f6ead2) over a navy dress (#2e4a7d), red-check tea towel
+  (#d94f3d) over one shoulder, oven gloves in apron pocket, serene knowing smile'
+reference_images:
+- characters/ms-crumb.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: logan
+  relation: the grown-up who half-believes him — and quietly feeds him clues with his buns
+- character: poppy
+  relation: her favourite customer and unofficial taste-tester
+- character: mayor-bumble
+  relation: long acquaintance — and keeper of older town secrets than his sash
+evolution:
+- stage: quiet-watcher
+  order: 1
+  summary: 'The cozy mystery: she ''sees nothing'', yet somehow the right clue reaches Logan every time.'
+  appearance_delta: flour always fresh, key always hidden
+  unlocked_by: The Detective Logan series start
+- stage: half-believer
+  order: 2
+  summary: Starts speaking in slightly less riddles when Logan proves two mysteries in a row.
+  personality_delta: lets one or two real facts slip per case
+  appearance_delta: begins leaving 'detective buns' wrapped in paper printed with tiny clues
+  unlocked_by: Logan solving a case she quietly pointed at
+- stage: key-keeper
+  order: 3
+  summary: 'Finale reveal: she has held the key to the windmill''s locked room all along — the Whisperers''
+    oldest friend, keeper of the Map''s door.'
+  personality_delta: openly kind, openly mysterious, finally tells one whole truth
+  appearance_delta: the tiny brass key comes out from under her apron and turns in the windmill door
+  unlocked_by: solving the Map of Lost Things
+tags:
+- grown-up
+- recurring
+- mystery-figure

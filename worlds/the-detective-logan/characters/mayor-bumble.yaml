@@ -1,0 +1,105 @@
+slug: mayor-bumble
+world: the-detective-logan
+name: Mayor Bumble
+role: recurring
+species: human grown-up
+pronouns: he/him
+one_liner: The mayor who cuts every ribbon twice and believes exactly nothing.
+personality:
+  traits:
+  - pompous
+  - loud
+  - wrong with total confidence
+  - loves ceremonies
+  - secretly fond of kids
+  motivation: To keep Maple Hollow tidy, calm, and 100% mystery-free — mystery is BAD for ribbon-cutting.
+  fears:
+  - the town panicking
+  - his sash getting wrinkled
+  - having to say 'I was wrong' (he physically cannot)
+  flaws:
+  - explains away EVERY mystery before hearing it
+  - never says 'I was wrong' — says 'I knew that, obviously' instead
+  - cannot resist a ribbon, even a suspicious one
+  strengths:
+  - his ceremonies accidentally gather the whole town (useful for reveals)
+  - surprisingly fast when fleeing ducks
+  quirks:
+  - measures everything with a tiny gold ruler
+  - his sash is always slightly crooked
+  - ends every speech with 'ALL IS WELL'
+  values:
+  - order
+  - ceremony
+  - all is well (it is not)
+voice:
+  speech_style: big booming announcement voice, even for 'good morning'
+  catchphrases:
+  - ALL IS WELL!
+  - Don't be silly, Logan!
+  - Nothing is missing. I checked. (he did not)
+  - As mayor...
+  vocabulary_level: 'grown-up bombast that kids find ridiculous: ''preposterous!'', ''outlandish!'', ''harrumph!'''
+appearance:
+  age_appearance: round 50s
+  build: round and wobbly like a walking parade balloon
+  height: tall, but stoops to pat kids on the head
+  skin: rosy pink, always slightly sweaty on ceremony days
+  hair: grey side-part, mustache like a little broom
+  eyes: small blue behind tiny round spectacles
+  outfit: navy suit, wide gold mayor sash (always slightly crooked), red bowtie, tiny gold ruler in breast
+    pocket, polished shoes, comically tall top hat
+  distinguishing_features:
+  - gold mayor sash worn slightly crooked
+  - broom mustache
+  - comically tall top hat
+  color_palette:
+  - part: suit
+    hex: '#2e4a7d'
+  - part: sash
+    hex: '#f2b134'
+  - part: bowtie
+    hex: '#d94f3d'
+  - part: hat
+    hex: '#1f1a17'
+  - part: mustache
+    hex: '#d9d3c8'
+  - part: skin
+    hex: '#f2b898'
+  silhouette_notes: parade-balloon roundness + top hat taller than sensible + sash diagonal across the
+    chest — pure outline says 'the mayor'
+appearance_token: 'MAYOR BUMBLE: a round wobbly 50s man, mayor of a small town, rosy pink sweaty skin
+  (#f2b898), grey side-parted hair with a little grey broom mustache (#d9d3c8), small blue eyes behind
+  tiny round spectacles, navy suit (#2e4a7d), wide gold sash (#f2b134) worn slightly crooked, red bowtie
+  (#d94f3d), comically tall black top hat (#1f1a17), tiny gold ruler in breast pocket, booming self-satisfied
+  expression'
+reference_images:
+- characters/mayor-bumble.refs/model-sheet.png
+seed: 1234
+relationships:
+- character: logan
+  relation: 'head patter-of-heads: ''Don''t be silly, Logan'' is his whole personality'
+- character: principal-peabody
+  relation: fellow Council of No member; they argue over whose turn it is to be wrong
+evolution:
+- stage: all-is-well
+  order: 1
+  summary: 'The town''s chief denier: every mystery is ''nothing'' until Logan proves otherwise.'
+  appearance_delta: sash perfectly crooked
+  unlocked_by: The Detective Logan series start
+- stage: nervous-watcher
+  order: 2
+  summary: After too many of Logan's reveals, he suspects things — but announces 'ALL IS WELL' faster
+    than ever to cover it.
+  personality_delta: privately rattled, publicly louder
+  unlocked_by: a reveal he witnessed in person
+- stage: reluctant-hero
+  order: 3
+  summary: 'Finale: at the epic showdown his booming voice finally announces something TRUE — and his
+    tiny gold ruler turns out to matter.'
+  personality_delta: briefly, magnificently honest
+  unlocked_by: solving the Map of Lost Things
+tags:
+- grown-up
+- comic-relief
+- recurring

@@ -63,6 +63,7 @@ READER_SCRIPTS = [
     "gx.core.js",
     "gx.board.js",
     "gx.arcade.js",
+    "gx.quest.js",
     "reader.boot.js",
 ]
 

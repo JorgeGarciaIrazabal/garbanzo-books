@@ -81,13 +81,16 @@ ui/             Dynamic UI server (OpenCode + local Ollama, no API key) — the 
 6. **Games are optional add-ons — the story is the product.** Interleave interactions as
    *games* that are a delightful 20–60-second break, never a hidden reading drill. **REAL
    games only:** every game in a new book is from the `arcade-*` family on the embedded game
-   engine — fullscreen, real-time, physics, skinned by the story — twelve mechanics:
-   `snake`, `shoot`, `maze`, `build`, `whack`, `bounce`, `catch`, `flap`, `run`, `pop`,
-   `toss`, `steer`. Match the game's verb to the page's verb and vary the mechanics (≥3
-   kinds per book). Legacy minigames (drag-and-drop, find-in-picture, tap boards, jigsaws,
-   quizzes, `custom`) survive in already-published books only — never in a new story (the
-   validator warns; the quality gate flags). Preview any game live in the Game Lab
-   (`make game-lab`). And a game **never changes the story or the art**:
+   engine — fullscreen, real-time, physics, skinned by the story. The flagship is
+   **`arcade-quest`, the composer** — a bespoke game DESIGNED for the page's beat (stage,
+   hero + control style, freely-named actor groups with roles & motions, escalation waves,
+   a finale), so games are *built for the book*, not picked from a list. The twelve
+   single-mechanic presets survive for when one fits exactly: `snake`, `shoot`, `maze`,
+   `build`, `whack`, `bounce`, `catch`, `flap`, `run`, `pop`, `toss`, `steer`. Legacy
+   minigames (drag-and-drop, find-in-picture, tap boards, jigsaws, quizzes, `custom`)
+   survive in already-published books only — never in a new story (the validator warns;
+   the quality gate flags). Preview any game live in the Game Lab (`make game-lab`). And a
+   game **never changes the story or the art**:
    it must not advance the plot, gate a page, or require editing `page.text` or an `image.prompt`;
    the book must be a complete, satisfying read for a kid who skips every game. Add games on top
    of a finished story + finished art; match the game to the story beat, not to a skill quota.
@@ -260,14 +263,16 @@ verify the image-gen path is ready:
 make check-gemini
 ```
 
-- ✓ `agy` CLI found → `/illustrate` will render real images with the **antigravity** provider
-  (default; local CLI via Google OAuth — no API key needed)
-- ⚠ no `agy`, but key found → falls back to the **nano-banana** provider (`GEMINI_API_KEY`)
-- ✗ neither found → `/illustrate` falls back to labeled SVG placeholders, and the book
-  can't actually be marked `published` without the user adding a key or installing `agy`
+- ✓ `codex` CLI found → `/illustrate` will render real images with the **codex** provider
+  (default; local Codex CLI's built-in image tool on your ChatGPT session — no API key)
+- ⚠ no `codex`, but `agy` found → falls back to the **antigravity** chain (agy-first)
+- ⚠ no CLI, but key found → falls back to the **nano-banana** provider (`GEMINI_API_KEY`)
+- ✗ none found → `/illustrate` falls back to labeled SVG placeholders, and the book
+  can't actually be marked `published` without the user adding a key or installing `codex`
 
-The default provider is **antigravity** (the local `agy` CLI via Google OAuth — no key
-required). The fallback is **nano-banana** (Google Gemini `gemini-3-pro-image`, "Nano Banana Pro"), which
+The default provider is **codex** (the Codex CLI's built-in image tool — no key required;
+`codex login` with ChatGPT). The fallback chain is **agy** (Google OAuth) then
+**nano-banana** (Google Gemini `gemini-3-pro-image`, "Nano Banana Pro"), which
 needs `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in `.env`. A real exported env var beats the
 .env value. A blank exported value is treated as unset, so the .env value always fills in.
 

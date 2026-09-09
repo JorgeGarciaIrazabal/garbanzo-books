@@ -150,6 +150,115 @@ data:
   avoid_line: Boing! The plate bounced it back!
 feedback: { correct: "The wall is spaghetti-smithereens! 🍝" }
 """,
+    "arcade-quest (composed — the rescue)": """type: arcade-quest
+prompt: Fly Nudo through the noodle-storm and rescue the runaway dumplings!
+data:
+  stage:
+    view: sky
+    scroll: true
+    bands: ["☁️", "🏮"]
+    floor: "🍜"
+  hero: { skin: { emoji: "🐉", label: "Nudo the noodle-dragon" }, control: flap, speed: 1 }
+  actors:
+    - name: dumplings
+      skin: ["🥟", "🥠"]
+      role: rescue
+      motion: fall
+      from: top
+      count: 3
+      line: "Gotcha, little dumpling!"
+    - name: chili
+      skin: { emoji: "🌶️", label: "the EXTRA-spicy chili" }
+      role: dodge
+      motion: sine
+      from: right
+      count: 2
+      line: "NOT the chili — too spicy to carry!"
+    - name: lantern
+      skin: "🏮"
+      role: decoy
+      motion: hover
+      from: anywhere
+      count: 1
+      line: "That's a lantern, not a snack!"
+  waves:
+    - line: "The cart tips — dumplings everywhere!"
+      spawn: [{ name: dumplings, count: 3 }]
+    - line: "The second gust — and the chili joins in!"
+      spawn: [{ name: dumplings, count: 3 }, { name: chili, count: 2 }, { name: lantern, count: 1 }]
+  finale:
+    kind: reach
+    skin: { emoji: "🍜", label: "the Great Noodle Bowl" }
+    line: "The Great Noodle Bowl — FLY FOR IT!"
+  goal: 6
+  speed: gentle
+  how: Tap to flap — scoop up every dumpling, dodge the chili!
+  avoid_line: "Not the chili! Nudo breathes enough fire already!"
+feedback: { correct: "Every dumpling home in the bowl — Nudo is one very long, very happy dragon! 🐉", try_again: "Flap, Nudo, flap!" }
+reward: { label: "Dumpling Rescuer", emoji: "🥟", id: "dumpling-rescuer" }
+""",
+    "arcade-quest (composed — the heist)": """type: arcade-quest
+prompt: Hop Luka across the kitchen and squash the escaped peas before breakfast!
+data:
+  stage:
+    view: side
+    scroll: true
+    bands: ["🧦", "🪑"]
+    floor: "🪵"
+  hero: { skin: { emoji: "🐣", label: "Luka the snack thief" }, control: hop }
+  actors:
+    - name: peas
+      skin: "🫛"
+      role: squash
+      motion: march
+      from: right
+      count: 4
+      line: "SQUISH — got one!"
+    - name: crumbs
+      skin: "🍞"
+      role: collect
+      motion: sine
+      from: anywhere
+      count: 2
+    - name: cat
+      skin: { emoji: "🐈", label: "Miso the cat" }
+      role: guard
+      motion: march
+      from: right
+      count: 1
+      line: "Mrrp! Not this counter, chick."
+  waves:
+    - line: "The peas make a break for the door!"
+      spawn: [{ name: peas, count: 3 }]
+    - line: "More peas — and Miso wakes up…"
+      spawn: [{ name: peas, count: 3 }, { name: crumbs, count: 2 }, { name: cat, count: 1 }]
+  finale:
+    kind: tower
+    skin: "🥞"
+    line: "Stack the pancake breakfast SKY-HIGH!"
+  goal: 8
+  speed: normal
+  how: Tap to hop — flatten the peas, snack the crumbs, mind the cat!
+  avoid_line: "Careful — that's Miso's tail!"
+feedback: { correct: "Breakfast is saved (and slightly squashed)! 🥞", try_again: "Hop again, Luka!" }
+""",
+    "arcade-quest (composed — minimal)": """type: arcade-quest
+prompt: Gather the falling stars before the sky goes dark!
+data:
+  hero: { skin: "🦉", control: steer }
+  actors:
+    - name: stars
+      skin: "⭐"
+      role: collect
+      motion: fall
+      from: top
+      count: 5
+  finale: { kind: reach, skin: "🌙", line: "The moon — reach it!" }
+  goal: 5
+  speed: gentle
+  how: Drag to steer — catch every star!
+feedback: { correct: "The night is bright again! 🌌" }
+""",
 }
 
 def _page(images: list[str], reader_scripts: list[str], asset_ver: str) -> str:

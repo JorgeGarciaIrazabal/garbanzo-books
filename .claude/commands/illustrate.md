@@ -31,8 +31,15 @@ first and every render ends in a **human sign-off**.
   locked `seed`, on-model for its `evolution.stage` (`methodology/consistency.md`). If any is
   missing/unapproved, do the `--character` pass above first.
 Then:
-3. Run `uv run python scripts/generate_images.py worlds/<world>/stories/<story>`
-   (or `--page N` for one page). Image files + alt text are written back to the pages.
+3. Render. Renders are SLOW (codex takes 1–4 min PER image, serially) — NEVER await
+   `generate_images.py` in a foreground tool call with a short timeout; it will kill the
+   render mid-flight. Launch detached and poll:
+   ```bash
+   nohup uv run python scripts/generate_images.py worlds/<world>/stories/<story> > /tmp/render.log 2>&1 &
+   tail -5 /tmp/render.log        # check progress on later calls
+   ```
+   Prefer `--grid` for bulk page art (one contact-sheet render per 9 pages, sliced into
+   tiles); use `--page N` for targeted re-renders. One render run at a time per story.
 4. QC each page: on-model proportions/palette, all distinguishing features, style matches,
    no negative-prompt artifacts, the text_position zone kept clear, scene matches the text. Fix drift by
    strengthening the appearance_token, leaning on the reference image, re-pinning the seed, or
@@ -41,12 +48,12 @@ Then:
    **approve or request modifications**. Loop (regenerate flagged pages) until approved. Don't
    move to `/validate` + `/publish` until they say go.
 
-(Real PNGs are REQUIRED. The default provider is antigravity (the local `agy` CLI via Google
-OAuth — no key needed); if `agy` isn't installed, the script falls back to nano-banana and
-needs `GEMINI_API_KEY`/`GOOGLE_API_KEY`. If neither is available the script writes SVG
-placeholders — treat that as a hard failure: install `agy` (or set a Gemini key), re-run, and
-verify every page has a real `.png` before continuing. Never accept `.svg` output for a page
-or character sheet.)
+(Real PNGs are REQUIRED. The default provider is codex (the local Codex CLI's built-in image
+tool via your ChatGPT session — no key needed); the fallback chain is the `agy` CLI (Google
+OAuth) then nano-banana (`GEMINI_API_KEY`/`GOOGLE_API_KEY`). If none is available the script
+writes SVG placeholders — treat that as a hard failure: install `codex` (or `agy`, or set a
+Gemini key), re-run, and verify every page has a real `.png` before continuing. Never accept
+`.svg` output for a page or character sheet.)
 
 **Delegation:** for a large or iterative illustration pass, hand this to the
 **illustration-director** agent (its own context window); for a quick pass, run the skill

@@ -332,7 +332,8 @@
       });
   }
 
-  GB.arcade = { available, loadEngine, intro, open, speedFactor, emojiDataUrl, assetRoot: () => ASSET_ROOT };
+  GB.arcade = { available, loadEngine, intro, open, speedFactor, emojiDataUrl, calmTap,
+                assetRoot: () => ASSET_ROOT };
 
   /* ====================================================================
      CALM FALLBACK (shared)

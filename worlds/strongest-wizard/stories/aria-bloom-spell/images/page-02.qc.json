@@ -1,0 +1,40 @@
+{
+  "page": 2,
+  "prompt_seed": 879410114,
+  "threshold": 7.0,
+  "attempts": [
+    {
+      "ok": false,
+      "score": 6.0,
+      "reason": "The scene and character match well, but the word 'fizzle' is rendered as text in the image, violating the locked no-text style rule, and her eyes read dark rather than amber-gold.",
+      "flags": [
+        "style_inconsistent",
+        "wrong_characters"
+      ],
+      "model": "glm-5.3-flash:cloud",
+      "attempt": 0,
+      "path": "page-02-884721.png"
+    },
+    {
+      "attempt": 1,
+      "path": null,
+      "ok": false,
+      "score": 0.0,
+      "reason": "provider failed",
+      "flags": [
+        "provider_failed"
+      ]
+    },
+    {
+      "attempt": 2,
+      "path": null,
+      "ok": false,
+      "score": 0.0,
+      "reason": "provider failed",
+      "flags": [
+        "provider_failed"
+      ]
+    }
+  ],
+  "winner": "page-02.png"
+}
