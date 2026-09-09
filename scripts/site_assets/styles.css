@@ -107,7 +107,7 @@ h1, h2, h3 { line-height: 1.2; }
 
 /* ---- embedded text ---- */
 .page-text {
-  position: absolute; left: 0; right: 0; padding: 22px clamp(18px, 5vw, 60px);
+  position: absolute; left: 0; right: 0; padding: 22px clamp(44px, 7vw, 60px);
   font-size: var(--reader-base); color: var(--ink); text-align: left; z-index: 2;
   /* Kid-friendly typography: generous line-height so the words breathe, a hair
      of letter-spacing (raising it alone hurts speed — always pair with the
@@ -117,8 +117,11 @@ h1, h2, h3 { line-height: 1.2; }
      Shrink-wrap the text block so the glassy effect is only around the words and
      fades out radially from the text's own center. height: fit-content keeps the
      positioned band tight to the scrim (no dead space above/below), and
-     align-items/justify-content center the cloud within it. The 22px vertical
-     padding keeps top/bottom-placed text off the page edge (pos-top/pos-bottom). */
+     align-items/justify-content center the cloud within it. The horizontal
+     padding is a SAFE AREA: it must exceed the scrim's -44px horizontal
+     overhang (see .scrim margin) minus the scrim's own 22px padding, so the
+     words always land at least ~22px inside the page edge — never clipped and
+     never in the faded tail of the cloud. */
   display: flex; align-items: center; justify-content: flex-start;
   height: fit-content;
 }
@@ -149,20 +152,27 @@ h1, h2, h3 { line-height: 1.2; }
   border-radius: 24px; /* rounded cloud corners — the mask still fades the edge softly */
   box-shadow: none; /* no shadow — it would draw a visible edge too */
   /* Shrink-wrap the text block so the cloud is only as wide as the words.
-     max-width caps it so a long passage doesn't span the whole page. */
-  width: max-content; max-width: 100%;
+      max-width caps it so a long passage doesn't span the whole page —
+      capped in ch units so measure stays readable on a big screen (and so a
+      paragraph wraps into a tidy block instead of one mile-long line). */
+  width: max-content; max-width: min(100%, 68ch);
   /* Oversize the element FAR beyond the text so the backdrop-filter blur edge
-     (which mask cannot clip) is well outside the visible cloud. -90px on every
-     side pushes the hard blur edge 90px out; the mask then crops a soft cloud
-     that never reaches that edge. Padding is TIGHT — the cloud size comes from
-     the margin + mask, not padding, so a short line gets a small cloud. */
-  margin: -90px -90px;
+     (which mask cannot clip) is well outside the visible cloud. -44px on the
+     sides pushes the hard blur edge 44px out (enough for the soft mask fade;
+     it MUST stay ≤ the parent's horizontal safe-area padding or the words
+     drift into the faded tail / off the page). -48px vertically: enough to
+     hide the blur edge above/below, but NOT so much that a tall passage
+     spills past its pos-top/pos-bottom anchor onto the nav controls.
+     Padding is TIGHT — the cloud size comes from the margin + mask, not
+     padding, so a short line gets a small cloud. */
+  margin: -48px -44px;
   padding: 14px 22px 16px;
   text-shadow: 0 1px 2px rgba(255, 253, 247, 0.85), 0 0 10px rgba(255, 253, 247, 0.45);
   /* Mask crops the oversized element to a soft cloud with a LONG, smooth fade —
      no visible edge. Solid only for the inner 38% (just past the text), then a
      gradual fade through 52% / 68% / 82% to fully transparent at 100%. The
-     extra -90px margin guarantees the blur's hard edge (at 100% = 90px out) is
+     extra -44px horizontal / -48px vertical margins guarantee the blur's hard edge
+     (at 100% of the mask ellipse) is
      fully masked away. The fade is RADIAL from the text center, so the glass is
      strongest at the words and dissolves smoothly into the art further out. */
   -webkit-mask: radial-gradient(ellipse 92% 88% at 50% 50%,
@@ -190,7 +200,7 @@ h1, h2, h3 { line-height: 1.2; }
   color: #f6f1e6;
   border-radius: 24px; /* rounded cloud corners — the mask still fades the edge softly */
   box-shadow: none;
-  margin: -90px -90px;
+  margin: -48px -44px;
   padding: 14px 22px 16px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 0 14px rgba(255, 230, 180, 0.22);
   /* Same oversized + long-smooth-mask approach as the light variant. */
@@ -223,7 +233,7 @@ h1, h2, h3 { line-height: 1.2; }
 .pos-lower-third, .pos-bottom { bottom: 4%; }
 .pos-upper-third, .pos-top { top: 4%; }
 .pos-center { top: 50%; transform: translateY(-50%); text-align: center; }
-.pos-center .scrim { margin: -90px -90px; }
+.pos-center .scrim { margin: -48px -44px; }
 /* side panels — a narrow column hugging one edge so the opposite side of the
    art stays fully visible. Overrides the default left:0/right:0 full-width band. */
 .pos-left { left: 4%; right: auto; top: 50%; transform: translateY(-50%); max-width: 46%; }
@@ -234,7 +244,7 @@ h1, h2, h3 { line-height: 1.2; }
    the page edge. */
 .align-center { text-align: center; justify-content: center; }
 .align-right { text-align: right; justify-content: flex-end; }
-.align-right .scrim { margin: -90px -90px; }
+.align-right .scrim { margin: -48px -44px; }
 
 .reader-controls {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -745,19 +755,19 @@ footer.site { text-align: center; color: var(--muted); padding: 40px 16px; }
      pos-right). We only bump the font and widen the scrim here; we do NOT pin it
      to the bottom, so an authored top/center/side placement is honored on the
      tablet just as it is on a phone. */
-  .page-text { font-size: calc(var(--reader-base) * 1.25); padding: 22px clamp(18px, 5vw, 60px); }
+  .page-text { font-size: calc(var(--reader-base) * 1.25); padding: 22px clamp(44px, 7vw, 60px); }
   /* In immersive mode the stage is fixed:inset 0 (full viewport), so pos-top/pos-bottom
      must clear the floating topbar (~56px) and the floating controls (bottom: 22px + ~44px).
-     The scrim's -90px negative margin pulls its box outside the band, so the inset needs
-     overlay height + margin to keep the TEXT (not just the box) below the topbar / above
-     the controls. These auto-hide while reading, so we use a moderate inset that clears
-     them when visible without wasting space when they're gone. */
-  .page-text.pos-top, .page-text.pos-upper-third { top: 70px; }
-  .page-text.pos-bottom, .page-text.pos-lower-third { bottom: 80px; }
+     The scrim's -48px vertical / -44px horizontal negative margins pull its box outside
+     the band, so the inset needs overlay height + margin to keep the TEXT (not just the
+     box) below the topbar / above the controls. These auto-hide while reading, so we use
+     a moderate inset that clears them when visible without wasting space when they're gone. */
+  .page-text.pos-top, .page-text.pos-upper-third { top: 96px; }
+  .page-text.pos-bottom, .page-text.pos-lower-third { bottom: 116px; }
   .page-text .scrim { font-size: 1.05em;
     /* Keep the oversized margin/padding pattern from the base rule so the blur
        edge stays outside the mask crop on the big screen too. */
-    margin: -90px -90px;
+    margin: -48px -44px;
     padding: 14px 22px 16px; }
   /* side panels get a tighter scrim on the big screen so they stay a column */
   .page-text.pos-left, .page-text.pos-right { max-width: 42%; }

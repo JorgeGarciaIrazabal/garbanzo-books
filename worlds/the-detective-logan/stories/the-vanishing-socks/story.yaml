@@ -1,0 +1,990 @@
+slug: the-vanishing-socks
+world: the-detective-logan
+title: The Case of the Vanishing Socks
+logline: When every sock in Maple Hollow vanishes at exactly 3:33 and Mayor Bumble refuses to admit anything
+  is missing, kid detective Logan and his counting-cracking friend Poppy must trap the Sock Snatcher themselves
+  — before the Tidiest Town judges arrive tomorrow.
+summary: 'Book one of the Detective Logan series. At the grandest ribbon-cutting of the year, the town
+  bell rings by itself at 3:33 and every sock in Maple Hollow vanishes at once — even Mayor Bumble''s
+  famous polka-dot pair. The grown-ups refuse to believe it, so Logan opens the case with Poppy, the clumsiest
+  (and smartest) girl in town, who trips face-first into the first clue. Counting fluff trails, three-toed
+  footprints, and one very hot bun-clue from Ms. Crumb lead them to a glorious gold-sock trap — and a
+  chase that ends at a hollow-oak nest full of socks, three baby birds, and one sock-hatted magpie mom.
+  The town finally SEES the truth, Maple Hollow throws its first Sock Festival, and Logan''s Big Case
+  folder gains its strangest clue yet: a corner of an old map, in grown-up handwriting.'
+age_band: 5-7
+target_year: 6
+reading_level:
+  read_mode: read_aloud
+  target_fk_grade: 0.95
+  fk_grade_tolerance: 0.35
+  lexile_range: ''
+  fountas_pinnell: ''
+  max_words_per_page: 70
+  max_sentence_words: 15
+  decoding_focus: ''
+  decodable: false
+themes:
+- mystery
+- counting
+- sneaky cleverness
+- teamwork
+- seeing what grown-ups miss
+moral: The town laughs at what it never looks at — until one kid keeps looking anyway.
+characters:
+- slug: logan
+  stage: shack-rookie
+  role_in_story: protagonist — kid detective opening his first big case
+- slug: poppy
+  stage: new-partner
+  role_in_story: co-detective — counts, plans, cracks the pattern, falls on the clues
+- slug: mayor-bumble
+  stage: all-is-well
+  role_in_story: the denier — bans the mystery, secretly missing his polka-dot socks
+- slug: ms-crumb
+  stage: quiet-watcher
+  role_in_story: bakery lady — slips the 3:33 clue with the buns
+- slug: rex
+  stage: loud-rival
+  role_in_story: rival detective — loudly wrong about everything
+- slug: principal-peabody
+  stage: order-first
+  role_in_story: bell keeper — 'The bell does not lie' while it rings by itself
+spine:
+  once_upon_a_time: In the fog-wrapped little town of Maple Hollow, kid detective Logan runs his one-shack
+    detective agency, scribbling every clue in his red notebook — because odd things keep going missing,
+    and nobody grown-up ever believes him.
+  every_day: Grown-ups pat Logan's head and say 'Don't be silly, Logan.' Mayor Bumble booms 'ALL IS WELL!'
+    Rex the rival detective shouts wrong answers with total confidence — and every case ends with one
+    small odd clue pinned in Logan's Big Case folder.
+  until_one_day: At the grandest ribbon-cutting of the year, the town bell rings by itself at exactly
+    3:33 — and every single sock in Maple Hollow vanishes at once, including the Mayor's famous polka-dot
+    pair.
+  because_of_that:
+  - Mayor Bumble bans the truth — 'Nothing is missing. I checked.' (he did not) — and the judges of the
+    Tidiest Town contest arrive tomorrow, so the whole case lands on Logan.
+  - 'Poppy, the smartest and clumsiest girl in town, trips face-first into the first clue: a drift of
+    gray sock-fluff. She counts three toes in every footprint (a BIRD, not a sock-monster!), and Ms. Crumb''s
+    hot buns whisper the key — who else is hungry at 3:33?'
+  - 'Rex loudly blames the ducks, the wind, and finally Logan, while Logan and Poppy set the only trap
+    silly enough to work: the Mayor''s shiny gold ceremonial sock, hung where the whole town can see —
+    at 3:33 sharp.'
+  until_finally: The gold sock disappears in a gray blur, the chase leads through town to Hollow Park,
+    and Poppy — who cannot walk past a puddle, a skate, or a rope — trips on the rope, tumbles through
+    a hedge, and lands inside the hollow oak, right on a nest made of every stolen sock in Maple Hollow,
+    where three baby birds wear little sock hats and one sock-hatted magpie mom is not a monster at all.
+  ever_since_then: The town SEES it at last, the babies keep their cozy nest, Maple Hollow throws its
+    first Sock Festival (with a ribbon, obviously), and the Big Case folder gains its strangest clue yet
+    — a corner of an old map in grown-up handwriting. Who leaves maps in sock nests?
+pages:
+- number: 0
+  kind: title
+  text: The Case of the Vanishing Socks
+  image:
+    prompt: 'A dramatic storybook cover scene: a small kid detective in a big detective coat and magnifying
+      glass stands heroically on a rooftop of a foggy, cozy small town at dusk, while dozens of colorful
+      socks swoop and swirl through the sky like a flock, one striped sock perched on his magnifying glass;
+      warm windows glow below, a crooked bell tower in the distance.'
+    characters_present:
+    - logan
+    alt: A kid detective on a rooftop watches a flock of colorful socks flying over a foggy town at dusk.
+    file: images/page-00.png
+    render_mode: grid3x3
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 1
+  kind: story
+  text: 'In the foggy little town of Maple Hollow, there is one detective.
+
+
+    He is small. He is serious. He is VERY dramatic.
+
+
+    His name is Logan. His detective office is a wooden shack at the bottom of the garden.
+
+
+    Inside: a magnifying glass, a red notebook, and a fat folder labeled BIG CASE.
+
+
+    Odd things happen here. Socks go missing. Strange bells ring. Nobody notices.
+
+
+    But Logan is ALWAYS looking.'
+  image:
+    prompt: 'Interior of a tiny wooden detective shack at dusk, cluttered and cozy: a kid detective in
+      an oversized coat sits at a wobbly desk scribbling in a glowing red notebook, magnifying glass in
+      hand, wall covered with pinned missing-item posters and crumpled town maps, a fat folder labeled
+      with a big star, warm lamp light and fog pressing at the little window.'
+    characters_present:
+    - logan
+    alt: A small detective writes in his red notebook at a cluttered desk inside his garden-shack office,
+      missing posters pinned on the wall.
+    file: images/page-01.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 2
+  kind: story
+  text: 'Every morning, Logan marches to Main Street.
+
+
+
+    "Mayor Bumble!" he announces. "The garden gnome moved THREE houses last night. On its own!"
+
+
+
+    Mayor Bumble puffs up like a proud balloon. "Don''t be silly, Logan! ALL IS WELL!"
+
+
+
+    Then he cuts a brand-new ribbon, because he loves ribbons.
+
+
+
+    Ms. Crumb the bakery lady slides a warm bun into Logan''s hand. She never says anything at all.
+
+
+
+    But she sees EVERYTHING.'
+  image:
+    prompt: 'A cheerful small-town main street in morning fog: a pompous round mayor with a sash cuts
+      a ribbon in front of a new bench while a small kid detective holds up a clue, a flour-dusted bakery
+      lady in a doorway hands the kid a warm bun, shop windows glowing, missing posters fluttering on
+      a notice board.'
+    characters_present:
+    - logan
+    - mayor-bumble
+    - ms-crumb
+    alt: On a foggy Main Street, a boy detective shows a clue to a pompous mayor cutting a ribbon, while
+      a bakery lady quietly hands him a bun.
+    file: images/page-02.png
+    render_mode: grid3x3
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 3
+  kind: story
+  text: 'One gray afternoon, it happened.
+
+
+
+    Mayor Bumble was cutting the BIGGEST ribbon of the year. And the whole town was there.
+
+
+
+    The clock ticked. Tick, tick — 3:32.
+
+
+
+    And at exactly 3:33, the bell tower rang. BONG — all by itself!
+
+
+
+    Principal Peabody frowned. "That is NOT on the schedule. The bell does not lie."
+
+
+
+    But while every face was looking up...
+
+
+
+    WHOOSH.
+
+
+
+    Every sock in Maple Hollow vanished at once.'
+  image:
+    prompt: A crowd of townsfolk in a foggy town square all stare UP at an old bell tower mid-ring, while
+      below their feet dozens of colorful socks whoosh away in a swirl of wind, leaving bare feet and
+      polka-dot ankles everywhere; comic shock on every face, a giant flower clock and a big ribbon in
+      the scene.
+    characters_present:
+    - mayor-bumble
+    - principal-peabody
+    alt: While the crowd stares up at a ringing bell tower, all their socks whoosh away in a swirl, leaving
+      bare feet everywhere.
+    file: images/page-03.png
+    render_mode: grid3x3
+  layout:
+    text_position: bottom
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: vanished
+    clue: went away so fast it was like it was never there
+    icon: 💨
+  - word: schedule
+    clue: a plan that says exactly what happens when
+    icon: 🗓️
+  reading_notes: 'Build the suspense: tick-tock slowly, then shout WHOOSH! together. Ask: ''Would YOU
+    look up if a bell rang?'''
+- number: 4
+  kind: story
+  text: '"MY POLKA-DOT SOCKS!" yelled Mayor Bumble.
+
+
+
+    "ALL IS WELL! Nothing is missing. I checked."
+
+
+
+    He had not checked.
+
+
+
+    "But Mayor," said Logan, "the Tidiest Town judges arrive TOMORROW. A tidy town has socks!"
+
+
+
+    The Mayor went gray, like the fog.
+
+
+
+    Then Rex stomped up. "HA! Elementary — THE DUCKS DID IT! Ducks have FEET, and feet need socks. CASE
+    CLOSED!"
+
+
+
+    The ducks looked very unimpressed.
+
+
+
+    The case was not closed.'
+  image:
+    prompt: 'A foggy town square in comic chaos: a pompous mayor in a sash gestures grandly with bare
+      polka-dot ankles under his trousers, a small kid detective tugging his sleeve, a loud rival detective
+      in an oversized trench coat points dramatically at some very unimpressed ducks, barefoot townsfolk
+      holding up one empty shoe each.'
+    characters_present:
+    - mayor-bumble
+    - logan
+    - rex
+    alt: A mayor with bare polka-dot ankles declares all is well while a boy detective tugs his sleeve
+      and a loud rival detective accuses some unimpressed ducks.
+    file: images/page-04.png
+    render_mode: grid3x3
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: elementary
+    clue: what detectives say when they think an answer is super easy
+    icon: 🔍
+- number: 5
+  kind: story
+  text: 'Logan needed the one brain in town as fast as his own.
+
+
+    Luckily, she was on her way.
+
+
+    Unluckily, she was on her way sideways.
+
+
+    CRASH! BONK! SPLOSH! Poppy tripped over the bakery step and landed nose-first in a pile of fluff.
+
+
+    "I''m fine!" said Poppy''s voice. "The CLUE is fine!"
+
+
+    She sat up wearing a sock on her head. "Fluff, Logan! The thief went THAT way!"'
+  image:
+    prompt: 'Comic slapstick moment in a foggy street: a girl mid-cartwheel covered in hay and dust lands
+      nose-first in a big fluffy gray drift, a sock on her head like a hat, while a small kid detective
+      in a big coat runs toward her pointing his magnifying glass, bread rolls rolling from her dropped
+      bag.'
+    characters_present:
+    - poppy
+    - logan
+    alt: A girl lands nose-first in a drift of gray fluff with a sock on her head, while a boy detective
+      runs over with his magnifying glass.
+    file: images/page-05.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: drift
+    clue: a soft pile that the wind pushed into one place
+    icon: 🌫️
+  interaction:
+    type: arcade-pop
+    prompt: Poppy is counting sock-fluff! Pop the drifting puffs before they blow away — count with her!
+    skill: engagement
+    data:
+      player:
+        emoji: 🔍
+        label: Logan's magnifying glass
+      pop:
+      - emoji: ☁️
+        label: a puff of sock-fluff
+      - emoji: 🧦
+        label: a very fluffy sock
+      avoid:
+      - emoji: 🦆
+        label: an unimpressed duck
+      goal: 6
+      speed: gentle
+      how: Tap each fluff puff to pop it — but leave the duck alone!
+      avoid_line: That's a DUCK, not fluff! The duck is not amused.
+    difficulty: easy
+    feedback:
+      correct: Six puffs! Poppy says that's EXACTLY how fluffy the thief is!
+      try_again: Keep popping — Poppy is still counting!
+    reward:
+      label: Fluff Counter
+      emoji: ☁️
+      id: fluff-counter
+- number: 6
+  kind: story
+  text: 'Poppy counted. She always counted.
+
+
+
+    "Fluff, fluff, fluff — a trail! And LOOK, Logan! Footprints!"
+
+
+
+    Tiny footprints ran all along the fence.
+
+
+
+    "Count with me!" said Poppy. "One toe, two toes, THREE toes!"
+
+
+
+    Logan''s eyes went wide. "Not a sock-monster. And not a duck, because ducks have webby feet."
+
+
+
+    "THREE toes," said Poppy, hopping from print to print. "So the thief has toes, fluff, and wings. Logan
+    — it''s a BIRD."'
+  image:
+    prompt: A girl and a boy detective crouch in fog beside a wooden fence, examining a trail of tiny
+      three-toed footprints on the ground with a big magnifying glass, a trail of gray fluff leading away
+      into the trees, the girl dramatically pointing at a footprint.
+    characters_present:
+    - poppy
+    - logan
+    alt: Two kid detectives follow a trail of tiny three-toed footprints and gray fluff along a fence
+      with a magnifying glass.
+    file: images/page-06.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  reading_notes: 'Count the toes on the page together — one, two, three! Ask: ''Ducks have webbed feet.
+    What kind of animal has three toes?'''
+- number: 7
+  kind: story
+  text: 'The fluff trail ended at the best-smelling place in town: Ms. Crumb''s bakery.
+
+
+
+    At 3:33 her buns came out of the oven, hot and golden, every single day.
+
+
+
+    "Ms. Crumb," said Logan, "did you see anything unusual?"
+
+
+
+    "Do I?" said Ms. Crumb. "Whoever took your socks is hungry at 3:33."
+
+
+
+    Poppy gasped. "Logan! The bell rings at 3:33, and the buns come out at 3:33! It''s not just WHEN —
+    it''s DINNER TIME!"'
+  image:
+    prompt: 'A cozy bakery interior in fog: a flour-dusted bakery lady with a serene smile slides warm
+      golden buns into the hands of a boy detective and a girl, crumbs scattered along her windowsill,
+      a wall clock showing 3:33, warm oven glow lighting the fog outside the window.'
+    characters_present:
+    - ms-crumb
+    - logan
+    - poppy
+    alt: A bakery lady hands warm buns to two kid detectives by a windowsill with crumbs, a clock showing
+      3:33.
+    file: images/page-07.png
+    render_mode: grid3x3
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: unusual
+    clue: strange, not what you expect
+    icon: ❓
+  reading_notes: 'Point at the clock: 3:33. Ask: ''What else happens at 3:33? What is Ms. Crumb really
+    telling them?'''
+- number: 8
+  kind: story
+  text: '"Birds like shiny things and soft things," said Poppy. "So we need the shiniest, softest thing
+    in town."
+
+
+
+    Logan grinned, because he knew EXACTLY.
+
+
+
+    "Mayor Bumble — we need your gold sock."
+
+
+
+    "The ceremonial gold sock?! It is a HUNDRED years old!"
+
+
+
+    "The judges come tomorrow. Your socks back... or your sock?"
+
+
+
+    So they hung the gold sock over the fountain and hid.
+
+
+
+    3:31... 3:32...
+
+
+
+    "Count with me," whispered Poppy. "3:32... and a half..."'
+  image:
+    prompt: 'A foggy town square at dusk: a shiny gold sock hangs from a fishing rod above a fountain
+      like bait, while a boy detective and a girl hide behind the fountain''s edge peeking out, a proud
+      mayor watching anxiously from behind a lamppost, the town clock almost at 3:33.'
+    characters_present:
+    - logan
+    - poppy
+    - mayor-bumble
+    alt: A gold sock hangs from a fishing rod over a fountain as two kid detectives and a nervous mayor
+      wait in hiding.
+    file: images/page-08.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 9
+  kind: story
+  text: '3:33 — BONG went the faraway bell.
+
+
+
+    And out of the fog came a gray blur. It swooped and swerved. Loop-the-loop — and SNATCH! The gold
+    sock was gone off the rod!
+
+
+
+    "THERE!" shouted Logan. "The Sock Snatcher! AFTER IT!"
+
+
+
+    The gray blur whipped past Mayor Bumble, stealing his handkerchief too. The Mayor fainted gently into
+    a flowerpot.
+
+
+
+    "FOLLOW THAT FLUFF!" yelled Poppy, already running.'
+  image:
+    prompt: A gray bird-shaped blur swoops through the fog above a town square clutching a shiny gold
+      sock in its claws, a boy detective and a girl sprint after it, a pompous mayor faints backward into
+      a flowerpot, handkerchief floating away in the wind.
+    characters_present:
+    - logan
+    - poppy
+    - mayor-bumble
+    alt: A gray bird snatches a gold sock and swoops away as two kid detectives chase it and a mayor faints
+      into a flowerpot.
+    file: images/page-09.png
+    render_mode: grid3x3
+  layout:
+    text_position: center
+    text_align: center
+    scrim: true
+- number: 10
+  kind: story
+  text: 'Over the rooftops! Past the windmill! Under the town clock!
+
+
+    The gray thief swooped, dropping fluff like breadcrumbs, while Logan and Poppy pelted after it.
+
+
+    "Count the fluffs, Poppy! Don''t lose the trail!"
+
+
+    "ON IT!" said Poppy, who somehow passed Logan while running backwards.
+
+
+    The trees of Hollow Park rose up ahead, dark and swaying.
+
+
+    And the gray blur dove straight into the biggest, hollowest oak in town.'
+  image:
+    prompt: 'A breathless chase through a foggy town toward a park: a gray bird with a gold sock flies
+      fast ahead dropping fluff, a girl runs backwards pointing at it while slipping on a banana skin,
+      a boy detective sprints after them both past a windmill and puddles, pigeons scattering.'
+    characters_present:
+    - logan
+    - poppy
+    alt: A gray bird carrying a gold sock flies toward a park while two kid detectives chase it past a
+      windmill, the girl running backwards.
+    file: images/page-10.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-quest
+    prompt: Follow That Fluff! The Sock Snatcher is getting away with the gold sock — chase it through
+      Maple Hollow to the hollow oak!
+    skill: engagement
+    data:
+      stage:
+        view: side
+        scroll: true
+        bands:
+        - emoji: 🏘️
+          label: the foggy rooftops of Maple Hollow
+        - emoji: 🌫️
+          label: a rolling bank of fog
+        floor:
+          emoji: 🧱
+          label: Main Street cobblestones
+      hero:
+        skin:
+          emoji: 🕵️
+          label: Logan the kid detective
+        control: hop
+        speed: 1
+      actors:
+      - name: fluffs
+        skin:
+        - emoji: ☁️
+          label: a puff of dropped fluff
+        - emoji: 🧦
+          label: a dropped sock
+        role: collect
+        motion: fall
+        from: top
+        count: 3
+        line: Got one! That's a clue, not a snowflake!
+      - name: puddles
+        skin:
+          emoji: 🫧
+          label: a suspiciously deep puddle
+        role: dodge
+        motion: march
+        from: right
+        count: 2
+        line: SPLOSH! Puddles are Poppy's job!
+      - name: rex
+        skin:
+          emoji: 🧐
+          label: Rex, loudly wrong
+        role: decoy
+        motion: march
+        from: left
+        count: 1
+        line: HA! ELEMENTARY! ...Rex, not now!
+      waves:
+      - line: The Snatcher swoops — fluff is EVERYWHERE!
+        spawn:
+        - name: fluffs
+          count: 3
+      - line: Mind the puddles — and REX?!
+        spawn:
+        - name: fluffs
+          count: 3
+        - name: puddles
+          count: 2
+        - name: rex
+          count: 1
+      - line: The park gates! The trail is getting warm!
+        spawn:
+        - name: fluffs
+          count: 4
+        - name: puddles
+          count: 2
+      finale:
+        kind: reach
+        skin:
+          emoji: 🌳
+          label: the great hollow oak
+        line: The hollow oak — REACH IT before the trail goes cold!
+      goal: 10
+      speed: gentle
+      how: Tap to hop. Collect the fluff and socks, dodge the puddles, don't stop for Rex!
+      avoid_line: Not Rex! He'll tell you his theory and we'll be here all day!
+    difficulty: easy
+    feedback:
+      correct: 'You reached the hollow oak! Logan says: it all fits now — the trail ends HERE!'
+      try_again: Hop, hop! Follow that fluff!
+    reward:
+      label: Trail Follower
+      emoji: 🔍
+      id: trail-follower
+- number: 11
+  kind: story
+  text: 'A red string was tied around the oak. It was Logan''s very own trap string.
+
+
+
+    Now, Poppy cannot walk past ANY string. So she tripped over it instantly.
+
+
+
+    "Falling..." she announced, "...ON IT!"
+
+
+
+    She tumbled through a hedge. She bounced once, twice — then SPLOOSH, right into the hollow of the
+    great oak.
+
+
+
+    Everything went still.
+
+
+
+    "Um, Logan? You are not going to BELIEVE what I am sitting on."'
+  image:
+    prompt: A girl tumbles headfirst through a hedge beside a huge hollow oak tree in a misty park, mid-somersault
+      with a red string tripping her ankle, while a boy detective watches wide-eyed, the tree's dark hollow
+      mouth glowing faintly.
+    characters_present:
+    - poppy
+    - logan
+    alt: A girl trips on a red string and tumbles through a hedge into the hollow of a giant oak tree
+      while a boy detective watches.
+    file: images/page-11.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+- number: 12
+  kind: story
+  text: 'The hollow was CRAMMED with socks.
+
+
+
+    Socks for walls. Socks for a blanket. Every stolen sock in town, woven into one cozy nest.
+
+
+
+    In the middle sat three baby birds. Each one wore a tiny sock hat.
+
+
+
+    "It''s not a monster," whispered Logan.
+
+
+
+    "It''s a MOM," whispered Poppy.
+
+
+
+    The gray bird had a sock on her head, too. She spread her wings... and fainted onto the gold sock.'
+  image:
+    prompt: 'Inside a cozy hollow oak tree: a giant nest made entirely of colorful woven socks, three
+      round fluffy baby birds each wearing a tiny folded sock hat, a gray mama bird with a sock on her
+      head spreading her wings protectively, a girl sitting stunned in the fluff and a boy detective peeking
+      in with wide eyes.'
+    characters_present:
+    - poppy
+    - logan
+    alt: A nest made of colorful socks inside a hollow oak with three baby birds in sock hats and a protective
+      gray mama bird.
+    file: images/page-12.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: crammed
+    clue: stuffed in tight, right up to the top
+    icon: 🧦
+  reading_notes: 'Whisper this page — the babies are sleeping! Ask: ''Is the thief scary after all?'''
+- number: 13
+  kind: story
+  text: 'The babies loved their nest SO much.
+
+
+
+    Every bounce sent socks flying out of the hollow, like soft confetti.
+
+
+
+    A striped sock landed on Logan''s head. A polka-dot sock landed on a duck.
+
+
+
+    "Catch them before they hit the pond!" said Logan.
+
+
+
+    Poppy held up the bakery basket. "Count with me! One for the basket... two for the basket..."'
+  image:
+    prompt: 'Comic rain of colorful socks flying out of a hollow oak tree: a boy detective catches a striped
+      sock on his head, a girl holds up a basket catching falling socks, a duck wearing a polka-dot sock
+      waddles past, a gym sock on a weathervane, babies visible in the hollow giggling.'
+    characters_present:
+    - logan
+    - poppy
+    alt: Socks fly out of a hollow oak like confetti while a boy catches one on his head and a girl catches
+      more in a basket.
+    file: images/page-13.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  interaction:
+    type: arcade-catch
+    prompt: The babies are bouncing — socks are raining out of the nest! Catch them in the basket before
+      they hit the pond!
+    skill: engagement
+    data:
+      player:
+        emoji: 🧺
+        label: Poppy's bakery basket
+      catch:
+      - emoji: 🧦
+        label: a flying striped sock
+      - emoji: 🦺
+        label: a fire-station lucky sock
+      - emoji: 🩳
+        label: a tiny gym sock
+      avoid:
+      - emoji: 💧
+        label: a pond splash
+      goal: 8
+      speed: gentle
+      how: Drag the basket left and right — catch the socks, dodge the splashes!
+      avoid_line: SPLOOSH! That one's for the ducks!
+    difficulty: easy
+    feedback:
+      correct: Eight socks, safe and dry! Poppy counts them all — the nest is tidy and the babies are
+        asleep.
+      try_again: Keep catching — count with Poppy!
+    reward:
+      label: Sock Catcher
+      emoji: 🧦
+      id: sock-catcher
+- number: 14
+  kind: story
+  text: 'And that is when the whole town arrived.
+
+
+
+    "Mayors, grown-ups, ducks — LOOK!"
+
+
+
+    Everyone looked. Three babies in sock hats looked back.
+
+
+
+    "The thief is a bird," said Logan. "A very good mom, and a very bad criminal. The socks went to a
+    NEST. Case: SOLVED!"
+
+
+
+    The babies snored.
+
+
+
+    "...I knew that," said Mayor Bumble very quietly. "Obviously."
+
+
+
+    And he fainted into his flowerpot.'
+  image:
+    prompt: 'A crowd of townsfolk gathered around a great oak in a misty park at dusk, all leaning in
+      to peer into the hollow: a pompous mayor faints backward into a flowerpot he is holding, a boy detective
+      gestures grandly at the nest like a tour guide, a girl beside him bows, ducks peeking between legs.'
+    characters_present:
+    - logan
+    - poppy
+    - mayor-bumble
+    alt: A crowd of townsfolk peer into a hollow oak as a boy detective presents the sock nest and the
+      mayor faints into his flowerpot.
+    file: images/page-14.png
+    render_mode: grid3x3
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+- number: 15
+  kind: story
+  text: 'What do you do with fifty-nine stolen socks and three sleeping babies?
+
+
+
+    "The babies keep them," said Logan. "It''s the coziest nest in history."
+
+
+
+    Ms. Crumb appeared with a basket of 3:33 buns. "Buns for the babies. Both of them."
+
+
+
+    The town knitted fifty-nine new pairs by moonrise.
+
+
+
+    And the magpie returned the gold sock with a polite little drop.
+
+
+
+    It landed right on Principal Peabody''s head.'
+  image:
+    prompt: 'A warm dusk scene in a misty park: townsfolk happily knitting colorful socks on a bench,
+      a bakery lady hands a basket of golden buns toward a tree where a gray bird feeds three sock-hatted
+      babies in the hollow, a gold sock floats gently down onto a strict-looking school principal''s head.'
+    characters_present:
+    - ms-crumb
+    - principal-peabody
+    alt: Townsfolk knit new socks while a bakery lady gives buns to baby birds in a nest and a gold sock
+      lands on the principal's head.
+    file: images/page-15.png
+    render_mode: grid3x3
+  layout:
+    text_position: top
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: coziest
+    clue: the most cozy — the snuggliest, warmest one
+    icon: 🛋️
+- number: 16
+  kind: story
+  text: 'That night, Logan closed the case in his red notebook.
+
+
+
+    The thief: a magpie mom. The motive: three cold babies.
+
+
+
+    But one clue did not fit at ALL.
+
+
+
+    A corner of old paper. A map, with a windmill and a red X.
+
+
+
+    In GROWN-UP handwriting.
+
+
+
+    "Why would a bird line a nest with a map?"
+
+
+
+    Into the folder it went.
+
+
+
+    "It all fits now," said Logan. "Well. ALMOST."'
+  image:
+    prompt: A boy detective at his cluttered shack desk by lamplight, holding up a torn corner of an old
+      paper map with a red X and grown-up handwriting, a fat bulging folder open beside him stuffed with
+      pinned clues and red string connecting notes on the wall, fog pressing at the little window.
+    characters_present:
+    - logan
+    alt: A boy detective studies a torn map corner with a red X by lamplight, with a bulging case folder
+      of pinned clues.
+    file: images/page-16.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+  vocabulary:
+  - word: motive
+    clue: the reason somebody does something
+    icon: 💡
+  reading_notes: 'The map corner is the big series mystery. Ask: ''Who do YOU think left the map in the
+    nest?'''
+- number: 17
+  kind: end
+  text: 'Maple Hollow was quiet again.
+
+
+
+    Almost.
+
+
+
+    The next morning, a brand-new poster appeared on the Main Street board.
+
+
+
+    It said: MISSING: 1 umbrella. 2 boots. 1 trombone.
+
+
+
+    And at exactly 3:33, somewhere above the fog, a bell went BONG.
+
+
+
+    Logan put on his coat. He picked up his magnifying glass.
+
+
+
+    "Don''t be silly," he said with a big grin. "Be SUSPICIOUS."'
+  image:
+    prompt: 'A fresh morning on a foggy small-town main street: a notice board with a new missing poster
+      reading an umbrella, boots and a trombone, a boy detective in a big coat steps out of a tiny wooden
+      shack adjusting his detective hat, high above the rooftops a tiny gray silhouette flies off with
+      an umbrella, dramatic and playful mood.'
+    characters_present:
+    - logan
+    alt: A boy detective steps out of his shack grinning at a new missing poster while a tiny silhouette
+      flies away with an umbrella over the foggy town.
+    file: images/page-17.png
+    render_mode: grid3x3
+  layout:
+    text_position: lower-third
+    text_align: center
+    scrim: true
+interactions_summary:
+- 'Page 5: arcade-pop ''Poppy''s Fluff Countdown'' — pop six fluff puffs while Poppy counts them'
+- 'Page 10: arcade-quest ''Follow That Fluff!'' — chase the Snatcher through town collecting fluff and
+  socks'
+- 'Page 13: arcade-catch ''Sock-Rain Rescue'' — catch the socks the babies bounce out of the nest'
+status: published
+tags:
+- mystery
+- socks
+- counting
+- detective
+- first-case
+- birds
+cover:
+  image: images/page-00.png
+  image_prompt: ''
+  alt: A kid detective on a rooftop watches a flock of colorful socks flying over a foggy town at dusk.
+affirms_rules:
+- no-listening
+- super-smart
+- poppy-luck
+- fair-play
+- puzzle-powered
+- clues-keep
+- shadows-not-scares
+- town-scale
+dedication: For every kid who was told 'Don't be silly' — and kept looking anyway.

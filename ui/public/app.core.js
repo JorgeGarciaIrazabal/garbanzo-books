@@ -95,6 +95,7 @@ const M_FAST = "ollama/glm-5.3-flash:cloud";
 const M_GLM = "ollama/glm-5.3:cloud";
 const M_VALIDATE = "ollama/deepseek-v4-pro:cloud";
 const M_SEARCH = "ollama/deepseek-v4-flash:cloud";
+const M_SMART = "ollama/kimi-k3:cloud";
 const M_AUTO = "auto";
 // stage → friendly label, for the live "currently using" chip next to the picker.
 const STAGE_LABEL = {
@@ -157,7 +158,8 @@ async function loadModels() {
                     `<option value="${M_FAST}">GLM-5.3-Flash — fast multimodal (default for orchestration, games & QC)</option>` +
                     `<option value="${M_GLM}">GLM-5.3 — creative (stories, worlds & characters)</option>` +
                     `<option value="${M_VALIDATE}">DeepSeek-V4-Pro — deep reasoning (validate / QA)</option>` +
-                    `<option value="${M_SEARCH}">DeepSeek-V4-Flash — fast research</option>`;
+                    `<option value="${M_SEARCH}">DeepSeek-V4-Flash — fast research</option>` +
+                    `<option value="${M_SMART}">Kimi K3 — premium creative writer (best story prose, more expensive)</option>`;
     sel.value = M_AUTO;
     paintStageChip();
   }

@@ -22,6 +22,10 @@
         "deepseek-v4-flash:cloud": {
           "name": "DeepSeek-V4-Flash (via local Ollama, no API key) — fast, used for research / summarising"
         },
+        "kimi-k3:cloud": {
+          "name": "Kimi K3 (via local Ollama, no API key) — premium creative writer, highest-quality story prose, more expensive",
+          "options": { "reasoningEffort": "high" }
+        },
         "gemma4:12b": {
           "name": "Gemma4 12B (local Ollama) — efficient local model"
         }

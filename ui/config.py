@@ -31,6 +31,8 @@ MODELS = [
      "label": "DeepSeek-V4-Pro — deep reasoning (validate / QA)"},
     {"id": "ollama/deepseek-v4-flash:cloud",
      "label": "DeepSeek-V4-Flash — fast research & summarising"},
+    {"id": "ollama/kimi-k3:cloud",
+     "label": "Kimi K3 — premium creative writer (highest-quality story prose, more expensive)"},
     {"id": "auto",
      "label": "Auto (switch by stage) — recommended"},
 ]
