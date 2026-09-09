@@ -406,11 +406,14 @@ def _gen_codex(ap: AssembledPrompt, out_png: Path, ref_base: Path | None = None)
     Codex runs non-interactively with the user's ChatGPT session (no API key) and saves the
     generated PNG straight into its working directory, reporting the path as a markdown
     link. We give each call its own unique scratch dir so concurrent renders can never pick
-    up each other's files — no shared-brain races like agy's. Reference images are not
-    forwarded (the tool takes a text prompt); on-model consistency rides on the dense
-    appearance_token text, same as the antigravity path. Override the model with CODEX_MODEL.
+    up each other's files — no shared-brain races like agy's. Character reference images
+    are forwarded: each ref is copied into the call-private scratch dir and attached with
+    ``-i`` so the model can anchor on them (raster only — SVG placeholders are skipped). On
+    consistency then rides on the refs plus the dense appearance_token text in the prompt.
+    Override the model with CODEX_MODEL.
     """
     import re
+    import shutil
     import subprocess
     import time
     import uuid
@@ -439,6 +442,13 @@ def _gen_codex(ap: AssembledPrompt, out_png: Path, ref_base: Path | None = None)
         f"Create the following image: {shape} composition, PNG format. Save the final PNG "
         f"file.\n\n{text}"
     )
+    refs = _raster_refs(ap, ref_base)
+    if refs:
+        agent_prompt += (
+            "\n\nReference images are attached (ref-*.png in this directory): use them to "
+            "keep every character exactly on-model (same face, outfit, proportions) — do not "
+            "copy their backgrounds or composition."
+        )
     cmd = [
         str(codex), "exec",
         "--dangerously-bypass-approvals-and-sandbox",
@@ -448,11 +458,25 @@ def _gen_codex(ap: AssembledPrompt, out_png: Path, ref_base: Path | None = None)
     model = os.getenv("CODEX_MODEL")
     if model:
         cmd += ["-m", model]
-    cmd.append(agent_prompt)
+    # Attach raster reference images (character cards / model sheets). They must live inside
+    # the scratch dir — codex runs sandboxed to it, so it can't read refs from the repo.
+    for ref in refs:
+        local = scratch_dir / f"ref-{ref.name}"
+        if not local.exists():
+            try:
+                shutil.copyfile(ref, local)
+            except OSError as e:
+                print(f"  ! could not stage reference image {ref}: {e}", file=sys.stderr)
+                continue
+        cmd += ["-i", str(local)]
+    # "-" reads the prompt from stdin. When stdin is not a tty (every subprocess run),
+    # codex exec IGNORES an argv prompt and tries to read stdin anyway — aborting with
+    # "No prompt provided via stdin." — so the prompt is always piped in.
+    cmd.append("-")
 
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=360,
-                                 cwd=scratch_dir)
+                                 cwd=scratch_dir, input=agent_prompt)
     except FileNotFoundError:
         print("  ! codex CLI not found at ~/.local/bin/codex", file=sys.stderr)
         return False
@@ -478,8 +502,10 @@ def _gen_codex(ap: AssembledPrompt, out_png: Path, ref_base: Path | None = None)
 
     # 2) Any fresh raster that appeared in this call's OWN scratch dir (the agent saved the
     #    image but printed only prose). The dir is call-private, so a hit is race-safe.
+    #    Skip the staged ref-*.png copies we attached — they are inputs, not output.
+    staged_refs = {scratch_dir / f"ref-{r.name}" for r in _raster_refs(ap, ref_base)}
     cands = [p for p in scratch_dir.rglob("*")
-             if p.is_file() and p.suffix.lower() in _RASTER_EXT]
+             if p.is_file() and p.suffix.lower() in _RASTER_EXT and p not in staged_refs]
     candidates = [c for c in linked if c.exists() and c.suffix.lower() in _RASTER_EXT] + cands
 
     for candidate in sorted(candidates, key=lambda p: p.stat().st_mtime, reverse=True):

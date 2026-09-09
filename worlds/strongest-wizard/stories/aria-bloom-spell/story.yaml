@@ -512,6 +512,5 @@ cover:
   image_prompt: ''
   alt: ''
 affirms_rules:
-- Magic requires practice — no shortcuts, no chosen ones. Spells are learned through repetition, observation,
-  and experimentation.
-- Spellbooks cannot be copied perfectly — each wizard must make the spell their own through practice.
+- r1
+- r5

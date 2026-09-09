@@ -401,7 +401,7 @@ def test_run_best_of_n_stops_at_first_good_candidate(monkeypatch, workspace, wri
     winner, qc_log = gi._run_best_of_n(
         ap, img_dir, w, w.dir, story, page, provider="nano-banana",
         num=1, title="t", qc_retries=2, qc_threshold=7.0, qc_model=None,
-        qc_off=False, verbose=False,
+        qc_off=False, qc_edit_fix=False, verbose=False,
     )
     assert calls["n"] == 1, f"expected short-circuit on first good candidate, got {calls['n']} attempts"
     assert qc_log[0]["score"] == 9.5
@@ -439,7 +439,7 @@ def test_run_best_of_n_retries_until_threshold_is_met(monkeypatch, workspace, wr
     winner, qc_log = gi._run_best_of_n(
         ap, img_dir, w, w.dir, story, page, provider="nano-banana",
         num=1, title="t", qc_retries=2, qc_threshold=7.0, qc_model=None,
-        qc_off=False, verbose=False,
+        qc_off=False, qc_edit_fix=False, verbose=False,
     )
     assert calls["n"] == 3, f"expected 3 attempts (2 bad + 1 good), got {calls['n']}"
     # Winner path is the THIRD attempt (highest score).
@@ -477,7 +477,7 @@ def test_run_best_of_n_caps_at_max_attempts(monkeypatch, workspace, write_world,
     winner, qc_log = gi._run_best_of_n(
         ap, img_dir, w, w.dir, story, page, provider="nano-banana",
         num=1, title="t", qc_retries=2, qc_threshold=7.0, qc_model=None,
-        qc_off=False, verbose=False,
+        qc_off=False, qc_edit_fix=False, verbose=False,
     )
     # 3 attempts = 1 initial + 2 retries; all bad, but a winner is still returned.
     assert calls["n"] == 3
@@ -513,7 +513,7 @@ def test_run_best_of_n_hard_flags_short_circuit(monkeypatch, workspace, write_wo
     winner, qc_log = gi._run_best_of_n(
         ap, img_dir, w, w.dir, story, page, provider="nano-banana",
         num=1, title="t", qc_retries=2, qc_threshold=7.0, qc_model=None,
-        qc_off=False, verbose=False,
+        qc_off=False, qc_edit_fix=False, verbose=False,
     )
     # 1 attempt, not 3 — the hard flag short-circuits the loop.
     assert calls["n"] == 1
