@@ -205,8 +205,7 @@
         const pos = "pos-" + (layout.text_position || "lower-third");
         const align = layout.text_align ? "align-" + layout.text_align : "";
         const overlay = h("div", `page-text ${pos} ${align}`);
-        const inner = h("div", layout.scrim === false ? "" : "scrim", esc(page.text));
-        decorateVocab(inner, page.vocabulary);
+        const inner = h("div", layout.scrim === false ? "" : "scrim");
         overlay.appendChild(inner);
         figure.appendChild(overlay);
         // Auto dark scrim: sample the art behind the text zone and flip to a dark
@@ -220,6 +219,148 @@
         }
       }
       return figure;
+    }
+
+    // ---------- picture-book beats ----------
+    // A picture book never shows a wall of words over the art: it shows a few
+    // lines at a time while the picture stays visible. Long pages are therefore
+    // split into short BEATS at their blank-line paragraphs (sentence grouping
+    // as a fallback for monolithic blocks); Next advances beat → beat → page.
+    // A short page stays ONE beat and reads exactly as it always did.
+    const BEAT_SINGLE_MAX = 150;   // pages shorter than this are never split
+    const BEAT_MAX_CHARS = 200;    // a beat carries at most ~this much text
+    const beatCache = new Map();       // page.number -> beats[]
+    const beatIdxByPage = new Map();   // page.number -> current beat index
+
+    function splitBeats(text) {
+      const raw = String(text || "").trim();
+      if (!raw) return [];
+      if (raw.length <= BEAT_SINGLE_MAX) return [raw];
+      const paras = raw.split(/\n\s*\n+/).map((s) => s.trim()).filter(Boolean);
+      if (paras.length <= 1) {
+        // One big block (no blank lines): group whole sentences instead.
+        const sentences = raw.match(/[^.!?…]+[.!?…]+["”’']?\s*|[^.!?…]+$/g) || [raw];
+        const beats = [];
+        let cur = "";
+        for (const s of sentences) {
+          if (cur && (cur + s).length > BEAT_MAX_CHARS - 10) {
+            beats.push(cur.trim());
+            cur = "";
+          }
+          cur += s;
+        }
+        if (cur.trim()) beats.push(cur.trim());
+        return beats.length ? beats : [raw];
+      }
+      const beats = [];
+      let cur = [];
+      let len = 0;
+      for (const p of paras) {
+        if (cur.length && (len + p.length > BEAT_MAX_CHARS || cur.length >= 2)) {
+          beats.push(cur.join("\n\n"));
+          cur = [];
+          len = 0;
+        }
+        cur.push(p);
+        len += p.length;
+      }
+      if (cur.length) beats.push(cur.join("\n\n"));
+      return beats;
+    }
+
+    function beatsFor(page) {
+      if (!beatCache.has(page.number)) beatCache.set(page.number, splitBeats(page.text));
+      return beatCache.get(page.number);
+    }
+
+    // One indicator: "3 / 18" for a single-beat page, "4 / 18 · 2/3" when the
+    // page is being shown as beats. Written by applyBeat (and on page render
+    // for textless pages) so the flip and a beat change can never disagree.
+    function updatePageIndicator() {
+      const page = pages[idx];
+      const beats = page ? beatsFor(page) : [];
+      const beat = page ? (beatIdxByPage.get(page.number) || 0) : 0;
+      pageNoEl.textContent = beats.length > 1
+        ? `${idx + 1} / ${pages.length} · ${beat + 1}/${beats.length}`
+        : `${idx + 1} / ${pages.length}`;
+    }
+
+    // Fill the page's overlay with beat `i`, decorate vocab, re-fit, and update
+    // the beat affordance. Also keeps the dark-scrim call fresh per beat.
+    function applyBeat(figure, page, beats, i) {
+      const overlay = figure.querySelector(".page-text");
+      const inner = overlay && overlay.firstElementChild;
+      if (!overlay || !inner) return;
+      i = Math.max(0, Math.min(beats.length - 1, i));
+      beatIdxByPage.set(page.number, i);
+      inner.textContent = beats[i];
+      inner.classList.toggle("last-beat", i === beats.length - 1);
+      inner.classList.remove("beat-in");
+      void inner.offsetWidth; // restart the fade-in on every beat change
+      inner.classList.add("beat-in");
+      decorateVocab(inner, page.vocabulary);
+      ensureBeatHint(figure, beats, i);
+      if (inner.classList.contains("scrim")) {
+        const img = figure.querySelector("img");
+        if (img) maybeDarkenScrim(img, inner, overlay);
+      }
+      fitText(figure);
+      updatePageIndicator();
+    }
+
+    // The "more" affordance: a small pill in the page's bottom-right corner that
+    // advances to the next beat (the primary gesture is simply tapping the art).
+    function ensureBeatHint(figure, beats, i) {
+      let hint = figure.querySelector(".beat-hint");
+      if (beats.length <= 1) {
+        if (hint) hint.remove();
+        return;
+      }
+      if (!hint) {
+        hint = h("button", "beat-hint");
+        hint.type = "button";
+        hint.addEventListener("click", (e) => {
+          e.stopPropagation();
+          nextPage();
+        });
+        figure.appendChild(hint);
+      }
+      hint.setAttribute("aria-label", `Show the next bit of text (beat ${i + 1} of ${beats.length})`);
+      hint.innerHTML = i === beats.length - 1
+        ? `<span class="beat-count">${i + 1}/${beats.length}</span>`
+        : `<span class="beat-arrow">▸</span> more <span class="beat-count">${i + 1}/${beats.length}</span>`;
+      hint.classList.toggle("last-beat", i === beats.length - 1);
+    }
+
+    function hasMoreBeats(page) {
+      const beats = beatsFor(page);
+      return beats.length > 1 && (beatIdxByPage.get(page.number) || 0) < beats.length - 1;
+    }
+
+    function advanceBeat(delta) {
+      const page = pages[idx];
+      if (!page) return;
+      const beats = beatsFor(page);
+      if (beats.length <= 1) return;
+      const cur = beatIdxByPage.get(page.number) || 0;
+      if (cur + delta < 0 || cur + delta > beats.length - 1) return;
+      applyBeat(stage.querySelector(".page-stage"), page, beats, cur + delta);
+    }
+
+    // Beat-aware page turns: while a page still has hidden beats, Next shows the
+    // next beat on the SAME picture; only the final beat turns the page. Going
+    // back walks the beats in reverse before flipping to the previous page.
+    function nextPage() {
+      if (animating) return;
+      const page = pages[idx];
+      if (page && hasMoreBeats(page)) { advanceBeat(1); return; }
+      go(idx + 1);
+    }
+    function prevPage() {
+      if (animating) return;
+      const page = pages[idx];
+      if (page && (beatIdxByPage.get(page.number) || 0) > 0) { advanceBeat(-1); return; }
+      go(idx - 1);
     }
 
     // Sample the average luminance of the pixels under the text zone and add a
@@ -413,13 +554,13 @@
     });
 
     // ---------- dynamic text fit ----------
-    // Long passages must never come out huge or swallow the illustration. Two
-    // mechanisms combine so this holds on any screen:
-    //   1. Content-aware start size — a text-heavy page renders at a smaller
-    //      font than a sparse one, REGARDLESS of geometry, so a full page never
-    //      looks huge even on a big monitor where it would technically "fit".
-    //   2. Geometry cap — the box may occupy at most a share of the page; if the
-    //      start size still overflows, shrink further, and scroll as a last resort.
+    // With picture-book beats the text shown at once is short by construction —
+    // so the default is simply the full age-band font. Two safety nets remain
+    // for geometry extremes:
+    //   1. Content-aware start size — a very long single beat (rare: an
+    //      unbreakable line) starts smaller than the base.
+    //   2. Geometry cap — the box may occupy at most a share of the page; if it
+    //      still overflows, shrink, and scroll as a last resort.
     function fitText(figure) {
       if (!figure) return;
       const overlay = figure.querySelector(".page-text");
@@ -431,12 +572,14 @@
       box.style.overflowY = "";
       const base = parseFloat(getComputedStyle(overlay).fontSize) || 20;
 
-      // 1) Content-aware start size: scale down from the base as the passage grows,
-      //    from ~one sentence (LO) to a very full page (HI).
+      // 1) Content-aware start size: scale down from the base as the beat grows.
+      //    Beats are short by construction (≤ ~200 chars → full size); the deep
+      //    fall-off only engages for a rare UNBREAKABLE wall of text (no blank
+      //    lines, no sentence ends), which must still never bury the art.
       const chars = (box.textContent || "").trim().length;
-      const LO = 140, HI = 620;
+      const LO = 200, HI = 620;
       const t = Math.max(0, Math.min(1, (chars - LO) / (HI - LO)));
-      let size = base * (1 - 0.4 * t); // down to 60% of base for the fullest pages
+      let size = base * (1 - 0.4 * t); // down to 60% of base for wall-of-text pages
       overlay.style.fontSize = size + "px";
 
       const stageH = stage.clientHeight;
@@ -450,25 +593,48 @@
       const cap = Math.round(stageH * share);
       const min = Math.max(12, base * 0.55);
 
-      // The scrim uses oversized padding (negative margins + extra padding) to
-      // push the backdrop-filter blur edge outside the mask crop. That padding
-      // inflates scrollHeight, so subtract it before comparing to the cap —
-      // otherwise fitText shrinks fonts for the padding, not the text.
-      const padY = box.classList.contains("scrim")
-        ? (parseFloat(getComputedStyle(box).paddingTop) +
-           parseFloat(getComputedStyle(box).paddingBottom))
-        : 0;
-      const contentH = box.scrollHeight - padY;
+      // The scrim uses oversized padding + negative margins to push the
+      // backdrop-filter blur edge outside the mask crop. BOTH inflate
+      // scrollHeight beyond the text itself, so measure the TEXT box (via a
+      // Range) for the fit decision when the environment allows (jsdom's Range
+      // has no getBoundingClientRect — fall back to scrollHeight there).
+      let contentH = box.scrollHeight;
+      if (box.classList.contains("scrim") &&
+          typeof document.createRange === "function" &&
+          typeof document.createRange().getBoundingClientRect === "function") {
+        const range = document.createRange();
+        range.selectNodeContents(box);
+        const tr = range.getBoundingClientRect();
+        if (tr.height) contentH = tr.height;
+      }
 
       let guard = 0;
-      while (contentH > cap && size > min && guard < 60) {
-        size = Math.max(min, size - 1);
-        overlay.style.fontSize = size + "px";
+      let cur = parseFloat(overlay.style.fontSize);
+      if (Number.isNaN(cur)) cur = size; // jsdom: fontSize style may not parse — fall back
+      while (contentH > cap && cur > min && guard < 60) {
+        cur = Math.max(min, cur - 1);
+        overlay.style.fontSize = cur + "px";
+        size = cur;
         guard++;
       }
-      // Final safety net: hard-cap the height and scroll if a page is still huge.
-      box.style.maxHeight = cap + "px";
-      box.style.overflowY = box.scrollHeight > cap + 1 ? "auto" : "";
+      // The scrim's invisible blur-edge overhang (-Npx margins + padding) lives
+      // outside the visible mask, so the cap must apply to the TEXT room, not
+      // the raw box: give the box cap + vertical chrome, and the visible text
+      // gets exactly `cap` of space. Only scroll when the TEXT itself still
+      // exceeds the cap at the final size. (jsdom computes no CSS: chromeY
+      // stays 0 there and the cap falls back to the raw box cap.)
+      let chromeY = 0;
+      if (box.classList.contains("scrim")) {
+        const cs2 = getComputedStyle(box);
+        const pt = parseFloat(cs2.paddingTop), pb = parseFloat(cs2.paddingBottom);
+        const my = parseFloat(cs2.marginTop), mb = parseFloat(cs2.marginBottom);
+        if (Number.isFinite(pt)) chromeY += pt;
+        if (Number.isFinite(pb)) chromeY += pb;
+        if (Number.isFinite(my) && my < 0) chromeY -= my;
+        if (Number.isFinite(mb) && mb < 0) chromeY -= mb;
+      }
+      box.style.maxHeight = Math.round(cap + chromeY) + "px";
+      box.style.overflowY = contentH > cap + 1 ? "auto" : "";
     }
 
     // ---------- render with page-flip ----------
@@ -504,7 +670,14 @@
         setTimeout(done, 900); // safety net
       }
 
-      fitText(incoming); // shrink long text so the art is never fully covered
+      // Beat 0 (or the only beat) fills the page overlay (applyBeat writes the
+      // beat-aware indicator); a textless page falls back to the plain label.
+      const beats = beatsFor(page);
+      if (page.text) applyBeat(incoming, page, beats, 0);
+      else {
+        fitText(incoming);
+        updatePageIndicator();
+      }
       GB._fitCurrent = () => fitText(stage.querySelector(".page-stage"));
 
       renderExtras(page);
@@ -514,7 +687,6 @@
       if (page.interaction) addPlayButton(page);
       if (GB.reward) GB.reward.onPage(story, page, idx, pages.length, extrasBox);
 
-      pageNoEl.textContent = `${idx + 1} / ${pages.length}`;
       prevBtn.disabled = idx === 0;
       nextBtn.disabled = idx === pages.length - 1;
       showControls();
@@ -572,6 +744,13 @@
     function gotoNumber(num) { if (byNumber[num] != null) go(byNumber[num]); }
     GB.go = go;
     GB.gotoNumber = gotoNumber;
+    // The beat-aware turners are the real "page turn" the UI binds to.
+    GB.nextPage = nextPage;
+    GB.prevPage = prevPage;
+    GB.advanceBeat = advanceBeat;
+    GB._beatState = () => ({ idx, beats: pages[idx] ? beatsFor(pages[idx]) : [],
+                             beat: beatIdxByPage.get(pages[idx] ? pages[idx].number : -1) || 0 });
+    GB.splitBeats = splitBeats;
 
     /* =====================================================================
        INTERACTION SHELL
@@ -653,13 +832,15 @@
     /* =====================================================================
        IMMERSIVE TABLET UX: tap-zones, auto-hiding controls
        ===================================================================== */
-    // tap left/right thirds of the art to turn the page; middle toggles chrome
+    // tap left/right thirds of the art to advance/rewind the beat (then the page);
+    // middle toggles chrome
     stage.addEventListener("click", (e) => {
       if (animating) return;
+      if (e.target.closest("button")) return; // beat pill / play button handle themselves
       const r = stage.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width;
-      if (x < 0.3) go(idx - 1);
-      else if (x > 0.7) go(idx + 1);
+      if (x < 0.3) prevPage();
+      else if (x > 0.7) nextPage();
       else toggleControls();
     });
 
@@ -676,14 +857,14 @@
     ["mousemove", "touchstart", "keydown"].forEach((ev) =>
       document.addEventListener(ev, showControls, { passive: true }));
 
-    prevBtn.onclick = (e) => { e.stopPropagation(); go(idx - 1); };
-    nextBtn.onclick = (e) => { e.stopPropagation(); go(idx + 1); };
+    prevBtn.onclick = (e) => { e.stopPropagation(); prevPage(); };
+    nextBtn.onclick = (e) => { e.stopPropagation(); nextPage(); };
     document.addEventListener("keydown", (e) => {
       if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
       const a = document.activeElement;
       if (a && (a.tagName === "INPUT" || interactionBox.contains(a))) return; // let games use arrows
-      if (e.key === "ArrowRight") go(idx + 1);
-      if (e.key === "ArrowLeft") go(idx - 1);
+      if (e.key === "ArrowRight") nextPage();
+      if (e.key === "ArrowLeft") prevPage();
     });
 
     // Dyslexia-friendly toggle (shared with site).

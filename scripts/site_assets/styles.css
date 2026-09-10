@@ -246,6 +246,43 @@ h1, h2, h3 { line-height: 1.2; }
 .align-right { text-align: right; justify-content: flex-end; }
 .align-right .scrim { margin: -48px -44px; }
 
+/* ---- picture-book beats ----
+   Long pages are shown as short beats: a scrim holds ONLY the current beat
+   (a few lines), with a small "more ▸" pill in the page corner advancing to
+   the next beat; the last beat turns the page. White-space preserves the
+   authored paragraph breaks *within* a beat. */
+.page-text .scrim { white-space: pre-line; }
+.page-text .scrim.beat-in { animation: beatIn 0.28s ease-out; }
+@keyframes beatIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-text .scrim.beat-in { animation: none; }
+}
+.beat-hint {
+  position: absolute; right: 12px; bottom: 12px; z-index: 5;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 0; border-radius: 999px; padding: 8px 14px;
+  background: rgba(46, 42, 36, 0.55); color: #fffaf0;
+  font: inherit; font-size: 0.85em; font-weight: 700; letter-spacing: 0.01em;
+  cursor: pointer; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  animation: beatPulse 2.2s ease-in-out infinite;
+}
+.beat-hint:hover { background: rgba(46, 42, 36, 0.75); }
+.beat-hint:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.beat-hint .beat-arrow { font-size: 1.05em; line-height: 1; }
+.beat-hint .beat-count { opacity: 0.75; font-weight: 600; font-size: 0.85em; }
+.beat-hint.last-beat {
+  animation: none; opacity: 0.55; cursor: default;
+  background: rgba(46, 42, 36, 0.4);
+}
+@keyframes beatPulse {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
 .reader-controls {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   margin-top: 16px; flex-wrap: wrap;
@@ -773,6 +810,9 @@ footer.site { text-align: center; color: var(--muted); padding: 40px 16px; }
   .page-text.pos-left, .page-text.pos-right { max-width: 42%; }
   .page-text.pos-left .scrim, .page-text.pos-right .scrim { max-width: none; }
 
+  /* the beat pill sits clear of the floating bottom controls on tablet+ */
+  .beat-hint { bottom: 132px; right: 16px; }
+
   /* floating, auto-hiding controls */
   .reader-controls {
     position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
@@ -811,6 +851,18 @@ footer.site { text-align: center; color: var(--muted); padding: 40px 16px; }
   #stage { aspect-ratio: 3/4; }
   .play-game-btn { padding: 10px; }
   .play-game-btn .play-label { display: none; }
+  /* A narrow phone column can't fit a 200-char beat at 0.9×base without either
+     shrinking the font to illegibility or scrolling inside the bubble. Cap the
+     beat size lower on phones so every beat fits whole at a readable size
+     (fitText's content-aware scaling starts from whatever the CSS allows). */
+  .page-text .scrim { max-width: min(100%, 44ch); font-size: 0.78em; }
+  /* The phone stage (3:4) is short, and centered beats sit in the middle of it
+     — the -48px vertical scrim overhang + padding can exceed the cap. Trim the
+     overhang on phones so the 200px cap leaves real text room. */
+  .page-text .scrim { margin: -28px -32px; }
+  .pos-center .scrim, .align-right .scrim { margin: -28px -32px; }
+  .page-text.pos-top, .page-text.pos-upper-third { top: 3%; }
+  .page-text.pos-bottom, .page-text.pos-lower-third { bottom: 6%; }
 }
 
 /* Authored fields surfaced on the site (E2): back-cover blurb + the world's laws. */

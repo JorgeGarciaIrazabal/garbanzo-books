@@ -795,3 +795,105 @@ describe("dynamic text fit (fitText)", () => {
     expect(ov.firstElementChild.style.overflowY).toBe("auto"); // re-fit reacted
   });
 });
+
+// ---- picture-book beats: long pages are shown a few lines at a time ----------
+describe("picture-book beats", () => {
+  function beatsStory(text) {
+    return {
+      title: "T",
+      pages: [
+        { number: 0, kind: "story", text,
+          image: { file: "images/p1.png", alt: "art" },
+          layout: { text_position: "lower-third", text_align: "center", scrim: true },
+          vocabulary: [], reading_notes: "" },
+      ],
+    };
+  }
+  // Long enough (>150 chars) to force a split, with clear paragraph markers.
+  const LONG_PARAS = [
+    "Paragraph one sets the scene with plenty of words to read very slowly today.",
+    "Paragraph two adds a twist that absolutely nobody expected at all this week.",
+    "Paragraph three delivers the big finish with one last surprising twist too.",
+  ].join("\n\n");
+
+  it("shows a short page as a single beat with no beat pill", () => {
+    loadReaderWith(beatsStory("A short page."));
+    expect(document.querySelector(".beat-hint")).toBeFalsy();
+    const box = document.querySelector(".page-text .scrim");
+    expect(box.textContent).toContain("A short page.");
+  });
+
+  it("splits a long paragraphed page into beats and shows beat 1 of N", () => {
+    loadReaderWith(beatsStory(LONG_PARAS));
+    const pill = document.querySelector(".beat-hint");
+    expect(pill).toBeTruthy();
+    expect(pill.textContent).toContain("1/");
+    const box = document.querySelector(".page-text .scrim");
+    expect(box.textContent).toContain("Paragraph one");
+    expect(box.textContent).not.toContain("big finish");
+  });
+
+  it("the page indicator shows the beat progress", () => {
+    loadReaderWith(beatsStory(LONG_PARAS));
+    expect(document.getElementById("pageno").textContent).toMatch(/^1 \/ 1 · 1\/\d$/);
+  });
+
+  it("Next advances beat by beat, then turns the page", () => {
+    const story = beatsStory(LONG_PARAS);
+    story.pages.push({ number: 1, kind: "story", text: "Next page.",
+      image: { file: "images/p2.png", alt: "art2" },
+      layout: { text_position: "lower-third", text_align: "center", scrim: true },
+      vocabulary: [], reading_notes: "" });
+    loadReaderWith(story);
+    // LONG_PARAS pairs to exactly 2 beats ([p1+p2, p3])
+    const next = document.getElementById("next");
+    next.click();
+    expect(document.getElementById("pageno").textContent).toMatch(/^1 \/ 2 · 2\/\d$/);
+    // final beat: the pill goes calm, and Next turns the page
+    expect(document.querySelector(".beat-hint.last-beat")).toBeTruthy();
+    next.click();
+    expect(document.querySelector(".page-stage img").src).toContain("images/p2.png");
+    expect(document.getElementById("pageno").textContent).toBe("2 / 2");
+  });
+
+  it("Prev walks beats backwards before flipping to the previous page", () => {
+    const story = beatsStory(LONG_PARAS);
+    story.pages.push({ number: 1, kind: "story", text: "Next page.",
+      image: { file: "images/p2.png", alt: "art2" },
+      layout: { text_position: "lower-third", text_align: "center", scrim: true },
+      vocabulary: [], reading_notes: "" });
+    loadReaderWith(story);
+    document.getElementById("next").click(); // → page 1, beat 2/2
+    expect(document.getElementById("pageno").textContent).toMatch(/^1 \/ 2 · 2\/\d$/);
+    document.getElementById("next").click(); // → page 2 (single beat)
+    expect(document.getElementById("pageno").textContent).toBe("2 / 2");
+    document.getElementById("prev").click(); // → page 1 again, re-entered at beat 1
+    expect(document.getElementById("pageno").textContent).toMatch(/^1 \/ 2 · 1\/\d$/);
+    // Prev once more: page 1 is the FIRST page and beat 1 is the first beat → clamps
+    document.getElementById("prev").click();
+    expect(document.getElementById("pageno").textContent).toMatch(/^1 \/ 2 · 1\/\d$/);
+  });
+
+  it("the beat pill click advances to the next beat", () => {
+    loadReaderWith(beatsStory(LONG_PARAS));
+    document.querySelector(".beat-hint").click();
+    expect(document.getElementById("pageno").textContent).toMatch(/^1 \/ 1 · 2\/\d$/);
+  });
+
+  it("preserves paragraph breaks inside a multi-paragraph beat", () => {
+    // >150 chars with three paragraphs → pairs into 2 beats, first one holds 2 paras
+    const text = "First beat paragraph arrives with plenty of extra words right here, truly.\n\nSecond para of the very first beat follows now, friends.\n\nSecond beat arrives right here.";
+    loadReaderWith(beatsStory(text));
+    const box = document.querySelector(".page-text .scrim");
+    expect(box.textContent).toContain("\n\n");
+    expect(box.textContent).not.toContain("Second beat");
+  });
+
+  it("groups sentences of an unbreakable block (no blank lines) into beats", () => {
+    const text = Array.from({ length: 8 }, (_, i) => `Sentence number ${i + 1} says something.`).join(" ");
+    loadReaderWith(beatsStory(text));
+    expect(document.querySelector(".beat-hint")).toBeTruthy();
+    const box = document.querySelector(".page-text .scrim");
+    expect(box.textContent.length).toBeLessThan(text.length);
+  });
+});
